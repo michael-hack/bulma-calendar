@@ -99,7 +99,7 @@ $calendar-border-radius: $radius-small !default
       vertical-align: middle
       white-space: nowrap
       width: 2.8rem
-      &.date-today
+      &.is-today
         border-color: $primary
         color: $primary
       &:focus
@@ -116,13 +116,6 @@ $calendar-border-radius: $radius-small !default
         background: $primary
         border-color: $primary
         color: #fff
-      &.badge::after
-        position: absolute
-        right: .3rem
-        top: .3rem
-        -webkit-transform: translate(50%, -50%)
-        -ms-transform: translate(50%, -50%)
-        transform: translate(50%, -50%)
     &.is-disabled
       .date-item, .calendar-event
         cursor: default
@@ -135,7 +128,7 @@ $calendar-border-radius: $radius-small !default
   .calendar-range
     position: relative
     &::before
-      background: lighten($primary, 52%)
+      background: lighten($primary, 30%)
       content: ""
       height: 2.8rem
       left: 0

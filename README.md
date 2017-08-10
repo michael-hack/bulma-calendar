@@ -38,7 +38,7 @@ Usage
       <div class="calendar-date"><button class="date-item">1</button></div>
       <div class="calendar-date"><button class="date-item">2</button></div>
       <div class="calendar-date"><button class="date-item">3</button></div>
-      <div class="calendar-date"><button class="date-item date-today">4</button></div>
+      <div class="calendar-date"><button class="date-item is-today">4</button></div>
       <div class="calendar-date"><button class="date-item" disabled="">5</button></div>
       <div class="calendar-date"><button class="date-item">6</button></div>
       <div class="calendar-date"><button class="date-item">7</button></div>
