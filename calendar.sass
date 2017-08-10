@@ -18,8 +18,42 @@ $calendar-border-radius: $radius-small !default
     display: -ms-flexbox
     display: -webkit-flex
     -ms-flex-align: center
+    -webkit-box-align: center
+    -ms-flex-align: center
+    align-items: center
+    -webkit-box-pack: justify
+    -ms-flex-pack: justify
+    justify-content: space-between
     font-size: $size-4
     padding: .5rem
+    .calendar-nav-left, .calendar-nav-right
+      -ms-flex-preferred-size: auto
+      flex-basis: auto
+      -webkit-box-flex: 0
+      -ms-flex-positive: 0
+      flex-grow: 0
+      -ms-flex-negative: 0
+      flex-shrink: 0
+      .button
+        text-decoration: none
+        color: $white
+        &:hover
+          background: transparent
+          color: $grey-lighter
+    .calendar-nav-left
+      -webkit-box-align: center
+      -ms-flex-align: center
+      align-items: center
+      -webkit-box-pack: start
+      -ms-flex-pack: start
+      justify-content: flex-start
+    .calendar-nav-right
+      -webkit-box-align: center
+      -ms-flex-align: center
+      align-items: center
+      -webkit-box-pack: end
+      -ms-flex-pack: end
+      justify-content: flex-end
   .calendar-header, .calendar-body
     display: flex
     display: -ms-flexbox
@@ -89,12 +123,12 @@ $calendar-border-radius: $radius-small !default
         -webkit-transform: translate(50%, -50%)
         -ms-transform: translate(50%, -50%)
         transform: translate(50%, -50%)
-    &.disabled
+    &.is-disabled
       .date-item, .calendar-event
         cursor: default
         opacity: .25
         pointer-events: none
-    .date-item:disabled, .calendar-event:disabled
+    .date-item:is-disabled, .calendar-event:is-disabled
       cursor: default
       opacity: .25
       pointer-events: none

@@ -1,19 +1,25 @@
 # bulma-calendar
-Bulma's extension to display a calendar
+Bulma's extension to display a calendar. It can be used on page as large calendar with apointments or in modal/popup for datepicker.
 (find all my bulma's extensions [here](https://github.com/Wikiki/bulma-extensions))
+
+<img src="https://img4.hostingpics.net/pics/812322ScreenShot20170810at125834.png" width="50%">
 
 Usage
 ---
 ```html
 <div class="calendar">
-  <div class="calendar-nav navbar">
-    <button class="button is-action is-link">
-              <i class="icon fa fa-long-arrow-left"></i>
-            </button>
-    <div class="navbar-primary is-fullwidth">March 2017</div>
-    <button class="button is-action is-link">
-              <i class="icon fa fa-long-arrow-right"></i>
-            </button>
+  <div class="calendar-nav">
+    <div class="calendar-nav-left">
+      <button class="button is-link">
+        <i class="fa fa-chevron-left"></i>
+      </button>
+    </div>
+    <div>March 2017</div>
+    <div class="calendar-nav-right">
+      <button class="button is-link">
+        <i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
   </div>
   <div class="calendar-container">
     <div class="calendar-header">
@@ -26,9 +32,9 @@ Usage
       <div class="calendar-date">Sat</div>
     </div>
     <div class="calendar-body">
-      <div class="calendar-date prev-month disabled"><button class="date-item">26</button></div>
-      <div class="calendar-date prev-month disabled"><button class="date-item">27</button></div>
-      <div class="calendar-date prev-month disabled"><button class="date-item">28</button></div>
+      <div class="calendar-date prev-month is-disabled"><button class="date-item">26</button></div>
+      <div class="calendar-date prev-month is-disabled"><button class="date-item">27</button></div>
+      <div class="calendar-date prev-month is-disabled"><button class="date-item">28</button></div>
       <div class="calendar-date current-month"><button class="date-item">1</button></div>
       <div class="calendar-date current-month"><button class="date-item">2</button></div>
       <div class="calendar-date current-month"><button class="date-item">3</button></div>
@@ -60,7 +66,7 @@ Usage
       <div class="calendar-date current-month"><button class="date-item">29</button></div>
       <div class="calendar-date current-month"><button class="date-item">30</button></div>
       <div class="calendar-date current-month"><button class="date-item">31</button></div>
-      <div class="calendar-date next-month disabled"><button class="date-item">1</button></div>
+      <div class="calendar-date next-month is-disabled"><button class="date-item">1</button></div>
     </div>
   </div>
 </div>
