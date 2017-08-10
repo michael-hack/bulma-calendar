@@ -85,7 +85,7 @@ $calendar-border-radius: $radius-small !default
       appearance: none
       background: transparent
       border: .1rem solid transparent
-      border-radius: 50%
+      border-radius: 100%
       color: $text
       cursor: pointer
       height: 2.8rem
@@ -121,14 +121,10 @@ $calendar-border-radius: $radius-small !default
         cursor: default
         opacity: .25
         pointer-events: none
-    .date-item:is-disabled, .calendar-event:is-disabled
-      cursor: default
-      opacity: .25
-      pointer-events: none
   .calendar-range
     position: relative
     &::before
-      background: lighten($primary, 30%)
+      background: lighten($primary, 50%)
       content: ""
       height: 2.8rem
       left: 0
@@ -186,11 +182,11 @@ $calendar-border-radius: $radius-small !default
       overflow-y: auto
       padding: .5rem
     .calendar-event
-      background: #eff1fa
-      border-radius: .2rem
-      color: $primary
+      background-color: $info
+      border-radius: $radius-small
+      color: $white
       display: block
-      font-size: 1.2rem
+      font-size: 1rem
       margin: .2rem auto
       overflow: hidden
       padding: .3rem .4rem
@@ -198,3 +194,9 @@ $calendar-border-radius: $radius-small !default
       text-overflow: ellipsis
       vertical-align: baseline
       white-space: nowrap
+      @each $name, $pair in $colors
+        $color: nth($pair, 1)
+        $color-invert: nth($pair, 2)
+        &.is-#{$name}
+          background-color: $color
+          color: $color-invert
