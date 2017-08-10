@@ -38,11 +38,11 @@ Usage
       <div class="calendar-date"><button class="date-item">1</button></div>
       <div class="calendar-date"><button class="date-item">2</button></div>
       <div class="calendar-date"><button class="date-item">3</button></div>
-      <div class="calendar-date tooltip" data-tooltip="Today"><button class="date-item date-today">4</button></div>
-      <div class="calendar-date tooltip" data-tooltip="Not available"><button class="date-item" disabled="">5</button></div>
+      <div class="calendar-date"><button class="date-item date-today">4</button></div>
+      <div class="calendar-date"><button class="date-item" disabled="">5</button></div>
       <div class="calendar-date"><button class="date-item">6</button></div>
       <div class="calendar-date"><button class="date-item">7</button></div>
-      <div class="calendar-date tooltip" data-tooltip="You have appointments"><button class="date-item badge">8</button></div>
+      <div class="calendar-date"><button class="date-item badge">8</button></div>
       <div class="calendar-date"><button class="date-item">9</button></div>
       <div class="calendar-date"><button class="date-item">10</button></div>
       <div class="calendar-date"><button class="date-item">11</button></div>
@@ -50,11 +50,11 @@ Usage
       <div class="calendar-date"><button class="date-item">13</button></div>
       <div class="calendar-date"><button class="date-item">14</button></div>
       <div class="calendar-date"><button class="date-item">15</button></div>
-      <div class="calendar-date calendar-range range-start"><button class="date-item active">16</button></div>
+      <div class="calendar-date calendar-range range-start"><button class="date-item is-active">16</button></div>
       <div class="calendar-date calendar-range"><button class="date-item">17</button></div>
       <div class="calendar-date calendar-range"><button class="date-item">18</button></div>
       <div class="calendar-date calendar-range"><button class="date-item">19</button></div>
-      <div class="calendar-date calendar-range range-end"><button class="date-item active">20</button></div>
+      <div class="calendar-date calendar-range range-end"><button class="date-item is-active">20</button></div>
       <div class="calendar-date"><button class="date-item">21</button></div>
       <div class="calendar-date"><button class="date-item">22</button></div>
       <div class="calendar-date"><button class="date-item">23</button></div>
