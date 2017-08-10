@@ -66,7 +66,7 @@ Usage
       <div class="calendar-date"><button class="date-item">29</button></div>
       <div class="calendar-date"><button class="date-item">30</button></div>
       <div class="calendar-date"><button class="date-item">31</button></div>
-      <div class="calendar-date next-month is-disabled"><button class="date-item">1</button></div>
+      <div class="calendar-date is-disabled"><button class="date-item">1</button></div>
     </div>
   </div>
 </div>
