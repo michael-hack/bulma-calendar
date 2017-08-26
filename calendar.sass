@@ -1,5 +1,10 @@
 $calendar-border: .1rem solid $grey-lighter !default
 $calendar-border-radius: $radius-small !default
+$calendar-header-color: $primary !default
+$calendar-date-hover: $white-ter !default
+$calendar-today-background: transparent !default
+$calendar-today-border-color: $primary !default
+$calendar-today-color: $primary !default
 
 .calendar
   border: $calendar-border
@@ -8,71 +13,43 @@ $calendar-border-radius: $radius-small !default
   min-width: 28rem
   text-align: center
   .calendar-nav
-    -webkit-align-items: center
     align-items: center
-    background: $primary
+    background: $calendar-header-color
     color: $white
     border-top-left-radius: $radius-small
     border-top-right-radius: $radius-small
     display: flex
-    display: -ms-flexbox
-    display: -webkit-flex
-    -ms-flex-align: center
-    -webkit-box-align: center
-    -ms-flex-align: center
     align-items: center
-    -webkit-box-pack: justify
-    -ms-flex-pack: justify
     justify-content: space-between
     font-size: $size-4
     padding: .5rem
     .calendar-nav-left, .calendar-nav-right
-      -ms-flex-preferred-size: auto
       flex-basis: auto
-      -webkit-box-flex: 0
-      -ms-flex-positive: 0
       flex-grow: 0
-      -ms-flex-negative: 0
       flex-shrink: 0
       .button
         text-decoration: none
         color: $white
         &:hover
           background: transparent
-          color: $grey-lighter
+          color: $white-ter
     .calendar-nav-left
-      -webkit-box-align: center
-      -ms-flex-align: center
       align-items: center
-      -webkit-box-pack: start
-      -ms-flex-pack: start
       justify-content: flex-start
     .calendar-nav-right
-      -webkit-box-align: center
-      -ms-flex-align: center
       align-items: center
-      -webkit-box-pack: end
-      -ms-flex-pack: end
       justify-content: flex-end
   .calendar-header, .calendar-body
     display: flex
-    display: -ms-flexbox
-    display: -webkit-flex
-    -ms-flex-pack: center
-    -webkit-flex-wrap: wrap
-    -ms-flex-wrap: wrap
     flex-wrap: wrap
-    -webkit-justify-content: center
     justify-content: center
     padding: .2rem 0
   .calendar-header .calendar-date, .calendar-body .calendar-date
-    -webkit-flex: 0 0 14.28%
-    -ms-flex: 0 0 14.28%
     flex: 0 0 14.28%
     max-width: 14.28%
   .calendar-header
-    background: darken($primary, 5%)
-    color: $white
+    background: darken($calendar-header-color, 5%)
+    color: findColorInvert( $calendar-header-color )
     font-size: $size-6
   .calendar-body
     color: $grey
@@ -80,8 +57,6 @@ $calendar-border-radius: $radius-small !default
     border: 0
     padding: .4rem
     .date-item
-      -webkit-appearance: none
-      -moz-appearance: none
       appearance: none
       background: transparent
       border: .1rem solid transparent
@@ -100,22 +75,23 @@ $calendar-border-radius: $radius-small !default
       white-space: nowrap
       width: 2.8rem
       &.is-today
-        border-color: $primary
-        color: $primary
+        background: $calendar-today-background
+        border-color: $calendar-today-border-color
+        color: $calendar-today-color
       &:focus
-        background: $grey-lighter
-        border-color: $grey-lighter
-        color: $white
+        background: $calendar-date-hover
+        border-color: $calendar-date-hover
+        color: findColorInvert( $calendar-date-hover )
         text-decoration: none
       &:hover
-        background: $grey-lighter
-        border-color: $grey-lighter
-        color: $grey
+        background: $calendar-date-hover
+        border-color: $calendar-date-hover
+        color: findColorInvert( $calendar-date-hover )
         text-decoration: none
       &.is-active
         background: $primary
         border-color: $primary
-        color: #fff
+        color: findColorInvert( $primary )
     &.is-disabled
       .date-item, .calendar-event
         cursor: default
@@ -131,8 +107,6 @@ $calendar-border-radius: $radius-small !default
       position: absolute
       right: 0
       top: 50%
-      -webkit-transform: translateY(-50%)
-      -ms-transform: translateY(-50%)
       transform: translateY(-50%)
     &.range-start::before
       left: 50%
@@ -141,17 +115,13 @@ $calendar-border-radius: $radius-small !default
     .date-item
       color: $primary
 
-  &.is-calendar-large
+  &.is-large
     .calendar-body
       padding: 0
       .calendar-date
         border-bottom: $calendar-border
         border-right: $calendar-border
         display: flex
-        display: -ms-flexbox
-        display: -webkit-flex
-        -webkit-flex-direction: column
-        -ms-flex-direction: column
         flex-direction: column
         height: 11rem
         padding: 0
@@ -160,9 +130,7 @@ $calendar-border-radius: $radius-small !default
         &:nth-last-child(-n+7)
           border-bottom: 0
     .date-item
-      -webkit-align-self: flex-end
       align-self: flex-end
-      -ms-flex-item-align: end
       height: 2.8rem
       margin-right: .5rem
       margin-top: .5rem
@@ -175,14 +143,12 @@ $calendar-border-radius: $radius-small !default
       &.range-end::before
         right: 1.9rem
     .calendar-events
-      -webkit-flex-grow: 1
       flex-grow: 1
-      -ms-flex-positive: 1
       line-height: 1
       overflow-y: auto
       padding: .5rem
     .calendar-event
-      background-color: $info
+      background-color: $grey
       border-radius: $radius-small
       color: $white
       display: block
