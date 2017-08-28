@@ -1,4 +1,4 @@
-$calendar-border: .1rem solid $grey-lighter !default
+$calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
 $calendar-header-color: $primary !default
 $calendar-date-hover: $white-ter !default
@@ -52,6 +52,7 @@ $calendar-today-color: $primary !default
     color: findColorInvert( $calendar-header-color )
     font-size: $size-6
   .calendar-body
+    padding: 0
     color: $grey
   .calendar-date
     border: 0
@@ -117,7 +118,6 @@ $calendar-today-color: $primary !default
 
   &.is-large
     .calendar-body
-      padding: 0
       .calendar-date
         border-bottom: $calendar-border
         border-right: $calendar-border
