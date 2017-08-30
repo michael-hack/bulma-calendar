@@ -1,0 +1,25 @@
+{
+  "name": "bulma-calendar",
+  "version": "0.0.1",
+  "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wikiki/bulma-calendar.git"
+  },
+  "keywords": [
+    "Bulma",
+    "bulma",
+    "extensions",
+    "bulma.io"
+  ],
+  "author": "Wikiki <wikiki@protonmail.com> (https://wikiki.github.io/bulma-extensions/overview)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wikiki/bulma-calendar/issues"
+  },
+  "homepage": "https://github.com/Wikiki/bulma-calendar#readme"
+}
