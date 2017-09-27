@@ -71,8 +71,10 @@ class DatePicker {
 
       if ( _this.open ) {
         _this.hide();
+        _this.open = false;
       } else {
         _this.show();
+        _this.open = true;
       }
     } );
   }
