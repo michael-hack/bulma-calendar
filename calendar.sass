@@ -7,11 +7,19 @@ $calendar-today-border-color: $primary !default
 $calendar-today-color: $primary !default
 
 .calendar
+  background: $white
   border: $calendar-border
   border-radius: $calendar-border-radius
   display: block
   min-width: 28rem
   text-align: center
+  &.is-datepicker
+    display: none
+    width: 200px
+    &.is-active
+      display: initial
+    .calendar-date
+      padding: 0px
   .calendar-nav
     align-items: center
     background: $calendar-header-color
@@ -93,7 +101,8 @@ $calendar-today-color: $primary !default
         background: $primary
         border-color: $primary
         color: findColorInvert( $primary )
-    &.is-disabled
+    &.is-disabled,
+    &[disabled]
       .date-item, .calendar-event
         cursor: default
         opacity: .25
