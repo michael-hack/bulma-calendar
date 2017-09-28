@@ -29,6 +29,7 @@ class DatePicker {
       dataFormat: 'yyyy/mm/dd',
       // internationalization
       lang: 'en',
+      overlay: false,
       closeOnSelect: true,
       // callback function
       onSelect: null,
@@ -59,12 +60,23 @@ class DatePicker {
   build() {
     var _this = this;
 
+    this.datePickerContainer = document.createElement( 'div' );
+    this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
+    this.datePickerContainer.classList.add( 'datepicker' );
+
     this.calendarContainer = document.createElement( 'div' );
     this.calendarContainer.id = 'datePicker' + ( new Date ).getTime();
     this.calendarContainer.classList.add( 'calendar' );
-    this.calendarContainer.classList.add( 'is-datepicker' );
     this.renderCalendar();
-    document.body.appendChild( this.calendarContainer );
+
+    if ( this.options.overlay ) {
+      var datePickerOverlay = document.createElement( 'div' );
+      datePickerOverlay.classList.add( 'is-overlay' );
+      this.datePickerContainer.appendChild( datePickerOverlay );
+    }
+
+    this.datePickerContainer.appendChild( this.calendarContainer );
+    document.body.appendChild( this.datePickerContainer );
 
     this.element.addEventListener( 'click', function( e ) {
       e.preventDefault();
@@ -282,17 +294,19 @@ class DatePicker {
         this.options.onOpen ) {
       this.options.onOpen( this );
     }
-    this.calendarContainer.classList.add( 'is-active' );
+    this.datePickerContainer.classList.add( 'is-active' );
     this.adjustPosition();
+    this.open = true;
   }
 
   hide() {
+    this.open = false;
     if ( typeof this.options.onClose != 'undefined' &&
         this.options.onClose != null &&
         this.options.onClose ) {
       this.options.onClose( this );
     }
-    this.calendarContainer.classList.remove( 'is-active' );
+    this.datePickerContainer.classList.remove( 'is-active' );
   }
 
   adjustCalendar() {
