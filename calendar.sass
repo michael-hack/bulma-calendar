@@ -1,4 +1,4 @@
-$calendar-border: .1rem solid $white-ter !default
+$calendar-border: none !default
 $calendar-border-radius: $radius-small !default
 $calendar-header-color: $primary !default
 $calendar-date-hover: $white-ter !default
@@ -20,9 +20,9 @@ $calendar-today-color: $primary !default
     border: $calendar-border
     border-radius: $calendar-border-radius
     display: block
-    min-width: 28rem
+    min-width: 20rem
     text-align: center
-    max-width: 400px
+    max-width: 20rem
     &.is-active
       display: initial
     .calendar-nav
@@ -77,8 +77,8 @@ $calendar-today-color: $primary !default
         border-radius: 100%
         color: $text
         cursor: pointer
-        height: 2.8rem
-        line-height: 2rem
+        height: 2.2rem
+        line-height: 1.4rem
         outline: none
         padding: .3rem
         position: relative
@@ -87,7 +87,7 @@ $calendar-today-color: $primary !default
         transition: all .2s ease
         vertical-align: middle
         white-space: nowrap
-        width: 2.8rem
+        width: 2.2rem
         &.is-today
           background: $calendar-today-background
           border-color: $calendar-today-border-color
@@ -117,7 +117,7 @@ $calendar-today-color: $primary !default
       &::before
         background: lighten($primary, 50%)
         content: ""
-        height: 2.8rem
+        height: 2.2rem
         left: 0
         position: absolute
         right: 0
@@ -146,7 +146,7 @@ $calendar-today-color: $primary !default
             border-bottom: 0
       .date-item
         align-self: flex-end
-        height: 2.8rem
+        height: 2.2rem
         margin-right: .5rem
         margin-top: .5rem
       .calendar-range
@@ -187,8 +187,9 @@ $calendar-today-color: $primary !default
   &.is-active
     display: initial
     .calendar
+      min-width: 20rem
       display: initial
-      max-width: 400px
+      max-width: 20rem
   +calendar
   .is-overlay
     +overlay
