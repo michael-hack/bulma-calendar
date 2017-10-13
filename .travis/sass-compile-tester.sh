@@ -9,7 +9,7 @@
 run_it()
 {
 	
-	local _src="${1-calendar.sass}"
+	local _src="${1-bulma-calendar.sass}"
 	local _dest="${2-$(dirname "${BASH_SOURCE[0]}")/css/$(basename ${_src}).css}"
 	local _options="${3---sourcemap=none}"
 
