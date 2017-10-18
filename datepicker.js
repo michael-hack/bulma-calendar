@@ -68,7 +68,8 @@ class DatePicker {
 
   build() {
     var _this = this;
-
+    
+    this.remove(document.getElementsByClassName('datepicker'));
     this.datePickerContainer = document.createElement('div');
     this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
     this.datePickerContainer.classList.add('datepicker');
@@ -466,4 +467,12 @@ class DatePicker {
     // weak date comparison (use setToStartOfDay(date) to ensure correct result)
     return a.getTime() === b.getTime();
   }
+  
+  remove(element) {
+      if (element !== undefined &&
+        element !== null &&
+        element.length > 0){
+        element.parentElement.removeChild(element);
+      }
+    }
 }
