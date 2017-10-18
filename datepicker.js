@@ -69,9 +69,9 @@ class DatePicker {
   build() {
     var _this = this;
     
-    this.remove(document.getElementsByClassName('datepicker'));
     this.datePickerContainer = document.createElement('div');
     this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
+    this.remove(document.querySelectorAll("[id^='datePicker']"),'datePicker',this.datePickerContainer.id);
     this.datePickerContainer.classList.add('datepicker');
 
     this.calendarContainer = document.createElement('div');
@@ -468,11 +468,18 @@ class DatePicker {
     return a.getTime() === b.getTime();
   }
   
-  remove(element) {
-      if (element !== undefined &&
-        element !== null &&
-        element.length > 0){
-        element.parentElement.removeChild(element);
+  remove(elements,baseId,dateCreatedActualDataPicker) {
+    if (elements !== undefined &&
+      elements !== null &&
+      elements.length > 0){
+
+      for (var i = 0; i < elements.length; i++) {
+        var elementId = elements[i].attributes[0].nodeValue;
+        var isOlderDatapicker = elementId.substring(elementId.indexOf(baseId)+baseId.length) < dateCreatedActualDataPicker;
+        if (isOlderDatapicker){
+          elements[i].parentElement.removeChild(elements[i]);
+        }
       }
     }
+  }
 }
