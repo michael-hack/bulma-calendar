@@ -169,7 +169,7 @@ class DatePicker {
     previousButtonContainer.classList.add('calendar-nav-left');
     this.previousYearButton = document.createElement('div');
     this.previousYearButton.classList.add('button');
-    this.previousYearButton.classList.add('is-link');
+    this.previousYearButton.classList.add('is-text');
     var previousButtonIcon = document.createElement('i');
     previousButtonIcon.classList.add('fa');
     previousButtonIcon.classList.add('fa-backward');
@@ -183,7 +183,7 @@ class DatePicker {
 
     this.previousMonthButton = document.createElement('div');
     this.previousMonthButton.classList.add('button');
-    this.previousMonthButton.classList.add('is-link');
+    this.previousMonthButton.classList.add('is-text');
     var previousMonthButtonIcon = document.createElement('i');
     previousMonthButtonIcon.classList.add('fa');
     previousMonthButtonIcon.classList.add('fa-chevron-left');
@@ -203,7 +203,7 @@ class DatePicker {
     nextButtonContainer.classList.add('calendar-nav-right');
     this.nextMonthButton = document.createElement('div');
     this.nextMonthButton.classList.add('button');
-    this.nextMonthButton.classList.add('is-link');
+    this.nextMonthButton.classList.add('is-text');
     var nextMonthButtonIcon = document.createElement('i');
     nextMonthButtonIcon.classList.add('fa');
     nextMonthButtonIcon.classList.add('fa-chevron-right');
@@ -216,7 +216,7 @@ class DatePicker {
     nextButtonContainer.appendChild(this.nextMonthButton);
     this.nextYearButton = document.createElement('div');
     this.nextYearButton.classList.add('button');
-    this.nextYearButton.classList.add('is-link');
+    this.nextYearButton.classList.add('is-text');
     var nextYearButtonIcon = document.createElement('i');
     nextYearButtonIcon.classList.add('fa');
     nextYearButtonIcon.classList.add('fa-forward');
