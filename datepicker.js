@@ -68,9 +68,10 @@ class DatePicker {
 
   build() {
     var _this = this;
-
+    
     this.datePickerContainer = document.createElement('div');
     this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
+    this.remove(document.querySelectorAll("[id^='datePicker']"),'datePicker',this.datePickerContainer.id);
     this.datePickerContainer.classList.add('datepicker');
 
     this.calendarContainer = document.createElement('div');
@@ -465,5 +466,20 @@ class DatePicker {
   compareDates(a, b) {
     // weak date comparison (use setToStartOfDay(date) to ensure correct result)
     return a.getTime() === b.getTime();
+  }
+  
+  remove(elements,baseId,dateCreatedActualDataPicker) {
+    if (elements !== undefined &&
+      elements !== null &&
+      elements.length > 0){
+
+      for (var i = 0; i < elements.length; i++) {
+        var elementId = elements[i].attributes[0].nodeValue;
+        var isOlderDatapicker = elementId.substring(elementId.indexOf(baseId)+baseId.length) < dateCreatedActualDataPicker;
+        if (isOlderDatapicker){
+          elements[i].parentElement.removeChild(elements[i]);
+        }
+      }
+    }
   }
 }
