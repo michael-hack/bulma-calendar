@@ -185,20 +185,13 @@ $calendar-today-color: $primary !default
 .datepicker
   display: none
   &.is-active
-    display: initial
+    display: flex
     .calendar
       min-width: 20rem
-      display: initial
       max-width: 20rem
+      position: relative
+      margin: 0 auto
+      max-height: calc(100vh - 40px)
   +calendar
-  .is-overlay
-    +overlay
-    position: fixed
-    background-color: rgba( $dark, .75)
-    + .calendar
-      position: fixed !important
-      top: 50% !important
-      left: 50% !important
-      +css3-prefix( 'transform', 'translate(-50%, -50%)' )
 
 +calendar

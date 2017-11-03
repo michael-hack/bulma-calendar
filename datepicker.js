@@ -71,6 +71,9 @@ class DatePicker {
 
     this.datePickerContainer = document.createElement('div');
     this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
+    if (this.options.overlay) {
+      this.datePickerContainer.classList.add('modal');
+    }
     this.datePickerContainer.classList.add('datepicker');
 
     this.calendarContainer = document.createElement('div');
@@ -80,11 +83,20 @@ class DatePicker {
 
     if (this.options.overlay) {
       var datePickerOverlay = document.createElement('div');
-      datePickerOverlay.classList.add('is-overlay');
+      datePickerOverlay.classList.add('modal-background');
       this.datePickerContainer.appendChild(datePickerOverlay);
     }
 
+    var modalClose = document.createElement('button');
+    modalClose.className = 'modal-close';
+    modalClose.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      _this.datePickerContainer.classList.remove('is-active');
+    })
+
     this.datePickerContainer.appendChild(this.calendarContainer);
+    this.datePickerContainer.appendChild(modalClose);
     document.body.appendChild(this.datePickerContainer);
 
     this.element.addEventListener('click', function (e) {
@@ -115,7 +127,6 @@ class DatePicker {
   renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
     var _this = this;
     var newDayContainer = document.createElement('div');
-    var newDay = document.createElement('div');
     var newDayButton = document.createElement('button');
 
     newDayButton.classList.add('date-item');
@@ -132,12 +143,9 @@ class DatePicker {
       }
     });
 
-    newDay.appendChild(newDayButton);
     newDayContainer.classList.add('calendar-date');
-    newDayContainer.appendChild(newDay);
+    newDayContainer.appendChild(newDayButton);
 
-
-    newDay.classList.add('calendar-date');
     if (isDisabled) {
       newDayContainer.setAttribute('disabled', 'disabled');
     }
@@ -344,7 +352,9 @@ class DatePicker {
       this.options.onOpen(this);
     }
     this.datePickerContainer.classList.add('is-active');
-    this.adjustPosition();
+    if (!this.options.overlay) {
+      this.adjustPosition();
+    }
     this.open = true;
   }
 
