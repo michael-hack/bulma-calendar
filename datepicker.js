@@ -60,8 +60,8 @@ class DatePicker {
 
 
     this.month = this.options.startDate.getMonth(),
-      this.year = this.options.startDate.getFullYear(),
-      this.open = false;
+    this.year = this.options.startDate.getFullYear(),
+    this.open = false;
 
     this.build();
   }
