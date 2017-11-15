@@ -5,6 +5,7 @@ $calendar-date-hover: $white-ter !default
 $calendar-today-background: transparent !default
 $calendar-today-border-color: $primary !default
 $calendar-today-color: $primary !default
+$calendar-range-background-color: lighten($primary, 50%) !default
 
 =css3-prefix($property, $value)
   -webkit-#{$property}: #{$value}
@@ -115,7 +116,7 @@ $calendar-today-color: $primary !default
     .calendar-range
       position: relative
       &::before
-        background: lighten($primary, 50%)
+        background: $calendar-range-background-color
         content: ""
         height: 2.2rem
         left: 0
