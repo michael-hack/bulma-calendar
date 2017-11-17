@@ -10,4 +10,4 @@ Bulma's extension to display a calendar. It can be used on page as large calenda
 
 Documentation & Demo
 ---
-You can find the Documentation and a demo [here](https://wikiki.github.io/bulma-extensions/calendar)
+You can find the Documentation and a demo [here](https://wikiki.github.io/components/calendar/)
