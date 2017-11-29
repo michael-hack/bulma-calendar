@@ -1,6 +1,6 @@
 {
   "name": "bulma-calendar",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "calendar.sass",
   "scripts": {
@@ -21,5 +21,17 @@
   "bugs": {
     "url": "https://github.com/Wikiki/bulma-calendar/issues"
   },
-  "homepage": "https://github.com/Wikiki/bulma-calendar#readme"
+  "homepage": "https://github.com/Wikiki/bulma-calendar#readme",
+  "devDependencies": {
+    "bulma": "^0.6.1"
+  },
+  "files": [
+    "calendar.sass",
+    "calendar.css",
+    "calendar.min.css",
+    "datepicker.js",
+    "datepicker.min.js",
+    "LICENSE",
+    "README.md"
+  ]
 }
