@@ -21,15 +21,15 @@ date = new DatePicker(document.querySelector('.sr-date'), {
 where `dataFormat` is a string with a combination of this values:
 
 ```
-  d: short day (1-31)
-  dd: long day (00-31)
-  D: weekday (es: Monday)
-  m: short month (1-12)
-  mm: long month (01-12)
-  M: short month name (es: Jan, Feb)
-  MM: full month name (es: January)
-  yy: short year (18)
-  yyyy: full year (2018)
+d: short day (1-31)
+dd: long day (00-31)
+D: weekday (es: Monday)
+m: short month (1-12)
+mm: long month (01-12)
+M: short month name (es: Jan, Feb)
+MM: full month name (es: January)
+yy: short year (18)
+yyyy: full year (2018)
 ```
 
 ### Language
