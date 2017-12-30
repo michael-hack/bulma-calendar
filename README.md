@@ -18,7 +18,7 @@ date = new DatePicker(document.querySelector('.sr-date'), {
 });
 ```
 
-where `dataFormat` is a string with  of this options:
+where `dataFormat` is a string with a combination of this values:
 
 ```
   d: short day (1-31)
