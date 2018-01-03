@@ -70,8 +70,7 @@ var datepicker_langs = {
     monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'],
     weekdays: ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'],
     weekdaysShort: ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub']
-  }, 
-
+  }
 }
 
 class DatePicker {
