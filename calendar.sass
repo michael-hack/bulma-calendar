@@ -1,11 +1,18 @@
 $calendar-border: none !default
 $calendar-border-radius: $radius-small !default
-$calendar-header-color: $primary !default
-$calendar-date-hover: $white-ter !default
+$calendar-header-background-color: $primary !default
+$calendar-days-background-color: transparent !default
+$calendar-header-days-color: $grey-light !default
+$calendar-date-color: $text !default
+$calendar-date-hover-background-color: $white-ter !default
 $calendar-today-background: transparent !default
 $calendar-today-border-color: $primary !default
 $calendar-today-color: $primary !default
 $calendar-range-background-color: lighten($primary, 50%) !default
+$calendar-body-padding: 0 1em 1em 1em !default
+$calendar-header-padding: 1em 1em 0 1em !default
+$calendar-header-nav-padding: .5em !default
+$calendar-date-padding: .4rem 0 !default
 
 =css3-prefix($property, $value)
   -webkit-#{$property}: #{$value}
@@ -28,7 +35,7 @@ $calendar-range-background-color: lighten($primary, 50%) !default
       display: initial
     .calendar-nav
       align-items: center
-      background: $calendar-header-color
+      background: $calendar-header-background-color
       color: $white
       border-top-left-radius: $radius-small
       border-top-right-radius: $radius-small
@@ -36,7 +43,7 @@ $calendar-range-background-color: lighten($primary, 50%) !default
       align-items: center
       justify-content: space-between
       font-size: $size-5
-      padding: .5rem
+      padding: $calendar-header-nav-padding
       .calendar-nav-left, .calendar-nav-right
         flex-basis: auto
         flex-grow: 0
@@ -57,26 +64,28 @@ $calendar-range-background-color: lighten($primary, 50%) !default
       display: flex
       flex-wrap: wrap
       justify-content: center
-      padding: .2rem 0
     .calendar-header .calendar-date, .calendar-body .calendar-date
       flex: 0 0 14.28%
       max-width: 14.28%
     .calendar-header
-      background: darken($calendar-header-color, 5%)
-      color: findColorInvert( $calendar-header-color )
+      padding: $calendar-header-padding
+      background: $calendar-days-background-color
+      color: findColorInvert( $calendar-days-background-color )
       font-size: $size-7
+      .calendar-date
+        color: $calendar-header-days-color
     .calendar-body
-      padding: 0
+      padding: $calendar-body-padding
       color: $grey
     .calendar-date
       border: 0
-      padding: .4rem
+      padding: $calendar-date-padding
       .date-item
         appearance: none
         background: transparent
         border: .1rem solid transparent
         border-radius: 100%
-        color: $text
+        color: $calendar-date-color
         cursor: pointer
         height: 2.2rem
         line-height: 1.4rem
@@ -94,14 +103,14 @@ $calendar-range-background-color: lighten($primary, 50%) !default
           border-color: $calendar-today-border-color
           color: $calendar-today-color
         &:focus
-          background: $calendar-date-hover
-          border-color: $calendar-date-hover
-          color: findColorInvert( $calendar-date-hover )
+          background: $calendar-date-hover-background-color
+          border-color: $calendar-date-hover-background-color
+          color: findColorInvert( $calendar-date-hover-background-color )
           text-decoration: none
         &:hover
-          background: $calendar-date-hover
-          border-color: $calendar-date-hover
-          color: findColorInvert( $calendar-date-hover )
+          background: $calendar-date-hover-background-color
+          border-color: $calendar-date-hover-background-color
+          color: findColorInvert( $calendar-date-hover-background-color )
           text-decoration: none
         &.is-active
           background: $primary
