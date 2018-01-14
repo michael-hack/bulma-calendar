@@ -73,6 +73,8 @@ var datepicker_langs = {
   }
 }
 
+const MOUSE_EVENTS = ['click', 'touchstart'];
+
 class DatePicker {
   constructor(selector, options) {
     if (!options) options = {}
@@ -134,26 +136,30 @@ class DatePicker {
 
     var modalClose = document.createElement('button');
     modalClose.className = 'modal-close';
-    modalClose.addEventListener('click', function(e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      modalClose.addEventListener(event, function(e) {
+        e.preventDefault();
 
-      _this.datePickerContainer.classList.remove('is-active');
-    })
+        _this.datePickerContainer.classList.remove('is-active');
+      });
+    });
 
     this.datePickerContainer.appendChild(this.calendarContainer);
     this.datePickerContainer.appendChild(modalClose);
     document.body.appendChild(this.datePickerContainer);
 
-    this.element.addEventListener('click', function (e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      this.element.addEventListener(event, function (e) {
+        e.preventDefault();
 
-      if (_this.open) {
-        _this.hide();
-        _this.open = false;
-      } else {
-        _this.show();
-        _this.open = true;
-      }
+        if (_this.open) {
+          _this.hide();
+          _this.open = false;
+        } else {
+          _this.show();
+          _this.open = true;
+        }
+      });
     });
   }
 
@@ -176,16 +182,18 @@ class DatePicker {
 
     newDayButton.classList.add('date-item');
     newDayButton.innerHTML = day;
-    newDayButton.addEventListener('click', function (e) {
-      if (typeof _this.options.onSelect != 'undefined' &&
-        _this.options.onSelect != null &&
-        _this.options.onSelect) {
-        _this.options.onSelect(new Date(year, month, day));
-      }
-      _this.element.value = _this.getFormatedDate(( new Date(year, month, day) ), _this.options.dataFormat);
-      if (_this.options.closeOnSelect) {
-        _this.hide();
-      }
+    MOUSE_EVENTS.forEach((event) => {
+      newDayButton.addEventListener(event, function (e) {
+        if (typeof _this.options.onSelect != 'undefined' &&
+          _this.options.onSelect != null &&
+          _this.options.onSelect) {
+          _this.options.onSelect(new Date(year, month, day));
+        }
+        _this.element.value = _this.getFormatedDate(( new Date(year, month, day) ), _this.options.dataFormat);
+        if (_this.options.closeOnSelect) {
+          _this.hide();
+        }
+      });
     });
 
     newDayContainer.classList.add('calendar-date');
@@ -227,10 +235,12 @@ class DatePicker {
     previousButtonIcon.classList.add('fa');
     previousButtonIcon.classList.add('fa-backward');
     this.previousYearButton.appendChild(previousButtonIcon);
-    this.previousYearButton.addEventListener('click', function (e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      this.previousYearButton.addEventListener(event, function (e) {
+        e.preventDefault();
 
-      _this.prevYear();
+        _this.prevYear();
+      });
     });
     previousButtonContainer.appendChild(this.previousYearButton);
 
@@ -241,10 +251,12 @@ class DatePicker {
     previousMonthButtonIcon.classList.add('fa');
     previousMonthButtonIcon.classList.add('fa-chevron-left');
     this.previousMonthButton.appendChild(previousMonthButtonIcon);
-    this.previousMonthButton.addEventListener('click', function (e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      this.previousMonthButton.addEventListener(event, function (e) {
+        e.preventDefault();
 
-      _this.prevMonth();
+        _this.prevMonth();
+      });
     });
     previousButtonContainer.appendChild(this.previousMonthButton);
 
@@ -261,10 +273,12 @@ class DatePicker {
     nextMonthButtonIcon.classList.add('fa');
     nextMonthButtonIcon.classList.add('fa-chevron-right');
     this.nextMonthButton.appendChild(nextMonthButtonIcon);
-    this.nextMonthButton.addEventListener('click', function (e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      this.nextMonthButton.addEventListener(event, function (e) {
+        e.preventDefault();
 
-      _this.nextMonth();
+        _this.nextMonth();
+      });
     });
     nextButtonContainer.appendChild(this.nextMonthButton);
     this.nextYearButton = document.createElement('div');
@@ -274,10 +288,12 @@ class DatePicker {
     nextYearButtonIcon.classList.add('fa');
     nextYearButtonIcon.classList.add('fa-forward');
     this.nextYearButton.appendChild(nextYearButtonIcon);
-    this.nextYearButton.addEventListener('click', function (e) {
-      e.preventDefault();
+    MOUSE_EVENTS.forEach((event) => {
+      this.nextYearButton.addEventListener('click', function (e) {
+        e.preventDefault();
 
-      _this.nextYear();
+        _this.nextYear();
+      });
     });
     nextButtonContainer.appendChild(this.nextYearButton);
 
