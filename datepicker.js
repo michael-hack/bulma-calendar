@@ -82,7 +82,7 @@ var datepicker_langs = {
   }
 }
 
-class DatePicker {
+export default class DatePicker {
   constructor(selector, options = {}) {
     // Determine click event depending on if we are on Touch device or not
     this._clickEvent = ('ontouchstart' in window) ? 'touchstart' : 'click';
