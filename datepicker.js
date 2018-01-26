@@ -145,12 +145,14 @@ class DatePicker {
 
     var modalClose = document.createElement('button');
     modalClose.className = 'modal-close';
+    function removeModal(e) {
+      e.preventDefault();
+      _this.datePickerContainer.classList.remove('is-active');
+    }
+    
     MOUSE_EVENTS.forEach((event) => {
-      modalClose.addEventListener(event, function(e) {
-        e.preventDefault();
-
-        _this.datePickerContainer.classList.remove('is-active');
-      });
+      modalClose.addEventListener(event, removeModal);
+      datePickerOverlay.addEventListener(event, removeModal);
     });
 
     this.datePickerContainer.appendChild(this.calendarContainer);
