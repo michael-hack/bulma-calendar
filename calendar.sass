@@ -24,6 +24,7 @@ $calendar-date-padding: .4rem 0 !default
 
 =calendar
   .calendar
+    position: fixed
     z-index: 40
     background: $white
     border: $calendar-border
@@ -134,9 +135,9 @@ $calendar-date-padding: .4rem 0 !default
         right: 0
         top: 50%
         transform: translateY(-50%)
-      &.range-start::before
+      &.calendar-range-start::before
         left: 50%
-      &.range-end::before
+      &.calendar-range-end::before
         right: 50%
       .date-item
         color: $primary
@@ -163,10 +164,10 @@ $calendar-date-padding: .4rem 0 !default
       .calendar-range
         &::before
           top: 1.9rem
-        &.range-start::before
+        &.calendar-range-start::before
           left: auto
           width: 1.9rem
-        &.range-end::before
+        &.calendar-range-end::before
           right: 1.9rem
       .calendar-events
         flex-grow: 1

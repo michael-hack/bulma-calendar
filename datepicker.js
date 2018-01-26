@@ -82,28 +82,10 @@ var datepicker_langs = {
   }
 }
 
-const MOUSE_EVENTS = ['click', 'touchstart'];
-
 class DatePicker {
-  constructor(selector, options) {
-    if (!options) options = {}
-
-    var defaultOptions = {
-      startDate: new Date(),
-      // the default data format `field` value
-      dataFormat: 'yyyy/mm/dd',
-      // internationalization
-      lang: 'en',
-      overlay: false,
-      closeOnSelect: true,
-      // callback function
-      onSelect: null,
-      onOpen: null,
-      onClose: null,
-      onRender: null
-    };
-
-    this._clickEvent = ('ontouchstart' in window) ? 'click' : 'touchstart';
+  constructor(selector, options = {}) {
+    // Determine click event depending on if we are on Touch device or not
+    this._clickEvent = ('ontouchstart' in window) ? 'touchstart' : 'click';
 
     this.element = typeof selector === 'string' ? document.querySelector(selector) : selector;
     // An invalid selector or non-DOM node has been provided.
@@ -111,73 +93,204 @@ class DatePicker {
       throw new Error('An invalid selector or non-DOM node has been provided.');
     }
 
-    this.parent = this.element.parentElement;
+    /// Set default options and merge with instance defined
+    this.options = Object.assign({}, {
+      startDate: new Date(),
+      dataFormat: 'yyyy/mm/dd', // the default data format `field` value
+      lang: 'en',               // internationalization
+      overlay: false,
+      closeOnOverlayClick: true,
+      closeOnSelect: true,
+      // callback functions
+      onSelect: null,
+      onOpen: null,
+      onClose: null,
+      onRender: null
+    }, options);
+
+    // Initiate plugin
+    this._init();
+  }
+
+  /**
+   * Initiate plugin instance
+   * @method _init
+   * @return {DatePicker} Current plugin instance
+   */
+  _init() {
+    // this.parent = this.element.parentElement;
+    this._id = 'datePicker' + ( new Date() ).getTime();
     this.lang = typeof datepicker_langs[this.lang] !== 'undefined' ? this.lang : 'en';
-
-    this.options = Object.assign({}, defaultOptions, options);
-
     this.month = this.options.startDate.getMonth(),
     this.year = this.options.startDate.getFullYear(),
     this.open = false;
 
-    this.build();
+    this._build();
+    this._bindEvents();
+
+    return this;
   }
 
-  build() {
+  /**
+   * Build DatePicker HTML component and append it to the DOM
+   * @method _build
+   * @return {DatePicker} Current plugin instance
+   */
+  _build() {
+    // Define DatePicker Template
+    const datePicker = `
+      <div id='${this._id}' class="datepicker ${this.options.overlay ? 'modal' : ''}">
+        ${this.options.overlay ? '<div class="modal-background"></div>' : ''}
+        <div class="calendar">
+          <div class="calendar-nav">
+            <div class="calendar-nav-previous-year">
+              <button class="button is-small is-text">
+                <i class="fa fa-chevron-left"></i>
+              </button>
+            </div>
+            <div class="calendar-nav-previous-month">
+              <button class="button is-small is-text">
+                <i class="fa fa-chevron-left"></i>
+              </button>
+            </div>
+            <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month] + ' ' + this.year}</div>
+            <div class="calendar-nav-next-month">
+              <button class="button is-small is-text">
+                <i class="fa fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="calendar-nav-next-year">
+              <button class="button is-small is-text">
+                <i class="fa fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <div class="calendar-date">${this._getDayName(0, true)}</div>
+              <div class="calendar-date">${this._getDayName(1, true)}</div>
+              <div class="calendar-date">${this._getDayName(2, true)}</div>
+              <div class="calendar-date">${this._getDayName(3, true)}</div>
+              <div class="calendar-date">${this._getDayName(4, true)}</div>
+              <div class="calendar-date">${this._getDayName(5, true)}</div>
+              <div class="calendar-date">${this._getDayName(6, true)}</div>
+            </div>
+            <div class="calendar-body"></div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Add datepicker HTML element to Document Body
+    document.body.insertAdjacentHTML('beforeend', datePicker);
+
+    // Save pointer to each DatePicker element for later use
+    this.datePickerContainer = document.getElementById(this._id);
+    this.datePickerCalendar = this.datePickerContainer.querySelector('.calendar');
+    if (this.options.overlay) {
+      this.datePickerOverlay = this.datePickerContainer.querySelector('.modal-background');
+      this.datePickerCloseButton = this.datePickerContainer.querySelector('.modal-close');
+    }
+    this.datePickerCalendarNav = this.datePickerCalendar.querySelector('.calendar-nav');
+    this.datePickerCalendarNavMonth = this.datePickerCalendar.querySelector('.calendar-month');
+    this.datePickerCalendarNavPreviousMonth = this.datePickerCalendarNav.querySelector('.calendar-nav-previous-month');
+    this.datePickerCalendarNavNextMonth = this.datePickerCalendarNav.querySelector('.calendar-nav-next-month');
+    this.datePickerCalendarNavPreviousYear = this.datePickerCalendarNav.querySelector('.calendar-nav-previous-year');
+    this.datePickerCalendarNavNextYear = this.datePickerCalendarNav.querySelector('.calendar-nav-next-year');
+    this.datePickerCalendarHeader = this.datePickerCalendar.querySelector('.calendar-header');
+    this.datePickerCalendarBody = this.datePickerCalendar.querySelector('.calendar-body');
+    this._renderDays();
+  }
+
+  /**
+   * Bind all events
+   * @method _bindEvents
+   * @return {void}
+   */
+  _bindEvents() {
     var _this = this;
 
-    this.datePickerContainer = document.createElement('div');
-    this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
-    if (this.options.overlay) {
-      this.datePickerContainer.classList.add('modal');
-    }
-    this.datePickerContainer.classList.add('datepicker');
-
-    this.calendarContainer = document.createElement('div');
-    this.calendarContainer.id = 'datePicker' + ( new Date ).getTime();
-    this.calendarContainer.classList.add('calendar');
-    this.renderCalendar();
-
-    if (this.options.overlay) {
-      var datePickerOverlay = document.createElement('div');
-      datePickerOverlay.classList.add('modal-background');
-      datePickerOverlay.addEventListener(this._clickEvent, function(e) {
-        e.preventDefault();
-
-        _this.hide();
-      });
-      this.datePickerContainer.appendChild(datePickerOverlay);
-    }
-
-    var modalClose = document.createElement('button');
-    modalClose.className = 'modal-close';
-    modalClose.addEventListener(this._clickEvent, function(e) {
-      e.preventDefault();
-
-      _this.hide();
-    });
-
-    this.datePickerContainer.appendChild(this.calendarContainer);
-    this.datePickerContainer.appendChild(modalClose);
-    document.body.appendChild(this.datePickerContainer);
-
+    // Bind event to element in order to display/hide DatePicker on click
     this.element.addEventListener(this._clickEvent, function (e) {
       e.preventDefault();
 
       if (_this.open) {
         _this.hide();
-        _this.open = false;
       } else {
         _this.show();
-        _this.open = true;
       }
+    });
+
+    if (this.options.overlay) {
+      // Bind close event on Close button
+      if (this.datePickerCloseButton) {
+        this.datePickerCloseButton.addEventListener(this._clickEvent, function(e) {
+          e.preventDefault();
+          _this.hide();
+        });
+      }
+      // Bind close event on overlay based on options
+      if (this.options.closeOnOverlayClick) {
+        this.datePickerOverlay.addEventListener(this._clickEvent, function(e) {
+          e.preventDefault();
+          _this.hide();
+        });
+      }
+    }
+
+    // Bind year navigation events
+    this.datePickerCalendarNavPreviousYear.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
+      _this.prevYear();
+    });
+    this.datePickerCalendarNavNextYear.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
+      _this.nextYear();
+    });
+
+    // Bind month navigation events
+    this.datePickerCalendarNavPreviousMonth.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
+      _this.prevMonth();
+    });
+    this.datePickerCalendarNavNextMonth.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
+      _this.nextMonth();
     });
   }
 
   /**
-   * templating functions to abstract HTML rendering
+   * Bind events on each Day item
+   * @method _bindDaysEvents
+   * @return {void}
    */
-  renderDayName(day, abbr = false) {
+  _bindDaysEvents() {
+    var _this = this;
+    [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
+      calendarDay.addEventListener(this._clickEvent, function(e) {
+        e.preventDefault();
+        if (typeof _this.options.onSelect != 'undefined' &&
+          _this.options.onSelect != null &&
+          _this.options.onSelect) {
+          _this.options.onSelect(new Date(year, month, day));
+        }
+        let date = this.dataset.date.split('/');
+        _this.element.value = _this.getFormatedDate(( new Date(date[0], date[1], date[2]) ), _this.options.dataFormat);
+        if (_this.options.closeOnSelect) {
+          _this.hide();
+        }
+      });
+    });
+  }
+
+  /**
+   * Get localized day name
+   * @method renderDayName
+   * @param  {[type]}      day          [description]
+   * @param  {Boolean}     [abbr=false] [description]
+   * @return {[type]}                   [description]
+   */
+  _getDayName(day, abbr = false) {
     day += datepicker_langs[this.options.lang].weekStart;
     while (day >= 7) {
       day -= 7;
@@ -186,166 +299,29 @@ class DatePicker {
     return abbr ? datepicker_langs[this.options.lang].weekdaysShort[day] : datepicker_langs[this.options.lang].weekdays[day];
   }
 
-  renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
-    var _this = this;
-    var newDayContainer = document.createElement('div');
-    var newDayButton = document.createElement('button');
-
-    newDayButton.classList.add('date-item');
-    newDayButton.innerHTML = day;
-    newDayButton.addEventListener(this._clickEvent, function (e) {
-      if (typeof _this.options.onSelect != 'undefined' &&
-        _this.options.onSelect != null &&
-        _this.options.onSelect) {
-        _this.options.onSelect(new Date(year, month, day));
-      }
-      _this.element.value = _this.getFormatedDate(( new Date(year, month, day) ), _this.options.dataFormat);
-      if (_this.options.closeOnSelect) {
-        _this.hide();
-      }
-    });
-
-    newDayContainer.classList.add('calendar-date');
-    newDayContainer.appendChild(newDayButton);
-
-    if (isDisabled) {
-      newDayContainer.setAttribute('disabled', 'disabled');
-    }
-    if (isToday) {
-      newDayContainer.classList.add('is-today');
-    }
-    if (isSelected) {
-      newDayContainer.classList.add('is-active');
-    }
-    if (isBetween) {
-      newDayContainer.classList.add('calendar-range');
-    }
-    if (isSelectedIn) {
-      newDayContainer.classList.add('range-start');
-    }
-    if (isSelectedOut) {
-      newDayContainer.classList.add('range-end');
-    }
-
-    return newDayContainer;
+  _renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
+    return `
+      <div data-date="${`${year}/${month}/${day}`}" class="calendar-date${isDisabled ? ' is-disabled' : ''}${isBetween ? ' calendar-range' : ''}${isSelectedIn ? ' calendar-range-start' : ''}${isSelectedOut ? ' calendar-range-end' : ''}">
+        <button class="date-item${isToday ? ' is-today' : ''}${isSelected ? ' is-active' : ''}">${day}</button>
+      </div>
+    `;
   }
 
-  renderNav(year, month) {
-    var _this = this;
-    var calendarNav = document.createElement('div');
-    calendarNav.classList.add('calendar-nav');
+  _renderDays() {
+    const now = new Date();
+    let days = '';
 
-    var previousButtonContainer = document.createElement('div');
-    previousButtonContainer.classList.add('calendar-nav-left');
-    this.previousYearButton = document.createElement('div');
-    this.previousYearButton.classList.add('button');
-    this.previousYearButton.classList.add('is-text');
-    var previousButtonIcon = document.createElement('i');
-    previousButtonIcon.classList.add('fa');
-    previousButtonIcon.classList.add('fa-backward');
-    this.previousYearButton.appendChild(previousButtonIcon);
-    this.previousYearButton.addEventListener(this._clickEvent, function (e) {
-      e.preventDefault();
-
-      _this.prevYear();
-    });
-    previousButtonContainer.appendChild(this.previousYearButton);
-
-    this.previousMonthButton = document.createElement('div');
-    this.previousMonthButton.classList.add('button');
-    this.previousMonthButton.classList.add('is-text');
-    var previousMonthButtonIcon = document.createElement('i');
-    previousMonthButtonIcon.classList.add('fa');
-    previousMonthButtonIcon.classList.add('fa-chevron-left');
-    this.previousMonthButton.appendChild(previousMonthButtonIcon);
-    this.previousMonthButton.addEventListener(this._clickEvent, function (e) {
-      e.preventDefault();
-
-      _this.prevMonth();
-    });
-    previousButtonContainer.appendChild(this.previousMonthButton);
-
-
-    var calendarTitle = document.createElement('div');
-    calendarTitle.innerHTML = datepicker_langs[this.options.lang].months[month] + ' ' + year;
-
-    var nextButtonContainer = document.createElement('div');
-    nextButtonContainer.classList.add('calendar-nav-right');
-    this.nextMonthButton = document.createElement('div');
-    this.nextMonthButton.classList.add('button');
-    this.nextMonthButton.classList.add('is-text');
-    var nextMonthButtonIcon = document.createElement('i');
-    nextMonthButtonIcon.classList.add('fa');
-    nextMonthButtonIcon.classList.add('fa-chevron-right');
-    this.nextMonthButton.appendChild(nextMonthButtonIcon);
-    this.nextMonthButton.addEventListener(this._clickEvent, function (e) {
-      e.preventDefault();
-
-      _this.nextMonth();
-    });
-    nextButtonContainer.appendChild(this.nextMonthButton);
-    this.nextYearButton = document.createElement('div');
-    this.nextYearButton.classList.add('button');
-    this.nextYearButton.classList.add('is-text');
-    var nextYearButtonIcon = document.createElement('i');
-    nextYearButtonIcon.classList.add('fa');
-    nextYearButtonIcon.classList.add('fa-forward');
-    this.nextYearButton.appendChild(nextYearButtonIcon);
-    this.nextYearButton.addEventListener(this._clickEvent, function (e) {
-      e.preventDefault();
-
-      _this.nextYear();
-    });
-    nextButtonContainer.appendChild(this.nextYearButton);
-
-    calendarNav.appendChild(previousButtonContainer);
-    calendarNav.appendChild(calendarTitle);
-    calendarNav.appendChild(nextButtonContainer);
-
-    return calendarNav;
-  }
-
-  renderHeader() {
-    var calendarHeader = document.createElement('div');
-    calendarHeader.classList.add('calendar-header');
-
-    for (var i = 0; i < 7; i++) {
-      var newDay = document.createElement('div');
-      newDay.classList.add('calendar-date');
-      newDay.innerHTML = this.renderDayName(i, true);
-      calendarHeader.appendChild(newDay);
-    }
-
-    return calendarHeader;
-  }
-
-  renderBody() {
-    var calendarBody = document.createElement('div');
-    calendarBody.classList.add('calendar-body');
-
-    return calendarBody;
-  }
-
-  renderCalendar() {
-    var now = new Date();
-
-    var calendarNav = this.renderNav(this.year, this.month);
-    var calendarHeader = this.renderHeader();
-    var calendarBody = this.renderBody();
-
-    this.calendarContainer.appendChild(calendarNav);
-    this.calendarContainer.appendChild(calendarHeader);
-    this.calendarContainer.appendChild(calendarBody);
-
-    var days = this.getDaysInMonth(this.year, this.month),
+    let numberOfDays = this.getDaysInMonth(this.year, this.month),
       before = new Date(this.year, this.month, 1).getDay();
 
+    // Call onRender callback if defined
     if (typeof this.options.onRender != 'undefined' &&
       this.options.onRender != null &&
       this.options.onRender) {
       this.options.onRender(this);
     }
 
+    // Get start day from options
     if (datepicker_langs[this.options.lang].weekStart > 0) {
       before -= datepicker_langs[this.options.lang].weekStart;
       if (before < 0) {
@@ -353,7 +329,7 @@ class DatePicker {
       }
     }
 
-    var cells = days + before,
+    let cells = numberOfDays + before,
       after = cells;
     while (after > 7) {
       after -= 7;
@@ -366,8 +342,8 @@ class DatePicker {
         isSelected = false,
         isSelectedIn = false,
         isSelectedOut = false,
-        isToday = this.compareDates(day, now),
-        isEmpty = i < before || i >= ( days + before ),
+        isToday = this._compareDates(day, now),
+        isEmpty = i < before || i >= ( numberOfDays + before ),
         isDisabled = false;
 
       if (!isSelected) {
@@ -379,34 +355,63 @@ class DatePicker {
         isDisabled = true;
       }
 
-      calendarBody.appendChild(this.renderDay(day.getDate(), this.month, this.year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut));
+      days += this._renderDay(day.getDate(), this.month, this.year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
     }
+
+    this.datePickerCalendarBody.insertAdjacentHTML('beforeend', days);
+    this.datePickerCalendarDays = this.datePickerCalendarBody.querySelectorAll('.calendar-date');
+    this._bindDaysEvents();
   }
 
+  /**
+   * Navigate to the previous month and regenerate calendar
+   * @method prevMonth
+   * @return {void}
+   */
   prevMonth() {
     this.month -= 1;
     this.adjustCalendar();
-    this.renderCalendar();
+    this._renderDays();
   }
 
+  /**
+   * Navigate to the next month and regenerate calendar
+   * @method nextMonth
+   * @return {}
+   */
   nextMonth() {
     this.month += 1;
     this.adjustCalendar();
-    this.renderCalendar();
+    this._renderDays();
   }
 
+  /**
+   * Navigate to the previous year and regenerate calendar
+   * @method prevYear
+   * @return {void}
+   */
   prevYear() {
     this.year -= 1;
     this.adjustCalendar();
-    this.renderCalendar();
+    this._renderDays();
   }
 
+  /**
+   * Navigate to the previous year and regenerate calendar
+   * @method nextYear
+   * @return {}
+   */
   nextYear() {
     this.year += 1;
     this.adjustCalendar();
-    this.renderCalendar();
+    this._renderDays();
   }
 
+  /**
+   * Show DatePicker HTML Component
+   * @method show
+   * @return {void}
+   */
   show() {
     if (typeof this.options.onOpen != 'undefined' &&
       this.options.onOpen != null &&
@@ -420,6 +425,11 @@ class DatePicker {
     this.open = true;
   }
 
+  /**
+   * Hide DatePicker HTML Component
+   * @method hide
+   * @return {void}
+   */
   hide() {
     this.open = false;
     if (typeof this.options.onClose != 'undefined' &&
@@ -439,13 +449,19 @@ class DatePicker {
       this.year += Math.floor(Math.abs(this.month) / 12);
       this.month -= 12;
     }
-    this.calendarContainer.innerHTML = '';
+    this.datePickerCalendarNavMonth.innerHTML = datepicker_langs[this.options.lang].months[this.month] + ' ' + this.year;
+    this.datePickerCalendarBody.innerHTML = '';
     return this;
   }
 
+  /**
+   * Recalculate calendar position
+   * @method adjustPosition
+   * @return {void}
+   */
   adjustPosition() {
-    var width = this.calendarContainer.offsetWidth,
-      height = this.calendarContainer.offsetHeight,
+    var width = this.datePickerCalendar.offsetWidth,
+      height = this.datePickerCalendar.offsetHeight,
       viewportWidth = window.innerWidth || document.documentElement.clientWidth,
       viewportHeight = window.innerHeight || document.documentElement.clientHeight,
       scrollTop = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop,
@@ -464,18 +480,23 @@ class DatePicker {
       }
     }
 
-    this.calendarContainer.style.position = 'absolute';
-    this.calendarContainer.style.left = left + 'px';
-    this.calendarContainer.style.top = top + 'px';
+    this.datePickerCalendar.style.position = 'absolute';
+    this.datePickerCalendar.style.left = left + 'px';
+    this.datePickerCalendar.style.top = top + 'px';
   }
 
+  /**
+   * Destroy DatePicker
+   * @method destroy
+   * @return {[type]} [description]
+   */
   destroy() {
-    this.calendarContainer.remove();
+    this.datePickerCalendar.remove();
   }
 
   /**
    * Returns date according to passed format
-   *
+   * @method getFormatedDate
    * @param {Date}   dt     Date object
    * @param {String} format Format string
    *      d    - day of month
@@ -513,29 +534,57 @@ class DatePicker {
   }
 
   /**
-   * Returns true if date picker is visible now
-   *
+   * Returns true if DatePicker is active
+   * @method isActive
    * @returns {Boolean}
    */
   isActive() {
-    return this.calendarContainer.classList.contains('is-active');
+    return this.datePickerCalendar.classList.contains('is-active');
   }
 
+  /**
+   * Check if Object is a Date
+   * @method isDate
+   * @param  {Object}  obj Object to check
+   * @return {Boolean}     True if Object is a Date then False
+   */
   isDate(obj) {
     return ( /Date/ ).test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime());
   }
 
+  /**
+   * Check if given year is LeapYear or not
+   * @method isLeapYear
+   * @param  {Integer}   year Year to check
+   * @return {Boolean}        True if LeapYear then False
+   */
   isLeapYear(year) {
     // solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
     return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
   }
 
+  /**
+   * Get the number of days in month
+   * @method getDaysInMonth
+   * @param  {Integer}       year  Year to check if we are facing a leapyear or not
+   * @param  {Integer}       month Month for which we want to know the amount of days
+   * @return {Integer}              Days amount
+   */
   getDaysInMonth(year, month) {
     return [31, this.isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
   }
 
-  compareDates(a, b) {
-    // weak date comparison (use setToStartOfDay(date) to ensure correct result)
+  /**
+   * Compare two dates
+   * @method _compareDates
+   * @param  {Date}     a First date to compare
+   * @param  {Date}     b Second Date to compare with
+   * @return {Boolean}    True if dates are equal then false
+   */
+  _compareDates(a, b) {
+    // weak date comparison
+    a.setHours(0,0,0,0);
+    b.setHours(0,0,0,0);
     return a.getTime() === b.getTime();
   }
 }
