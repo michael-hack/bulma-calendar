@@ -70,6 +70,15 @@ var datepicker_langs = {
     monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'],
     weekdays: ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'],
     weekdaysShort: ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub']
+  },
+  'zh-cn': {
+    weekStart: 1,
+    previousMonth: '上个月',
+    nextMonth: '下个月',
+    months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    monthsShort: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    weekdays: ['星期天', '星期一','星期二','星期三','星期四','星期五','星期六'],
+    weekdaysShort: ['周日', '周一','周二','周三','周四','周五','周六']
   }
 }
 
