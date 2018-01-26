@@ -82,7 +82,7 @@ var datepicker_langs = {
   }
 }
 
-export default class DatePicker {
+class DatePicker {
   constructor(selector, options = {}) {
     // Determine click event depending on if we are on Touch device or not
     this._clickEvent = ('ontouchstart' in window) ? 'touchstart' : 'click';
@@ -211,7 +211,7 @@ export default class DatePicker {
     var _this = this;
 
     // Bind event to element in order to display/hide DatePicker on click
-    this.element.addEventListener(this._clickEvent, function (e) {
+    this.element.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
 
       if (_this.open) {
@@ -224,14 +224,14 @@ export default class DatePicker {
     if (this.options.overlay) {
       // Bind close event on Close button
       if (this.datePickerCloseButton) {
-        this.datePickerCloseButton.addEventListener(this._clickEvent, function(e) {
+        this.datePickerCloseButton.addEventListener(this._clickEvent, (e) => {
           e.preventDefault();
           _this.hide();
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick) {
-        this.datePickerOverlay.addEventListener(this._clickEvent, function(e) {
+        this.datePickerOverlay.addEventListener(this._clickEvent, (e) => {
           e.preventDefault();
           _this.hide();
         });
@@ -239,21 +239,21 @@ export default class DatePicker {
     }
 
     // Bind year navigation events
-    this.datePickerCalendarNavPreviousYear.addEventListener(this._clickEvent, function (e) {
+    this.datePickerCalendarNavPreviousYear.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
       _this.prevYear();
     });
-    this.datePickerCalendarNavNextYear.addEventListener(this._clickEvent, function (e) {
+    this.datePickerCalendarNavNextYear.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
       _this.nextYear();
     });
 
     // Bind month navigation events
-    this.datePickerCalendarNavPreviousMonth.addEventListener(this._clickEvent, function (e) {
+    this.datePickerCalendarNavPreviousMonth.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
       _this.prevMonth();
     });
-    this.datePickerCalendarNavNextMonth.addEventListener(this._clickEvent, function (e) {
+    this.datePickerCalendarNavNextMonth.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
       _this.nextMonth();
     });
@@ -267,14 +267,14 @@ export default class DatePicker {
   _bindDaysEvents() {
     var _this = this;
     [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
-      calendarDay.addEventListener(this._clickEvent, function(e) {
+      calendarDay.addEventListener(this._clickEvent, (e) => {
         e.preventDefault();
         if (typeof _this.options.onSelect != 'undefined' &&
           _this.options.onSelect != null &&
           _this.options.onSelect) {
           _this.options.onSelect(new Date(year, month, day));
         }
-        let date = this.dataset.date.split('/');
+        let date = e.currentTarget.dataset.date.split('/');
         _this.element.value = _this.getFormatedDate(( new Date(date[0], date[1], date[2]) ), _this.options.dataFormat);
         if (_this.options.closeOnSelect) {
           _this.hide();
