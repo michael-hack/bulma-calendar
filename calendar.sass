@@ -24,8 +24,6 @@ $calendar-date-padding: .4rem 0 !default
 
 =calendar
   .calendar
-    position: fixed
-    z-index: 40
     background: $white
     border: $calendar-border
     border-radius: $calendar-border-radius
@@ -199,6 +197,8 @@ $calendar-date-padding: .4rem 0 !default
   &.is-active
     display: flex
     .calendar
+      position: fixed
+      z-index: 40
       min-width: 20rem
       max-width: 20rem
       position: relative
