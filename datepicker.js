@@ -103,6 +103,8 @@ class DatePicker {
       onRender: null
     };
 
+    this._clickEvent = ('ontouchstart' in window) ? 'click' : 'touchstart';
+
     this.element = typeof selector === 'string' ? document.querySelector(selector) : selector;
     // An invalid selector or non-DOM node has been provided.
     if (!this.element) {
@@ -113,7 +115,6 @@ class DatePicker {
     this.lang = typeof datepicker_langs[this.lang] !== 'undefined' ? this.lang : 'en';
 
     this.options = Object.assign({}, defaultOptions, options);
-
 
     this.month = this.options.startDate.getMonth(),
     this.year = this.options.startDate.getFullYear(),
@@ -140,35 +141,36 @@ class DatePicker {
     if (this.options.overlay) {
       var datePickerOverlay = document.createElement('div');
       datePickerOverlay.classList.add('modal-background');
+      datePickerOverlay.addEventListener(this._clickEvent, function(e) {
+        e.preventDefault();
+
+        _this.hide();
+      });
       this.datePickerContainer.appendChild(datePickerOverlay);
     }
 
     var modalClose = document.createElement('button');
     modalClose.className = 'modal-close';
-    MOUSE_EVENTS.forEach((event) => {
-      modalClose.addEventListener(event, function(e) {
-        e.preventDefault();
+    modalClose.addEventListener(this._clickEvent, function(e) {
+      e.preventDefault();
 
-        _this.datePickerContainer.classList.remove('is-active');
-      });
+      _this.hide();
     });
 
     this.datePickerContainer.appendChild(this.calendarContainer);
     this.datePickerContainer.appendChild(modalClose);
     document.body.appendChild(this.datePickerContainer);
 
-    MOUSE_EVENTS.forEach((event) => {
-      this.element.addEventListener(event, function (e) {
-        e.preventDefault();
+    this.element.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
 
-        if (_this.open) {
-          _this.hide();
-          _this.open = false;
-        } else {
-          _this.show();
-          _this.open = true;
-        }
-      });
+      if (_this.open) {
+        _this.hide();
+        _this.open = false;
+      } else {
+        _this.show();
+        _this.open = true;
+      }
     });
   }
 
@@ -191,18 +193,16 @@ class DatePicker {
 
     newDayButton.classList.add('date-item');
     newDayButton.innerHTML = day;
-    MOUSE_EVENTS.forEach((event) => {
-      newDayButton.addEventListener(event, function (e) {
-        if (typeof _this.options.onSelect != 'undefined' &&
-          _this.options.onSelect != null &&
-          _this.options.onSelect) {
-          _this.options.onSelect(new Date(year, month, day));
-        }
-        _this.element.value = _this.getFormatedDate(( new Date(year, month, day) ), _this.options.dataFormat);
-        if (_this.options.closeOnSelect) {
-          _this.hide();
-        }
-      });
+    newDayButton.addEventListener(this._clickEvent, function (e) {
+      if (typeof _this.options.onSelect != 'undefined' &&
+        _this.options.onSelect != null &&
+        _this.options.onSelect) {
+        _this.options.onSelect(new Date(year, month, day));
+      }
+      _this.element.value = _this.getFormatedDate(( new Date(year, month, day) ), _this.options.dataFormat);
+      if (_this.options.closeOnSelect) {
+        _this.hide();
+      }
     });
 
     newDayContainer.classList.add('calendar-date');
@@ -244,12 +244,10 @@ class DatePicker {
     previousButtonIcon.classList.add('fa');
     previousButtonIcon.classList.add('fa-backward');
     this.previousYearButton.appendChild(previousButtonIcon);
-    MOUSE_EVENTS.forEach((event) => {
-      this.previousYearButton.addEventListener(event, function (e) {
-        e.preventDefault();
+    this.previousYearButton.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
 
-        _this.prevYear();
-      });
+      _this.prevYear();
     });
     previousButtonContainer.appendChild(this.previousYearButton);
 
@@ -260,12 +258,10 @@ class DatePicker {
     previousMonthButtonIcon.classList.add('fa');
     previousMonthButtonIcon.classList.add('fa-chevron-left');
     this.previousMonthButton.appendChild(previousMonthButtonIcon);
-    MOUSE_EVENTS.forEach((event) => {
-      this.previousMonthButton.addEventListener(event, function (e) {
-        e.preventDefault();
+    this.previousMonthButton.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
 
-        _this.prevMonth();
-      });
+      _this.prevMonth();
     });
     previousButtonContainer.appendChild(this.previousMonthButton);
 
@@ -282,12 +278,10 @@ class DatePicker {
     nextMonthButtonIcon.classList.add('fa');
     nextMonthButtonIcon.classList.add('fa-chevron-right');
     this.nextMonthButton.appendChild(nextMonthButtonIcon);
-    MOUSE_EVENTS.forEach((event) => {
-      this.nextMonthButton.addEventListener(event, function (e) {
-        e.preventDefault();
+    this.nextMonthButton.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
 
-        _this.nextMonth();
-      });
+      _this.nextMonth();
     });
     nextButtonContainer.appendChild(this.nextMonthButton);
     this.nextYearButton = document.createElement('div');
@@ -297,12 +291,10 @@ class DatePicker {
     nextYearButtonIcon.classList.add('fa');
     nextYearButtonIcon.classList.add('fa-forward');
     this.nextYearButton.appendChild(nextYearButtonIcon);
-    MOUSE_EVENTS.forEach((event) => {
-      this.nextYearButton.addEventListener('click', function (e) {
-        e.preventDefault();
+    this.nextYearButton.addEventListener(this._clickEvent, function (e) {
+      e.preventDefault();
 
-        _this.nextYear();
-      });
+      _this.nextYear();
     });
     nextButtonContainer.appendChild(this.nextYearButton);
 
