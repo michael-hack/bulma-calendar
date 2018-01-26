@@ -118,9 +118,6 @@ class DatePicker {
 
     this.datePickerContainer = document.createElement('div');
     this.datePickerContainer.id = 'datePicker' + ( new Date ).getTime();
-    if (this.options.overlay) {
-      this.datePickerContainer.classList.add('modal');
-    }
     this.datePickerContainer.classList.add('datepicker');
 
     this.calendarContainer = document.createElement('div');
@@ -132,6 +129,7 @@ class DatePicker {
       var datePickerOverlay = document.createElement('div');
       datePickerOverlay.classList.add('modal-background');
       this.datePickerContainer.appendChild(datePickerOverlay);
+      this.datePickerContainer.classList.add('modal');
     }
 
     var modalClose = document.createElement('button');
@@ -540,3 +538,5 @@ class DatePicker {
     return a.getTime() === b.getTime();
   }
 }
+
+export default DatePicker;
