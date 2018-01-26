@@ -140,10 +140,10 @@ class DatePicker {
       e.preventDefault();
       _this.datePickerContainer.classList.remove('is-active');
     }
-    
+
     MOUSE_EVENTS.forEach((event) => {
       modalClose.addEventListener(event, removeModal);
-      datePickerOverlay.addEventListener(event, removeModal);
+      datePickerOverlay && datePickerOverlay.addEventListener(event, removeModal);
     });
 
     this.datePickerContainer.appendChild(this.calendarContainer);
