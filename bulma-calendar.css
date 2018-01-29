@@ -16,6 +16,8 @@
 }
 
 .datepicker.is-active .calendar {
+  position: fixed;
+  z-index: 40;
   min-width: 20rem;
   max-width: 20rem;
   position: relative;
@@ -47,7 +49,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 1.25rem;
-  padding: .5rem;
+  padding: 0.5em;
 }
 
 .datepicker .calendar .calendar-nav .calendar-nav-left, .datepicker .calendar .calendar-nav .calendar-nav-right {
@@ -80,7 +82,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: .2rem 0;
 }
 
 .datepicker .calendar .calendar-header .calendar-date, .datepicker .calendar .calendar-body .calendar-date {
@@ -89,19 +90,24 @@
 }
 
 .datepicker .calendar .calendar-header {
-  background: #00b89c;
+  padding: 1em 1em 0 1em;
+  background: transparent;
   color: #fff;
   font-size: 0.75rem;
 }
 
+.datepicker .calendar .calendar-header .calendar-date {
+  color: #b5b5b5;
+}
+
 .datepicker .calendar .calendar-body {
-  padding: 0;
+  padding: 0 1em 1em 1em;
   color: #7a7a7a;
 }
 
 .datepicker .calendar .calendar-date {
   border: 0;
-  padding: .4rem;
+  padding: 0.4rem 0;
 }
 
 .datepicker .calendar .calendar-date .date-item {
@@ -171,11 +177,11 @@
   transform: translateY(-50%);
 }
 
-.datepicker .calendar .calendar-range.range-start::before {
+.datepicker .calendar .calendar-range.calendar-range-start::before {
   left: 50%;
 }
 
-.datepicker .calendar .calendar-range.range-end::before {
+.datepicker .calendar .calendar-range.calendar-range-end::before {
   right: 50%;
 }
 
@@ -215,12 +221,12 @@
   top: 1.9rem;
 }
 
-.datepicker .calendar.is-large .calendar-range.range-start::before {
+.datepicker .calendar.is-large .calendar-range.calendar-range-start::before {
   left: auto;
   width: 1.9rem;
 }
 
-.datepicker .calendar.is-large .calendar-range.range-end::before {
+.datepicker .calendar.is-large .calendar-range.calendar-range-end::before {
   right: 1.9rem;
 }
 
@@ -320,7 +326,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 1.25rem;
-  padding: .5rem;
+  padding: 0.5em;
 }
 
 .calendar .calendar-nav .calendar-nav-left, .calendar .calendar-nav .calendar-nav-right {
@@ -353,7 +359,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: .2rem 0;
 }
 
 .calendar .calendar-header .calendar-date, .calendar .calendar-body .calendar-date {
@@ -362,19 +367,24 @@
 }
 
 .calendar .calendar-header {
-  background: #00b89c;
+  padding: 1em 1em 0 1em;
+  background: transparent;
   color: #fff;
   font-size: 0.75rem;
 }
 
+.calendar .calendar-header .calendar-date {
+  color: #b5b5b5;
+}
+
 .calendar .calendar-body {
-  padding: 0;
+  padding: 0 1em 1em 1em;
   color: #7a7a7a;
 }
 
 .calendar .calendar-date {
   border: 0;
-  padding: .4rem;
+  padding: 0.4rem 0;
 }
 
 .calendar .calendar-date .date-item {
@@ -444,11 +454,11 @@
   transform: translateY(-50%);
 }
 
-.calendar .calendar-range.range-start::before {
+.calendar .calendar-range.calendar-range-start::before {
   left: 50%;
 }
 
-.calendar .calendar-range.range-end::before {
+.calendar .calendar-range.calendar-range-end::before {
   right: 50%;
 }
 
@@ -488,12 +498,12 @@
   top: 1.9rem;
 }
 
-.calendar.is-large .calendar-range.range-start::before {
+.calendar.is-large .calendar-range.calendar-range-start::before {
   left: auto;
   width: 1.9rem;
 }
 
-.calendar.is-large .calendar-range.range-end::before {
+.calendar.is-large .calendar-range.calendar-range-end::before {
   right: 1.9rem;
 }
 
