@@ -80,7 +80,7 @@ var datepicker_langs = {
     weekdays: ['星期天', '星期一','星期二','星期三','星期四','星期五','星期六'],
     weekdaysShort: ['周日', '周一','周二','周三','周四','周五','周六']
   },
-  es: { 
+  es: {
     weekStart: 1,
     previousMonth: 'Mes anterior',
     nextMonth: 'Próximo mes',
@@ -127,11 +127,15 @@ class DatePicker {
    * @return {DatePicker} Current plugin instance
    */
   _init() {
-    // this.parent = this.element.parentElement;
-    this._id = 'datePicker' + ( new Date() ).getTime();
+    this._id = 'datePicker' + ( new Date() ).getTime() + Math.floor(Math.random() * Math.floor(9999));
     this.lang = typeof datepicker_langs[this.lang] !== 'undefined' ? this.lang : 'en';
-    this.month = this.options.startDate.getMonth(),
-    this.year = this.options.startDate.getFullYear(),
+    // Set the startDate to the input value
+    if (this.element.value) {
+      this.options.startDate = new Date(this.element.value);
+    }
+    this.month = this.options.startDate.getMonth();
+    this.year = this.options.startDate.getFullYear();
+    this.day = this.options.startDate.getDate();
     this.open = false;
 
     this._build();
@@ -152,26 +156,34 @@ class DatePicker {
         ${this.options.overlay ? '<div class="modal-background"></div>' : ''}
         <div class="calendar">
           <div class="calendar-nav">
-            <div class="calendar-nav-previous-year">
-              <button class="button is-small is-text">
-                <i class="fa fa-chevron-left"></i>
-              </button>
+            <div class="calendar-nav-month">
+              <div class="calendar-nav-previous-month">
+                <button class="button is-small is-text">
+                  <i class="fa fa-chevron-left"></i>
+                </button>
+              </div>
+              <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month]}</div>
+              <div class="calendar-nav-next-month">
+                <button class="button is-small is-text">
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </div>
             </div>
-            <div class="calendar-nav-previous-month">
-              <button class="button is-small is-text">
-                <i class="fa fa-chevron-left"></i>
-              </button>
+            <div class="calendar-nav-day">
+              <div class="calendar-day">${this.day}</div>
             </div>
-            <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month] + ' ' + this.year}</div>
-            <div class="calendar-nav-next-month">
-              <button class="button is-small is-text">
-                <i class="fa fa-chevron-right"></i>
-              </button>
-            </div>
-            <div class="calendar-nav-next-year">
-              <button class="button is-small is-text">
-                <i class="fa fa-chevron-right"></i>
-              </button>
+            <div class="calendar-nav-year">
+              <div class="calendar-nav-previous-year">
+                <button class="button is-small is-text">
+                  <i class="fa fa-chevron-left"></i>
+                </button>
+              </div>
+              <div class="calendar-year">${this.year}</div>
+              <div class="calendar-nav-next-year">
+                <button class="button is-small is-text">
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </div>
             </div>
           </div>
           <div class="calendar-container">
@@ -202,13 +214,14 @@ class DatePicker {
     }
     this.datePickerCalendarNav = this.datePickerCalendar.querySelector('.calendar-nav');
     this.datePickerCalendarNavMonth = this.datePickerCalendar.querySelector('.calendar-month');
+    this.datePickerCalendarNavYear = this.datePickerCalendar.querySelector('.calendar-year');
+    this.datePickerCalendarNavDay = this.datePickerCalendar.querySelector('.calendar-day');
     this.datePickerCalendarNavPreviousMonth = this.datePickerCalendarNav.querySelector('.calendar-nav-previous-month');
     this.datePickerCalendarNavNextMonth = this.datePickerCalendarNav.querySelector('.calendar-nav-next-month');
     this.datePickerCalendarNavPreviousYear = this.datePickerCalendarNav.querySelector('.calendar-nav-previous-year');
     this.datePickerCalendarNavNextYear = this.datePickerCalendarNav.querySelector('.calendar-nav-next-year');
     this.datePickerCalendarHeader = this.datePickerCalendar.querySelector('.calendar-header');
     this.datePickerCalendarBody = this.datePickerCalendar.querySelector('.calendar-body');
-    this._renderDays();
   }
 
   /**
@@ -217,16 +230,14 @@ class DatePicker {
    * @return {void}
    */
   _bindEvents() {
-    var _this = this;
-
     // Bind event to element in order to display/hide DatePicker on click
     this.element.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
 
-      if (_this.open) {
-        _this.hide();
+      if (this.open) {
+        this.hide();
       } else {
-        _this.show();
+        this.show();
       }
     });
 
@@ -235,14 +246,14 @@ class DatePicker {
       if (this.datePickerCloseButton) {
         this.datePickerCloseButton.addEventListener(this._clickEvent, (e) => {
           e.preventDefault();
-          _this.hide();
+          this.hide();
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick) {
         this.datePickerOverlay.addEventListener(this._clickEvent, (e) => {
           e.preventDefault();
-          _this.hide();
+          this.hide();
         });
       }
     }
@@ -250,21 +261,21 @@ class DatePicker {
     // Bind year navigation events
     this.datePickerCalendarNavPreviousYear.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
-      _this.prevYear();
+      this.prevYear();
     });
     this.datePickerCalendarNavNextYear.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
-      _this.nextYear();
+      this.nextYear();
     });
 
     // Bind month navigation events
     this.datePickerCalendarNavPreviousMonth.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
-      _this.prevMonth();
+      this.prevMonth();
     });
     this.datePickerCalendarNavNextMonth.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
-      _this.nextMonth();
+      this.nextMonth();
     });
   }
 
@@ -274,19 +285,18 @@ class DatePicker {
    * @return {void}
    */
   _bindDaysEvents() {
-    var _this = this;
     [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
       calendarDay.addEventListener(this._clickEvent, (e) => {
         e.preventDefault();
-        if (typeof _this.options.onSelect != 'undefined' &&
-          _this.options.onSelect != null &&
-          _this.options.onSelect) {
-          _this.options.onSelect(new Date(year, month, day));
+        if (typeof this.options.onSelect != 'undefined' &&
+          this.options.onSelect != null &&
+          this.options.onSelect) {
+          this.options.onSelect(new Date(year, month, day));
         }
         let date = e.currentTarget.dataset.date.split('/');
-        _this.element.value = _this.getFormatedDate(( new Date(date[0], date[1], date[2]) ), _this.options.dataFormat);
-        if (_this.options.closeOnSelect) {
-          _this.hide();
+        this.element.value = this.getFormatedDate(( new Date(date[0], date[1], date[2]) ), this.options.dataFormat);
+        if (this.options.closeOnSelect) {
+          this.hide();
         }
       });
     });
@@ -348,7 +358,7 @@ class DatePicker {
     for (var i = 0; i < cells; i++) {
       var day = new Date(this.year, this.month, 1 + ( i - before )),
         isBetween = false,
-        isSelected = false,
+        isSelected = this._compareDates(day, this.options.startDate),
         isSelectedIn = false,
         isSelectedOut = false,
         isToday = this._compareDates(day, now),
@@ -380,7 +390,6 @@ class DatePicker {
   prevMonth() {
     this.month -= 1;
     this.adjustCalendar();
-    this._renderDays();
   }
 
   /**
@@ -391,7 +400,6 @@ class DatePicker {
   nextMonth() {
     this.month += 1;
     this.adjustCalendar();
-    this._renderDays();
   }
 
   /**
@@ -402,7 +410,6 @@ class DatePicker {
   prevYear() {
     this.year -= 1;
     this.adjustCalendar();
-    this._renderDays();
   }
 
   /**
@@ -413,7 +420,6 @@ class DatePicker {
   nextYear() {
     this.year += 1;
     this.adjustCalendar();
-    this._renderDays();
   }
 
   /**
@@ -422,11 +428,21 @@ class DatePicker {
    * @return {void}
    */
   show() {
+    // Set the startDate to the input value
+    if (this.element.value) {
+      this.options.startDate = new Date(this.element.value);
+    }
+    this.month = this.options.startDate.getMonth();
+    this.year = this.options.startDate.getFullYear();
+    this.day = this.options.startDate.getDate();
+    this.adjustCalendar();
+
     if (typeof this.options.onOpen != 'undefined' &&
       this.options.onOpen != null &&
       this.options.onOpen) {
       this.options.onOpen(this);
     }
+
     this.datePickerContainer.classList.add('is-active');
     if (!this.options.overlay) {
       this.adjustPosition();
@@ -458,8 +474,11 @@ class DatePicker {
       this.year += Math.floor(Math.abs(this.month) / 12);
       this.month -= 12;
     }
-    this.datePickerCalendarNavMonth.innerHTML = datepicker_langs[this.options.lang].months[this.month] + ' ' + this.year;
+    this.datePickerCalendarNavMonth.innerHTML = datepicker_langs[this.options.lang].months[this.month];
+    this.datePickerCalendarNavYear.innerHTML = this.year;
+    this.datePickerCalendarNavDay.innerHTML = this.day;
     this.datePickerCalendarBody.innerHTML = '';
+    this._renderDays();
     return this;
   }
 

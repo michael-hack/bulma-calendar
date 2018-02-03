@@ -34,7 +34,6 @@ $calendar-date-padding: .4rem 0 !default
     &.is-active
       display: initial
     .calendar-nav
-      align-items: center
       background: $calendar-header-background-color
       color: $white
       border-top-left-radius: $radius-small
@@ -44,7 +43,22 @@ $calendar-date-padding: .4rem 0 !default
       justify-content: space-between
       font-size: $size-5
       padding: $calendar-header-nav-padding
-      .calendar-nav-left, .calendar-nav-right
+      .calendar-nav-month,
+      .calendar-nav-day,
+      .calendar-nav-year
+        width: 100%
+        display: flex
+        justify-content: space-between
+      .calendar-month,
+      .calendar-day,
+      .calendar-year
+        flex: 1
+      .calendar-month
+        font-size: $size-4
+      .calendar-day
+        font-size: $size-2
+      .calendar-nav-previous-month, .calendar-nav-next-month,
+      .calendar-nav-previous-year, .calendar-nav-next-year,
         flex-basis: auto
         flex-grow: 0
         flex-shrink: 0
@@ -204,6 +218,8 @@ $calendar-date-padding: .4rem 0 !default
       position: relative
       margin: 0 auto
       max-height: calc(100vh - 40px)
+    .calendar-nav
+      flex-direction: column
   +calendar
 
 +calendar
