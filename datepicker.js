@@ -48,9 +48,9 @@ var datepicker_langs = {
     weekStart: 1,
     previousMonth: 'เดือนก่อนหน้า',
     nextMonth: 'เดือนถัดไป',
-    months: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-    monthsShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
-    weekdays: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+    months: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+    monthsShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+    weekdays: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
     weekdaysShort: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.']
   },
   hr: {
@@ -75,10 +75,10 @@ var datepicker_langs = {
     weekStart: 1,
     previousMonth: '上个月',
     nextMonth: '下个月',
-    months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-    monthsShort: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-    weekdays: ['星期天', '星期一','星期二','星期三','星期四','星期五','星期六'],
-    weekdaysShort: ['周日', '周一','周二','周三','周四','周五','周六']
+    months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+    weekdays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+    weekdaysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
   },
   es: {
     weekStart: 1,
@@ -105,8 +105,8 @@ class DatePicker {
     /// Set default options and merge with instance defined
     this.options = Object.assign({}, {
       startDate: new Date(),
-      dataFormat: 'yyyy/mm/dd', // the default data format `field` value
-      lang: 'en',               // internationalization
+      dateFormat: 'yyyy-mm-dd', // the default data format `field` value
+      lang: 'en', // internationalization
       overlay: false,
       closeOnOverlayClick: true,
       closeOnSelect: true,
@@ -127,12 +127,14 @@ class DatePicker {
    * @return {DatePicker} Current plugin instance
    */
   _init() {
-    this._id = 'datePicker' + ( new Date() ).getTime() + Math.floor(Math.random() * Math.floor(9999));
+    this._id = 'datePicker' + (new Date()).getTime() + Math.floor(Math.random() * Math.floor(9999));
     this.lang = typeof datepicker_langs[this.lang] !== 'undefined' ? this.lang : 'en';
     // Set the startDate to the input value
     if (this.element.value) {
       this.options.startDate = new Date(this.element.value);
     }
+    // Transform date format according to dateFormat option
+    this.options.startDate = new Date(this._getFormatedDate(this.options.startDate, this.options.dateFormat));
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
     this.day = this.options.startDate.getDate();
@@ -293,8 +295,8 @@ class DatePicker {
           this.options.onSelect) {
           this.options.onSelect(new Date(year, month, day));
         }
-        let date = e.currentTarget.dataset.date.split('/');
-        this.element.value = this.getFormatedDate(( new Date(date[0], date[1], date[2]) ), this.options.dataFormat);
+        let date = e.currentTarget.dataset.date.split('-');
+        this.element.value = this._getFormatedDate((new Date(date[0], date[1], date[2])), this.options.dateFormat);
         if (this.options.closeOnSelect) {
           this.hide();
         }
@@ -320,7 +322,7 @@ class DatePicker {
 
   _renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
     return `
-      <div data-date="${`${year}/${month}/${day}`}" class="calendar-date${isDisabled ? ' is-disabled' : ''}${isBetween ? ' calendar-range' : ''}${isSelectedIn ? ' calendar-range-start' : ''}${isSelectedOut ? ' calendar-range-end' : ''}">
+      <div data-date="${`${year}-${month}-${day}`}" class="calendar-date${isDisabled ? ' is-disabled' : ''}${isBetween ? ' calendar-range' : ''}${isSelectedIn ? ' calendar-range-start' : ''}${isSelectedOut ? ' calendar-range-end' : ''}">
         <button class="date-item${isToday ? ' is-today' : ''}${isSelected ? ' is-active' : ''}">${day}</button>
       </div>
     `;
@@ -330,7 +332,7 @@ class DatePicker {
     const now = new Date();
     let days = '';
 
-    let numberOfDays = this.getDaysInMonth(this.year, this.month),
+    let numberOfDays = this._getDaysInMonth(this.year, this.month),
       before = new Date(this.year, this.month, 1).getDay();
 
     // Call onRender callback if defined
@@ -356,13 +358,13 @@ class DatePicker {
 
     cells += 7 - after;
     for (var i = 0; i < cells; i++) {
-      var day = new Date(this.year, this.month, 1 + ( i - before )),
+      var day = new Date(this.year, this.month, 1 + (i - before)),
         isBetween = false,
         isSelected = this._compareDates(day, this.options.startDate),
         isSelectedIn = false,
         isSelectedOut = false,
         isToday = this._compareDates(day, now),
-        isEmpty = i < before || i >= ( numberOfDays + before ),
+        isEmpty = i < before || i >= (numberOfDays + before),
         isDisabled = false;
 
       if (!isSelected) {
@@ -389,7 +391,7 @@ class DatePicker {
    */
   prevMonth() {
     this.month -= 1;
-    this.adjustCalendar();
+    this._adjustCalendar();
   }
 
   /**
@@ -399,7 +401,7 @@ class DatePicker {
    */
   nextMonth() {
     this.month += 1;
-    this.adjustCalendar();
+    this._adjustCalendar();
   }
 
   /**
@@ -409,7 +411,7 @@ class DatePicker {
    */
   prevYear() {
     this.year -= 1;
-    this.adjustCalendar();
+    this._adjustCalendar();
   }
 
   /**
@@ -419,7 +421,7 @@ class DatePicker {
    */
   nextYear() {
     this.year += 1;
-    this.adjustCalendar();
+    this._adjustCalendar();
   }
 
   /**
@@ -435,7 +437,7 @@ class DatePicker {
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
     this.day = this.options.startDate.getDate();
-    this.adjustCalendar();
+    this._adjustCalendar();
 
     if (typeof this.options.onOpen != 'undefined' &&
       this.options.onOpen != null &&
@@ -445,7 +447,7 @@ class DatePicker {
 
     this.datePickerContainer.classList.add('is-active');
     if (!this.options.overlay) {
-      this.adjustPosition();
+      this._adjustPosition();
     }
     this.open = true;
   }
@@ -465,7 +467,7 @@ class DatePicker {
     this.datePickerContainer.classList.remove('is-active');
   }
 
-  adjustCalendar() {
+  _adjustCalendar() {
     if (this.month < 0) {
       this.year -= Math.ceil(Math.abs(this.month) / 12);
       this.month += 12;
@@ -484,10 +486,10 @@ class DatePicker {
 
   /**
    * Recalculate calendar position
-   * @method adjustPosition
+   * @method _adjustPosition
    * @return {void}
    */
-  adjustPosition() {
+  _adjustPosition() {
     var width = this.datePickerCalendar.offsetWidth,
       height = this.datePickerCalendar.offsetHeight,
       viewportWidth = window.innerWidth || document.documentElement.clientWidth,
@@ -502,7 +504,7 @@ class DatePicker {
     } else {
       left = this.element.offsetLeft;
       top = this.element.offsetTop + this.element.offsetHeight;
-      while (( this.element = this.element.offsetParent )) {
+      while ((this.element = this.element.offsetParent)) {
         left += this.element.offsetLeft;
         top += this.element.offsetTop;
       }
@@ -524,7 +526,7 @@ class DatePicker {
 
   /**
    * Returns date according to passed format
-   * @method getFormatedDate
+   * @method _getFormatedDate
    * @param {Date}   dt     Date object
    * @param {String} format Format string
    *      d    - day of month
@@ -537,7 +539,7 @@ class DatePicker {
    *      yy   - 2-digits year number
    *      yyyy - 4-digits year number
    */
-  getFormatedDate(dt, format) {
+  _getFormatedDate(dt, format) {
     var items = {
       d: dt.getDate(),
       dd: dt.getDate(),
@@ -550,56 +552,37 @@ class DatePicker {
       yyyy: dt.getFullYear()
     };
 
-    items.dd < 10 && ( items.dd = '0' + items.dd );
-    items.mm < 10 && ( items.mm = '0' + items.mm );
+    items.dd < 10 && (items.dd = '0' + items.dd);
+    items.mm < 10 && (items.mm = '0' + items.mm);
     items.D = datepicker_langs[this.options.lang].weekdays[items.D ? items.D - 1 : 6];
     items.M = datepicker_langs[this.options.lang].monthsShort[items.M];
     items.MM = datepicker_langs[this.options.lang].months[items.MM];
 
-    return format.replace(/(?:[dmM]{1,2}|D|yyyy|yy)/g, function (m) {
+    return format.replace(/(?:[dmM]{1,2}|D|yyyy|yy)/g, function(m) {
       return typeof items[m] !== 'undefined' ? items[m] : m;
     });
   }
 
   /**
-   * Returns true if DatePicker is active
-   * @method isActive
-   * @returns {Boolean}
-   */
-  isActive() {
-    return this.datePickerCalendar.classList.contains('is-active');
-  }
-
-  /**
-   * Check if Object is a Date
-   * @method isDate
-   * @param  {Object}  obj Object to check
-   * @return {Boolean}     True if Object is a Date then False
-   */
-  isDate(obj) {
-    return ( /Date/ ).test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime());
-  }
-
-  /**
    * Check if given year is LeapYear or not
-   * @method isLeapYear
+   * @method _isLeapYear
    * @param  {Integer}   year Year to check
    * @return {Boolean}        True if LeapYear then False
    */
-  isLeapYear(year) {
+  _isLeapYear(year) {
     // solution by Matti Virkkunen: http://stackoverflow.com/a/4881951
     return year % 4 === 0 && year % 100 !== 0 || year % 400 === 0;
   }
 
   /**
    * Get the number of days in month
-   * @method getDaysInMonth
+   * @method _getDaysInMonth
    * @param  {Integer}       year  Year to check if we are facing a leapyear or not
    * @param  {Integer}       month Month for which we want to know the amount of days
    * @return {Integer}              Days amount
    */
-  getDaysInMonth(year, month) {
-    return [31, this.isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+  _getDaysInMonth(year, month) {
+    return [31, this._isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
   }
 
   /**
@@ -611,8 +594,8 @@ class DatePicker {
    */
   _compareDates(a, b) {
     // weak date comparison
-    a.setHours(0,0,0,0);
-    b.setHours(0,0,0,0);
+    a.setHours(0, 0, 0, 0);
+    b.setHours(0, 0, 0, 0);
     return a.getTime() === b.getTime();
   }
 }
