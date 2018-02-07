@@ -23,11 +23,12 @@ var paths = {
   bulma: 'node_modules/bulma/sass/utilities/',
   jsPattern: '**/*.js'
 }
-var mainSassFile   = 'calendar.sass';
 var globalSassFile = 'bulma-calendar.sass';
 var bulmaSassFile  = '_all.sass';
-var mainCssFile    = 'bulma-calendar.min.css';
-var mainJsFile     = 'datepicker.min.js';
+var mainSassFile   = 'calendar.sass';
+var distCssFile    = 'bulma-calendar.min.css';
+var mainJsFile     = 'datepicker.js';
+var distJsFile     = 'datepicker.min.js';
 
 /**
  * ----------------------------------------
@@ -44,7 +45,7 @@ gulp.task('build:styles', ['build:styles:copy'], function() {
       style: 'compressed',
       includePaths: [paths.bulma]
     }))
-    .pipe(concat(mainCssFile))
+    .pipe(concat(distCssFile))
     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
     .pipe(cleancss())
     .pipe(gulp.dest(paths.dest));
@@ -54,12 +55,12 @@ gulp.task('build:styles', ['build:styles:copy'], function() {
 gulp.task('build:styles:copy', function() {
   return gulp.src(paths.src + mainSassFile)
     .pipe(gulp.dest(paths.dest));
-})
+});
 
 gulp.task('clean:styles', function(callback) {
   del([
     paths.dest + mainSassFile,
-    paths.dest + mainCssFile
+    paths.dest + distCssFile
   ]);
   callback();
 });
@@ -72,10 +73,10 @@ gulp.task('clean:styles', function(callback) {
 
 // Concatenates and uglifies global JS files and outputs result to the
 // appropriate location.
-gulp.task('build:scripts', function() {
+gulp.task('build:scripts', ['build:scripts:copy'], function() {
   return gulp
     .src([paths.src + paths.jsPattern])
-    .pipe(concat(mainJsFile))
+    .pipe(concat(distJsFile))
     .pipe(babel({
       "presets": [
         ["@babel/preset-env",  {
@@ -89,9 +90,16 @@ gulp.task('build:scripts', function() {
     .pipe(gulp.dest(paths.dest));
 });
 
+// Copy original sripts file to dist
+gulp.task('build:scripts:copy', function() {
+  return gulp.src(paths.src + mainJsFile)
+    .pipe(gulp.dest(paths.dest));
+});
+
 gulp.task('clean:scripts', function(callback) {
   del([
-    paths.dest + mainJsFile
+    paths.dest + mainJsFile,
+    paths.dest + distJsFile
   ]);
   callback();
 });
