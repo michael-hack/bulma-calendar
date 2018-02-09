@@ -1,3 +1,19 @@
+<a name="0.2.3"></a>
+## [0.2.3](https://github.com/Wikiki/bulma-calendar/compare/v0.2.2...v0.2.3) (2018-02-09)
+
+
+### Bug Fixes
+
+* **bower:** Add missing version ([9efdfef](https://github.com/Wikiki/bulma-calendar/commit/9efdfef))
+
+
+### Features
+
+* **gulp:** Add gulp dependencies ([7847bb0](https://github.com/Wikiki/bulma-calendar/commit/7847bb0))
+* **gulp:** Add release task ([dd39790](https://github.com/Wikiki/bulma-calendar/commit/dd39790))
+
+
+
 # Change Log
 
 ## [Unreleased](https://github.com/wikiki/bulma-calendar/tree/HEAD)
