@@ -1,9 +1,0 @@
-script:
- - ".travis/sass-compile-tester.sh"
-
-language: sass
-before_install:
-- gem install sass
-before_script:
-- chmod +x .travis/sass-compile-tester.sh
-- git clone https://github.com/jgthms/bulma.git
