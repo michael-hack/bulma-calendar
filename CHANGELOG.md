@@ -1,3 +1,20 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/Wikiki/bulma-calendar/compare/0.2.7...1.0.0) (2018-02-10)
+
+
+### Bug Fixes
+
+* **package:** js filename ([bdcee86](https://github.com/Wikiki/bulma-calendar/commit/bdcee86))
+
+
+### Features
+
+* **package:** Intergate Rollup for ES6 transpilation ([143be6d](https://github.com/Wikiki/bulma-calendar/commit/143be6d))
+* **polyfill:** Remove Object.assign polyfill ([da2db93](https://github.com/Wikiki/bulma-calendar/commit/da2db93))
+* **rollup:** Add Rollup use within gulp ([560b0d0](https://github.com/Wikiki/bulma-calendar/commit/560b0d0))
+
+
+
 <a name="0.2.7"></a>
 ## [0.2.7](https://github.com/Wikiki/bulma-calendar/compare/0.2.6...0.2.7) (2018-02-10)
 
