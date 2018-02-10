@@ -13,7 +13,7 @@ Bulma's extension to display a calendar. It can be used on page as large calenda
 ### Date format
 
 ```js
-date = new DatePicker(document.querySelector('.sr-date'), {
+date = new bulmaCalendar(document.querySelector('.sr-date'), {
   dataFormat: 'd MM yyyy' // 1 January 2018
 });
 ```
@@ -36,7 +36,7 @@ yyyy: full year (2018)
 
 ```js
 
-date = new DatePicker(document.querySelector('.sr-date'), {
+date = new bulmaCalendar(document.querySelector('.sr-date'), {
   lang: 'it' // one of: en (default), fr, de, tr, it, th
 });
 ```
@@ -49,7 +49,7 @@ Here's the options object and the default values as appears on code.
 var defaultOptions = {
   startDate: new Date(),
   // the default data format `field` value
-  dataFormat: 'yyyy/mm/dd',
+  dateFormat: 'yyyy/mm/dd',
   // internationalization
   lang: 'en',
   overlay: false,
