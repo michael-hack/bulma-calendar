@@ -327,7 +327,7 @@ export default class DatePicker {
           this.options.onSelect) {
           this.options.onSelect(new Date(year, month, day));
         }
-        this.element.value = this._getFormatedDate((new Date(date[0], date[1], date[2])), this.options.dateFormat);
+        this.element.value = this._getFormatedDate((new Date(year, month, day)), this.options.dateFormat);
         if (this.options.closeOnSelect) {
           this.hide();
         }
