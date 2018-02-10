@@ -1,3 +1,81 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/Wikiki/bulma-calendar/compare/0.2.7...1.0.0) (2018-02-10)
+
+
+### Bug Fixes
+
+* **package:** js filename ([bdcee86](https://github.com/Wikiki/bulma-calendar/commit/bdcee86))
+
+
+### Features
+
+* **package:** Intergate Rollup for ES6 transpilation ([143be6d](https://github.com/Wikiki/bulma-calendar/commit/143be6d))
+* **polyfill:** Remove Object.assign polyfill ([da2db93](https://github.com/Wikiki/bulma-calendar/commit/da2db93))
+* **rollup:** Add Rollup use within gulp ([560b0d0](https://github.com/Wikiki/bulma-calendar/commit/560b0d0))
+
+
+
+<a name="0.2.7"></a>
+## [0.2.7](https://github.com/Wikiki/bulma-calendar/compare/0.2.6...0.2.7) (2018-02-10)
+
+
+### Bug Fixes
+
+* **package:** js filename ([ff82bd2](https://github.com/Wikiki/bulma-calendar/commit/ff82bd2))
+
+
+
+<a name="0.2.6"></a>
+## [0.2.6](https://github.com/Wikiki/bulma-calendar/compare/0.2.5...0.2.6) (2018-02-10)
+
+
+
+<a name="0.2.5"></a>
+## [0.2.5](https://github.com/Wikiki/bulma-calendar/compare/0.2.4...0.2.5) (2018-02-10)
+
+
+### Bug Fixes
+
+* **es6:** Use destructuring variable ([6a30dcf](https://github.com/Wikiki/bulma-calendar/commit/6a30dcf))
+* **gulp:** Use UMD modules style ([ecd7b83](https://github.com/Wikiki/bulma-calendar/commit/ecd7b83))
+
+
+
+<a name="0.2.4"></a>
+## [0.2.4](https://github.com/Wikiki/bulma-calendar/compare/v0.2.2...v0.2.4) (2018-02-10)
+
+
+### Bug Fixes
+
+* **bower:** Add missing version ([9efdfef](https://github.com/Wikiki/bulma-calendar/commit/9efdfef))
+* **gulp:** Correct dist filenames ([54a3718](https://github.com/Wikiki/bulma-calendar/commit/54a3718))
+* **package:** Correct file paths ([cc4c33a](https://github.com/Wikiki/bulma-calendar/commit/cc4c33a))
+* **travis:** Remove configuration ([02800a3](https://github.com/Wikiki/bulma-calendar/commit/02800a3))
+
+
+### Features
+
+* **gulp:** Add gulp dependencies ([7847bb0](https://github.com/Wikiki/bulma-calendar/commit/7847bb0))
+* **gulp:** Add release task ([dd39790](https://github.com/Wikiki/bulma-calendar/commit/dd39790))
+
+
+
+<a name="0.2.3"></a>
+## [0.2.3](https://github.com/Wikiki/bulma-calendar/compare/v0.2.2...v0.2.3) (2018-02-09)
+
+
+### Bug Fixes
+
+* **bower:** Add missing version ([9efdfef](https://github.com/Wikiki/bulma-calendar/commit/9efdfef))
+
+
+### Features
+
+* **gulp:** Add gulp dependencies ([7847bb0](https://github.com/Wikiki/bulma-calendar/commit/7847bb0))
+* **gulp:** Add release task ([dd39790](https://github.com/Wikiki/bulma-calendar/commit/dd39790))
+
+
+
 # Change Log
 
 ## [Unreleased](https://github.com/wikiki/bulma-calendar/tree/HEAD)

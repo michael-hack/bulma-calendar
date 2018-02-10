@@ -100,37 +100,7 @@ var datepicker_langs = {
   }
 }
 
-if (typeof Object.assign != 'function') {
-  // Must be writable: true, enumerable: false, configurable: true
-  Object.defineProperty(Object, "assign", {
-    value: function assign(target, varArgs) { // .length of function is 2
-      'use strict';
-      if (target == null) { // TypeError if undefined or null
-        throw new TypeError('Cannot convert undefined or null to object');
-      }
-
-      var to = Object(target);
-
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
-
-        if (nextSource != null) { // Skip over if undefined or null
-          for (var nextKey in nextSource) {
-            // Avoid bugs when hasOwnProperty is shadowed
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    },
-    writable: true,
-    configurable: true
-  });
-}
-
-export default class DatePicker {
+class datePicker {
   constructor(selector, options = {}) {
     // Determine click event depending on if we are on Touch device or not
     this._clickEvent = ('ontouchstart' in window) ? 'touchstart' : 'click';
@@ -163,7 +133,7 @@ export default class DatePicker {
   /**
    * Initiate plugin instance
    * @method _init
-   * @return {DatePicker} Current plugin instance
+   * @return {datePicker} Current plugin instance
    */
   _init() {
     this._id = 'datePicker' + (new Date()).getTime() + Math.floor(Math.random() * Math.floor(9999));
@@ -186,12 +156,12 @@ export default class DatePicker {
   }
 
   /**
-   * Build DatePicker HTML component and append it to the DOM
+   * Build datePicker HTML component and append it to the DOM
    * @method _build
-   * @return {DatePicker} Current plugin instance
+   * @return {datePicker} Current plugin instance
    */
   _build() {
-    // Define DatePicker Template
+    // Define datePicker Template
     const datePicker = `
       <div id='${this._id}' class="datepicker ${this.options.overlay ? 'modal' : ''}">
         ${this.options.overlay ? '<div class="modal-background"></div>' : ''}
@@ -246,7 +216,7 @@ export default class DatePicker {
     // Add datepicker HTML element to Document Body
     document.body.insertAdjacentHTML('beforeend', datePicker);
 
-    // Save pointer to each DatePicker element for later use
+    // Save pointer to each datePicker element for later use
     this.datePickerContainer = document.getElementById(this._id);
     this.datePickerCalendar = this.datePickerContainer.querySelector('.calendar');
     if (this.options.overlay) {
@@ -271,7 +241,7 @@ export default class DatePicker {
    * @return {void}
    */
   _bindEvents() {
-    // Bind event to element in order to display/hide DatePicker on click
+    // Bind event to element in order to display/hide datePicker on click
     this.element.addEventListener(this._clickEvent, (e) => {
       e.preventDefault();
 
@@ -465,7 +435,7 @@ export default class DatePicker {
   }
 
   /**
-   * Show DatePicker HTML Component
+   * Show datePicker HTML Component
    * @method show
    * @return {void}
    */
@@ -493,7 +463,7 @@ export default class DatePicker {
   }
 
   /**
-   * Hide DatePicker HTML Component
+   * Hide datePicker HTML Component
    * @method hide
    * @return {void}
    */
@@ -556,7 +526,7 @@ export default class DatePicker {
   }
 
   /**
-   * Destroy DatePicker
+   * Destroy datePicker
    * @method destroy
    * @return {[type]} [description]
    */
@@ -639,3 +609,5 @@ export default class DatePicker {
     return a.getTime() === b.getTime();
   }
 }
+
+export default datePicker;
