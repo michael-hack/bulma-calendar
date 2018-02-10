@@ -49,8 +49,8 @@
   "files": [
     "dist/bulma-calendar.sass",
     "dist/bulma-calendar.min.css",
-    "dist/bulma-datepicker.js",
-    "dist/bulma-datepicker.min.js",
+    "dist/bulma-calendar.js",
+    "dist/bulma-calendar.min.js",
     "LICENSE",
     "README.md"
   ]
