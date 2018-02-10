@@ -320,12 +320,13 @@ export default class DatePicker {
     [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
       calendarDay.addEventListener(this._clickEvent, (e) => {
         e.preventDefault();
+        let date = e.currentTarget.dataset.date.split('-');
+        let [year, month, day] = date;
         if (typeof this.options.onSelect != 'undefined' &&
           this.options.onSelect != null &&
           this.options.onSelect) {
           this.options.onSelect(new Date(year, month, day));
         }
-        let date = e.currentTarget.dataset.date.split('-');
         this.element.value = this._getFormatedDate((new Date(date[0], date[1], date[2])), this.options.dateFormat);
         if (this.options.closeOnSelect) {
           this.hide();
