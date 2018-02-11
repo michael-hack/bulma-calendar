@@ -1,3 +1,8 @@
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/Wikiki/bulma-calendar/compare/1.0.2...1.0.3) (2018-02-11)
+
+
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/Wikiki/bulma-calendar/compare/1.0.1...1.0.2) (2018-02-11)
 
