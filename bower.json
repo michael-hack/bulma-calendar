@@ -2,7 +2,7 @@
   "name": "bulma-calendar",
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "calendar.sass",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Wikiki <wikiki@protonmail.com> (https://wikiki.github.io/bulma-extensions/overview)"
   ],

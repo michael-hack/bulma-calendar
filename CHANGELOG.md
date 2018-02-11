@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/Wikiki/bulma-calendar/compare/1.0.0...1.0.1) (2018-02-11)
+
+
+### Bug Fixes
+
+* **dist:** Remove Bulma’s imports ([8a3b785](https://github.com/Wikiki/bulma-calendar/commit/8a3b785))
+* **readme:** Fix JS plugin name ([2b0749d](https://github.com/Wikiki/bulma-calendar/commit/2b0749d))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/Wikiki/bulma-calendar/compare/0.2.7...1.0.0) (2018-02-10)
 
