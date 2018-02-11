@@ -140,10 +140,10 @@ class datePicker {
     this.lang = typeof datepicker_langs[this.lang] !== 'undefined' ? this.lang : 'en';
     // Set the startDate to the input value
     if (this.element.value) {
-      this.options.startDate = new Date(this.element.value);
+      this.options.startDate = this._parseDate(this.element.value);
     }
     // Transform date format according to dateFormat option
-    this.options.startDate = new Date(this._getFormatedDate(this.options.startDate, this.options.dateFormat));
+    this.options.startDate = this._parseDate(this._getFormatedDate(this.options.startDate, this.options.dateFormat));
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
     this.day = this.options.startDate.getDate();
@@ -442,7 +442,7 @@ class datePicker {
   show() {
     // Set the startDate to the input value
     if (this.element.value) {
-      this.options.startDate = new Date(this.element.value);
+      this.options.startDate = this._parseDate(this.element.value);
     }
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
@@ -571,6 +571,62 @@ class datePicker {
     return format.replace(/(?:[dmM]{1,2}|D|yyyy|yy)/g, function(m) {
       return typeof items[m] !== 'undefined' ? items[m] : m;
     });
+  }
+
+  _parseDate(dateString, format = undefined) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+
+    if (!format) {
+      format = this.options.dateFormat;
+    }
+
+    const formatPattern = /((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))/i;
+    const datePattern = /(\d+)[^0-9](\d+)[^0-9](\d+)/i;
+
+    let matchFormat = formatPattern.exec(format);
+    if (matchFormat) {
+      let matchDate = datePattern.exec(dateString);
+      if (matchDate) {
+        switch(matchFormat[1][0]) {
+          case 'd':
+            date.setDate(matchDate[1]);
+            break;
+          case 'm':
+            date.setMonth(matchDate[1] - 1);
+            break;
+          case 'y':
+            date.setFullYear(matchDate[1]);
+            break;
+        }
+
+        switch(matchFormat[2][0]) {
+          case 'd':
+            date.setDate(matchDate[2]);
+            break;
+          case 'm':
+            date.setMonth(matchDate[2] - 1);
+            break;
+          case 'y':
+            date.setFullYear(matchDate[2]);
+            break;
+        }
+
+        switch(matchFormat[3][0]) {
+          case 'd':
+            date.setDate(matchDate[3]);
+            break;
+          case 'm':
+            date.setMonth(matchDate[3] - 1);
+            break;
+          case 'y':
+            date.setFullYear(matchDate[3]);
+            break;
+        }
+      }
+    }
+
+    return date;
   }
 
   /**
