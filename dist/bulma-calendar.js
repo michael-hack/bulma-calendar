@@ -147,8 +147,16 @@ class datePicker {
     if (this.element.value) {
       this.options.startDate = this._parseDate(this.element.value);
     }
-    // Transform date format according to dateFormat option
+    // Transform start date according to dateFormat option
     this.options.startDate = this._parseDate(this._getFormatedDate(this.options.startDate, this.options.dateFormat));
+
+    if (this.options.minDate) {
+      this.options.minDate = this._parseDate(this._getFormatedDate(this.options.minDate, this.options.dateFormat));
+    }
+    if (this.options.maxDate) {
+      this.options.maxDate = this._parseDate(this._getFormatedDate(this.options.maxDate, this.options.dateFormat));
+    }
+
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
     this.day = this.options.startDate.getDate();

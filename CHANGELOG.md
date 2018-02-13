@@ -1,3 +1,13 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/Wikiki/bulma-calendar/compare/1.0.3...1.0.4) (2018-02-13)
+
+
+### Features
+
+* **MinMaxDate:** Add minDate maxDate options ([62a8ae2](https://github.com/Wikiki/bulma-calendar/commit/62a8ae2))
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/Wikiki/bulma-calendar/compare/1.0.2...1.0.3) (2018-02-11)
 
