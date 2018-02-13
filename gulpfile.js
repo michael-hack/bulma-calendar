@@ -53,11 +53,15 @@ var distJsFile     = package.name + '.min.js';
    return gulp.src([paths.bulma + bulmaSassFile, paths.src + mainSassFile])
      .pipe(concat(globalSassFile))
      .pipe(sass({
-       style: 'compressed',
-       includePaths: [paths.bulma]
+         style: 'compressed',
+         includePaths: [paths.bulma]
+       }).on('error', function(err) {
+       gutil.log(gutil.colors.red('[Error]'), err.toString())
      }))
      .pipe(concat(distCssFile))
-     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
+     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]).on('error', function(err) {
+       gutil.log(gutil.colors.red('[Error]'), err.toString())
+     }))
      .pipe(cleancss())
      .pipe(gulp.dest(paths.dest));
  });

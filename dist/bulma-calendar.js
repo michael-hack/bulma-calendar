@@ -117,6 +117,8 @@ class datePicker {
     /// Set default options and merge with instance defined
     this.options = Object.assign({}, {
       startDate: new Date(),
+      minDate: null,
+      maxDate: null,
       dateFormat: 'yyyy-mm-dd', // the default data format `field` value
       lang: 'en', // internationalization
       overlay: false,
@@ -171,33 +173,25 @@ class datePicker {
         <div class="calendar">
           <div class="calendar-nav">
             <div class="calendar-nav-month">
-              <div class="calendar-nav-previous-month">
-                <button class="button is-small is-text">
-                  <i class="fa fa-chevron-left"></i>
-                </button>
-              </div>
+              <button class="calendar-nav-previous-month button is-small is-text">
+                <i class="fa fa-chevron-left"></i>
+              </button>
               <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month]}</div>
-              <div class="calendar-nav-next-month">
-                <button class="button is-small is-text">
-                  <i class="fa fa-chevron-right"></i>
-                </button>
-              </div>
+              <button class="calendar-nav-next-month button is-small is-text">
+                <i class="fa fa-chevron-right"></i>
+              </button>
             </div>
             <div class="calendar-nav-day">
               <div class="calendar-day">${this.day}</div>
             </div>
             <div class="calendar-nav-year">
-              <div class="calendar-nav-previous-year">
-                <button class="button is-small is-text">
-                  <i class="fa fa-chevron-left"></i>
-                </button>
-              </div>
+              <button class="calendar-nav-previous-year button is-small is-text">
+                <i class="fa fa-chevron-left"></i>
+              </button>
               <div class="calendar-year">${this.year}</div>
-              <div class="calendar-nav-next-year">
-                <button class="button is-small is-text">
-                  <i class="fa fa-chevron-right"></i>
-                </button>
-              </div>
+              <button class="calendar-nav-next-year button is-small is-text">
+                <i class="fa fa-chevron-right"></i>
+              </button>
             </div>
           </div>
           <div class="calendar-container">
@@ -302,16 +296,18 @@ class datePicker {
     [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
       calendarDay.addEventListener(this._clickEvent, (e) => {
         e.preventDefault();
-        let date = e.currentTarget.dataset.date.split('-');
-        let [year, month, day] = date;
-        if (typeof this.options.onSelect != 'undefined' &&
-          this.options.onSelect != null &&
-          this.options.onSelect) {
-          this.options.onSelect(new Date(year, month, day));
-        }
-        this.element.value = this._getFormatedDate((new Date(year, month, day)), this.options.dateFormat);
-        if (this.options.closeOnSelect) {
-          this.hide();
+        if (!e.currentTarget.classList.contains('is-disabled')) {
+          let date = e.currentTarget.dataset.date.split('-');
+          let [year, month, day] = date;
+          if (typeof this.options.onSelect != 'undefined' &&
+            this.options.onSelect != null &&
+            this.options.onSelect) {
+            this.options.onSelect(new Date(year, month, day));
+          }
+          this.element.value = this._getFormatedDate((new Date(year, month, day)), this.options.dateFormat);
+          if (this.options.closeOnSelect) {
+            this.hide();
+          }
         }
       });
     });
@@ -380,12 +376,15 @@ class datePicker {
         isEmpty = i < before || i >= (numberOfDays + before),
         isDisabled = false;
 
+      day.setHours(0, 0, 0, 0);
+
       if (!isSelected) {
         isSelectedIn = false;
         isSelectedOut = false;
       }
 
-      if (day.getMonth() !== this.month) {
+      if (day.getMonth() !== this.month || (this.options.minDate &&
+        (day.getTime() < this.options.minDate.getTime() || day.getTime() > this.options.maxDate.getTime()))) {
         isDisabled = true;
       }
 
@@ -404,7 +403,15 @@ class datePicker {
    */
   prevMonth() {
     this.month -= 1;
-    this._adjustCalendar();
+    this._refreshCalendar();
+  }
+
+  _disablePrevMonth() {
+    this.datePickerCalendarNavPreviousMonth.setAttribute('disabled', 'disabled');
+  }
+
+  _enablePrevMonth() {
+    this.datePickerCalendarNavPreviousMonth.removeAttribute('disabled');
   }
 
   /**
@@ -414,7 +421,15 @@ class datePicker {
    */
   nextMonth() {
     this.month += 1;
-    this._adjustCalendar();
+    this._refreshCalendar();
+  }
+
+  _disableNextMonth() {
+    this.datePickerCalendarNavNextMonth.setAttribute('disabled', 'disabled');
+  }
+
+  _enableNextMonth() {
+    this.datePickerCalendarNavNextMonth.removeAttribute('disabled');
   }
 
   /**
@@ -424,7 +439,15 @@ class datePicker {
    */
   prevYear() {
     this.year -= 1;
-    this._adjustCalendar();
+    this._refreshCalendar();
+  }
+
+  _disablePrevYear() {
+    this.datePickerCalendarNavPreviousYear.setAttribute('disabled', 'disabled');
+  }
+
+  _enablePrevYear() {
+    this.datePickerCalendarNavPreviousYear.removeAttribute('disabled');
   }
 
   /**
@@ -434,7 +457,15 @@ class datePicker {
    */
   nextYear() {
     this.year += 1;
-    this._adjustCalendar();
+    this._refreshCalendar();
+  }
+
+  _disableNextYear() {
+    this.datePickerCalendarNavNextYear.setAttribute('disabled', 'disabled');
+  }
+
+  _enableNextYear() {
+    this.datePickerCalendarNavNextYear.removeAttribute('disabled');
   }
 
   /**
@@ -450,7 +481,7 @@ class datePicker {
     this.month = this.options.startDate.getMonth();
     this.year = this.options.startDate.getFullYear();
     this.day = this.options.startDate.getDate();
-    this._adjustCalendar();
+    this._refreshCalendar();
 
     if (typeof this.options.onOpen != 'undefined' &&
       this.options.onOpen != null &&
@@ -480,7 +511,12 @@ class datePicker {
     this.datePickerContainer.classList.remove('is-active');
   }
 
-  _adjustCalendar() {
+  /**
+   * Refresh calendar with new year/month days
+   * @method _refreshCalendar
+   * @return {[type]}        [description]
+   */
+  _refreshCalendar() {
     if (this.month < 0) {
       this.year -= Math.ceil(Math.abs(this.month) / 12);
       this.month += 12;
@@ -493,6 +529,45 @@ class datePicker {
     this.datePickerCalendarNavYear.innerHTML = this.year;
     this.datePickerCalendarNavDay.innerHTML = this.day;
     this.datePickerCalendarBody.innerHTML = '';
+
+    let minMonth = 0,
+      minYear = 0,
+      maxMonth = 12,
+      maxYear = 9999;
+
+    if (this.options.minDate) {
+      minMonth = this.options.minDate.getMonth();
+      minYear = this.options.minDate.getFullYear();
+    }
+    if (this.options.maxDate) {
+      maxMonth = this.options.maxDate.getMonth();
+      maxYear = this.options.maxDate.getFullYear();
+    }
+
+    if (this.year <= minYear) {
+      this._disablePrevYear();
+    } else {
+      this._enablePrevYear();
+    }
+
+    if (this.year >= maxYear) {
+      this._disableNextYear();
+    } else {
+      this._enableNextYear();
+    }
+
+    if (this.year <= minYear && this.month <= minMonth) {
+      this._disablePrevMonth();
+    } else {
+      this._enablePrevMonth();
+    }
+
+    if (this.year >= maxYear && this.month >= maxMonth) {
+      this._disableNextMonth();
+    } else {
+      this._enableNextMonth();
+    }
+
     this._renderDays();
     return this;
   }
@@ -576,6 +651,13 @@ class datePicker {
     });
   }
 
+  /**
+   * Parse Date string based on the Date Format given
+   * @method _parseDate
+   * @param  {String}   dateString          Date string to parse
+   * @param  {[String}   [format=undefined] Date Format
+   * @return {Date}                         Date Object initialized with Date String based on the Date Format
+   */
   _parseDate(dateString, format = undefined) {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
