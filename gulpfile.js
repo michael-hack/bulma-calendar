@@ -9,7 +9,6 @@ var camelCase                   = require('camelcase');
 var cleancss                    = require('gulp-clean-css');
 var concat                      = require('gulp-concat');
 var conventionalChangelog       = require('gulp-conventional-changelog');
-var conventionalGithubReleaser  = require('conventional-github-releaser');
 var del                         = require('del');
 var fs                          = require('fs');
 var git                         = require('gulp-git');
@@ -53,15 +52,11 @@ var distJsFile     = package.name + '.min.js';
    return gulp.src([paths.bulma + bulmaSassFile, paths.src + mainSassFile])
      .pipe(concat(globalSassFile))
      .pipe(sass({
-         style: 'compressed',
-         includePaths: [paths.bulma]
-       }).on('error', function(err) {
-       gutil.log(gutil.colors.red('[Error]'), err.toString())
+       style: 'compressed',
+       includePaths: [paths.bulma]
      }))
      .pipe(concat(distCssFile))
-     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]).on('error', function(err) {
-       gutil.log(gutil.colors.red('[Error]'), err.toString())
-     }))
+     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
      .pipe(cleancss())
      .pipe(gulp.dest(paths.dest));
  });
@@ -158,43 +153,32 @@ gulp.task('default', ['build']);
 
 /**
  * ----------------------------------------
- *  GENERATE CHANGELOG
+ *  GITHUB TASKS
  * ----------------------------------------
  */
-gulp.task('changelog', function () {
-  return gulp.src('CHANGELOG.md')
-    .pipe(conventionalChangelog({
-      preset: 'angular'
-    }))
-    .pipe(gulp.dest('./'));
+gulp.task('github:checkout:master', function (callback) {
+ git.checkout('master', {}, callback);
 });
 
-/**
- * ----------------------------------------
- *  GENERATE GITHUB RELEASE
- * ----------------------------------------
- */
-gulp.task('github:release', function(done) {
-  conventionalGithubReleaser({
-    type: "oauth",
-    token: process.env.GITHUB_TOKEN
-  }, {
-    preset: 'angular'
-  }, done);
+gulp.task('github:pull:master', ['github:checkout:master'], function(done) {
+  git.pull('origin', 'master', {}, done);
 });
 
-/**
- * ----------------------------------------
- *  UPDATE
- * ----------------------------------------
- */
-gulp.task('bump-version', function () {
-  return gulp.src(['./bower.json', './package.json'])
-    .pipe(bump({type: gutil.env.type ? gutil.env.type : 'patch' })
-    .on('error', gutil.log))
-    .pipe(gulp.dest('./'));
+gulp.task('github:checkout:source', ['github:pull:master'], function(done) {
+  if (gutil.env.b) {
+    git.checkout(gutil.env.b, {}, done);
+  } else {
+    git.checkout('develop', {}, done);
+  }
 });
 
+gulp.task('github:pull:source', ['github:checkout:source'], function(done) {
+  if (!gutil.env.b) {
+    git.pull('origin', 'develop', {args: '--ff-only'}, done);
+  } else {
+    done();
+  }
+});
 
 gulp.task('github:commit', function () {
   return gulp.src('.')
@@ -202,17 +186,49 @@ gulp.task('github:commit', function () {
     .pipe(git.commit('[Prerelease] Bumped version number'));
 });
 
-gulp.task('github:push', function (cb) {
-  git.push('origin', 'master', cb);
+gulp.task('github:checkout:develop', function (callback) {
+  git.checkout('develop', {}, callback);
 });
 
-gulp.task('github:create-new-tag', function (cb) {
+gulp.task('github:merge:master', function (callback) {
+  if (gutil.env.b) {
+    git.merge(gutil.env.b, {args: '--no-ff'}, callback);
+  } else {
+    git.merge('release/newRelease', {args: '--no-ff'}, callback);
+  }
+});
+
+gulp.task('github:merge:develop', function (callback) {
+  git.merge('master', {args: '--no-ff'}, callback);
+});
+
+gulp.task('github:branch:create', ['bump-version'], function(callback) {
+  if (!gutil.env.b) {
+    git.checkout('release/newRelease', {args: '-b'}, callback);
+  } else {
+    callback();
+  }
+});
+
+gulp.task('github:branch:delete', function (callback) {
+  if (gutil.env.b) {
+    git.branch(gutil.env.b, {args: '-d'}, callback);
+  } else {
+    git.branch('release/newRelease', {args: '-d'}, callback);
+  }
+});
+
+gulp.task('github:push', function (callback) {
+  git.push('origin', ['develop', 'master'], {args: " --tags"}, callback);
+});
+
+gulp.task('github:create-new-tag', function(callback) {
   var version = getPackageJsonVersion();
   git.tag(version, 'Created Tag for version: ' + version, function (error) {
     if (error) {
-      return cb(error);
+      return callback(error);
     }
-    git.push('origin', 'master', {args: '--tags'}, cb);
+    git.push('origin', 'master', {args: '--tags'}, callback);
   });
 
   function getPackageJsonVersion () {
@@ -222,19 +238,65 @@ gulp.task('github:create-new-tag', function (cb) {
   };
 });
 
-gulp.task('npm:publish', function (done) {
+gulp.task('github:commit', ['bump-version', 'changelog', 'github:branch:create'], function() {
+  var files = ['./package.json', './bower.json'].concat('./CHANGELOG.md');
+  return gulp.src(files)
+    .pipe(git.commit('bump version number ' + gutil.env.v));
+});
+
+/**
+ * ----------------------------------------
+ *  BUMP CODE VERSION
+ * ----------------------------------------
+ */
+gulp.task('bump-version', ['github:pull:source'], function () {
+  return gulp.src(['./bower.json', './package.json'])
+    .pipe(bump({type: gutil.env.type ? gutil.env.type : 'patch' })
+    .on('error', gutil.log))
+    .pipe(gulp.dest('./'));
+});
+
+/**
+ * ----------------------------------------
+ *  GENERATE CHANGELOG
+ * ----------------------------------------
+ */
+gulp.task('changelog', function () {
+  return gulp.src('CHANGELOG.md', {
+      buffer: false
+    })
+    .pipe(conventionalChangelog({
+      preset: 'angular'
+    }))
+    .pipe(gulp.dest('./'));
+});
+
+/**
+ * ----------------------------------------
+ *  PUBLISH ON NPM
+ * ----------------------------------------
+ */
+gulp.task('npm:publish', function(done) {
   spawn('npm', ['publish'], { stdio: 'inherit' }).on('close', done);
 });
 
-gulp.task('release', function (callback) {
+/**
+ * ----------------------------------------
+ *  GENERATE A NEW GITHUB RELEASE
+ *  FOLLOWING GIT-FLOW
+ * ----------------------------------------
+ */
+gulp.task('release', ['build'], function(callback) {
   runSequence(
-    'build',
-    'bump-version',
-    'changelog',
     'github:commit',
-    'github:push',
+    'github:checkout:master',
+    'github:merge:master',
     'github:create-new-tag',
-    'github:release',
+    'github:checkout:develop',
+    'github:merge:develop',
+    'github:branch:delete',
+    'github:push',
+    // 'github:release',
     'npm:publish',
     function (error) {
       if (error) {
