@@ -182,11 +182,14 @@ class datePicker {
           <div class="calendar-nav">
             <div class="calendar-nav-month">
               <button class="calendar-nav-previous-month button is-small is-text">
-                <i class="fa fa-chevron-left"></i>
+                <svg viewBox="0 0 50 80" xml:space="preserve">
+                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
+                </svg>
               </button>
               <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month]}</div>
               <button class="calendar-nav-next-month button is-small is-text">
-                <i class="fa fa-chevron-right"></i>
+                <svg viewBox="0 0 50 80" xml:space="preserve">
+                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
               </button>
             </div>
             <div class="calendar-nav-day">
@@ -194,11 +197,14 @@ class datePicker {
             </div>
             <div class="calendar-nav-year">
               <button class="calendar-nav-previous-year button is-small is-text">
-                <i class="fa fa-chevron-left"></i>
+                <svg viewBox="0 0 50 80" xml:space="preserve">
+                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
+                </svg>
               </button>
               <div class="calendar-year">${this.year}</div>
               <button class="calendar-nav-next-year button is-small is-text">
-                <i class="fa fa-chevron-right"></i>
+                <svg viewBox="0 0 50 80" xml:space="preserve">
+                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
               </button>
             </div>
           </div>
