@@ -1,6 +1,6 @@
 {
   "name": "bulma-calendar",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "dist/bulma-calendar.sass",
   "scripts": {
@@ -28,7 +28,6 @@
     "babel-core": "^7.0.0-beta.3",
     "bulma": "^0.6.2",
     "camelcase": "^4.1.0",
-    "conventional-github-releaser": "^2.0.0",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.1.0",
@@ -40,6 +39,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-conventional-changelog": "^1.1.11",
     "gulp-git": "^2.5.1",
+    "gulp-modular-release": "^0.5.3",
     "gulp-postcss": "^7.0.1",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.4",

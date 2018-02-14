@@ -49,6 +49,7 @@ $calendar-date-padding: .4rem 0 !default
         width: 100%
         display: flex
         justify-content: space-between
+        align-items: center
       .calendar-month,
       .calendar-day,
       .calendar-year
@@ -65,14 +66,11 @@ $calendar-date-padding: .4rem 0 !default
         text-decoration: none
         color: $white
         &:hover
-          background: transparent
-          color: $white-ter
-      .calendar-nav-left
-        align-items: center
-        justify-content: flex-start
-      .calendar-nav-right
-        align-items: center
-        justify-content: flex-end
+          background-color: transparent
+          svg
+            stroke-width: 1em
+        svg
+          stroke: currentColor
     .calendar-header, .calendar-body
       display: flex
       flex-wrap: wrap
