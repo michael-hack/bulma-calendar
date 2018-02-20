@@ -1,5 +1,8 @@
-var bulmaCalendar = (function () {
-'use strict';
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('bulmaCalendar', factory) :
+	(global.bulmaCalendar = factory());
+}(this, (function () { 'use strict';
 
 var datepicker_langs = {
   en: {
@@ -767,4 +770,4 @@ class datePicker {
 
 return datePicker;
 
-}());
+})));

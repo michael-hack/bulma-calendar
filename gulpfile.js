@@ -105,7 +105,7 @@ gulp.task('build:scripts', function() {
           ]
         })]
       }, {
-        format: gutil.env.jsFormat ? gutil.env.jsFormat : 'iife',
+        format: gutil.env.jsFormat ? gutil.env.jsFormat : 'umd',
         name: camelCase(package.name)
       }
     ))
