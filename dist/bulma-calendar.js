@@ -103,6 +103,33 @@ var datepicker_langs = {
     monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
     weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
     weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+  },
+  no: {
+    weekStart: 1,
+    previousMonth: 'Forrige måned',
+    nextMonth: 'Neste måned',
+    months: ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'],
+    monthsShort: ['jan', 'feb', 'mar', 'apr', 'mai', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'des'],
+    weekdays: ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'],
+    weekdaysShort: ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør']
+  },
+  se: {
+    weekStart: 1,
+    previousMonth: 'Förra månaden',
+    nextMonth: 'Nästa månad',
+    months: ['januari', 'februari', 'mars', 'april', 'maj', 'juni', 'juli', 'augusti', 'september', 'oktober', 'november', 'december'],
+    monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+    weekdays: ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'],
+    weekdaysShort: ['sön' ,'mån', 'tis', 'ons', 'tor', 'fre', 'lör']
+  },
+  dk: {
+    weekStart: 1,
+    previousMonth: 'Foregående måned',
+    nextMonth: 'Næste måned',
+    months: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'],
+    monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+    weekdays: ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'],
+    weekdaysShort: ['søn', 'man', 'tir', 'ons', 'tor', 'fre', 'lør']
   }
 };
 
