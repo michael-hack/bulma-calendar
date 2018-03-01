@@ -118,6 +118,7 @@ class datePicker {
       maxDate: null,
       dateFormat: 'yyyy-mm-dd', // the default data format `field` value
       lang: 'en', // internationalization
+      iconSet: 'fontawesome-5',
       overlay: false,
       closeOnOverlayClick: true,
       closeOnSelect: true,
@@ -179,14 +180,11 @@ class datePicker {
           <div class="calendar-nav">
             <div class="calendar-nav-month">
               <button class="calendar-nav-previous-month button is-small is-text">
-                <svg viewBox="0 0 50 80" xml:space="preserve">
-                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
-                </svg>
+                ${this._renderChevron()}
               </button>
               <div class="calendar-month">${datepicker_langs[this.options.lang].months[this.month]}</div>
               <button class="calendar-nav-next-month button is-small is-text">
-                <svg viewBox="0 0 50 80" xml:space="preserve">
-                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+                ${this._renderChevron('right')}
               </button>
             </div>
             <div class="calendar-nav-day">
@@ -194,14 +192,11 @@ class datePicker {
             </div>
             <div class="calendar-nav-year">
               <button class="calendar-nav-previous-year button is-small is-text">
-                <svg viewBox="0 0 50 80" xml:space="preserve">
-                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
-                </svg>
+                ${this._renderChevron()}
               </button>
               <div class="calendar-year">${this.year}</div>
               <button class="calendar-nav-next-year button is-small is-text">
-                <svg viewBox="0 0 50 80" xml:space="preserve">
-                  <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+                ${this._renderChevron('right')}
               </button>
             </div>
           </div>
@@ -405,6 +400,45 @@ class datePicker {
     this.datePickerCalendarBody.insertAdjacentHTML('beforeend', days);
     this.datePickerCalendarDays = this.datePickerCalendarBody.querySelectorAll('.calendar-date');
     this._bindDaysEvents();
+  }
+
+  _renderChevron(direction = 'left') {
+    let icon = ''
+    switch (this.options.iconSet) {
+      case "material-design":
+        icon = `<i class="mdi mdi-chevron-${direction}"></i>`
+        break;
+      case "open-iconic":
+        icon = `<span class="oi" data-glyph="chevron-${direction}"></span>`
+        break;
+      case "ionicons":
+        icon = `<i class="icon ion-chevron-${direction}"></i>`
+        break;
+      case "svg":
+        if (direction === 'right') {
+          icon = `<svg viewBox="0 0 50 80" xml:space="preserve">
+                    <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
+                  </svg>`
+        } else {
+          icon = `<svg viewBox="0 0 50 80" xml:space="preserve">
+                    <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+                  </svg>`
+        }
+        break;
+      case "fontawesome-4":
+        icon = `<i class="fa fa-chevron-${direction}"></i>`
+        break;
+      case "fontawesome-5-fal": // pro only
+        icon = `<i class="fal fa-chevron-${direction}"></i>`
+        break;
+      case "fontawesome-5-far": // pro only
+        icon = `<i class="far fa-chevron-${direction}"></i>`
+        break;
+      default: // defaults to FA5
+        icon = `<i class="fas fa-chevron-${direction}"></i>`
+        break;
+    }
+    return icon
   }
 
   /**
