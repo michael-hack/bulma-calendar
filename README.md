@@ -41,21 +41,6 @@ date = new bulmaCalendar(document.querySelector('.sr-date'), {
 });
 ```
 
-### Icon Set
-
-Supported icon sets are based on [Bulma's](https://bulma.io/documentation/elements/icon/) supported icons.
-
-**Current Options:**
-
-* material-design
-* open-iconic
-* ionicons
-* svg
-* fontawesome-4
-* fontawesome-5 `default`
-* fontawesome-5-fal ([pro](https://fontawesome.com/pro))
-* fontawesome-5-far ([pro](https://fontawesome.com/pro))
-
 ### Other options
 
 Here's the options object and the default values as appears on code.
@@ -67,7 +52,6 @@ var defaultOptions = {
   dateFormat: 'yyyy/mm/dd',
   // internationalization
   lang: 'en',
-  iconSet: 'fontawesome-5',
   overlay: false,
   closeOnSelect: true,
   // callback function
