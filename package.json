@@ -1,6 +1,6 @@
 {
   "name": "bulma-calendar",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "dist/bulma-calendar.sass",
   "scripts": {
