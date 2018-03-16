@@ -37,7 +37,7 @@ yyyy: full year (2018)
 ```js
 
 date = new bulmaCalendar(document.querySelector('.sr-date'), {
-  lang: 'it' // one of: en (default), fr, de, tr, it, th
+  lang: 'it' // one of: en (default), fr, de, tr, it, th, pt-BR
 });
 ```
 
