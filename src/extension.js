@@ -160,13 +160,13 @@ var datepicker_langs = {
   }
 }
 
-Element.prototype.addEventsListener = function(events, listene = void 0) {
+Element.prototype.addEventsListener = function(events, listener = void 0) {
   if (!Array.isArray(events)) {
     events =[events];
   }
 
   events.forEach(event => {
-    this.addEventListener(events[i], listener);
+    this.addEventListener(events, listener);
   });
 }
 
