@@ -326,7 +326,7 @@ class datePicker {
    */
   _bindEvents() {
     // Bind event to element in order to display/hide datePicker on click
-    this.element.addEventListener(this._clickEvent, (e) => {
+    this.element.addEventsListener(this._clickEvent, (e) => {
       e.preventDefault();
 
       if (this.open) {
@@ -339,14 +339,14 @@ class datePicker {
     if (this.options.overlay) {
       // Bind close event on Close button
       if (this.datePickerCloseButton) {
-        this.datePickerCloseButton.addEventListener(this._clickEvent, (e) => {
+        this.datePickerCloseButton.addEventsListener(this._clickEvent, (e) => {
           e.preventDefault();
           this.hide();
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick) {
-        this.datePickerOverlay.addEventListener(this._clickEvent, (e) => {
+        this.datePickerOverlay.addEventsListener(this._clickEvent, (e) => {
           e.preventDefault();
           this.hide();
         });
@@ -354,21 +354,21 @@ class datePicker {
     }
 
     // Bind year navigation events
-    this.datePickerCalendarNavPreviousYear.addEventListener(this._clickEvent, (e) => {
+    this.datePickerCalendarNavPreviousYear.addEventsListener(this._clickEvent, (e) => {
       e.preventDefault();
       this.prevYear();
     });
-    this.datePickerCalendarNavNextYear.addEventListener(this._clickEvent, (e) => {
+    this.datePickerCalendarNavNextYear.addEventsListener(this._clickEvent, (e) => {
       e.preventDefault();
       this.nextYear();
     });
 
     // Bind month navigation events
-    this.datePickerCalendarNavPreviousMonth.addEventListener(this._clickEvent, (e) => {
+    this.datePickerCalendarNavPreviousMonth.addEventsListener(this._clickEvent, (e) => {
       e.preventDefault();
       this.prevMonth();
     });
-    this.datePickerCalendarNavNextMonth.addEventListener(this._clickEvent, (e) => {
+    this.datePickerCalendarNavNextMonth.addEventsListener(this._clickEvent, (e) => {
       e.preventDefault();
       this.nextMonth();
     });
@@ -381,7 +381,7 @@ class datePicker {
    */
   _bindDaysEvents() {
     [].forEach.call(this.datePickerCalendarDays, (calendarDay) => {
-      calendarDay.addEventListener(this._clickEvent, (e) => {
+      calendarDay.addEventsListener(this._clickEvent, (e) => {
         e.preventDefault();
         if (!e.currentTarget.classList.contains('is-disabled')) {
           let date = e.currentTarget.dataset.date.split('-');
