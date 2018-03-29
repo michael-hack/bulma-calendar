@@ -157,6 +157,15 @@ var datepicker_langs = {
     monthsShort: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
     weekdays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
     weekdaysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  },
+  nl: {
+    weekStart: 1,
+    previousMonth: 'Vorige Maand',
+    nextMonth: 'Volgende Maand',
+    months: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+    monthsShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+    weekdays: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+    weekdaysShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za']
   }
 }
 
