@@ -103,6 +103,15 @@ var datepicker_langs = {
     weekdays: ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'],
     weekdaysShort: ['日', '月', '火', '水', '木', '金', '土']
   },
+  nl: {
+    weekStart: 1,
+    previousMonth: 'Vorige Maand',
+    nextMonth: 'Volgende Maand',
+    months: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+    monthsShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+    weekdays: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+    weekdaysShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za']
+  },
   pt: {
     weekStart: 1,
     months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -471,7 +480,7 @@ class datePicker {
       }
 
       if (day.getMonth() !== this.month || (this.options.minDate &&
-        (day.getTime() < this.options.minDate.getTime() || day.getTime() > this.options.maxDate.getTime()))) {
+        day.getTime() < this.options.minDate.getTime()) || (this.options.maxDate && day.getTime() > this.options.maxDate.getTime())) {
         isDisabled = true;
       }
 

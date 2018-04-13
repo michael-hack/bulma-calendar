@@ -474,7 +474,7 @@ class datePicker {
       }
 
       if (day.getMonth() !== this.month || (this.options.minDate &&
-        (day.getTime() < this.options.minDate.getTime() || day.getTime() > this.options.maxDate.getTime()))) {
+        day.getTime() < this.options.minDate.getTime()) || (this.options.maxDate && day.getTime() > this.options.maxDate.getTime())) {
         isDisabled = true;
       }
 
