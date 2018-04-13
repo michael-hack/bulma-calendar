@@ -18,6 +18,16 @@
 
 
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/Wikiki/bulma-calendar/compare/1.1.10...1.2.0) (2018-04-13)
+
+
+### Bug Fixes
+
+* issue [#43](https://github.com/Wikiki/bulma-calendar/issues/43) ([3abbec9](https://github.com/Wikiki/bulma-calendar/commit/3abbec9))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/Wikiki/bulma-calendar/compare/1.0.5...1.1.0) (2018-02-13)
 
