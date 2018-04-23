@@ -195,6 +195,7 @@ class datePicker {
       startDate: new Date(),
       minDate: null,
       maxDate: null,
+      disabledDates: null,
       dateFormat: 'yyyy-mm-dd', // the default data format `field` value
       lang: 'en', // internationalization
       overlay: false,
@@ -231,6 +232,12 @@ class datePicker {
     }
     if (this.options.maxDate) {
       this.options.maxDate = this._parseDate(this._getFormatedDate(this.options.maxDate, this.options.dateFormat));
+    }
+
+    if (this.options.disabledDates) {
+      for (var i=0; i < this.options.disabledDates.length; i++) {
+        this.options.disabledDates[i] = this._parseDate(this._getFormatedDate(new Date(this.options.disabledDates[i]), this.options.dateFormat));
+      }
     }
 
     this.month = this.options.startDate.getMonth();
@@ -476,6 +483,12 @@ class datePicker {
       if (day.getMonth() !== this.month || (this.options.minDate &&
         day.getTime() < this.options.minDate.getTime()) || (this.options.maxDate && day.getTime() > this.options.maxDate.getTime())) {
         isDisabled = true;
+      }
+
+      for (var j=0; j < this.options.disabledDates.length; j++) {
+        if (day.getTime() == this.options.disabledDates[j].getTime()) {
+          isDisabled = true;
+        }
       }
 
       days += this._renderDay(day.getDate(), this.month, this.year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
