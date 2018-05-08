@@ -87,9 +87,9 @@ gulp.task('clean:styles', function(callback) {
 gulp.task('build:scripts', function() {
   return gulp
     .src([paths.src + paths.jsPattern])
-    .pipe(sourcemaps.init({
-      loadMaps: true
-    }))
+    // .pipe(sourcemaps.init({
+    //   loadMaps: true
+    // }))
     .pipe(rollup({
         plugins: [babel({
           babelrc: false,
