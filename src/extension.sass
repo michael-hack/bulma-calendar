@@ -65,7 +65,7 @@ $calendar-date-padding: .4rem 0 !default
         flex-shrink: 0
         text-decoration: none
         color: $white
-        &:hover
+        &:hover, &:focus
           background-color: transparent
           svg
             stroke-width: 1em
@@ -116,7 +116,7 @@ $calendar-date-padding: .4rem 0 !default
           border-color: $calendar-today-border-color
           color: $calendar-today-color
         &:focus
-          background: $calendar-date-hover-background-color
+          background: transparent 
           border-color: $calendar-date-hover-background-color
           color: findColorInvert( $calendar-date-hover-background-color )
           text-decoration: none
