@@ -37,7 +37,7 @@ yyyy: full year (2018)
 ```js
 
 date = new bulmaCalendar(document.querySelector('.sr-date'), {
-  lang: 'it' // one of: en (default), fr, de, tr, it, th, pt-BR
+  lang: 'it' // one of: ar, bn, de, en (default), es, fa, fr, hi, hr, id, it, ja, nl, pt, pt-BR, ru, sr, th, tr, zh-cn
 });
 ```
 
@@ -49,10 +49,14 @@ Here's the options object and the default values as appears on code.
 var defaultOptions = {
   startDate: new Date(),
   // the default data format `field` value
+  minDate: null,
+  maxDate: null,
+  weekStart: null,
   dateFormat: 'yyyy/mm/dd',
   // internationalization
   lang: 'en',
   overlay: false,
+  closeOnOverlayClick: true,
   closeOnSelect: true,
   // callback function
   onSelect: null,   // callback(new Date(year, month, day))
