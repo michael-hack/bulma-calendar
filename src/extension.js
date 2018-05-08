@@ -195,6 +195,7 @@ class datePicker {
       startDate: new Date(),
       minDate: null,
       maxDate: null,
+      weekStart: null, // the default is the weekStart from the langs object
       dateFormat: 'yyyy-mm-dd', // the default data format `field` value
       lang: 'en', // internationalization
       overlay: false,
@@ -411,7 +412,8 @@ class datePicker {
    * @return {[type]}                   [description]
    */
   _getDayName(day, abbr = false) {
-    day += datepicker_langs[this.options.lang].weekStart;
+    // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
+    day += typeof this.options.weekStart != 'undefined' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : datepicker_langs[this.options.lang].weekStart;
     while (day >= 7) {
       day -= 7;
     }
@@ -442,8 +444,10 @@ class datePicker {
     }
 
     // Get start day from options
-    if (datepicker_langs[this.options.lang].weekStart > 0) {
-      before -= datepicker_langs[this.options.lang].weekStart;
+    // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6    
+    const startDay = typeof this.options.weekStart != 'undefined' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : datepicker_langs[this.options.lang].weekStart
+    if (startDay > 0) {
+      before -= startDay;
       if (before < 0) {
         before += 7;
       }
