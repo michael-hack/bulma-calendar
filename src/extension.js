@@ -65,6 +65,15 @@ var datepicker_langs = {
     weekdays: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'],
     weekdaysShort: ['सूर्य', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि']
   },
+  hu: {
+    weekStart: 1,
+    previousMonth: 'Előző hónap',
+    nextMonth: 'Következő hónap',
+    months: ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'],
+    monthsShort: ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Szept', 'Okt', 'Nov', 'Dec'],
+    weekdays: ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'],
+    weekdaysShort: ['V', 'H', 'K', 'Sze', 'Cs', 'P', 'Szo'],
+  },
   hr: {
     weekStart: 2,
     previousMonth: 'Prošli mjesec',
