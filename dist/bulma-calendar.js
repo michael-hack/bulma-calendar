@@ -215,6 +215,7 @@ class datePicker {
       overlay: false,
       closeOnOverlayClick: true,
       closeOnSelect: true,
+      toggleOnInputClick: true,
       // callback functions
       onSelect: null,
       onOpen: null,
@@ -344,15 +345,17 @@ class datePicker {
    */
   _bindEvents() {
     // Bind event to element in order to display/hide datePicker on click
-    this.element.addEventsListener(this._clickEvent, (e) => {
-      e.preventDefault();
+    if(this.options.toggleOnInputClick === true){
+      this.element.addEventsListener(this._clickEvent, (e) => {
+        e.preventDefault();
 
-      if (this.open) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    });
+        if (this.open) {
+          this.hide();
+        } else {
+          this.show();
+        }
+      });
+    }
 
     if (this.options.overlay) {
       // Bind close event on Close button
