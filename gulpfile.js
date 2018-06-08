@@ -1,136 +1,137 @@
-var package                     = require('./package.json')
-var gulp                        = require('gulp');
+const pkg                 = require('./package.json');
+const gulp                = require('gulp');
+const webpack             = require('webpack');
+const webpackStream       = require('webpack-stream');
 
-// Define variables.
-var autoprefixer                = require('autoprefixer');
-var babel                       = require('gulp-babel');
-var bump                        = require('gulp-bump');
-var camelCase                   = require('camelcase');
-var cleancss                    = require('gulp-clean-css');
-var concat                      = require('gulp-concat');
-var conventionalChangelog       = require('gulp-conventional-changelog');
-var del                         = require('del');
-var fs                          = require('fs');
-var git                         = require('gulp-git');
-var gutil                       = require('gulp-util');
-var postcss                     = require('gulp-postcss');
-var rollup                      = require('gulp-better-rollup');
-var runSequence                 = require('run-sequence');
-var sass                        = require('gulp-sass');
-var sourcemaps                  = require('gulp-sourcemaps');
-var spawn                       = require('child_process').spawn;
-var minify                      = require('gulp-babel-minify');
+const autoprefixer        = require('autoprefixer');
+const camelCase           = require('camelcase');
+const cleancss            = require('gulp-clean-css');
+const concat              = require('gulp-concat');
+const del                 = require('del');
+const gutil               = require('gulp-util');
+const postcss             = require('gulp-postcss');
+const runSequence         = require('run-sequence');
+const sass                = require('gulp-sass');
+const uglify              = require('gulp-uglify');
 
 /**
  * ----------------------------------------
  *  VARIABLES
  * ----------------------------------------
  */
-var paths = {
-  src: 'src/',
-  dest: 'dist/',
-  bulma: 'node_modules/bulma/sass/utilities/',
-  jsPattern: '**/*.js'
-}
-var bulmaSassFile  = '_all.sass';
-var globalSassFile = package.name + '.sass';
-var globalJsFile   = package.name + '.js';
-var mainSassFile   = 'extension.sass';
-var mainJsFile     = 'extension.js';
-var distCssFile    = package.name + '.min.css';
-var distJsFile     = package.name + '.min.js';
+const paths = {
+  src:  'src/',
+  dist: 'dist/',
+  bulma: 'node_modules/bulma/sass/utilities/'
+};
+const config = {
+  sass: {
+    input: 'index.sass',
+    dependencies: ['node_modules/bulma/sass/utilities/_all.sass'],
+    output: {
+      filename: pkg.name,
+      format: 'compressed'
+    },
+    source: paths.src + 'sass/',
+    destination: paths.dist + 'css/'
+  },
+  javascript: {
+    input: 'index.js',
+    output: {
+      name: camelCase(pkg.name),
+      filename: pkg.name,
+      format: 'umd'
+    },
+    source: paths.src + 'js/',
+    destination: paths.dist + 'js/'
+  }
+};
 
 /**
  * ----------------------------------------
- *  STYLESHEETS
+ *  BUILD STYLESHEETS TASKS
  * ----------------------------------------
  */
+// Uses Sass compiler to process styles, adds vendor prefixes, minifies, then
+// outputs file to the appropriate location.
+gulp.task('build:styles', function() {
+  return gulp
+    .src(config.sass.dependencies.concat([config.sass.source + config.sass.input]))
+    .pipe(concat(config.sass.output.filename + '.sass'))
+    .pipe(sass({
+      style: config.sass.output.format,
+      trace: true,
+      loadPath: [config.sass.source],
+      includePaths: ['node_modules/bulma/sass/utilities/']
+    }))
+    .pipe(concat(config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'))
+    .pipe(postcss([autoprefixer({browsers: pkg.broswers})]))
+    .pipe(cleancss())
+    .pipe(gulp.dest(config.sass.destination));
+});
 
- // Uses Sass compiler to process styles, adds vendor prefixes, minifies, then
- // outputs file to the appropriate location.
- gulp.task('build:styles', ['build:styles:copy'], function() {
-   return gulp.src([paths.bulma + bulmaSassFile, paths.src + mainSassFile])
-     .pipe(concat(globalSassFile))
-     .pipe(sass({
-       style: 'compressed',
-       includePaths: [paths.bulma]
-     }))
-     .pipe(concat(distCssFile))
-     .pipe(postcss([autoprefixer({browsers: ['last 2 versions']})]))
-     .pipe(cleancss())
-     .pipe(gulp.dest(paths.dest));
- });
+// Copy original sass file to dist
+gulp.task('build:styles:copy', function() {
+  return gulp.src(config.sass.source + config.sass.input)
+    .pipe(concat(config.sass.output.filename + '.sass'))
+    .pipe(gulp.dest(config.sass.destination));
+});
 
- // Copy original sass file to dist
- gulp.task('build:styles:copy', function() {
-   return gulp.src(paths.src + mainSassFile)
-     .pipe(concat(globalSassFile))
-     .pipe(gulp.dest(paths.dest));
- });
-
-gulp.task('clean:styles', function(callback) {
+gulp.task('clean:styles', function() {
   del([
-    paths.dest + mainSassFile,
-    paths.dest + distCssFile
+    config.sass.destination + config.sass.output.filename + '.sass',
+    config.sass.destination + config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'
   ]);
-  callback();
 });
 
 /**
  * ----------------------------------------
- *  JAVASCRIPT
+ *  BUILD JAVASCRIPT TASKS
  * ----------------------------------------
  */
-
 // Concatenates and uglifies global JS files and outputs result to the
 // appropriate location.
 gulp.task('build:scripts', function() {
   return gulp
-    .src([paths.src + paths.jsPattern])
-    .pipe(sourcemaps.init({
-      loadMaps: true
-    }))
-    .pipe(rollup({
-        plugins: [babel({
-          babelrc: false,
-          sourceMaps: true,
-          exclude: 'node_modules/**',
-          presets: [
-            ["@babel/preset-env",  {
-              "modules": false,
-              "targets": {
-                "browsers": gutil.env.babelTarget ? gutil.env.babelTarget : ["last 2 versions"]
-              }
-            }]
-          ]
-        })]
-      }, {
-        format: gutil.env.jsFormat ? gutil.env.jsFormat : 'umd',
-        name: camelCase(package.name)
+    .src(config.javascript.source + config.javascript.input)
+    .pipe(webpackStream({
+      output: {
+        filename: config.javascript.output.filename + '.js',
+        library: config.javascript.output.name,
+        libraryTarget: config.javascript.output.format,
+        libraryExport: 'default'
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(js|jsx)$/,
+            exclude: /(node_modules)/,
+            loader: 'babel-loader',
+            options: {
+              babelrc: './babelrc'
+            }
+          },
+        ],
       }
-    ))
-    .pipe(concat(globalJsFile))
-    .pipe(gulp.dest(paths.dest))
-    .pipe(concat(distJsFile))
-    .pipe(minify().on('error', function(err) {
+    }), webpack)
+    .pipe(concat(config.javascript.output.filename + '.js'))
+    .pipe(gulp.dest(config.javascript.destination))
+    .pipe(concat(config.javascript.output.filename + '.min.js'))
+    .pipe(uglify().on('error', function(err) {
       gutil.log(gutil.colors.red('[Error]'), err.toString())
     }))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(paths.dest));
+    .pipe(gulp.dest(config.javascript.destination)
+      .on('error', function(err) {
+        gutil.log(gutil.colors.red('[Error]'), err.toString())
+      })
+    );
 });
 
-gulp.task('clean:scripts', function(callback) {
+gulp.task('clean:scripts', function() {
   del([
-    paths.dest + mainJsFile,
-    paths.dest + distJsFile
+    config.javascript.destination + config.javascript.output.filename + '.js',
+    config.javascript.destination + config.javascript.output.filename + '.min.js'
   ]);
-  callback();
-});
-
-// Deletes the entire dist directory.
-gulp.task('clean', ['clean:scripts', 'clean:styles'], function(callback) {
-  del(paths.dest);
-  callback();
 });
 
 /**
@@ -140,8 +141,20 @@ gulp.task('clean', ['clean:scripts', 'clean:styles'], function(callback) {
  */
 gulp.task('build', function(callback) {
   runSequence('clean',
-    ['build:scripts', 'build:styles'],
+    ['build:styles'],
+    ['build:styles:copy'],
+    ['build:scripts'],
     callback);
+});
+
+/**
+ * ----------------------------------------
+ *  GLOBAL CLEAN
+ * ----------------------------------------
+ */
+// Deletes the entire dist directory.
+gulp.task('clean', function() {
+  del(paths.dist);
 });
 
 /**
@@ -150,160 +163,3 @@ gulp.task('build', function(callback) {
  * ----------------------------------------
  */
 gulp.task('default', ['build']);
-
-/**
- * ----------------------------------------
- *  GITHUB TASKS
- * ----------------------------------------
- */
-gulp.task('github:checkout:master', function (callback) {
- git.checkout('master', {}, callback);
-});
-
-gulp.task('github:pull:master', ['github:checkout:master'], function(done) {
-  git.pull('origin', 'master', {}, done);
-});
-
-gulp.task('github:checkout:source', ['github:pull:master'], function(done) {
-  if (gutil.env.b) {
-    git.checkout(gutil.env.b, {}, done);
-  } else {
-    git.checkout('develop', {}, done);
-  }
-});
-
-gulp.task('github:pull:source', ['github:checkout:source'], function(done) {
-  if (!gutil.env.b) {
-    git.pull('origin', 'develop', {args: '--ff-only'}, done);
-  } else {
-    done();
-  }
-});
-
-gulp.task('github:commit', function () {
-  return gulp.src('.')
-    .pipe(git.add())
-    .pipe(git.commit('[Prerelease] Bumped version number'));
-});
-
-gulp.task('github:checkout:develop', function (callback) {
-  git.checkout('develop', {}, callback);
-});
-
-gulp.task('github:merge:master', function (callback) {
-  if (gutil.env.b) {
-    git.merge(gutil.env.b, {args: '--no-ff'}, callback);
-  } else {
-    git.merge('release/newRelease', {args: '--no-ff'}, callback);
-  }
-});
-
-gulp.task('github:merge:develop', function (callback) {
-  git.merge('master', {args: '--no-ff'}, callback);
-});
-
-gulp.task('github:branch:create', ['bump-version'], function(callback) {
-  if (!gutil.env.b) {
-    git.checkout('release/newRelease', {args: '-b'}, callback);
-  } else {
-    callback();
-  }
-});
-
-gulp.task('github:branch:delete', function (callback) {
-  if (gutil.env.b) {
-    git.branch(gutil.env.b, {args: '-d'}, callback);
-  } else {
-    git.branch('release/newRelease', {args: '-d'}, callback);
-  }
-});
-
-gulp.task('github:push', function (callback) {
-  git.push('origin', ['develop', 'master'], {args: " --tags"}, callback);
-});
-
-gulp.task('github:create-new-tag', function(callback) {
-  var version = getPackageJsonVersion();
-  git.tag(version, 'Created Tag for version: ' + version, function (error) {
-    if (error) {
-      return callback(error);
-    }
-    git.push('origin', 'master', {args: '--tags'}, callback);
-  });
-
-  function getPackageJsonVersion () {
-    // We parse the json file instead of using require because require caches
-    // multiple calls so the version number won't be updated
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  };
-});
-
-gulp.task('github:commit', ['bump-version', 'changelog', 'github:branch:create'], function() {
-  var files = ['./package.json', './bower.json'].concat('./CHANGELOG.md');
-  return gulp.src(files)
-    .pipe(git.commit('bump version number ' + gutil.env.v));
-});
-
-/**
- * ----------------------------------------
- *  BUMP CODE VERSION
- * ----------------------------------------
- */
-gulp.task('bump-version', ['github:pull:source'], function () {
-  return gulp.src(['./bower.json', './package.json'])
-    .pipe(bump({type: gutil.env.type ? gutil.env.type : 'patch' })
-    .on('error', gutil.log))
-    .pipe(gulp.dest('./'));
-});
-
-/**
- * ----------------------------------------
- *  GENERATE CHANGELOG
- * ----------------------------------------
- */
-gulp.task('changelog', function () {
-  return gulp.src('CHANGELOG.md', {
-      buffer: false
-    })
-    .pipe(conventionalChangelog({
-      preset: 'angular'
-    }))
-    .pipe(gulp.dest('./'));
-});
-
-/**
- * ----------------------------------------
- *  PUBLISH ON NPM
- * ----------------------------------------
- */
-gulp.task('npm:publish', function(done) {
-  spawn('npm', ['publish'], { stdio: 'inherit' }).on('close', done);
-});
-
-/**
- * ----------------------------------------
- *  GENERATE A NEW GITHUB RELEASE
- *  FOLLOWING GIT-FLOW
- * ----------------------------------------
- */
-gulp.task('release', ['build'], function(callback) {
-  runSequence(
-    'github:commit',
-    'github:checkout:master',
-    'github:merge:master',
-    'github:create-new-tag',
-    'github:checkout:develop',
-    'github:merge:develop',
-    'github:branch:delete',
-    'github:push',
-    // 'github:release',
-    'npm:publish',
-    function (error) {
-      if (error) {
-        console.log(error.message);
-      } else {
-        console.log('RELEASE FINISHED SUCCESSFULLY');
-      }
-      callback(error);
-    });
-});
