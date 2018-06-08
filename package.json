@@ -62,6 +62,5 @@
     "dist/js/bulma-calendar.min.js",
     "LICENSE",
     "README.md"
-  ],
-  "version": "0.0.0-development"
+  ]
 }
