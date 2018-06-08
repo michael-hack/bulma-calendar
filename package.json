@@ -2,6 +2,7 @@
   "name": "bulma-calendar",
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "dist/bulma-calendar.sass",
+  "version": "2.0.1",
   "scripts": {
     "build": "gulp",
     "travis-deploy-once": "travis-deploy-once",
