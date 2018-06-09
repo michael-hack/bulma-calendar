@@ -1,6 +1,6 @@
 {
   "sourceMaps": false,
-  "ignore": "node_modules/**",
+  "ignore": ["node_modules/**"],
   "presets": [
     ["env", {
       "modules": false,

@@ -6,11 +6,11 @@ const webpackStream       = require('webpack-stream');
 const autoprefixer        = require('autoprefixer');
 const camelCase           = require('camelcase');
 const cleancss            = require('gulp-clean-css');
+const colors			        = require('ansi-colors');
 const concat              = require('gulp-concat');
 const del                 = require('del');
-const gutil               = require('gulp-util');
+const log				          = require('fancy-log');
 const postcss             = require('gulp-postcss');
-const runSequence         = require('run-sequence');
 const sass                = require('gulp-sass');
 const uglify              = require('gulp-uglify');
 
@@ -20,10 +20,11 @@ const uglify              = require('gulp-uglify');
  * ----------------------------------------
  */
 const paths = {
-  src:  'src/',
+  src: 'src/',
   dist: 'dist/',
   bulma: 'node_modules/bulma/sass/utilities/'
 };
+
 const config = {
   sass: {
     input: 'index.sass',
@@ -54,7 +55,7 @@ const config = {
  */
 // Uses Sass compiler to process styles, adds vendor prefixes, minifies, then
 // outputs file to the appropriate location.
-gulp.task('build:styles', function() {
+gulp.task('build:styles', function () {
   return gulp
     .src(config.sass.dependencies.concat([config.sass.source + config.sass.input]))
     .pipe(concat(config.sass.output.filename + '.sass'))
@@ -65,20 +66,22 @@ gulp.task('build:styles', function() {
       includePaths: ['node_modules/bulma/sass/utilities/']
     }))
     .pipe(concat(config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'))
-    .pipe(postcss([autoprefixer({browsers: pkg.broswers})]))
+    .pipe(postcss([autoprefixer({
+      browsers: pkg.broswers
+    })]))
     .pipe(cleancss())
     .pipe(gulp.dest(config.sass.destination));
 });
 
 // Copy original sass file to dist
-gulp.task('build:styles:copy', function() {
+gulp.task('build:styles:copy', function () {
   return gulp.src(config.sass.source + config.sass.input)
     .pipe(concat(config.sass.output.filename + '.sass'))
     .pipe(gulp.dest(config.sass.destination));
 });
 
-gulp.task('clean:styles', function() {
-  del([
+gulp.task('clean:styles', function () {
+  return del([
     config.sass.destination + config.sass.output.filename + '.sass',
     config.sass.destination + config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'
   ]);
@@ -89,9 +92,10 @@ gulp.task('clean:styles', function() {
  *  BUILD JAVASCRIPT TASKS
  * ----------------------------------------
  */
+
 // Concatenates and uglifies global JS files and outputs result to the
 // appropriate location.
-gulp.task('build:scripts', function() {
+gulp.task('build:scripts', function () {
   return gulp
     .src(config.javascript.source + config.javascript.input)
     .pipe(webpackStream({
@@ -102,50 +106,36 @@ gulp.task('build:scripts', function() {
         libraryExport: 'default'
       },
       module: {
-        rules: [
-          {
-            test: /\.(js|jsx)$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader',
-            options: {
-              babelrc: './babelrc'
-            }
-          },
-        ],
+        rules: [{
+          test: /\.(js|jsx)$/,
+          exclude: /(node_modules)/,
+          loader: 'babel-loader',
+          options: {
+            babelrc: './babelrc'
+          }
+        }, ],
       }
     }), webpack)
     .pipe(concat(config.javascript.output.filename + '.js'))
     .pipe(gulp.dest(config.javascript.destination))
     .pipe(concat(config.javascript.output.filename + '.min.js'))
-    .pipe(uglify().on('error', function(err) {
-      gutil.log(gutil.colors.red('[Error]'), err.toString())
+    .pipe(uglify().on('error', function (err) {
+      log(colors.red('[Error]'), err.toString());
     }))
     .pipe(gulp.dest(config.javascript.destination)
-      .on('error', function(err) {
-        gutil.log(gutil.colors.red('[Error]'), err.toString())
+      .on('error', function (err) {
+        log(colors.red('[Error]'), err.toString());
       })
     );
 });
 
-gulp.task('clean:scripts', function() {
-  del([
+gulp.task('clean:scripts', function () {
+  return del([
     config.javascript.destination + config.javascript.output.filename + '.js',
     config.javascript.destination + config.javascript.output.filename + '.min.js'
   ]);
 });
 
-/**
- * ----------------------------------------
- *  GLOBAL BUILD
- * ----------------------------------------
- */
-gulp.task('build', function(callback) {
-  runSequence('clean',
-    ['build:styles'],
-    ['build:styles:copy'],
-    ['build:scripts'],
-    callback);
-});
 
 /**
  * ----------------------------------------
@@ -153,8 +143,17 @@ gulp.task('build', function(callback) {
  * ----------------------------------------
  */
 // Deletes the entire dist directory.
-gulp.task('clean', function() {
-  del(paths.dist);
+gulp.task('clean', function () {
+  return del(paths.dist);
+});
+
+/**
+ * ----------------------------------------
+ *  GLOBAL BUILD
+ * ----------------------------------------
+ */
+gulp.task('build', gulp.series('clean', gulp.parallel('build:styles', 'build:scripts'), 'build:styles:copy'), function (done) {
+  done();
 });
 
 /**
@@ -162,4 +161,6 @@ gulp.task('clean', function() {
  *  DEFAULT TASK
  * ----------------------------------------
  */
-gulp.task('default', ['build']);
+gulp.task('default', gulp.series('build'), function (done) {
+  done();
+});

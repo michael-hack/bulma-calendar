@@ -6,14 +6,13 @@ Bulma's extension to display a calendar. It can be used on page as large calenda
 [![npm](https://img.shields.io/npm/dm/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
 [![Build Status](https://travis-ci.org/Wikiki/bulma-calendar.svg?branch=master)](https://travis-ci.org/Wikiki/bulma-calendar)
 
-<img src="https://img4.hostingpics.net/pics/812322ScreenShot20170810at125834.png" width="50%">
 
 # Examples
 
 ### Date format
 
 ```js
-date = new bulmaCalendar(document.querySelector('.sr-date'), {
+date = bulmaCalendar.attach(document.querySelector('.sr-date'), {
   dataFormat: 'd MM yyyy' // 1 January 2018
 });
 ```
@@ -36,7 +35,7 @@ yyyy: full year (2018)
 
 ```js
 
-date = new bulmaCalendar(document.querySelector('.sr-date'), {
+date = bulmaCalendar.attach(document.querySelector('.sr-date'), {
   lang: 'it' // one of: en (default), fr, de, tr, it, th, pt-BR
 });
 ```
@@ -48,18 +47,34 @@ Here's the options object and the default values as appears on code.
 ```js
 var defaultOptions = {
   startDate: new Date(),
-  // the default data format `field` value
-  dateFormat: 'yyyy/mm/dd',
-  // internationalization
-  lang: 'en',
+  weekStart: null,
+  minDate: null,
+  maxDate: null,
+  disabledDates: null,
+  dateFormat: 'yyyy-mm-dd', // the default data format `field` value
+  lang: 'en', // internationalization
   overlay: false,
+  closeOnOverlayClick: true,
   closeOnSelect: true,
-  // callback function
-  onSelect: null,   // callback(new Date(year, month, day))
-  onOpen: null,     // callback(this)
-  onClose: null,    // callback(this)
-  onRender: null    // callback(this)
-};
+  toggleOnInputClick: true,
+  icons: {
+    month: {
+      previous: `<svg viewBox="0 0 50 80" xml:space="preserve">
+        <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
+      </svg>`,
+      next: `<svg viewBox="0 0 50 80" xml:space="preserve">
+        <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+      </svg>`
+    },
+    year: {
+      previous: `<svg viewBox="0 0 50 80" xml:space="preserve">
+        <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>
+      </svg>`,
+      next: `<svg viewBox="0 0 50 80" xml:space="preserve">
+        <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>
+      </svg>`
+    }
+  };
 ```
 
 Documentation & Demo
