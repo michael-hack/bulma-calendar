@@ -4,7 +4,7 @@
   "main": "dist/bulma-calendar.sass",
   "version": "2.0.1",
   "scripts": {
-    "build": "gulp",
+    "commit": "git-cz",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
