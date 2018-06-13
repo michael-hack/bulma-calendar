@@ -8,9 +8,7 @@
     "commit": "git-cz",
     "precommit": "npm test",
     "travis-deploy-once": "travis-deploy-once",
-    "semantic-release": "semantic-release",
-    "watch:test": "jest test/index.test.js -w",
-    "test": "jest test/index.test.js"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
