@@ -87,7 +87,10 @@ export default class bulmaCalendar extends EventEmitter {
 
   // Set datePicker language
   set lang(lang = 'en') {
-    this._lang = typeof datepicker_langs[lang] !== 'undefined' ? lang : 'en';
+    this._lang = datepicker_langs[lang];
+    if (typeof this._lang === 'undefined') {
+      this._lang = datepicker_langs['en'];
+    }
   }
 
   // Get date object
@@ -100,7 +103,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (utils.isString(date)) {
       date = dateUtils.parseDate(date, this.dateFormat);
     } else {
-      date = dateUtils.parseDate(dateUtils.getFormatedDate(date, this.dateFormat, datepicker_langs[this.lang]));
+      date = dateUtils.parseDate(dateUtils.getFormatedDate(date, this.dateFormat, this.lang));
     }
     this._date = {
       year: date.getFullYear(),
@@ -119,7 +122,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (utils.isString(minDate)) {
       this._minDate = dateUtils.parseDate(minDate, this.dateFormat);
     } else {
-      this._minDate = dateUtils.parseDate(dateUtils.getFormatedDate(minDate, this._dateFormat, datepicker_langs[this.options.lang]));
+      this._minDate = dateUtils.parseDate(dateUtils.getFormatedDate(minDate, this._dateFormat, this.lang));
     }
   }
 
@@ -133,7 +136,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (utils.isString(maxDate)) {
       this._maxDate = dateUtils.parseDate(maxDate, this.dateFormat);
     } else {
-      this._maxDate = dateUtils.parseDate(dateUtils.getFormatedDate(maxDate, this._dateFormat, datepicker_langs[this.options.lang]));
+      this._maxDate = dateUtils.parseDate(dateUtils.getFormatedDate(maxDate, this._dateFormat, this.lang));
     }
   }
 
@@ -156,8 +159,8 @@ export default class bulmaCalendar extends EventEmitter {
    */
   _init() {
     this._id = 'datePicker' + (new Date()).getTime() + Math.floor(Math.random() * Math.floor(9999));
-    this.dateFormat = this.options.dateFormat ? this.options.dateFormat : 'yyyy-mm-dd';
-    this._lang = this.options.lang;
+    this.lang = this.options.lang;
+    this.dateFormat = this.options.dateFormat;
     this._open = false;
 
     this._initDates();
@@ -186,7 +189,7 @@ export default class bulmaCalendar extends EventEmitter {
         this.options.disabledDates = [this.options.disabledDates];
       }
       for (var i=0; i < this.options.disabledDates.length; i++) {
-        this.options.disabledDates[i] = dateUtils.parseDate(dateUtils.getFormatedDate(new Date(this.options.disabledDates[i]), this.dateFormat, datepicker_langs[this.options.lang]));
+        this.options.disabledDates[i] = dateUtils.parseDate(dateUtils.getFormatedDate(new Date(this.options.disabledDates[i]), this.dateFormat, this.lang));
       }
     }
   }
@@ -202,7 +205,7 @@ export default class bulmaCalendar extends EventEmitter {
       ...this.options,
       id: this.id,
       date: this.date,
-      lang: datepicker_langs[this.lang],
+      lang: this.lang,
       getDayName: this[getDayNameDatePicker]
     }));
 
@@ -336,7 +339,7 @@ export default class bulmaCalendar extends EventEmitter {
 
       this.emit('datepicker:date:selected', this);
 
-      this.element.value = dateUtils.getFormatedDate((new Date(year, month, day)), this.dateFormat, datepicker_langs[this.lang]);
+      this.element.value = dateUtils.getFormatedDate((new Date(year, month, day)), this.dateFormat, this.lang);
       if (this.options.closeOnSelect) {
         this.hide();
       }
@@ -365,12 +368,12 @@ export default class bulmaCalendar extends EventEmitter {
    */
   [getDayNameDatePicker](day, abbr = false) {
     // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-    day += typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : datepicker_langs[this.lang].weekStart;
+    day += typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
     while (day >= 7) {
       day -= 7;
     }
 
-    return abbr ? datepicker_langs[this.lang].weekdaysShort[day] : datepicker_langs[this.lang].weekdays[day];
+    return abbr ? this.lang.weekdaysShort[day] : this.lang.weekdays[day];
   }
 
   _renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
@@ -392,7 +395,7 @@ export default class bulmaCalendar extends EventEmitter {
 
     // Get start day from options
     // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-    const startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : datepicker_langs[this.lang].weekStart;
+    const startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
     if (startDay > 0) {
       before -= startDay;
       if (before < 0) {
@@ -565,7 +568,7 @@ export default class bulmaCalendar extends EventEmitter {
       this.date.year += Math.floor(Math.abs(this.date.month) / 12);
       this.date.month -= 12;
     }
-    this.elementCalendarNavMonth.innerHTML = datepicker_langs[this.lang].months[this.date.month];
+    this.elementCalendarNavMonth.innerHTML = this.lang.months[this.date.month];
     this.elementCalendarNavYear.innerHTML = this.date.year;
     this.elementCalendarNavDay.innerHTML = this.date.day;
     this.elementCalendarBody.innerHTML = '';

@@ -175,8 +175,8 @@ var bulmaCalendar = function (_EventEmitter) {
      */
     value: function _init() {
       this._id = 'datePicker' + new Date().getTime() + Math.floor(Math.random() * Math.floor(9999));
-      this.dateFormat = this.options.dateFormat ? this.options.dateFormat : 'yyyy-mm-dd';
-      this._lang = this.options.lang;
+      this.lang = this.options.lang;
+      this.dateFormat = this.options.dateFormat;
       this._open = false;
 
       this._initDates();
@@ -208,7 +208,7 @@ var bulmaCalendar = function (_EventEmitter) {
           this.options.disabledDates = [this.options.disabledDates];
         }
         for (var i = 0; i < this.options.disabledDates.length; i++) {
-          this.options.disabledDates[i] = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](new Date(this.options.disabledDates[i]), this.dateFormat, __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.options.lang]));
+          this.options.disabledDates[i] = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](new Date(this.options.disabledDates[i]), this.dateFormat, this.lang));
         }
       }
     }
@@ -226,7 +226,7 @@ var bulmaCalendar = function (_EventEmitter) {
       var datePickerFragment = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_5__template__["a" /* default */])(_extends({}, this.options, {
         id: this.id,
         date: this.date,
-        lang: __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang],
+        lang: this.lang,
         getDayName: this[getDayNameDatePicker]
       })));
 
@@ -376,7 +376,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
         this.emit('datepicker:date:selected', this);
 
-        this.element.value = __WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](new Date(year, month, day), this.dateFormat, __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang]);
+        this.element.value = __WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](new Date(year, month, day), this.dateFormat, this.lang);
         if (this.options.closeOnSelect) {
           this.hide();
         }
@@ -415,12 +415,12 @@ var bulmaCalendar = function (_EventEmitter) {
       var abbr = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-      day += typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang].weekStart;
+      day += typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
       while (day >= 7) {
         day -= 7;
       }
 
-      return abbr ? __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang].weekdaysShort[day] : __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang].weekdays[day];
+      return abbr ? this.lang.weekdaysShort[day] : this.lang.weekdays[day];
     }
   }, {
     key: '_renderDay',
@@ -440,7 +440,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
       // Get start day from options
       // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-      var startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang].weekStart;
+      var startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
       if (startDay > 0) {
         before -= startDay;
         if (before < 0) {
@@ -642,7 +642,7 @@ var bulmaCalendar = function (_EventEmitter) {
         this.date.year += Math.floor(Math.abs(this.date.month) / 12);
         this.date.month -= 12;
       }
-      this.elementCalendarNavMonth.innerHTML = __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang].months[this.date.month];
+      this.elementCalendarNavMonth.innerHTML = this.lang.months[this.date.month];
       this.elementCalendarNavYear.innerHTML = this.date.year;
       this.elementCalendarNavDay.innerHTML = this.date.day;
       this.elementCalendarBody.innerHTML = '';
@@ -760,7 +760,10 @@ var bulmaCalendar = function (_EventEmitter) {
     set: function set() {
       var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
-      this._lang = typeof __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][lang] !== 'undefined' ? lang : 'en';
+      this._lang = __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][lang];
+      if (typeof this._lang === 'undefined') {
+        this._lang = __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */]['en'];
+      }
     }
 
     // Get date object
@@ -779,7 +782,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isString */](date)) {
         date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](date, this.dateFormat);
       } else {
-        date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](date, this.dateFormat, __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.lang]));
+        date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](date, this.dateFormat, this.lang));
       }
       this._date = {
         year: date.getFullYear(),
@@ -804,7 +807,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isString */](minDate)) {
         this._minDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](minDate, this.dateFormat);
       } else {
-        this._minDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](minDate, this._dateFormat, __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.options.lang]));
+        this._minDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](minDate, this._dateFormat, this.lang));
       }
     }
 
@@ -824,7 +827,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isString */](maxDate)) {
         this._maxDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](maxDate, this.dateFormat);
       } else {
-        this._maxDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](maxDate, this._dateFormat, __WEBPACK_IMPORTED_MODULE_3__langs_langs__["a" /* default */][this.options.lang]));
+        this._maxDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](maxDate, this._dateFormat, this.lang));
       }
     }
 
