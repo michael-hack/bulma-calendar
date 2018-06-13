@@ -56,8 +56,10 @@
     "webpack": "^4.12.0",
     "webpack-stream": "^4.0.3"
   },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   },
   "files": [
     "dist/css/bulma-calendar.sass",
