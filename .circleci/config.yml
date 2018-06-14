@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  test_node_6:
+    docker:
+      - image: circleci/node:6
+    steps:
+      # Configure your test steps here (checkout, npm install, cache management, tests etc...)
+
+  test_node_8:
+    docker:
+      - image: circleci/node:8
+    steps:
+      # Configure your test steps here (checkout, npm install, cache management, tests etc...)
+
+  release:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: npm install
+      # Run optional required steps before releasing
+      # - run: npm run build-script
+      - run: npx semantic-release
+
+workflows:
+  version: 2
+  test_and_release:
+    # Run the test jobs first, then the release only when all the test jobs are successful
+    jobs:
+      - test_node_6
+      - test_node_8
+      - release:
+          requires:
+            - test_node_6
+            - test_node_8
