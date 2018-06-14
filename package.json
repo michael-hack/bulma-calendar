@@ -63,10 +63,8 @@
     }
   },
   "files": [
-    "dist/css/bulma-calendar.sass",
-    "dist/css/bulma-calendar.min.css",
-    "dist/js/bulma-calendar.js",
-    "dist/js/bulma-calendar.min.js",
+    "dist/**",
+    "src/**",
     "LICENSE",
     "README.md"
   ]
