@@ -6,7 +6,6 @@
   "version": "2.0.2",
   "scripts": {
     "commit": "git-cz",
-    "precommit": "npm test",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release"
   },
