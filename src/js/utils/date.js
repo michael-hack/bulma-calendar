@@ -42,12 +42,17 @@ export const isLeapYear = year => {
  * @return {Date}                         Date Object initialized with Date String based on the Date Format
  */
 export const parseDate = (dateString, format = undefined) => {
-  const date = new Date();
+  const date = new Date(2000, 0, 31);
   date.setHours(0, 0, 0, 0);
 
   const formatPattern = /((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))/i;
   const datePattern = /(\d+)[^0-9](\d+)[^0-9](\d+)/i;
-
+  //There is a bug when date is fomatted in non YMD order. 
+  //Day gets set first and if current months has 30 days and new date has 31, then date.setDate(matchDate[1]); wont get set at all.
+  //Possible fixes: 
+  // - Always set in YMD order.
+  // - Set new Date(); as a leapyear, January 31th., it might help. 
+  // I applied the second fix, change if necesary.
   let matchFormat = formatPattern.exec(format);
   if (matchFormat) {
     let matchDate = datePattern.exec(dateString);
