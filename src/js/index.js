@@ -161,7 +161,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._id = 'datePicker' + (new Date()).getTime() + Math.floor(Math.random() * Math.floor(9999));
     this.lang = this.options.lang;
     this.dateFormat = this.options.dateFormat;
-    this._open = false;
+    this.open = false;
 
     this._initDates();
     this._build();
@@ -540,7 +540,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (!this.options.overlay) {
       this._adjustPosition();
     }
-    this._open = true;
+    this.open = true;
   }
 
   /**
@@ -549,7 +549,7 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   hide() {
-    this._open = false;
+    this.open = false;
     this.emit('datepicker:hide', this);
     this.elementContainer.classList.remove('is-active');
   }
