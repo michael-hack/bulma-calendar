@@ -103,7 +103,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (utils.isString(date)) {
       date = dateUtils.parseDate(date, this.dateFormat);
     } else {
-      date = dateUtils.parseDate(dateUtils.getFormatedDate(date, this.dateFormat, this.lang));
+      date = dateUtils.parseDate(dateUtils.getFormatedDate(date, this.dateFormat, this.lang), this.dateFormat);
     }
     this._date = {
       year: date.getFullYear(),
@@ -334,7 +334,9 @@ export default class bulmaCalendar extends EventEmitter {
       e.preventDefault();
     }
     if (!e.currentTarget.classList.contains('is-disabled')) {
-      this.date = e.currentTarget.dataset.date;
+      //e.currentTarget.dataset.date is stored in renderdays as data-date="${`${year}-${month}-${day}`}"
+      //So we create a Date to parse that and then use getFormatedDate to get the data out of it.
+      this.date = dateUtils.getFormatedDate(new Date(e.currentTarget.dataset.date), this.dateFormat, this.lang)
       let {year, month, day} = this.date;
 
       this.emit('datepicker:date:selected', this);
@@ -439,7 +441,7 @@ export default class bulmaCalendar extends EventEmitter {
         }
       }
 
-      days += this._renderDay(day.getDate(), this.date.month, this.date.year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
+      days += this._renderDay(day.getDate(),  day.getMonth() + 1, day.getFullYear(), isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
     }
 
     this.elementCalendarBody.insertAdjacentHTML('beforeend', days);
@@ -527,11 +529,13 @@ export default class bulmaCalendar extends EventEmitter {
   show() {
     // Set the startDate to the input value
     if (this.element.value) {
-      this.options.startDate = dateUtils.parseDate(this.element.value);
+      this.options.startDate = dateUtils.parseDate(this.element.value, this.dateFormat);
     }
-    // this.date.month = this.options.startDate.getMonth();
-    // this.date.year = this.options.startDate.getFullYear();
-    // this.date.day = this.options.startDate.getDate();
+
+    this.date.month = this.options.startDate.getMonth();
+    this.date.year = this.options.startDate.getFullYear();
+    this.date.day = this.options.startDate.getDate();
+
     this._refreshCalendar();
 
     this.emit('datepicker:show', this);
