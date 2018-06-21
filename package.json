@@ -9,8 +9,8 @@
     "precommit": "npm test",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release",
-    "watch:test": "jest test/index.test.js -w",
-    "test": "jest test/index.test.js"
+    "watch:test": "jest test/index.test.js -w && jest test/date.test.js -w",
+    "test": "jest test/index.test.js && jest test/date.test.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/Wikiki/bulma-calendar#readme",
   "devDependencies": {
+    "@semantic-release/changelog": "^2.0.2",
     "ansi-colors": "^2.0.1",
     "autoprefixer": "^8.6.2",
     "babel-core": "^6.26.3",
@@ -61,6 +62,14 @@
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
+  },
+  "release": {
+    "prepare": [
+      {
+        "path": "@semantic-release/changelog",
+        "changelogFile": "CHANGELOG.md"
+      }
+    ]
   },
   "files": [
     "dist/**",
