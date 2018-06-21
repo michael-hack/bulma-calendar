@@ -10,7 +10,7 @@
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release",
     "watch:test": "jest test/*.test.js --watch",
-    "test": "jest test/index.test.js",
+    "test": "jest test/*.test.js",
     "build":"gulp build",
     "clean":"gulp clean"
   },
