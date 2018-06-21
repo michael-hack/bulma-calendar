@@ -521,6 +521,15 @@ export default class bulmaCalendar extends EventEmitter {
     this.elementCalendarNavNextYear.removeAttribute('disabled');
   }
 
+   /**
+   * Returns true if calendar picker is open, otherwise false.
+   * @method isOpen
+   * @return {boolean}
+   */
+  isOpen() {
+    return this._open;    
+  }
+
   /**
    * Show datePicker HTML Component
    * @method show
