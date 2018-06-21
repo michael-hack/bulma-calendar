@@ -9,7 +9,7 @@
     "precommit": "npm test",
     "travis-deploy-once": "travis-deploy-once",
     "semantic-release": "semantic-release",
-    "watch:test": "jest test/index.test.js -w",
+    "watch:test": "jest test/*.test.js --watch",
     "test": "jest test/index.test.js",
     "build":"gulp build",
     "clean":"gulp clean"
