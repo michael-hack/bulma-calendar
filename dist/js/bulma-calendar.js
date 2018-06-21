@@ -367,7 +367,9 @@ var bulmaCalendar = function (_EventEmitter) {
         e.preventDefault();
       }
       if (!e.currentTarget.classList.contains('is-disabled')) {
-        this.date = e.currentTarget.dataset.date;
+        //e.currentTarget.dataset.date is stored in renderdays as data-date="${`${year}-${month}-${day}`}"
+        //So we create a Date to parse that and then use getFormatedDate to get the data out of it.
+        this.date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](new Date(e.currentTarget.dataset.date), this.dateFormat, this.lang);
         var _date = this.date,
             year = _date.year,
             month = _date.month,
@@ -484,7 +486,7 @@ var bulmaCalendar = function (_EventEmitter) {
           }
         }
 
-        days += this._renderDay(day.getDate(), this.date.month, this.date.year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
+        days += this._renderDay(day.getDate(), day.getMonth() + 1, day.getFullYear(), isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
       }
 
       this.elementCalendarBody.insertAdjacentHTML('beforeend', days);
@@ -595,11 +597,13 @@ var bulmaCalendar = function (_EventEmitter) {
     value: function show() {
       // Set the startDate to the input value
       if (this.element.value) {
-        this.options.startDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](this.element.value);
+        this.options.startDate = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](this.element.value, this.dateFormat);
       }
-      // this.date.month = this.options.startDate.getMonth();
-      // this.date.year = this.options.startDate.getFullYear();
-      // this.date.day = this.options.startDate.getDate();
+
+      this.date.month = this.options.startDate.getMonth();
+      this.date.year = this.options.startDate.getFullYear();
+      this.date.day = this.options.startDate.getDate();
+
       this._refreshCalendar();
 
       this.emit('datepicker:show', this);
@@ -782,7 +786,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isString */](date)) {
         date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](date, this.dateFormat);
       } else {
-        date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](date, this.dateFormat, this.lang));
+        date = __WEBPACK_IMPORTED_MODULE_0__utils_date__["d" /* parseDate */](__WEBPACK_IMPORTED_MODULE_0__utils_date__["c" /* getFormatedDate */](date, this.dateFormat, this.lang), this.dateFormat);
       }
       this._date = {
         year: date.getFullYear(),
@@ -927,12 +931,17 @@ var isLeapYear = function isLeapYear(year) {
 var parseDate = function parseDate(dateString) {
   var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
-  var date = new Date();
+  var date = new Date(2000, 0, 31);
   date.setHours(0, 0, 0, 0);
 
   var formatPattern = /((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))[^0-9]((?:mm?)|(?:dd?)|(?:yyy?y?))/i;
   var datePattern = /(\d+)[^0-9](\d+)[^0-9](\d+)/i;
-
+  //There is a bug when date is fomatted in non YMD order. 
+  //Day gets set first and if current months has 30 days and new date has 31, then date.setDate(matchDate[1]); wont get set at all.
+  //Possible fixes: 
+  // - Always set in YMD order.
+  // - Set new Date(); as a leapyear, January 31th., it might help. 
+  // I applied the second fix, change if necesary.
   var matchFormat = formatPattern.exec(format);
   if (matchFormat) {
     var matchDate = datePattern.exec(dateString);
