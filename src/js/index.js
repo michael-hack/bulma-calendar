@@ -1,8 +1,8 @@
-import * as dateUtils from './utils/date';
 import * as utils from './utils/type';
 
+import moment from 'moment';
+
 import EventEmitter from './utils/events';
-import datepicker_langs from './langs/langs';
 import defaultOptions from './defaultOptions';
 import template from './template';
 
@@ -82,34 +82,21 @@ export default class bulmaCalendar extends EventEmitter {
 
   // Get current datePicker language
   get lang() {
-    return this._lang;
+    return moment.locale();
   }
 
   // Set datePicker language
   set lang(lang = 'en') {
-    this._lang = datepicker_langs[lang];
-    if (typeof this._lang === 'undefined') {
-      this._lang = datepicker_langs['en'];
-    }
+    moment.locale(lang);
   }
 
   // Get date object
   get date() {
-    return this._date;
+    return this._date || moment();
   }
 
-  // Set startdate and init date by spliting it in {month, year, day}
-  set date(date = new Date()) {
-    if (utils.isString(date)) {
-      date = dateUtils.parseDate(date, this.dateFormat);
-    } else {
-      date = dateUtils.parseDate(dateUtils.getFormatedDate(date, this.dateFormat, this.lang), this.dateFormat);
-    }
-    this._date = {
-      year: date.getFullYear(),
-      month: date.getMonth(),
-      day: date.getDate()
-    };
+  set date(date = moment()) {
+    this._date = moment(date).hours(0).minutes(0).seconds(0).milliseconds(0);
   }
 
   // Get minDate
@@ -118,12 +105,8 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   // Set minDate (set to 1970-01-01 by default)
-  set minDate(minDate = '1970-01-01') {
-    if (utils.isString(minDate)) {
-      this._minDate = dateUtils.parseDate(minDate, this.dateFormat);
-    } else {
-      this._minDate = dateUtils.parseDate(dateUtils.getFormatedDate(minDate, this._dateFormat, this.lang));
-    }
+  set minDate(minDate = null) {
+    this._minDate = minDate ? moment(minDate, this.dateFormat) : null;
   }
 
   // Get maxDate
@@ -132,12 +115,8 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   // Set maxDate (set to 9999-12-31 by default)
-  set maxDate(maxDate = '9999-12-31') {
-    if (utils.isString(maxDate)) {
-      this._maxDate = dateUtils.parseDate(maxDate, this.dateFormat);
-    } else {
-      this._maxDate = dateUtils.parseDate(dateUtils.getFormatedDate(maxDate, this._dateFormat, this.lang));
-    }
+  set maxDate(maxDate = null) {
+    this._maxDate = maxDate ? moment(maxDate, this.dateFormat) : null;
   }
 
   // Get dateFormat
@@ -146,7 +125,7 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   // Set dateFormat (set to yyyy-mm-dd by default)
-  set dateFormat(dateFormat = 'yyyy-mm-dd') {
+  set dateFormat(dateFormat) {
     this._dateFormat = dateFormat;
     this._initDates();
     return this;
@@ -160,10 +139,9 @@ export default class bulmaCalendar extends EventEmitter {
   _init() {
     this._id = 'datePicker' + (new Date()).getTime() + Math.floor(Math.random() * Math.floor(9999));
     this.lang = this.options.lang;
-    this.dateFormat = this.options.dateFormat;
+    this.dateFormat = this.options.dateFormat = this.options.dateFormat || this.element.dataset.dataFormat || moment.localeData().longDateFormat('L');
     this.open = false;
-
-    this._initDates();
+    
     this._build();
     this._bindEvents();
 
@@ -174,22 +152,26 @@ export default class bulmaCalendar extends EventEmitter {
 
   // Init dates used by datePicker core system
   _initDates() {
-    // Set the startDate to the input value
+    // Set the selectedDate to the input value
     if (this.element.value) {
-      this.date = dateUtils.parseDate(this.element.value);
+      if (this.element.getAttribute('type').toLowerCase() === 'date') {
+        this.date = moment(this.element.value, 'YYYY-MM-DD');
+      } else {
+        this.date = moment(this.element.value);
+      }
     } else {
-      this.date = this.options.startDate ? this.options.dateFormat : new Date();
+      this.date = this.options.selectedDate ? moment(this.options.selectedDate) : moment();
     }
     // Transform start date according to dateFormat option
-    this.minDate = this.options.minDate ? this.options.minDate : '1970-01-01';
-    this.maxDate = this.options.maxDate ? this.options.maxDate : '9999-12-31';
+    this.minDate = this.options.minDate ? moment(this.options.minDate) : null;
+    this.maxDate = this.options.maxDate ? moment(this.options.maxDate) : null;
 
     if (this.options.disabledDates) {
       if (!Array.isArray(this.options.disabledDates)) {
         this.options.disabledDates = [this.options.disabledDates];
       }
       for (var i=0; i < this.options.disabledDates.length; i++) {
-        this.options.disabledDates[i] = dateUtils.parseDate(dateUtils.getFormatedDate(new Date(this.options.disabledDates[i]), this.dateFormat, this.lang));
+        this.options.disabledDates[i] = moment(this.options.disabledDates[i]);
       }
     }
   }
@@ -205,7 +187,7 @@ export default class bulmaCalendar extends EventEmitter {
       ...this.options,
       id: this.id,
       date: this.date,
-      lang: this.lang,
+      month: moment.months()[this.date.month()],
       getDayName: this[getDayNameDatePicker]
     }));
 
@@ -334,14 +316,15 @@ export default class bulmaCalendar extends EventEmitter {
       e.preventDefault();
     }
     if (!e.currentTarget.classList.contains('is-disabled')) {
-      //e.currentTarget.dataset.date is stored in renderdays as data-date="${`${year}-${month}-${day}`}"
-      //So we create a Date to parse that and then use getFormatedDate to get the data out of it.
-      this.date = dateUtils.getFormatedDate(new Date(e.currentTarget.dataset.date), this.dateFormat, this.lang)
-      let {year, month, day} = this.date;
+      this.date = moment(e.currentTarget.dataset.date, this.dateFormat);
 
       this.emit('datepicker:date:selected', this);
 
-      this.element.value = dateUtils.getFormatedDate((new Date(year, month, day)), this.dateFormat, this.lang);
+      if (this.element.getAttribute('type').toLowerCase() === 'date') {
+        this.element.value = this.date.format('YYYY-MM-DD');
+      } else {
+        this.element.value = this.date.format(this.dateFormat);
+      }
       if (this.options.closeOnSelect) {
         this.hide();
       }
@@ -375,29 +358,33 @@ export default class bulmaCalendar extends EventEmitter {
       day -= 7;
     }
 
-    return abbr ? this.lang.weekdaysShort[day] : this.lang.weekdays[day];
+    return abbr ? moment.weekdaysShort()[day] : moment.weekdays()[day];
   }
 
   _renderDay(day, month, year, isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut) {
+    const date = moment({
+      year: year,
+      month: month,
+      day: day
+    }).format(this.dateFormat).toString();
     return `
-      <div data-date="${`${year}-${month}-${day}`}" class="calendar-date${isDisabled ? ' is-disabled' : ''}${isBetween ? ' calendar-range' : ''}${isSelectedIn ? ' calendar-range-start' : ''}${isSelectedOut ? ' calendar-range-end' : ''}">
+      <div data-date="${`${date}`}" class="calendar-date${isDisabled ? ' is-disabled' : ''}${isBetween ? ' calendar-range' : ''}${isSelectedIn ? ' calendar-range-start' : ''}${isSelectedOut ? ' calendar-range-end' : ''}">
         <button class="date-item${isToday ? ' is-today' : ''}${isSelected ? ' is-active' : ''}">${day}</button>
       </div>
     `;
   }
 
   _renderDays() {
-    const now = new Date();
+    const now = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
     let days = '';
 
-    let numberOfDays = dateUtils.getDaysInMonth(this.date.year, this.date.month),
-      before = new Date(this.date.year, this.date.month, 1).getDay();
+    let numberOfDays = this.date.daysInMonth(),
+      before = moment().year(this.date.year()).month(this.date.month()).date(1).day();
 
-    this.emit('datepicker:rendered', this);
 
     // Get start day from options
     // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-    const startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
+    const startDay = typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : moment().startOf('week').day();
     if (startDay > 0) {
       before -= startDay;
       if (before < 0) {
@@ -413,35 +400,36 @@ export default class bulmaCalendar extends EventEmitter {
 
     cells += 7 - after;
     for (var i = 0; i < cells; i++) {
-      var day = new Date(this.date.year, this.date.month, 1 + (i - before)),
+      var day = moment().year(this.date.year()).month(this.date.month()).date(1 + (i - before)).hours(0).minutes(0).seconds(0).milliseconds(0),
         isBetween = false,
-        isSelected = dateUtils.compareDates(day, this.options.startDate),
+        isSelected = day.diff(this.date) == 0,
         isSelectedIn = false,
         isSelectedOut = false,
-        isToday = dateUtils.compareDates(day, now),
+        isToday = day.diff(now) == 0,
         isEmpty = i < before || i >= (numberOfDays + before),
         isDisabled = false;
-
-      day.setHours(0, 0, 0, 0);
 
       if (!isSelected) {
         isSelectedIn = false;
         isSelectedOut = false;
       }
 
-      if (day.getMonth() !== this.date.month || (this.minDate && day.getTime() < this.minDate.getTime()) || (this.maxDate && day.getTime() > this.maxDate.getTime())) {
+      if (day.month() !== this.date.month() || (this.minDate && day.unix() < this.minDate.unix()) || (this.maxDate && day.unix() > this.maxDate.unix())) {
         isDisabled = true;
       }
 
       if (this.options.disabledDates) {
-        for (var j=0; j < this.options.disabledDates.length; j++) {
-          if (day.getTime() == this.options.disabledDates[j].getTime()) {
+        for (let j = 0; j < this.options.disabledDates.length; j++) {
+          if (day.unix() == this.options.disabledDates[j].unix()) {
             isDisabled = true;
           }
         }
       }
 
-      days += this._renderDay(day.getDate(),  day.getMonth() + 1, day.getFullYear(), isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
+      days += this._renderDay(day.date(),  day.month(), day.year(), isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
+
+
+    this.emit('datepicker:rendered', this);
     }
 
     this.elementCalendarBody.insertAdjacentHTML('beforeend', days);
@@ -455,7 +443,7 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   prevMonth() {
-    this.date.month -= 1;
+    this.date.subtract(1, 'months');
     this._refreshCalendar();
   }
 
@@ -473,7 +461,7 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {}
    */
   nextMonth() {
-    this.date.month += 1;
+    this.date.add(1, 'months');
     this._refreshCalendar();
   }
 
@@ -491,7 +479,7 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   prevYear() {
-    this.date.year -= 1;
+    this.date.subtract(1, 'y');
     this._refreshCalendar();
   }
 
@@ -509,7 +497,7 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {}
    */
   nextYear() {
-    this.date.year += 1;
+    this.date.add(1, 'y');
     this._refreshCalendar();
   }
 
@@ -536,14 +524,14 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   show() {
-    // Set the startDate to the input value
+    // Set the selectedDate to the input value
     if (this.element.value) {
-      this.options.startDate = dateUtils.parseDate(this.element.value, this.dateFormat);
+      if (this.element.getAttribute('type').toLowerCase() === 'date') {
+        this.date = moment(this.element.value, 'YYYY-MM-DD');
+      } else {
+        this.date = moment(this.element.value);
+      }
     }
-
-    this.date.month = this.options.startDate.getMonth();
-    this.date.year = this.options.startDate.getFullYear();
-    this.date.day = this.options.startDate.getDate();
 
     this._refreshCalendar();
 
@@ -574,16 +562,16 @@ export default class bulmaCalendar extends EventEmitter {
    */
   _refreshCalendar() {
     if (this.date.month < 0) {
-      this.date.year -= Math.ceil(Math.abs(this.date.month) / 12);
+      this.date.year -= Math.ceil(Math.abs(this.date.month()) / 12);
       this.date.month += 12;
     }
     if (this.date.month > 11) {
-      this.date.year += Math.floor(Math.abs(this.date.month) / 12);
+      this.date.year += Math.floor(Math.abs(this.date.month()) / 12);
       this.date.month -= 12;
     }
-    this.elementCalendarNavMonth.innerHTML = this.lang.months[this.date.month];
-    this.elementCalendarNavYear.innerHTML = this.date.year;
-    this.elementCalendarNavDay.innerHTML = this.date.day;
+    this.elementCalendarNavMonth.innerHTML = moment.months()[this.date.month()];
+    this.elementCalendarNavYear.innerHTML = this.date.year();
+    this.elementCalendarNavDay.innerHTML = this.date.date();
     this.elementCalendarBody.innerHTML = '';
 
     let minMonth = 0,
@@ -592,33 +580,33 @@ export default class bulmaCalendar extends EventEmitter {
       maxYear = 9999;
 
     if (this.minDate) {
-      minMonth = this.minDate.getMonth();
-      minYear = this.minDate.getFullYear();
+      minMonth = this.minDate.month();
+      minYear = this.minDate.year();
     }
     if (this.maxDate) {
-      maxMonth = this.maxDate.getMonth();
-      maxYear = this.maxDate.getFullYear();
+      maxMonth = this.maxDate.month();
+      maxYear = this.maxDate.year();
     }
 
-    if (this.date.year <= minYear) {
+    if (this.date.year() <= minYear) {
       this._disablePrevYear();
     } else {
       this._enablePrevYear();
     }
 
-    if (this.date.year >= maxYear) {
+    if (this.date.year() >= maxYear) {
       this._disableNextYear();
     } else {
       this._enableNextYear();
     }
 
-    if (this.date.year <= minYear && this.date.month <= minMonth) {
+    if (this.date.year() <= minYear && this.date.month() <= minMonth) {
       this._disablePrevMonth();
     } else {
       this._enablePrevMonth();
     }
 
-    if (this.date.year >= maxYear && this.date.month >= maxMonth) {
+    if (this.date.year() >= maxYear && this.date.month() >= maxMonth) {
       this._disableNextMonth();
     } else {
       this._enableNextMonth();

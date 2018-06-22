@@ -5,15 +5,15 @@ export default (data) => {
       <div class="calendar-nav">
         <div class="calendar-nav-month">
           <button class="calendar-nav-previous-month button is-small is-text">${data.icons.month.previous}</button>
-          <div class="calendar-month">${data.lang.months[data.date.month]}</div>
+          <div class="calendar-month">${data.month}</div>
           <button class="calendar-nav-next-month button is-small is-text">${data.icons.month.next}</button>
         </div>
         <div class="calendar-nav-day">
-          <div class="calendar-day">${data.date.day}</div>
+          <div class="calendar-day">${data.date.day()}</div>
         </div>
         <div class="calendar-nav-year">
           <button class="calendar-nav-previous-year button is-small is-text">${data.icons.year.previous}</button>
-          <div class="calendar-year">${data.date.year}</div>
+          <div class="calendar-year">${data.date.year()}</div>
           <button class="calendar-nav-next-year button is-small is-text">${data.icons.year.next}</button>
         </div>
       </div>

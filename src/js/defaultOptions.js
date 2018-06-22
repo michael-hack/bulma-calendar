@@ -1,10 +1,9 @@
 const defaultOptions = {
-  startDate: new Date(),
+  selectedDate: new Date(),
   weekStart: null,
   minDate: null,
   maxDate: null,
-  disabledDates: null,
-  dateFormat: 'yyyy-mm-dd', // the default data format `field` value
+  disabledDates: [],
   lang: 'en', // internationalization
   overlay: false,
   closeOnOverlayClick: true,

@@ -11,8 +11,8 @@
     "semantic-release": "semantic-release",
     "watch:test": "jest test/*.test.js --watch",
     "test": "jest test/*.test.js",
-    "build":"gulp build",
-    "clean":"gulp clean"
+    "build": "gulp build",
+    "clean": "gulp clean"
   },
   "repository": {
     "type": "git",
@@ -67,6 +67,7 @@
   },
   "release": {
     "prepare": [
+      "@semantic-release/npm",
       {
         "path": "@semantic-release/changelog",
         "changelogFile": "CHANGELOG.md"
@@ -78,5 +79,8 @@
     "src/**",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "dependencies": {
+    "moment": "^2.22.2"
+  }
 }
