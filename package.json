@@ -67,7 +67,9 @@
   },
   "jest": {
     "verbose": true,
-    "setupFiles": ["./test/mocks/createRange"]
+    "setupFiles": [
+      "./test/mocks/createRange"
+    ]
   },
   "release": {
     "prepare": [
