@@ -65,6 +65,10 @@
       "path": "node_modules/cz-conventional-changelog"
     }
   },
+  "jest": {
+    "verbose": true,
+    "setupFiles": ["./test/mocks/createRange"]
+  },
   "release": {
     "prepare": [
       "@semantic-release/npm",

@@ -22,8 +22,8 @@ try {
       _supportsPassive = true;
     }
   });
-  window.addEventListener("testPassive", null, opts);
-  window.removeEventListener("testPassive", null, opts);
+  window.addEventListener('testPassive', null, opts);
+  window.removeEventListener('testPassive', null, opts);
 } catch (e) {}
 
 export default class bulmaCalendar extends EventEmitter {
@@ -66,9 +66,7 @@ export default class bulmaCalendar extends EventEmitter {
 
     const datepickers = utils.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
     [].forEach.call(datepickers, datepicker => {
-      setTimeout(() => {
-        datepickerInstances.push(new bulmaCalendar(datepicker, options));
-      }, 100);
+      datepickerInstances.push(new bulmaCalendar(datepicker, options));
     });
     return datepickerInstances;
   }
@@ -429,7 +427,7 @@ export default class bulmaCalendar extends EventEmitter {
       days += this._renderDay(day.date(),  day.month(), day.year(), isSelected, isToday, isDisabled, isEmpty, isBetween, isSelectedIn, isSelectedOut);
 
 
-    this.emit('datepicker:rendered', this);
+      this.emit('datepicker:rendered', this);
     }
 
     this.elementCalendarBody.insertAdjacentHTML('beforeend', days);
@@ -509,7 +507,7 @@ export default class bulmaCalendar extends EventEmitter {
     this.elementCalendarNavNextYear.removeAttribute('disabled');
   }
 
-   /**
+  /**
    * Returns true if calendar picker is open, otherwise false.
    * @method isOpen
    * @return {boolean}

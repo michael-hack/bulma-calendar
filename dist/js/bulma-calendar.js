@@ -16477,8 +16477,8 @@ try {
       _supportsPassive = true;
     }
   });
-  window.addEventListener("testPassive", null, opts);
-  window.removeEventListener("testPassive", null, opts);
+  window.addEventListener('testPassive', null, opts);
+  window.removeEventListener('testPassive', null, opts);
 } catch (e) {}
 
 var bulmaCalendar = function (_EventEmitter) {
@@ -16535,7 +16535,7 @@ var bulmaCalendar = function (_EventEmitter) {
       this._id = 'datePicker' + new Date().getTime() + Math.floor(Math.random() * Math.floor(9999));
       this.lang = this.options.lang;
       this.dateFormat = this.options.dateFormat = this.options.dateFormat || this.element.dataset.dataFormat || __WEBPACK_IMPORTED_MODULE_1_moment___default.a.localeData().longDateFormat('L');
-      this.open = false;
+      this._open = false;
 
       this._build();
       this._bindEvents();
@@ -16675,7 +16675,7 @@ var bulmaCalendar = function (_EventEmitter) {
     value: function value(e) {
       e.preventDefault();
 
-      if (this.open) {
+      if (this._open) {
         this.hide();
       } else {
         this.show();
@@ -16948,10 +16948,10 @@ var bulmaCalendar = function (_EventEmitter) {
     }
 
     /**
-    * Returns true if calendar picker is open, otherwise false.
-    * @method isOpen
-    * @return {boolean}
-    */
+     * Returns true if calendar picker is open, otherwise false.
+     * @method isOpen
+     * @return {boolean}
+     */
 
   }, {
     key: 'isOpen',
@@ -16985,7 +16985,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (!this.options.overlay) {
         this._adjustPosition();
       }
-      this.open = true;
+      this._open = true;
     }
 
     /**
@@ -16997,7 +16997,7 @@ var bulmaCalendar = function (_EventEmitter) {
   }, {
     key: 'hide',
     value: function hide() {
-      this.open = false;
+      this._open = false;
       this.emit('datepicker:hide', this);
       this.elementContainer.classList.remove('is-active');
     }
@@ -17210,9 +17210,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
       var datepickers = __WEBPACK_IMPORTED_MODULE_0__utils_type__["a" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
       [].forEach.call(datepickers, function (datepicker) {
-        setTimeout(function () {
-          datepickerInstances.push(new bulmaCalendar(datepicker, options));
-        }, 100);
+        datepickerInstances.push(new bulmaCalendar(datepicker, options));
       });
       return datepickerInstances;
     }
