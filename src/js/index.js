@@ -351,7 +351,7 @@ export default class bulmaCalendar extends EventEmitter {
    */
   [getDayNameDatePicker](day, abbr = false) {
     // will try to use weekStart from options if provided, also verify if it's in the range 0 ~ 6
-    day += typeof this.options.weekStart != 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
+    day += typeof this.options.weekStart == 'number' && this.options.weekStart >= 0 && this.options.weekStart <= 6 ? this.options.weekStart : this.lang.weekStart;
     while (day >= 7) {
       day -= 7;
     }
