@@ -1,0 +1,33 @@
+<div class="table-container">
+  <table class="table is-bordered {{ table_class }}">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default value</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default value</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for option in page.options %}
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">{{ option.name }}</code>
+          </td>
+          <td >
+            {{ option.description }}
+          </td>
+          <td>
+            <code>{{ option.value }}</code>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

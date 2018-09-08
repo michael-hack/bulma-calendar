@@ -1,0 +1,440 @@
+---
+layout: default
+route: index
+fixed-navbar: false
+title: Quick-Start
+subtitle: bulma.io Calendar component with range selection capability
+tree:
+- name: dist
+  open: true
+  subtree:
+  - name: css
+    open: true
+    subtree:
+    - name: bulma-calendar.min.css
+      details: Minified version of all required CSS in one file
+    - name: bulma-calendar.sass
+      details: Copy of Sass sources from src/
+  - name: js
+    open: true
+    subtree:
+      - name: bulma-calendar.js
+        details: JavaScript code
+      - name: bulma-calendar.min.js
+        details: Minified version of JavaScript code
+- name: src
+  open: true
+  subtree:
+  - name: js
+    open: true
+    subtree:
+    - name: index.js
+      details: Javascript ES6 source code
+  - name: sass
+    open: true
+    subtree:
+    - name: index.sass
+      details: SASS source code
+options:
+- name: startDate
+  type: Date
+  description: 'Pre-selected start date'
+  value: undefined
+- name: endDate
+  type: DateDa
+  description: 'Pre-selected end date'
+  value: undefined
+- name: minDate
+  type: Date
+  description: 'Minimum date allowed'
+  value: 'null'
+- name: maxDate
+  type: Date
+  description: 'Maximum date allowed'
+  value: 'null'
+- name: isRange
+  type: Boolean
+  description: 'Display image title at bottom if exists'
+  value: false
+- name: disabledDates
+  type: Array of Dates
+  description: 'List of disabled dates'
+  value: '[]'
+- name: disabledWeekDays
+  type: String of day numbers separated by a comma
+  description: 'List of disabled week days'
+  value: undefined
+- name: lang
+  type: String
+  description: 'Display lang (from language supported by <a href="https://date-fns.org/v1.29.0/docs/format" targer="_blank">date-fns</a>)'
+  value: 'en'
+- name: dateFormat
+  type: String
+  description: 'Date format (based on formats supported by <a href="https://date-fns.org/v1.29.0/docs/format" targer="_blank">date-fns</a>)'
+  value: 'MM/DD/YYYY'
+- name: displayMode
+  type: String
+  description: 'Display style (default|dialog|inline)'
+  value: 'default'
+- name: showHeader
+  type: Boolean
+  description: 'Show/Hide header section'
+  value: true
+- name: showFooter
+  type: Boolean
+  description: 'Show/Hide footer section'
+  value: true
+- name: todayButton
+  type: Boolean
+  description: 'Show/Hide today button in footer section'
+  value: true
+- name: clearButton
+  type: Boolean
+  description: 'Show/Hide clear button in footer section'
+  value: true
+- name: labelFrom
+  type: String
+  description: 'Label used for start date'
+  value: empty string
+- name: labelTo
+  type: String
+  description: 'Label used for end date'
+  value: empty string
+- name: weekStart
+  type: Int
+  description: 'Week day number to start week (Sunday = 0)'
+  value: 0
+- name: closeOnOverlayClick
+  type: Boolean
+  description: 'Enable close dialog when click on overlay (only for dialog display style)'
+  value: true
+- name: closeOnSelect
+  type: Boolean
+  description: 'Automatically close the datePicker when date selected (or range date selected) - not available for inline display style. If set to False then a validate button will be displayed into the footer section.'
+  value: true
+- name: toggleOnInputClick
+  type: Boolean
+  description: 'Automatically open datepicker when click into input element'
+  value: true
+events:
+- name: 'ready'
+  description: 'Triggered when calendar is intialized'
+  parameters: 'Calendar instance'
+- name: 'rendered'
+  description: 'Triggered when calendar is rendered in DOM'
+  parameters: 'Calendar instance'
+- name: 'show'
+  description: 'Triggered when calendar is opened'
+  parameters: 'Calendar instance'
+- name: 'hide'
+  description: 'Triggered when calendar is closed'
+  parameters: 'Calendar instance'
+- name: 'date:selected'
+  description: 'Triggered when a date is selected (for range date = when both start and end dates have been selected)'
+  parameters: 'Object{startDate, endDate}, Calendar instance'
+- name: 'startDate:selected'
+  description: 'Triggered when the start date is selected'
+  parameters: 'Object{startDate, endDate}, Calendar instance'
+- name: 'endDate:selected'
+  description: 'Triggered when the end date is selected'
+  parameters: 'Object{startDate, endDate}, Calendar instance'
+methods:
+- name: 'show()'
+  description: 'Open date picker (not available with "inline" display style)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'hide()'
+  description: 'Close date picker (not available with "inline" display style)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'isOpen()'
+  description: 'Check if date picker is open or not'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'boolean'
+    description: 'True if date picker is open else False'
+- name: 'isRange()'
+  description: 'Check if current instance is a range date picker'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'boolean'
+    description: 'True if the instance is a range date picker'
+- name: 'value()'
+  description: 'Get the date picker value as formatted string if no parameter else set the passed value'
+  parameters:
+  - name: 'value'
+    type: 'String|null'
+    description: 'Formatted date value if no parameter passed else null'
+  returns:
+  - type: 'Object{startDate, endDate}'
+    description: 'Date picker selected date (if not range calendar then endDate is undefined)'
+- name: 'clear()'
+  description: 'Clear date selection (startDate and endDate are set to undefined)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+---
+
+
+{% capture component_include_css %}
+<link href="~bulma-calendar/dist/css/bulma-calendar.min.css" rel="stylesheet">
+{% endcapture %}
+
+{% capture component_include_sass %}
+@charset "utf-8"
+
+// Import Bulma core
+@import 'bulma.sass'
+
+// Import component
+@import "bulmaCalendar.sass"
+{% endcapture %}
+
+{% capture component_include_es5 %}
+<script src="~bulma-calendar/dist/js/bulma-calendar.min.js"></script>
+{% endcapture %}
+
+{% capture component_include_es6 %}
+import bulmaCalendar from '~bulma-calendar/dist/js/bulma-calendar.min.js';
+{% endcapture %}
+
+{% capture component_example %}
+<input type="date">
+{% endcapture %}
+
+{% capture component_dataset %}
+<input type="date" data-display-mode="inline" data-is-range="true" data-close-on-select="false">
+{% endcapture %}
+
+{% capture component_init_es5 %}
+// Initialize all input of date type.
+var calendars = bulmaCalendar.attach('[type="date"]', options);
+
+// Loop on each calendar initialized
+for(var i = 0; i < calendars.length; i++) {
+	// Add listener to date:selected event
+	calendars[i].on('date:selected', date => {
+		console.log(date);
+	});
+}
+{% endcapture %}
+
+{% capture component_init_es6 %}
+// Initialize all input of date type.
+const calendars = bulmaCalendar.attach('[type="date"]', options);
+
+// Loop on each calendar initialized
+calendars.forEach(calendar => {
+	// Add listener to date:selected event
+	calendar.on('date:selected', date => {
+		console.log(date);
+	});
+});
+{% endcapture %}
+
+
+{% include anchor.html name="Features" %}
+<div class="columns is-multiline is-variable is-6">
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-desktop"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Responsive</h1>
+					<p>Calendar works fine on any device: desktop, tablet or mobile.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-paint-brush"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Customization</h1>
+					<p>Many options to customize behavior. Use of sass variables to easily customize design.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fab fa-2x fa-js"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Javascript</h1>
+					<p>Pure JavaScript to manage user interaction.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+</div>
+
+{% include anchor.html name="Installation" %}
+<article class="message is-warning">
+	<div class="message-body">
+		<p>This component requires bulma.io to work. See <a href="https://bulma.io/documentation/overview/start/" target="_blank">bulma.io documentation</a> first to know how to include it into your project.</p>
+	</div>
+</article>
+<p>There are several ways to get started with Bulma-extensions. You can either:</p>
+
+<section class="section is-paddingless">
+	<div class="tabs">
+		<ul>
+			<li class="is-active"><a href="#install-npm">Npm</a></li>
+			<li><a href="#install-github">Github</a> </li>
+		</ul>
+	</div>
+
+	<div class="tab-contents">
+		<div id="install-npm" class="tab-content is-active">
+			<p>Use npm to install and stay up to date in the future</p>
+			{% highlight shell %}npm install bulma-calendar{% endhighlight %}
+		</div>
+
+		<div id="install-github" class="tab-content">
+			<p>Use the GitHub repository to get the latest development version</p>
+			<p class="help">This method requires git installed on your computer.</p>
+			{% highlight shell %}git clone git://github.com/Wikiki/bulma-calendar.git{% endhighlight %}
+		</div>
+	</div>
+</section>
+
+{% include anchor.html name="Content" %}
+<section class="section is-paddingless">
+	<p>The component comes with various files:</p>
+	<div class="file-tree">
+		{% include tree.html tree=page.tree class="directory" %}
+	</div>
+	<p>Depending on your need your can use either pre-compiled files from <code>dist</code> directory or sources from <code>src</code> directory.</p>
+</section>
+
+{% include anchor.html name="HTML Structure" %}
+<section class="section is-paddingless">
+	<p>The best way to start with calendar is to use a simple HTML5 date input:</p>
+	{% highlight html %}{{ component_example }}{% endhighlight %}
+</section>
+
+{% include anchor.html name="Integration" %}
+<section class="section is-paddingless">
+	<article class="message is-warning">
+		<div class="message-body">
+			<p>This component requires bulma.io to work. See <a href="https://bulma.io/documentation" target="_blank">bulma.io documentation</a> first to know how to install it.</p>
+		</div>
+	</article>
+	<p>You are only at 3 simple steps to work with bulmaCalendar.</p>
+	<ul class="step-text">
+		<li>
+			<h6 class="title is-6">Include Stylesheet</h6>
+			<p>The first step is to include the stylesheet into your project. You can use either the minified CSS version or the Sass source to integrate it into a more global project.</p>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#include-css">Css</a></li>
+					<li><a href="#include-sass">Sass</a></li>
+				</ul>
+			</div>
+			
+			<div class="tab-contents">
+				<div id="include-css" class="tab-content is-active">
+					<p>{% highlight html %}{{ component_include_css }}{% endhighlight %}</p>
+				</div>
+				<div id="include-sass" class="tab-content">
+					<p>{% highlight html %}{{ component_include_sass }}{% endhighlight %}</p>
+				</div>
+			</div>
+		</li>
+		<li>
+			<h6 class="title is-6">Include JavaScript</h6>
+			<p>Second step is to include the JavaScript part of the component.</p>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#import-es5">ES5</a></li>
+					<li><a href="#import-es6">ES6</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-contents">
+				<div id="import-es5" class="tab-content is-active">
+					<p>{% highlight html %}{{ component_include_es5 }}{% endhighlight %}</p>
+				</div>
+				<div id="import-es6" class="tab-content">
+					<p>{% highlight javascript %}{{ component_include_es6 }}{% endhighlight %}</p>
+				</div>
+			</div>
+		</li>
+		<li>
+			<h6 class="title is-6">Initiate component</h6>
+			<p>Now all that remains is to intiate the component to all elements you want to transform into a Calendar / DatePicker</p>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#init-es5">ES5</a></li>
+					<li><a href="#init-es6">ES6</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-contents">
+				<div id="init-es5" class="tab-content is-active">
+					<p>{% highlight javascript %}{{ component_init_es5 }}{% endhighlight %}</p>
+				</div>
+				<div id="init-es6" class="tab-content">
+					<p>{% highlight javascript %}{{ component_init_es6 }}{% endhighlight %}</p>
+				</div>
+			</div>
+		</li>
+	</ul>
+</section>
+
+{% include anchor.html name="Options" %}
+{% include options.html %}
+<article class="message is-info">
+	<div class="message-body">
+		<p>Options can be set using input data attributes. Just convert option name to dashes.</p>
+		<i>For example if you want to init a deta picker using inline display style with range capability and a validate
+			button:</i>
+		{% highlight html %}{{ component_dataset }}{% endhighlight %}
+	</div>
+</article>
+
+{% include anchor.html name="Methods" %}
+<section class="section is-paddingless">
+	<p>Calendar component provides some public methods to manually work with it.</p>
+	{% include methods.html %}
+</section>
+
+{% include anchor.html name="Events" %}
+<section class="section is-paddingless">
+	<p>Calendar component comes with Events Management API so you can easily react to its behavior.</p>
+	{% include events.html %}
+</section>

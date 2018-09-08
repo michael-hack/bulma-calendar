@@ -1,224 +1,349 @@
-$calendar-border: none !default
+$calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
 $calendar-header-background-color: $primary !default
 $calendar-days-background-color: transparent !default
 $calendar-header-days-color: $grey-light !default
 $calendar-date-color: $text !default
-$calendar-date-hover-background-color: $white-ter !default
+$calendar-date-hover-background-color: $white !default
+$calendar-date-hover-border: .1rem solid $primary !default
 $calendar-today-background: transparent !default
-$calendar-today-border-color: $primary !default
+$calendar-today-border: .1rem dotted $primary !default
 $calendar-today-color: $primary !default
-$calendar-range-background-color: lighten($primary, 50%) !default
-$calendar-body-padding: 0 1em 1em 1em !default
-$calendar-header-padding: 1em 1em 0 1em !default
+$calendar-range-background-color: $primary !default
+$calendar-body-padding: 0 !default
+$calendar-header-padding: .3rem 0 !default
 $calendar-header-nav-padding: .5em !default
-$calendar-date-padding: .4rem 0 !default
+$calendar-date-padding: .1rem 0 !default
 
-=css3-prefix($property, $value)
-  -webkit-#{$property}: #{$value}
-  -khtml-#{$property}: #{$value}
-  -moz-#{$property}: #{$value}
-  -ms-#{$property}: #{$value}
-  -o-#{$property}: #{$value}
-  #{$property}: #{$value}
-
-=calendar
-  .calendar
-    background: $white
-    border: $calendar-border
-    border-radius: $calendar-border-radius
-    display: block
-    min-width: 20rem
-    text-align: center
-    max-width: 20rem
-    &.is-active
-      display: initial
-    .calendar-nav
-      background: $calendar-header-background-color
-      color: $white
-      border-top-left-radius: $calendar-border-radius
-      border-top-right-radius: $calendar-border-radius
-      display: flex
-      align-items: center
-      justify-content: space-between
-      font-size: $size-5
-      padding: $calendar-header-nav-padding
-      .calendar-nav-month,
-      .calendar-nav-day,
-      .calendar-nav-year
-        width: 100%
-        display: flex
-        justify-content: space-between
-        align-items: center
-      .calendar-month,
-      .calendar-day,
-      .calendar-year
-        flex: 1
-      .calendar-month
-        font-size: $size-4
-      .calendar-day
-        font-size: $size-2
-      .calendar-nav-previous-month, .calendar-nav-next-month,
-      .calendar-nav-previous-year, .calendar-nav-next-year,
-        flex-basis: auto
-        flex-grow: 0
-        flex-shrink: 0
-        text-decoration: none
-        color: $white
-        &:hover
-          background-color: transparent
-          svg
-            stroke-width: 1em
-        svg
-          stroke: currentColor
-          width: 11.25px
-          height: 18px
-    .calendar-header, .calendar-body
-      display: flex
-      flex-wrap: wrap
-      justify-content: center
-    .calendar-header .calendar-date, .calendar-body .calendar-date
-      flex: 0 0 14.28%
-      max-width: 14.28%
-    .calendar-header
-      padding: $calendar-header-padding
-      background: $calendar-days-background-color
-      color: findColorInvert( $calendar-days-background-color )
+=calendar-header
+  .calendar-header
+    display: flex
+    flex: 1
+    text-align: left
+    position: relative
+    padding: 0 .5rem
+    +mobile
+      font-size: .5rem
+    .calendar-selection-from,
+    .calendar-selection-to
       font-size: $size-7
-      .calendar-date
-        color: $calendar-header-days-color
-    .calendar-body
-      padding: $calendar-body-padding
-      color: $grey
-    .calendar-date
-      border: 0
-      padding: $calendar-date-padding
-      .date-item
-        appearance: none
-        background: transparent
-        border: .1rem solid transparent
-        border-radius: 100%
-        color: $calendar-date-color
+      color: $grey-light
+      text-transform: uppercase
+    .calendar-selection-start,
+    .calendar-selection-end
+      padding: .5rem
+      display: flex
+      flex: 1
+      flex-direction: column
+      .calendar-selection-date
+        flex-direction: row
+        display: flex
+      .calendar-selection-day
+        flex: 0
+        text-transform: capitalize
+        font-size: 3rem
+        margin-right: .5rem
+        color: #5d5d5e
+        +mobile
+          font-size: 2rem
+      .calendar-selection-details
+        justify-content: center
+        display: flex
+        flex-direction: column
+      .calendar-selection-month
+        color: $text
+        text-transform: capitalize
+      .calendar-selection-weekday
+          font-size: 12px
+          color: #b6b4b6
+          text-transform: capitalize
+          text-align: left
+    .calendar-selection-end
+      &:before,
+      &::before
+        content: ">"
+        font: 2rem 'Consolas'
+        color: $white-ter
+        font-weight: 700
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translateY(-50%) translateX(-50%)
+      .calendar-selection-to
+        padding-left: 1rem
+      .calendar-selection-date
+        justify-content: flex-end
+
+=calendar-nav
+  .calendar-nav
+    background: $calendar-header-background-color
+    color: $white
+    border-top-left-radius: $calendar-border-radius
+    border-top-right-radius: $calendar-border-radius
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: $calendar-header-nav-padding
+    flex-direction: row
+    .calendar-nav-month-year
+      flex-direction: row
+      display: flex
+    .calendar-nav-month,
+    .calendar-nav-year
+      text-decoration: none
+      font-size: $size-6
+      color: findColorInvert($primary)
+      &:hover
         cursor: pointer
-        height: 2.2rem
-        line-height: 1.4rem
-        outline: none
-        padding: .3rem
-        position: relative
-        text-align: center
-        text-decoration: none
-        transition: all .2s ease
-        vertical-align: middle
-        white-space: nowrap
-        width: 2.2rem
-        &.is-today
-          background: $calendar-today-background
-          border-color: $calendar-today-border-color
-          color: $calendar-today-color
-        &:focus
-          background: $calendar-date-hover-background-color
-          border-color: $calendar-date-hover-background-color
-          color: findColorInvert( $calendar-date-hover-background-color )
-          text-decoration: none
-        &:hover
-          background: $calendar-date-hover-background-color
-          border-color: $calendar-date-hover-background-color
-          color: findColorInvert( $calendar-date-hover-background-color )
-          text-decoration: none
+    .calendar-nav-month
+      text-transform: capitalize
+    .calendar-nav-previous, .calendar-nav-next
+      flex-basis: auto
+      flex-grow: 0
+      flex-shrink: 0
+      text-decoration: none
+      color: $white
+      &:hover
+        background-color: transparent
+        svg
+          stroke-width: 1em
+      svg
+        stroke: currentColor
+        width: 11.25px
+        height: 18px
+
+=calendar-body
+  .calendar-body
+    .calendar-dates
+      display: none
+      &.is-active
+        display: flex
+        flex-direction: column
+    .calendar-months,
+    .calendar-years
+      display: none
+      &.is-active
+        display: flex
+        flex-direction: row
+    .calendar-weekdays
+        display: flex
+        flex-wrap: wrap
+        justify-content: space-around
+        padding: $calendar-header-padding
+        background: $calendar-days-background-color
+        color: findColorInvert($calendar-days-background-color)
+        font-size: $size-7
+        .calendar-date
+          flex: 0 0 14.28%
+          max-width: 14.28%
+          background: $calendar-days-background-color !important
+          color: $calendar-header-days-color
+          padding: .3rem
+    .calendar-dates
+      .calendar-days
+          display: flex
+          flex-direction: row
+          flex-wrap: wrap
+          justify-content: space-around
+          padding: $calendar-body-padding
+          color: $grey
+          .calendar-date
+            flex: 0 0 14.28%
+            max-width: 14.28%
+            border: 0
+            padding: $calendar-date-padding
+            background: $white-ter
+            .date-item
+              appearance: none
+              background: transparent
+              border: .1rem solid transparent
+              border-radius: 100%
+              color: $calendar-date-color
+              cursor: pointer
+              height: 2.2rem
+              line-height: 1.4rem
+              outline: none
+              padding: .3rem
+              position: relative
+              text-align: center
+              text-decoration: none
+              transition: all .2s ease
+              vertical-align: middle
+              white-space: nowrap
+              width: 2.2rem
+              &.is-today
+                background: $calendar-today-background
+                border: $calendar-today-border
+                color: $calendar-today-color
+              &:focus
+                background: $calendar-date-hover-background-color
+                border-color: $calendar-date-hover-background-color
+                color: findColorInvert( $calendar-date-hover-background-color )
+                text-decoration: none
+              &.is-active
+                background: $primary
+                border-color: $primary
+                border-radius: 25091983px
+                color: findColorInvert( $primary )
+              &:hover
+                background: $calendar-date-hover-background-color
+                border: $calendar-date-hover-border
+                color: findColorInvert( $calendar-date-hover-background-color )
+                text-decoration: none
+            &.is-disabled,
+            &[disabled]
+              .date-item,
+              .calendar-event
+                cursor: default
+                opacity: .25
+                pointer-events: none
+            &.is-current-month
+              background: transparent
+            &.calendar-range
+              position: relative
+              background: $calendar-range-background-color
+              &::before
+                background: $calendar-range-background-color
+                border: $calendar-date-hover-border
+                content: ""
+                height: 100%
+                width: 100%;
+                position: absolute
+                right: 0
+                top: 50%
+                transform: translateY(-50%)
+              &.calendar-range-start,
+              &.calendar-range-end
+                border-radius: 25091983px
+              &.calendar-range-start::before
+                left: 53%
+              &.calendar-range-end::before
+                right: 50%
+              .date-item
+                background-color: $primary
+                color: findColorInvert($primary)
+    .calendar-months,
+    .calendar-years
+      display: none
+      flex-direction: row
+      flex-wrap: wrap
+      padding: .5rem
+      max-height: 17rem
+      overflow-y: auto
+      &.is-active
+        display: flex
+      .calendar-month,
+      .calendar-year
+        padding: .5rem
+        margin: .5rem
+        font-size: $size-6
+        flex: calc(25% - 1rem)
+        text-transform: capitalize
+        border-radius: 25091983px
+        border: .1rem solid transparent
         &.is-active
           background: $primary
           border-color: $primary
           color: findColorInvert( $primary )
-      &.is-disabled,
-      &[disabled]
-        .date-item, .calendar-event
-          cursor: default
-          opacity: .25
-          pointer-events: none
+        &:hover
+          cursor: pointer
+          background: $calendar-date-hover-background-color
+          border: $calendar-date-hover-border
+          color: findColorInvert( $calendar-date-hover-background-color )
+
+=calendar-footer
+  .calendar-footer
+    display: flex
+    flex: 1
+    justify-content: space-evenly
+    margin-top: .5rem
+    > *
+      text-decoration: none !important
+
+=calendar
+  background: $white
+  border: $calendar-border
+  border-radius: $calendar-border-radius
+  display: block
+  width: 28rem
+  text-align: center
+  max-width: 95%
+  margin: auto
+  &.is-active
+    display: initial
+  +calendar-header
+  +calendar-nav
+  +calendar-body
+  +calendar-footer
+
+  &.is-large
+    max-width: 100%
+    .calendar-body
+      .calendar-date
+        border-bottom: $calendar-border
+        border-right: $calendar-border
+        display: flex
+        flex-direction: column
+        height: 11rem
+        padding: 0
+        &:nth-child(7n)
+          border-right: 0
+        &:nth-last-child(-n+7)
+          border-bottom: 0
+    .date-item
+      align-self: flex-end
+      height: 2.2rem
+      margin-right: .5rem
+      margin-top: .5rem
     .calendar-range
-      position: relative
       &::before
-        background: $calendar-range-background-color
-        content: ""
-        height: 2.2rem
-        left: 0
-        position: absolute
-        right: 0
-        top: 50%
-        transform: translateY(-50%)
+        top: 1.9rem
       &.calendar-range-start::before
-        left: 50%
+        left: auto
+        width: 1.9rem
       &.calendar-range-end::before
-        right: 50%
-      .date-item
-        color: $primary
+        right: 1.9rem
+    .calendar-events
+      flex-grow: 1
+      line-height: 1
+      overflow-y: auto
+      padding: .5rem
+    .calendar-event
+      background-color: $grey
+      border-radius: $radius-small
+      color: $white
+      display: block
+      font-size: 1rem
+      margin: .2rem auto
+      overflow: hidden
+      padding: .3rem .4rem
+      text-align: left
+      text-overflow: ellipsis
+      vertical-align: baseline
+      white-space: nowrap
+      @each $name, $pair in $colors
+        $color: nth($pair, 1)
+        $color-invert: nth($pair, 2)
+        &.is-#{$name}
+          background-color: $color
+          color: $color-invert
 
-    &.is-large
-      max-width: 100%
-      .calendar-body
-        .calendar-date
-          border-bottom: $calendar-border
-          border-right: $calendar-border
-          display: flex
-          flex-direction: column
-          height: 11rem
-          padding: 0
-          &:nth-child(7n)
-            border-right: 0
-          &:nth-last-child(-n+7)
-            border-bottom: 0
-      .date-item
-        align-self: flex-end
-        height: 2.2rem
-        margin-right: .5rem
-        margin-top: .5rem
-      .calendar-range
-        &::before
-          top: 1.9rem
-        &.calendar-range-start::before
-          left: auto
-          width: 1.9rem
-        &.calendar-range-end::before
-          right: 1.9rem
-      .calendar-events
-        flex-grow: 1
-        line-height: 1
-        overflow-y: auto
-        padding: .5rem
-      .calendar-event
-        background-color: $grey
-        border-radius: $radius-small
-        color: $white
-        display: block
-        font-size: 1rem
-        margin: .2rem auto
-        overflow: hidden
-        padding: .3rem .4rem
-        text-align: left
-        text-overflow: ellipsis
-        vertical-align: baseline
-        white-space: nowrap
-        @each $name, $pair in $colors
-          $color: nth($pair, 1)
-          $color-invert: nth($pair, 2)
-          &.is-#{$name}
-            background-color: $color
-            color: $color-invert
-
-.datepicker
+=datepicker
   display: none
   &.is-active
     display: flex
     .calendar
       position: fixed
       z-index: 40
-      min-width: 20rem
-      max-width: 20rem
       position: relative
       margin: 0 auto
       max-height: calc(100vh - 40px)
-    .calendar-nav
-      flex-direction: column
+  .calendar
+    +calendar
+
+    
+.calendar
   +calendar
 
-+calendar
+.datepicker
+  +datepicker

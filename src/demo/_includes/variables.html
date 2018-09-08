@@ -1,0 +1,28 @@
+<div class="table-container">
+  <table class="table is-bordered {{ table_class }}">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Default value</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Default value</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for variable in page.variables %}
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">{{ variable.name }}</code>
+          </td>
+          <td>
+            <code>{{ variable.value }}</code>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,49 @@
+{% for method in page.methods %}
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth {{ table_class }}">
+    <thead>
+      <tr>
+        <th colspan="3">{{method.name}}</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">{{method.description}}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+      {% for parameter in method.parameters %}
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">{{ parameter.name }}</code>
+        </td>
+        <td>
+          <span>{{ parameter.type }}</span>
+        </td>
+        <td>
+          <span>{{ parameter.description }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+      {% for return in method.returns %}
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">{{ return.type }}</code>
+        </td>
+        <td colspan="2">
+          <span>{{ return.description }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endfor %}

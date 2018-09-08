@@ -1,0 +1,25 @@
+<ul>
+{% for item in include.tree %}
+  {% if item.subtree %}
+  <li class="is-folder {% if item.open %}is-open{% endif %}">
+    <span>
+      {% if item.name %}{{ item.name }}{% endif %}
+    </span>
+    {% if item.details %}
+    <i>{{ item.details }}</i>
+    {% endif %}
+    {% include tree.html tree=item.subtree %}
+  </li>
+  {% else %}
+  <li class="is-file">
+    <span>
+      {% if item.name %}{{ item.name }}{% endif %}
+    </span>
+    {% if item.details %}
+    <i>{{ item.details }}</i>
+    {% endif %}
+  </li>
+  {% endif %}
+
+{% endfor %}
+</ul>

@@ -1,0 +1,22 @@
+
+<ul class="menu-list">
+{% for menu in site.data.menu %}
+  {% if menu.submenus %}
+  <li class="menu-item has-dropdown is-active">
+    <a class="menu-title">
+      {{ menu.name }}
+      <span class="menu-caret"></span>
+    </a>
+    <ul class="menu-dropdown">
+      {% for submenu in menu.submenus %}
+        <li><a class="menu-item{% if page.route == submenu.link %} is-active{% endif %}" href="{{ site.url }}/{{ submenu.link }}">{{ submenu.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li>
+    <a class="menu-item{% if page.route == submenu.link %} is-active{% endif %}" href="{{ site.url }}/{{ menu.link }}">{{ menu.name }}</a>
+  </li>
+  {% endif %}
+{% endfor %}
+</ul>

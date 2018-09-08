@@ -1,0 +1,22 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+  <title>Documentation</title>
+
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
+  <link href="{{ site.url }}/assets/css/highlight.css" rel="stylesheet">
+  <link href="{{ site.url }}/assets/css/documentation.min.css" rel="stylesheet">
+  <link href="{{ site.url }}/assets/css/bulma-calendar.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
+  <!-- Load Font Awesome 5 -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+</head>
