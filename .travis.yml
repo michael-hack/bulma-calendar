@@ -12,3 +12,8 @@ after_success:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx semantic-release
