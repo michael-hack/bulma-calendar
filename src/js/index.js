@@ -77,11 +77,15 @@ export default class bulmaCalendar extends EventEmitter {
   static attach(selector = 'input[type="date"]', options = {}) {
     let datepickerInstances = new Array();
 
-    const datepickers = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-    [].forEach.call(datepickers, datepicker => {
-      datepickerInstances.push(new bulmaCalendar(datepicker, options));
-    });
-    return datepickerInstances;
+    const datepickers = types.isString(selector) ? document.querySelectorAll(selector) : selector;
+    if (Array.isArray(datepickers)) {
+      [].forEach.call(datepickers, datepicker => {
+        datepickerInstances.push(new bulmaCalendar(datepicker, options));
+      });
+      return datepickerInstances;
+    } else {
+      return new bulmaCalendar(datepickers, options);
+    }
   }
 
   /****************************************************
@@ -683,13 +687,8 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   _bindEvents() {
-    // Bind event to element in order to display/hide datePicker on click
-    // this._clickEvents.forEach(clickEvent => {
-    //   window.addEventListener(clickEvent, this[onDocumentClickDatePicker]);
-    // });
     window.addEventListener('scroll', () => {
       if (this.options.displayMode === 'default') {
-        console('Scroll');
         this._adjustPosition();
       }
     });
@@ -697,12 +696,12 @@ export default class bulmaCalendar extends EventEmitter {
     document.addEventListener('keydown', e => {
       if (this._focus) {
         switch (e.keyCode || e.which) {
-          case 37:
-            this[onPreviousDatePicker](e);
-            break;
-          case 39:
-            this[onNextDatePicker](e);
-            break;
+        case 37:
+          this[onPreviousDatePicker](e);
+          break;
+        case 39:
+          this[onNextDatePicker](e);
+          break;
         }
       }
     });
@@ -964,8 +963,8 @@ export default class bulmaCalendar extends EventEmitter {
     months.forEach(month => {
       month.classList.remove('is-active');
       if (month.dataset.month === dateFns.format(this._visibleDate, 'MM', {
-          locale: this.locale
-        })) {
+        locale: this.locale
+      })) {
         month.classList.add('is-active');
       }
     });
@@ -973,8 +972,8 @@ export default class bulmaCalendar extends EventEmitter {
     years.forEach(year => {
       year.classList.remove('is-active');
       if (year.dataset.year === dateFns.format(this._visibleDate, 'YYYY', {
-          locale: this.locale
-        })) {
+        locale: this.locale
+      })) {
         year.classList.add('is-active');
       }
     });

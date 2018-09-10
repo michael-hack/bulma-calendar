@@ -35,6 +35,7 @@
     "date-fns": "^1.29.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.0",
     "ansi-colors": "^2.0.1",
     "autoprefixer": "^8.6.2",
     "babel-core": "^6.26.3",
