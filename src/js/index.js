@@ -77,15 +77,11 @@ export default class bulmaCalendar extends EventEmitter {
   static attach(selector = 'input[type="date"]', options = {}) {
     let datepickerInstances = new Array();
 
-    const datepickers = types.isString(selector) ? document.querySelectorAll(selector) : selector;
-    if (Array.isArray(datepickers)) {
-      [].forEach.call(datepickers, datepicker => {
-        datepickerInstances.push(new bulmaCalendar(datepicker, options));
-      });
-      return datepickerInstances;
-    } else {
-      return new bulmaCalendar(datepickers, options);
-    }
+    const datepickers = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+    [].forEach.call(datepickers, datepicker => {
+      datepickerInstances.push(new bulmaCalendar(datepicker, options));
+    });
+    return datepickerInstances;
   }
 
   /****************************************************

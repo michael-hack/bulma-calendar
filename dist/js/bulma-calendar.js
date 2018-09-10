@@ -11415,13 +11415,8 @@ var bulmaCalendar = function (_EventEmitter) {
     value: function _bindEvents() {
       var _this4 = this;
 
-      // Bind event to element in order to display/hide datePicker on click
-      // this._clickEvents.forEach(clickEvent => {
-      //   window.addEventListener(clickEvent, this[onDocumentClickDatePicker]);
-      // });
       window.addEventListener('scroll', function () {
         if (_this4.options.displayMode === 'default') {
-          console('Scroll');
           _this4._adjustPosition();
         }
       });
