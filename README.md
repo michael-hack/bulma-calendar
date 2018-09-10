@@ -6,6 +6,7 @@ Bulma's extension to display a calendar. It can be used on page as large calenda
 [![npm](https://img.shields.io/npm/dm/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
 [![Build Status](https://travis-ci.org/Wikiki/bulma-calendar.svg?branch=master)](https://travis-ci.org/Wikiki/bulma-calendar)
 
+Thanks to @stevensacks for his help.
 
 Documentation & Demo
 ---
