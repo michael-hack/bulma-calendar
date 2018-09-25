@@ -473,7 +473,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._snapshots = [];
 
     // Cahnge element type to prevent browser default type="date" behavior
-    if (this.element.getAttribute('type').toLowerCase() === 'date') {
+    if (this.element.tagName.toLowerCase() === 'input' && this.element.getAttribute('type').toLowerCase() === 'date') {
       this.element.setAttribute('type', 'text');
     }
 
