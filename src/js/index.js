@@ -7,21 +7,6 @@ import defaultOptions from './defaultOptions';
 import templateCalendar from './templates/calendar';
 import templateDays from './templates/days';
 
-const onToggleDatePicker = Symbol('onToggleDatePicker');
-const onCloseDatePicker = Symbol('onCloseDatePicker');
-const onPreviousDatePicker = Symbol('onPreviousDatePicker');
-const onNextDatePicker = Symbol('onNextDatePicker');
-const onSelectMonthDatePicker = Symbol('onSelectMonthDatePicker');
-const onMonthClickDatePicker = Symbol('onMonthClickDatePicker');
-const onSelectYearDatePicker = Symbol('onSelectYearDatePicker');
-const onYearClickDatePicker = Symbol('onYearClickDatePicker');
-const onDateClickDatePicker = Symbol('onDateClickDatePicker');
-const onDocumentClickDatePicker = Symbol('onDocumentClickDatePicker');
-const onValidateClickDatePicker = Symbol('onValidateClickDatePicker');
-const onTodayClickDatePicker = Symbol('onTodayClickDatePicker');
-const onClearClickDatePicker = Symbol('onClearClickDatePicker');
-const onCancelClickDatePicker = Symbol('onCancelClickDatePicker');
-
 let _supportsPassive = false;
 try {
   var opts = Object.defineProperty({}, 'passive', {
@@ -50,20 +35,20 @@ export default class bulmaCalendar extends EventEmitter {
       ...options
     };
 
-    this[onToggleDatePicker] = this[onToggleDatePicker].bind(this);
-    this[onCloseDatePicker] = this[onCloseDatePicker].bind(this);
-    this[onPreviousDatePicker] = this[onPreviousDatePicker].bind(this);
-    this[onNextDatePicker] = this[onNextDatePicker].bind(this);
-    this[onSelectMonthDatePicker] = this[onSelectMonthDatePicker].bind(this);
-    this[onMonthClickDatePicker] = this[onMonthClickDatePicker].bind(this);
-    this[onSelectYearDatePicker] = this[onSelectYearDatePicker].bind(this);
-    this[onYearClickDatePicker] = this[onYearClickDatePicker].bind(this);
-    this[onDateClickDatePicker] = this[onDateClickDatePicker].bind(this);
-    this[onDocumentClickDatePicker] = this[onDocumentClickDatePicker].bind(this);
-    this[onValidateClickDatePicker] = this[onValidateClickDatePicker].bind(this);
-    this[onTodayClickDatePicker] = this[onTodayClickDatePicker].bind(this);
-    this[onClearClickDatePicker] = this[onClearClickDatePicker].bind(this);
-    this[onCancelClickDatePicker] = this[onCancelClickDatePicker].bind(this);
+    this.onToggleDatePicker = this.onToggleDatePicker.bind(this);
+    this.onCloseDatePicker = this.onCloseDatePicker.bind(this);
+    this.onPreviousDatePicker = this.onPreviousDatePicker.bind(this);
+    this.onNextDatePicker = this.onNextDatePicker.bind(this);
+    this.onSelectMonthDatePicker = this.onSelectMonthDatePicker.bind(this);
+    this.onMonthClickDatePicker = this.onMonthClickDatePicker.bind(this);
+    this.onSelectYearDatePicker = this.onSelectYearDatePicker.bind(this);
+    this.onYearClickDatePicker = this.onYearClickDatePicker.bind(this);
+    this.onDateClickDatePicker = this.onDateClickDatePicker.bind(this);
+    this.onDocumentClickDatePicker = this.onDocumentClickDatePicker.bind(this);
+    this.onValidateClickDatePicker = this.onValidateClickDatePicker.bind(this);
+    this.onTodayClickDatePicker = this.onTodayClickDatePicker.bind(this);
+    this.onClearClickDatePicker = this.onClearClickDatePicker.bind(this);
+    this.onCancelClickDatePicker = this.onCancelClickDatePicker.bind(this);
 
     // Initiate plugin
     this._init();
@@ -197,13 +182,13 @@ export default class bulmaCalendar extends EventEmitter {
       if (this.options.isRange) {
         const dates = this.element.value.split(' - ');
         if (dates.length) {
-          this.startDate = new Date(dates[0]);
+          this.startDate = dateFns.parse(dates[0]);
         }
         if (dates.length === 2) {
-          this.endDate = new Date(dates[1]);
+          this.endDate = dateFns.parse(dates[1]);
         }
       } else {
-        this.startDate = new Date(this.element.value);
+        this.startDate = dateFns.parse(this.element.value);
       }
     } else {
       let value = '';
@@ -279,18 +264,18 @@ export default class bulmaCalendar extends EventEmitter {
    * EVENTS FUNCTIONS                                 *
    *                                                  *
    ****************************************************/
-  [onDocumentClickDatePicker](e) {
+  onDocumentClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
     if (this.options.displayMode !== 'inline' && this._open) {
-      this[onCloseDatePicker](e);
+      this.onCloseDatePicker(e);
     }
   }
 
-  [onToggleDatePicker](e) {
+  onToggleDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -303,16 +288,16 @@ export default class bulmaCalendar extends EventEmitter {
     }
   }
 
-  [onValidateClickDatePicker](e) {
+  onValidateClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
-    this[onCloseDatePicker](e);
+    this.onCloseDatePicker(e);
   }
 
-  [onTodayClickDatePicker](e) {
+  onTodayClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -326,10 +311,11 @@ export default class bulmaCalendar extends EventEmitter {
       this._visibleDate = this.startDate;
     }
     this.element.value = this.value();
+    this.element.setAttribute('value', this.value());
     this._refreshCalendar();
   }
 
-  [onClearClickDatePicker](e) {
+  onClearClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -338,7 +324,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._clear();
   }
 
-  [onCancelClickDatePicker](e) {
+  onCancelClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -349,10 +335,11 @@ export default class bulmaCalendar extends EventEmitter {
       this.endDate = this._snapshots[0].end;
     }
     this.element.value = this.value();
-    this[onCloseDatePicker](e);
+    this.element.setAttribute('value', this.value());
+    this.onCloseDatePicker(e);
   }
 
-  [onCloseDatePicker](e) {
+  onCloseDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -361,7 +348,7 @@ export default class bulmaCalendar extends EventEmitter {
     this.hide();
   }
 
-  [onPreviousDatePicker](e) {
+  onPreviousDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -375,7 +362,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._refreshCalendar();
   }
 
-  [onNextDatePicker](e) {
+  onNextDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -388,7 +375,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._refreshCalendar();
   }
 
-  [onDateClickDatePicker](e) {
+  onDateClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -400,6 +387,7 @@ export default class bulmaCalendar extends EventEmitter {
       this._refreshCalendar();
       if (this.options.displayMode === 'inline' || this.options.closeOnSelect) {
         this.element.value = this.value();
+        this.element.setAttribute('value', this.value());
       }
 
       if ((!this.options.isRange || (this.startDate && this._isValidDate(this.startDate) && this.endDate && this._isValidDate(this.endDate))) && this.options.closeOnSelect) {
@@ -408,7 +396,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
   }
 
-  [onSelectMonthDatePicker](e) {
+  onSelectMonthDatePicker(e) {
     e.stopPropagation();
     this._ui.body.dates.classList.remove('is-active');
     this._ui.body.years.classList.remove('is-active');
@@ -417,7 +405,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._ui.navigation.next.setAttribute('disabled', 'disabled');
   }
 
-  [onSelectYearDatePicker](e) {
+  onSelectYearDatePicker(e) {
     e.stopPropagation();
 
     this._ui.body.dates.classList.remove('is-active');
@@ -432,7 +420,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
   }
 
-  [onMonthClickDatePicker](e) {
+  onMonthClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -445,7 +433,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._refreshCalendar();
   }
 
-  [onYearClickDatePicker](e) {
+  onYearClickDatePicker(e) {
     if (!_supportsPassive) {
       e.preventDefault();
     }
@@ -527,13 +515,13 @@ export default class bulmaCalendar extends EventEmitter {
       if (this.options.isRange) {
         const dates = this.element.value.split(' - ');
         if (dates.length) {
-          this.startDate = new Date(dates[0]);
+          this.startDate = dateFns.parse(dates[0]);
         }
         if (dates.length === 2) {
-          this.endDate = new Date(dates[1]);
+          this.endDate = dateFns.parse(dates[1]);
         }
       } else {
-        this.startDate = new Date(this.element.value);
+        this.startDate = dateFns.parse(this.element.value);
       }
     }
     this._visibleDate = this._isValidDate(this.startDate) ? this.startDate : startDateToday;
@@ -693,10 +681,10 @@ export default class bulmaCalendar extends EventEmitter {
       if (this._focus) {
         switch (e.keyCode || e.which) {
         case 37:
-          this[onPreviousDatePicker](e);
+          this.onPreviousDatePicker(e);
           break;
         case 39:
-          this[onNextDatePicker](e);
+          this.onNextDatePicker(e);
           break;
         }
       }
@@ -705,7 +693,7 @@ export default class bulmaCalendar extends EventEmitter {
     // Bind event to element in order to display/hide datePicker on click
     if (this.options.toggleOnInputClick === true) {
       this._clickEvents.forEach(clickEvent => {
-        this.element.addEventListener(clickEvent, this[onToggleDatePicker]);
+        this.element.addEventListener(clickEvent, this.onToggleDatePicker);
       });
     }
 
@@ -713,13 +701,13 @@ export default class bulmaCalendar extends EventEmitter {
       // Bind close event on Close button
       if (this._ui.overlay.close) {
         this._clickEvents.forEach(clickEvent => {
-          this.this._ui.overlay.close.addEventListener(clickEvent, this[onCloseDatePicker]);
+          this.this._ui.overlay.close.addEventListener(clickEvent, this.onCloseDatePicker);
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
         this._clickEvents.forEach(clickEvent => {
-          this._ui.overlay.background.addEventListener(clickEvent, this[onCloseDatePicker]);
+          this._ui.overlay.background.addEventListener(clickEvent, this.onCloseDatePicker);
         });
       }
     }
@@ -727,58 +715,58 @@ export default class bulmaCalendar extends EventEmitter {
     // Bind year navigation events
     if (this._ui.navigation.previous) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.previous.addEventListener(clickEvent, this[onPreviousDatePicker]);
+        this._ui.navigation.previous.addEventListener(clickEvent, this.onPreviousDatePicker);
       });
     }
     if (this._ui.navigation.next) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.next.addEventListener(clickEvent, this[onNextDatePicker]);
+        this._ui.navigation.next.addEventListener(clickEvent, this.onNextDatePicker);
       });
     }
 
     if (this._ui.navigation.month) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.month.addEventListener(clickEvent, this[onSelectMonthDatePicker]);
+        this._ui.navigation.month.addEventListener(clickEvent, this.onSelectMonthDatePicker);
       });
     }
     if (this._ui.navigation.year) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.year.addEventListener(clickEvent, this[onSelectYearDatePicker]);
+        this._ui.navigation.year.addEventListener(clickEvent, this.onSelectYearDatePicker);
       });
     }
 
     const months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
     months.forEach(month => {
       this._clickEvents.forEach(clickEvent => {
-        month.addEventListener(clickEvent, this[onMonthClickDatePicker]);
+        month.addEventListener(clickEvent, this.onMonthClickDatePicker);
       });
     });
 
     const years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
     years.forEach(year => {
       this._clickEvents.forEach(clickEvent => {
-        year.addEventListener(clickEvent, this[onYearClickDatePicker]);
+        year.addEventListener(clickEvent, this.onYearClickDatePicker);
       });
     });
 
     if (this._ui.footer.validate) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.validate.addEventListener(clickEvent, this[onValidateClickDatePicker]);
+        this._ui.footer.validate.addEventListener(clickEvent, this.onValidateClickDatePicker);
       });
     }
     if (this._ui.footer.today) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.today.addEventListener(clickEvent, this[onTodayClickDatePicker]);
+        this._ui.footer.today.addEventListener(clickEvent, this.onTodayClickDatePicker);
       });
     }
     if (this._ui.footer.clear) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.clear.addEventListener(clickEvent, this[onClearClickDatePicker]);
+        this._ui.footer.clear.addEventListener(clickEvent, this.onClearClickDatePicker);
       });
     }
     if (this._ui.footer.cancel) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.cancel.addEventListener(clickEvent, this[onCancelClickDatePicker]);
+        this._ui.footer.cancel.addEventListener(clickEvent, this.onCancelClickDatePicker);
       });
     }
   }
@@ -794,7 +782,7 @@ export default class bulmaCalendar extends EventEmitter {
         // if not in range, no click action
         // if in this month, select the date
         // if out of this month, jump to the date
-        const onClick = !this._isValidDate(new Date(day.dataset.date), this.minDate, this.maxDate) ? null : this[onDateClickDatePicker];
+        const onClick = !this._isValidDate(dateFns.parse(day.dataset.date), this.minDate, this.maxDate) ? null : this.onDateClickDatePicker;
         day.addEventListener(clickEvent, onClick);
       });
 
@@ -875,24 +863,24 @@ export default class bulmaCalendar extends EventEmitter {
   _setStartAndEnd(date) {
     this._snapshot();
     if (this.options.isRange && (!this._isValidDate(this.startDate) || (this._isValidDate(this.startDate) && this._isValidDate(this.endDate)))) {
-      this.startDate = new Date(date);
+      this.startDate = dateFns.parse(date);
       this.endDate = undefined;
       this.emit('startDate:selected', this.date, this);
     } else if (this.options.isRange && !this._isValidDate(this.endDate)) {
       if (dateFns.isBefore(date, this.startDate)) {
         this.endDate = this.startDate;
-        this.startDate = new Date(date);
+        this.startDate = dateFns.parse(date);
         this.emit('startDate:selected', this.date, this);
         this.emit('endDate:selected', this.date, this);
       } else if (dateFns.isAfter(date, this.startDate)) {
-        this.endDate = new Date(date);
+        this.endDate = dateFns.parse(date);
         this.emit('endDate:selected', this.date, this);
       } else {
-        this.startDate = new Date(date);
+        this.startDate = dateFns.parse(date);
         this.endDate = undefined;
       }
     } else {
-      this.startDate = new Date(date);
+      this.startDate = dateFns.parse(date);
       this.endDate = undefined;
     }
 
@@ -919,6 +907,7 @@ export default class bulmaCalendar extends EventEmitter {
     this.startDate = undefined;
     this.endDate = undefined;
     this.element.value = this.value();
+    this.element.setAttribute('value', this.value());
     if (this.options.displayMode !== 'inline' && this._open) {
       this.hide();
     }

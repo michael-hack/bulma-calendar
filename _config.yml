@@ -1,0 +1,14 @@
+# Variables
+title:         "Calendar Pro"
+description:   "Responsive - Interactive Calendar Picker"
+version:       1.0.0
+# url:           https://demo.creativebulma.net/components/calendar/
+
+# Build
+markdown:      kramdown
+permalink:     pretty
+includes:      ['assets/css', 'assets/js']
+exclude:       ['package.json']
+sass:
+  sass_dir:    _sass
+  style:       compressed
