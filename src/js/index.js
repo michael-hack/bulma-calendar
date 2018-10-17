@@ -1,6 +1,8 @@
 import * as utils from './utils/index';
 import * as types from './utils/type';
 import * as dateFns from 'date-fns';
+// import date from 'date'
+import dateUtils from 'date-and-time';
 
 import EventEmitter from './utils/events';
 import defaultOptions from './defaultOptions';
@@ -114,11 +116,11 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   set startDate(date) {
-    this._date.start = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : this._date.start) : undefined;
+    this._date.start = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : undefined) : undefined;
   }
 
   set endDate(date) {
-    this._date.end = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : this._date.end) : undefined;
+    this._date.end = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : undefined) : undefined;
   }
 
   // Get minDate
@@ -179,16 +181,17 @@ export default class bulmaCalendar extends EventEmitter {
    */
   value(date = null) {
     if (date) {
+      let newDate;
       if (this.options.isRange) {
         const dates = this.element.value.split(' - ');
         if (dates.length) {
-          this.startDate = dateFns.parse(dates[0]);
+          this.startDate = dateUtils.parse(dates[0], this.dateFormat);
         }
         if (dates.length === 2) {
-          this.endDate = dateFns.parse(dates[1]);
+          this.endDate = dateUtils.parse(dates[1], this.dateFormat);
         }
       } else {
-        this.startDate = dateFns.parse(this.element.value);
+        this.startDate = dateUtils.parse(this.element.value, this.dateFormat);
       }
     } else {
       let value = '';
@@ -197,7 +200,7 @@ export default class bulmaCalendar extends EventEmitter {
           value = `${dateFns.format(this.startDate, this.dateFormat, { locale: this.locale })} - ${dateFns.format(this.endDate, this.dateFormat, { locale: this.locale })}`;
         }
       } else if (this.startDate && this._isValidDate(this.startDate)) {
-        value = dateFns.format(this.startDate, this._dateFormat, {
+        value = dateFns.format(this.startDate, this.dateFormat, {
           locale: this.locale
         });
       }
@@ -515,13 +518,13 @@ export default class bulmaCalendar extends EventEmitter {
       if (this.options.isRange) {
         const dates = this.element.value.split(' - ');
         if (dates.length) {
-          this.startDate = dateFns.parse(dates[0]);
+          this.startDate = dateUtils.parse(dates[0], this.dateFormat);
         }
         if (dates.length === 2) {
-          this.endDate = dateFns.parse(dates[1]);
+          this.endDate = dateUtils.parse(dates[1], this.dateFormat);
         }
       } else {
-        this.startDate = dateFns.parse(this.element.value);
+        this.startDate = dateUtils.parse(this.element.value, this.dateFormat);
       }
     }
     this._visibleDate = this._isValidDate(this.startDate) ? this.startDate : startDateToday;
@@ -782,7 +785,7 @@ export default class bulmaCalendar extends EventEmitter {
         // if not in range, no click action
         // if in this month, select the date
         // if out of this month, jump to the date
-        const onClick = !this._isValidDate(dateFns.parse(day.dataset.date), this.minDate, this.maxDate) ? null : this.onDateClickDatePicker;
+        const onClick = !this._isValidDate(new Date(day.dataset.date), this.minDate, this.maxDate) ? null : this.onDateClickDatePicker;
         day.addEventListener(clickEvent, onClick);
       });
 

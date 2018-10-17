@@ -70,14 +70,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 196);
+/******/ 	return __webpack_require__(__webpack_require__.s = 228);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(115)
+var isDate = __webpack_require__(116)
 
 var MILLISECONDS_IN_HOUR = 3600000
 var MILLISECONDS_IN_MINUTE = 60000
@@ -401,6 +401,360 @@ module.exports = parse
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js (c) KNOWLEDGECODE | MIT
+ */
+(function (global) {
+    'use strict';
+
+    var date = {},
+        lang = 'en',
+        locales = {
+            en: {
+                MMMM: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                dddd: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                ddd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                dd: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                A: ['a.m.', 'p.m.'],
+                formatter: {
+                    YYYY: function (d/*, formatString*/) { return ('000' + d.getFullYear()).slice(-4); },
+                    YY: function (d/*, formatString*/) { return ('0' + d.getFullYear()).slice(-2); },
+                    Y: function (d/*, formatString*/) { return '' + d.getFullYear(); },
+                    MMMM: function (d/*, formatString*/) { return this.MMMM[d.getMonth()]; },
+                    MMM: function (d/*, formatString*/) { return this.MMM[d.getMonth()]; },
+                    MM: function (d/*, formatString*/) { return ('0' + (d.getMonth() + 1)).slice(-2); },
+                    M: function (d/*, formatString*/) { return '' + (d.getMonth() + 1); },
+                    DD: function (d/*, formatString*/) { return ('0' + d.getDate()).slice(-2); },
+                    D: function (d/*, formatString*/) { return '' + d.getDate(); },
+                    HH: function (d/*, formatString*/) { return ('0' + d.getHours()).slice(-2); },
+                    H: function (d/*, formatString*/) { return '' + d.getHours(); },
+                    A: function (d/*, formatString*/) { return this.A[d.getHours() > 11 | 0]; },
+                    hh: function (d/*, formatString*/) { return ('0' + (d.getHours() % 12 || 12)).slice(-2); },
+                    h: function (d/*, formatString*/) { return '' + (d.getHours() % 12 || 12); },
+                    mm: function (d/*, formatString*/) { return ('0' + d.getMinutes()).slice(-2); },
+                    m: function (d/*, formatString*/) { return '' + d.getMinutes(); },
+                    ss: function (d/*, formatString*/) { return ('0' + d.getSeconds()).slice(-2); },
+                    s: function (d/*, formatString*/) { return '' + d.getSeconds(); },
+                    SSS: function (d/*, formatString*/) { return ('00' + d.getMilliseconds()).slice(-3); },
+                    SS: function (d/*, formatString*/) { return ('0' + (d.getMilliseconds() / 10 | 0)).slice(-2); },
+                    S: function (d/*, formatString*/) { return '' + (d.getMilliseconds() / 100 | 0); },
+                    dddd: function (d/*, formatString*/) { return this.dddd[d.getDay()]; },
+                    ddd: function (d/*, formatString*/) { return this.ddd[d.getDay()]; },
+                    dd: function (d/*, formatString*/) { return this.dd[d.getDay()]; },
+                    Z: function (d/*, formatString*/) {
+                        var offset = d.utc ? 0 : d.getTimezoneOffset() / 0.6;
+                        return (offset > 0 ? '-' : '+') + ('000' + Math.abs(offset - offset % 100 * 0.4)).slice(-4);
+                    },
+                    post: function (str) { return str; }
+                },
+                parser: {
+                    find: function (array, str) {
+                        var index = -1, length = 0;
+
+                        for (var i = 0, len = array.length, item; i < len; i++) {
+                            item = array[i];
+                            if (!str.indexOf(item) && item.length > length) {
+                                index = i;
+                                length = item.length;
+                            }
+                        }
+                        return { index: index, length: length };
+                    },
+                    MMMM: function (str/*, formatString*/) {
+                        return this.parser.find(this.MMMM, str);
+                    },
+                    MMM: function (str/*, formatString*/) {
+                        return this.parser.find(this.MMM, str);
+                    },
+                    A: function (str/*, formatString*/) {
+                        return this.parser.find(this.A, str);
+                    },
+                    h: function (h, a) { return (h === 12 ? 0 : h) + a * 12; },
+                    pre: function (str) { return str; }
+                }
+            }
+        };
+
+    /**
+     * formatting a date
+     * @param {Object} dateObj - date object
+     * @param {String} formatString - format string
+     * @param {Boolean} [utc] - output as UTC
+     * @returns {String} the formatted string
+     */
+    date.format = function (dateObj, formatString, utc) {
+        var d = date.addMinutes(dateObj, utc ? dateObj.getTimezoneOffset() : 0),
+            locale = locales[lang], formatter = locale.formatter;
+
+        d.utc = utc;
+        return formatString.replace(/(\[[^\[\]]*]|\[.*\][^\[]*\]|YYYY|YY|MMM?M?|DD|HH|hh|mm|ss|SSS?|ddd?d?|.)/g, function (token) {
+            var format = formatter[token];
+            return format ? formatter.post(format.call(locale, d, formatString)) : token.replace(/\[(.*)]/, '$1');
+        });
+    };
+
+    /**
+     * parsing a date string
+     * @param {String} dateString - date string
+     * @param {String} formatString - format string
+     * @param {Boolean} [utc] - input as UTC
+     * @returns {Object} the constructed date
+     */
+    date.parse = function (dateString, formatString, utc) {
+        var locale = locales[lang], dString = locale.parser.pre(dateString),
+            offset = 0, keys, i, token, length, p, str, result, dateObj,
+            re = /(MMMM?|A)|(YYYY)|(SSS)|(MM|DD|HH|hh|mm|ss)|(YY|M|D|H|h|m|s|SS)|(S)|(.)/g,
+            exp = { 2: /^\d{1,4}/, 3: /^\d{1,3}/, 4: /^\d\d/, 5: /^\d\d?/, 6: /^\d/ },
+            last = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+            dt = { Y: 1970, M: 1, D: 1, H: 0, m: 0, s: 0, S: 0 };
+
+        while ((keys = re.exec(formatString))) {
+            for (i = 0, length = 1, token = ''; !token;) {
+                token = keys[++i];
+            }
+            p = token.charAt(0);
+            str = dString.slice(offset);
+            if (i < 2) {
+                result = locale.parser[token].call(locale, str, formatString);
+                dt[p] = result.index;
+                if (p === 'M') {
+                    dt[p]++;
+                }
+                length = result.length;
+            } else if (i < 7) {
+                result = (str.match(exp[i]) || [''])[0];
+                dt[p] = (p === 'S' ? (result + '000').slice(0, -token.length) : result) | 0;
+                length = result.length;
+            } else if (p !== ' ' && p !== str[0]) {
+                return NaN;
+            }
+            if (!length) {
+                return NaN;
+            }
+            offset += length;
+        }
+        if (offset !== dString.length || !result) {
+            return NaN;
+        }
+        dt.Y += dt.Y < 70 ? 2000 : dt.Y < 100 ? 1900 : 0;
+        dt.H = dt.H || locale.parser.h(dt.h || 0, dt.A || 0);
+
+        dateObj = new Date(dt.Y, dt.M - 1, dt.D, dt.H, dt.m, dt.s, dt.S);
+        last[1] += date.isLeapYear(dateObj) | 0;
+        if (dt.M < 1 || dt.M > 12 || dt.D < 1 || dt.D > last[dt.M - 1] || dt.H > 23 || dt.m > 59 || dt.s > 59) {
+            return NaN;
+        }
+        return utc ? date.addMinutes(dateObj, -dateObj.getTimezoneOffset()) : dateObj;
+    };
+
+    /**
+     * validation
+     * @param {String} dateString - date string
+     * @param {String} formatString - format string
+     * @returns {Boolean} whether the date string is a valid date
+     */
+    date.isValid = function (dateString, formatString) {
+        return !!date.parse(dateString, formatString);
+    };
+
+    /**
+     * adding years
+     * @param {Object} dateObj - date object
+     * @param {Number} years - adding year
+     * @returns {Object} the date after adding the value
+     */
+    date.addYears = function (dateObj, years) {
+        return date.addMonths(dateObj, years * 12);
+    };
+
+    /**
+     * adding months
+     * @param {Object} dateObj - date object
+     * @param {Number} months - adding month
+     * @returns {Object} the date after adding the value
+     */
+    date.addMonths = function (dateObj, months) {
+        var d = new Date(dateObj.getTime());
+
+        d.setMonth(d.getMonth() + months);
+        return d;
+    };
+
+    /**
+     * adding days
+     * @param {Object} dateObj - date object
+     * @param {Number} days - adding day
+     * @returns {Object} the date after adding the value
+     */
+    date.addDays = function (dateObj, days) {
+        var d = new Date(dateObj.getTime());
+
+        d.setDate(d.getDate() + days);
+        return d;
+    };
+
+    /**
+     * adding hours
+     * @param {Object} dateObj - date object
+     * @param {Number} hours - adding hour
+     * @returns {Object} the date after adding the value
+     */
+    date.addHours = function (dateObj, hours) {
+        return date.addMilliseconds(dateObj, hours * 3600000);
+    };
+
+    /**
+     * adding minutes
+     * @param {Object} dateObj - date object
+     * @param {Number} minutes - adding minute
+     * @returns {Object} the date after adding the value
+     */
+    date.addMinutes = function (dateObj, minutes) {
+        return date.addMilliseconds(dateObj, minutes * 60000);
+    };
+
+    /**
+     * adding seconds
+     * @param {Object} dateObj - date object
+     * @param {Number} seconds - adding second
+     * @returns {Object} the date after adding the value
+     */
+    date.addSeconds = function (dateObj, seconds) {
+        return date.addMilliseconds(dateObj, seconds * 1000);
+    };
+
+    /**
+     * adding milliseconds
+     * @param {Object} dateObj - date object
+     * @param {Number} milliseconds - adding millisecond
+     * @returns {Object} the date after adding the value
+     */
+    date.addMilliseconds = function (dateObj, milliseconds) {
+        return new Date(dateObj.getTime() + milliseconds);
+    };
+
+    /**
+     * subtracting
+     * @param {Object} date1 - date object
+     * @param {Object} date2 - date object
+     * @returns {Object} the result object after subtracting the date
+     */
+    date.subtract = function (date1, date2) {
+        var delta = date1.getTime() - date2.getTime();
+
+        return {
+            toMilliseconds: function () {
+                return delta;
+            },
+            toSeconds: function () {
+                return delta / 1000 | 0;
+            },
+            toMinutes: function () {
+                return delta / 60000 | 0;
+            },
+            toHours: function () {
+                return delta / 3600000 | 0;
+            },
+            toDays: function () {
+                return delta / 86400000 | 0;
+            }
+        };
+    };
+
+    /**
+     * leap year
+     * @param {Object} dateObj - date object
+     * @returns {Boolean} whether the year is a leap year
+     */
+    date.isLeapYear = function (dateObj) {
+        var y = dateObj.getFullYear();
+        return (!(y % 4) && !!(y % 100)) || !(y % 400);
+    };
+
+    /**
+     * comparison of dates
+     * @param {Object} date1 - target for comparison
+     * @param {Object} date2 - target for comparison
+     * @returns {Boolean} whether the dates are the same day (times are ignored)
+     */
+    date.isSameDay = function (date1, date2) {
+        return date.format(date1, 'YYYYMMDD') === date.format(date2, 'YYYYMMDD');
+    };
+
+    /**
+     * setting a locale
+     * @param {String} [code] - language code
+     * @returns {String} current language code
+     */
+    date.locale = function (code) {
+        if (code) {
+            if (!locales[code] && "function" === 'function' && global) {
+                __webpack_require__(329)("./" + code);
+            }
+            lang = code;
+        }
+        return lang;
+    };
+
+    /**
+     * getting a definition of locale
+     * @param {String} [code] - language code
+     * @returns {Object} definition of locale
+     */
+    date.getLocales = function (code) {
+        return locales[code || lang];
+    };
+
+    /**
+     * adding a new definition of locale
+     * @param {String} code - language code
+     * @param {Object} options - definition of locale
+     * @returns {void}
+     */
+    date.setLocales = function (code, options) {
+        var copy = function (src, proto) {
+                var Locale = function () {}, dst, key;
+
+                Locale.prototype = proto;
+                dst = new Locale();
+                for (key in src) {
+                    if (src.hasOwnProperty(key)) {
+                        dst[key] = src[key];
+                    }
+                }
+                return dst;
+            },
+            base = locales[code] || locales.en,
+            locale = copy(options, base);
+
+        if (options.formatter) {
+            locale.formatter = copy(options.formatter, base.formatter);
+        }
+        if (options.parser) {
+            locale.parser = copy(options.parser, base.parser);
+        }
+        locales[code] = locale;
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        module.exports = date;
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+            return date;
+        }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        global.date = date;
+    }
+
+}(this));
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 var commonFormatterKeys = [
@@ -434,11 +788,11 @@ module.exports = buildFormattingTokensRegExp
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfISOWeek = __webpack_require__(3)
+var startOfISOWeek = __webpack_require__(4)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -485,10 +839,10 @@ module.exports = getISOYear
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(78)
+var startOfWeek = __webpack_require__(79)
 
 /**
  * @category ISO Week Helpers
@@ -516,7 +870,7 @@ module.exports = startOfISOWeek
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -547,11 +901,11 @@ module.exports = startOfDay
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(10)
-var buildFormatLocale = __webpack_require__(11)
+var buildDistanceInWordsLocale = __webpack_require__(11)
+var buildFormatLocale = __webpack_require__(12)
 
 /**
  * @category Locales
@@ -564,7 +918,7 @@ module.exports = {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -596,7 +950,7 @@ module.exports = addDays
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -627,11 +981,11 @@ module.exports = addMilliseconds
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getISOYear = __webpack_require__(2)
-var startOfISOWeek = __webpack_require__(3)
+var getISOYear = __webpack_require__(3)
+var startOfISOWeek = __webpack_require__(4)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -665,7 +1019,7 @@ module.exports = startOfISOYear
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -722,7 +1076,7 @@ module.exports = compareAsc
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -827,10 +1181,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -921,7 +1275,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1026,10 +1380,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
@@ -1105,7 +1459,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1210,10 +1564,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['яну', 'фев', 'мар', 'апр', 'май', 'юни', 'юли', 'авг', 'сеп', 'окт', 'ное', 'дек']
@@ -1303,7 +1657,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1408,10 +1762,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['gen', 'feb', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'oct', 'nov', 'des']
@@ -1498,7 +1852,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -1706,10 +2060,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro']
@@ -1785,7 +2139,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1890,10 +2244,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
@@ -1969,7 +2323,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2160,10 +2514,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in German, the names of days of the week and months are capitalized.
@@ -2243,7 +2597,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2348,10 +2702,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαϊ', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ']
@@ -2441,7 +2795,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2546,10 +2900,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aŭg', 'sep', 'okt', 'nov', 'dec']
@@ -2621,7 +2975,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2726,10 +3080,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']
@@ -2805,7 +3159,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2947,10 +3301,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu']
@@ -3019,7 +3373,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3124,10 +3478,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['Ene', 'Peb', 'Mar', 'Abr', 'May', 'Hun', 'Hul', 'Ago', 'Set', 'Okt', 'Nob', 'Dis']
@@ -3236,7 +3590,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3341,10 +3695,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
@@ -3469,7 +3823,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3653,10 +4007,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['sij', 'velj', 'ožu', 'tra', 'svi', 'lip', 'srp', 'kol', 'ruj', 'lis', 'stu', 'pro']
@@ -3742,7 +4096,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3847,10 +4201,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -3941,7 +4295,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4046,10 +4400,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in Indonesian, the names of days of the week and months are capitalized.
@@ -4138,7 +4492,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4243,10 +4597,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'maí', 'jún', 'júl', 'ágú', 'sep', 'okt', 'nóv', 'des']
@@ -4322,7 +4676,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4427,10 +4781,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic']
@@ -4506,7 +4860,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4611,10 +4965,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
@@ -4690,7 +5044,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4795,10 +5149,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
@@ -4874,7 +5228,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4979,10 +5333,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['јан', 'фев', 'мар', 'апр', 'мај', 'јун', 'јул', 'авг', 'сеп', 'окт', 'ное', 'дек']
@@ -5068,7 +5422,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5173,10 +5527,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan.', 'feb.', 'mars', 'april', 'mai', 'juni', 'juli', 'aug.', 'sep.', 'okt.', 'nov.', 'des.']
@@ -5252,7 +5606,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5357,10 +5711,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
@@ -5436,7 +5790,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -5607,10 +5961,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru']
@@ -5683,7 +6037,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5788,10 +6142,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
@@ -5867,7 +6221,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5972,10 +6326,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in Romanian language the weekdays and months should be in the lowercase.
@@ -6052,7 +6406,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 function declension (scheme, count) {
@@ -6292,10 +6646,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // http://new.gramota.ru/spravka/buro/search-answer?s=242637
@@ -6387,7 +6741,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -6595,10 +6949,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'máj', 'jún', 'júl', 'aug', 'sep', 'okt', 'nov', 'dec']
@@ -6674,7 +7028,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -6813,10 +7167,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec']
@@ -6892,7 +7246,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7014,10 +7368,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
@@ -7092,7 +7446,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7201,10 +7555,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
@@ -7268,7 +7622,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7384,10 +7738,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   // Note: in Turkish, the names of days of the week and months are capitalized.
@@ -7496,7 +7850,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7601,10 +7955,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
@@ -7668,7 +8022,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7773,10 +8127,10 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildFormattingTokensRegExp = __webpack_require__(1)
+var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
@@ -7852,7 +8206,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -7896,10 +8250,10 @@ module.exports = startOfWeek
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 var MILLISECONDS_IN_MINUTE = 60000
 var MILLISECONDS_IN_DAY = 86400000
@@ -7943,11 +8297,11 @@ module.exports = differenceInCalendarDays
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(116)
+var getDaysInMonth = __webpack_require__(117)
 
 /**
  * @category Month Helpers
@@ -7983,7 +8337,7 @@ module.exports = addMonths
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8018,11 +8372,11 @@ module.exports = differenceInMilliseconds
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(12)
-var buildFormatLocale = __webpack_require__(13)
+var buildDistanceInWordsLocale = __webpack_require__(13)
+var buildFormatLocale = __webpack_require__(14)
 
 /**
  * @category Locales
@@ -8036,11 +8390,11 @@ module.exports = {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(14)
-var buildFormatLocale = __webpack_require__(15)
+var buildDistanceInWordsLocale = __webpack_require__(15)
+var buildFormatLocale = __webpack_require__(16)
 
 /**
  * @category Locales
@@ -8054,11 +8408,11 @@ module.exports = {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(16)
-var buildFormatLocale = __webpack_require__(17)
+var buildDistanceInWordsLocale = __webpack_require__(17)
+var buildFormatLocale = __webpack_require__(18)
 
 /**
  * @category Locales
@@ -8072,11 +8426,11 @@ module.exports = {
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(18)
-var buildFormatLocale = __webpack_require__(19)
+var buildDistanceInWordsLocale = __webpack_require__(19)
+var buildFormatLocale = __webpack_require__(20)
 
 /**
  * @category Locales
@@ -8090,11 +8444,11 @@ module.exports = {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(20)
-var buildFormatLocale = __webpack_require__(21)
+var buildDistanceInWordsLocale = __webpack_require__(21)
+var buildFormatLocale = __webpack_require__(22)
 
 /**
  * @category Locales
@@ -8109,11 +8463,11 @@ module.exports = {
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(22)
-var buildFormatLocale = __webpack_require__(23)
+var buildDistanceInWordsLocale = __webpack_require__(23)
+var buildFormatLocale = __webpack_require__(24)
 
 /**
  * @category Locales
@@ -8128,11 +8482,11 @@ module.exports = {
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(24)
-var buildFormatLocale = __webpack_require__(25)
+var buildDistanceInWordsLocale = __webpack_require__(25)
+var buildFormatLocale = __webpack_require__(26)
 
 /**
  * @category Locales
@@ -8146,11 +8500,11 @@ module.exports = {
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(26)
-var buildFormatLocale = __webpack_require__(27)
+var buildDistanceInWordsLocale = __webpack_require__(27)
+var buildFormatLocale = __webpack_require__(28)
 
 /**
  * @category Locales
@@ -8163,11 +8517,11 @@ module.exports = {
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(28)
-var buildFormatLocale = __webpack_require__(29)
+var buildDistanceInWordsLocale = __webpack_require__(29)
+var buildFormatLocale = __webpack_require__(30)
 
 /**
  * @category Locales
@@ -8183,11 +8537,11 @@ module.exports = {
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(30)
-var buildFormatLocale = __webpack_require__(31)
+var buildDistanceInWordsLocale = __webpack_require__(31)
+var buildFormatLocale = __webpack_require__(32)
 
 /**
  * @category Locales
@@ -8201,11 +8555,11 @@ module.exports = {
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(32)
-var buildFormatLocale = __webpack_require__(33)
+var buildDistanceInWordsLocale = __webpack_require__(33)
+var buildFormatLocale = __webpack_require__(34)
 
 /**
  * @category Locales
@@ -8219,11 +8573,11 @@ module.exports = {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(34)
-var buildFormatLocale = __webpack_require__(35)
+var buildDistanceInWordsLocale = __webpack_require__(35)
+var buildFormatLocale = __webpack_require__(36)
 
 /**
  * @category Locales
@@ -8238,11 +8592,11 @@ module.exports = {
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(36)
-var buildFormatLocale = __webpack_require__(37)
+var buildDistanceInWordsLocale = __webpack_require__(37)
+var buildFormatLocale = __webpack_require__(38)
 
 /**
  * @category Locales
@@ -8256,11 +8610,11 @@ module.exports = {
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(38)
-var buildFormatLocale = __webpack_require__(39)
+var buildDistanceInWordsLocale = __webpack_require__(39)
+var buildFormatLocale = __webpack_require__(40)
 
 /**
  * @category Locales
@@ -8273,11 +8627,11 @@ module.exports = {
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(40)
-var buildFormatLocale = __webpack_require__(41)
+var buildDistanceInWordsLocale = __webpack_require__(41)
+var buildFormatLocale = __webpack_require__(42)
 
 /**
  * @category Locales
@@ -8292,11 +8646,11 @@ module.exports = {
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(42)
-var buildFormatLocale = __webpack_require__(43)
+var buildDistanceInWordsLocale = __webpack_require__(43)
+var buildFormatLocale = __webpack_require__(44)
 
 /**
  * @category Locales
@@ -8310,11 +8664,11 @@ module.exports = {
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(44)
-var buildFormatLocale = __webpack_require__(45)
+var buildDistanceInWordsLocale = __webpack_require__(45)
+var buildFormatLocale = __webpack_require__(46)
 
 /**
  * @category Locales
@@ -8328,11 +8682,11 @@ module.exports = {
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(46)
-var buildFormatLocale = __webpack_require__(47)
+var buildDistanceInWordsLocale = __webpack_require__(47)
+var buildFormatLocale = __webpack_require__(48)
 
 /**
  * @category Locales
@@ -8347,11 +8701,11 @@ module.exports = {
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(48)
-var buildFormatLocale = __webpack_require__(49)
+var buildDistanceInWordsLocale = __webpack_require__(49)
+var buildFormatLocale = __webpack_require__(50)
 
 /**
  * @category Locales
@@ -8365,11 +8719,11 @@ module.exports = {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(50)
-var buildFormatLocale = __webpack_require__(51)
+var buildDistanceInWordsLocale = __webpack_require__(51)
+var buildFormatLocale = __webpack_require__(52)
 
 /**
  * @category Locales
@@ -8383,11 +8737,11 @@ module.exports = {
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(52)
-var buildFormatLocale = __webpack_require__(53)
+var buildDistanceInWordsLocale = __webpack_require__(53)
+var buildFormatLocale = __webpack_require__(54)
 
 /**
  * @category Locales
@@ -8401,11 +8755,11 @@ module.exports = {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(54)
-var buildFormatLocale = __webpack_require__(55)
+var buildDistanceInWordsLocale = __webpack_require__(55)
+var buildFormatLocale = __webpack_require__(56)
 
 /**
  * @category Locales
@@ -8420,11 +8774,11 @@ module.exports = {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(56)
-var buildFormatLocale = __webpack_require__(57)
+var buildDistanceInWordsLocale = __webpack_require__(57)
+var buildFormatLocale = __webpack_require__(58)
 
 /**
  * @category Locales
@@ -8439,11 +8793,11 @@ module.exports = {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(58)
-var buildFormatLocale = __webpack_require__(59)
+var buildDistanceInWordsLocale = __webpack_require__(59)
+var buildFormatLocale = __webpack_require__(60)
 
 /**
  * @category Locales
@@ -8457,11 +8811,11 @@ module.exports = {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(60)
-var buildFormatLocale = __webpack_require__(61)
+var buildDistanceInWordsLocale = __webpack_require__(61)
+var buildFormatLocale = __webpack_require__(62)
 
 /**
  * @category Locales
@@ -8475,11 +8829,11 @@ module.exports = {
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(62)
-var buildFormatLocale = __webpack_require__(63)
+var buildDistanceInWordsLocale = __webpack_require__(63)
+var buildFormatLocale = __webpack_require__(64)
 
 /**
  * @category Locales
@@ -8492,11 +8846,11 @@ module.exports = {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(64)
-var buildFormatLocale = __webpack_require__(65)
+var buildDistanceInWordsLocale = __webpack_require__(65)
+var buildFormatLocale = __webpack_require__(66)
 
 /**
  * @category Locales
@@ -8510,11 +8864,11 @@ module.exports = {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(66)
-var buildFormatLocale = __webpack_require__(67)
+var buildDistanceInWordsLocale = __webpack_require__(67)
+var buildFormatLocale = __webpack_require__(68)
 
 /**
  * @category Locales
@@ -8528,11 +8882,11 @@ module.exports = {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(68)
-var buildFormatLocale = __webpack_require__(69)
+var buildDistanceInWordsLocale = __webpack_require__(69)
+var buildFormatLocale = __webpack_require__(70)
 
 /**
  * @category Locales
@@ -8546,11 +8900,11 @@ module.exports = {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(70)
-var buildFormatLocale = __webpack_require__(71)
+var buildDistanceInWordsLocale = __webpack_require__(71)
+var buildFormatLocale = __webpack_require__(72)
 
 /**
  * @category Locales
@@ -8564,11 +8918,11 @@ module.exports = {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(72)
-var buildFormatLocale = __webpack_require__(73)
+var buildDistanceInWordsLocale = __webpack_require__(73)
+var buildFormatLocale = __webpack_require__(74)
 
 /**
  * @category Locales
@@ -8582,11 +8936,11 @@ module.exports = {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(74)
-var buildFormatLocale = __webpack_require__(75)
+var buildDistanceInWordsLocale = __webpack_require__(75)
+var buildFormatLocale = __webpack_require__(76)
 
 /**
  * @category Locales
@@ -8601,11 +8955,11 @@ module.exports = {
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(76)
-var buildFormatLocale = __webpack_require__(77)
+var buildDistanceInWordsLocale = __webpack_require__(77)
+var buildFormatLocale = __webpack_require__(78)
 
 /**
  * @category Locales
@@ -8619,7 +8973,7 @@ module.exports = {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports) {
 
 /**
@@ -8645,7 +8999,7 @@ module.exports = isDate
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8679,10 +9033,10 @@ module.exports = getDaysInMonth
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Week Helpers
@@ -8710,7 +9064,7 @@ module.exports = addWeeks
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8767,12 +9121,12 @@ module.exports = compareDesc
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarMonths = __webpack_require__(133)
-var compareAsc = __webpack_require__(9)
+var differenceInCalendarMonths = __webpack_require__(134)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Month Helpers
@@ -8811,10 +9165,10 @@ module.exports = differenceInMonths
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(81)
+var differenceInMilliseconds = __webpack_require__(82)
 
 /**
  * @category Second Helpers
@@ -8845,7 +9199,7 @@ module.exports = differenceInSeconds
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8876,12 +9230,12 @@ module.exports = endOfDay
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfISOWeek = __webpack_require__(3)
-var startOfISOYear = __webpack_require__(8)
+var startOfISOWeek = __webpack_require__(4)
+var startOfISOYear = __webpack_require__(9)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -8916,10 +9270,10 @@ module.exports = getISOWeek
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(78)
+var startOfWeek = __webpack_require__(79)
 
 /**
  * @category Week Helpers
@@ -8963,172 +9317,172 @@ module.exports = isSameWeek
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  addDays: __webpack_require__(6),
-  addHours: __webpack_require__(125),
-  addISOYears: __webpack_require__(126),
-  addMilliseconds: __webpack_require__(7),
-  addMinutes: __webpack_require__(128),
-  addMonths: __webpack_require__(80),
-  addQuarters: __webpack_require__(129),
-  addSeconds: __webpack_require__(130),
-  addWeeks: __webpack_require__(117),
-  addYears: __webpack_require__(131),
-  areRangesOverlapping: __webpack_require__(199),
-  closestIndexTo: __webpack_require__(200),
-  closestTo: __webpack_require__(201),
-  compareAsc: __webpack_require__(9),
-  compareDesc: __webpack_require__(118),
-  differenceInCalendarDays: __webpack_require__(79),
-  differenceInCalendarISOWeeks: __webpack_require__(202),
-  differenceInCalendarISOYears: __webpack_require__(132),
-  differenceInCalendarMonths: __webpack_require__(133),
-  differenceInCalendarQuarters: __webpack_require__(203),
-  differenceInCalendarWeeks: __webpack_require__(204),
-  differenceInCalendarYears: __webpack_require__(135),
-  differenceInDays: __webpack_require__(136),
-  differenceInHours: __webpack_require__(205),
-  differenceInISOYears: __webpack_require__(206),
-  differenceInMilliseconds: __webpack_require__(81),
-  differenceInMinutes: __webpack_require__(207),
-  differenceInMonths: __webpack_require__(119),
-  differenceInQuarters: __webpack_require__(208),
-  differenceInSeconds: __webpack_require__(120),
-  differenceInWeeks: __webpack_require__(209),
-  differenceInYears: __webpack_require__(210),
-  distanceInWords: __webpack_require__(138),
-  distanceInWordsStrict: __webpack_require__(211),
-  distanceInWordsToNow: __webpack_require__(212),
-  eachDay: __webpack_require__(213),
-  endOfDay: __webpack_require__(121),
-  endOfHour: __webpack_require__(214),
-  endOfISOWeek: __webpack_require__(215),
-  endOfISOYear: __webpack_require__(216),
-  endOfMinute: __webpack_require__(217),
-  endOfMonth: __webpack_require__(140),
-  endOfQuarter: __webpack_require__(218),
-  endOfSecond: __webpack_require__(219),
-  endOfToday: __webpack_require__(220),
-  endOfTomorrow: __webpack_require__(221),
-  endOfWeek: __webpack_require__(139),
-  endOfYear: __webpack_require__(222),
-  endOfYesterday: __webpack_require__(223),
-  format: __webpack_require__(224),
-  getDate: __webpack_require__(225),
-  getDay: __webpack_require__(226),
-  getDayOfYear: __webpack_require__(141),
-  getDaysInMonth: __webpack_require__(116),
-  getDaysInYear: __webpack_require__(227),
-  getHours: __webpack_require__(228),
-  getISODay: __webpack_require__(145),
-  getISOWeek: __webpack_require__(122),
-  getISOWeeksInYear: __webpack_require__(229),
-  getISOYear: __webpack_require__(2),
-  getMilliseconds: __webpack_require__(230),
-  getMinutes: __webpack_require__(231),
-  getMonth: __webpack_require__(232),
-  getOverlappingDaysInRanges: __webpack_require__(233),
-  getQuarter: __webpack_require__(134),
-  getSeconds: __webpack_require__(234),
-  getTime: __webpack_require__(235),
-  getYear: __webpack_require__(236),
-  isAfter: __webpack_require__(237),
-  isBefore: __webpack_require__(238),
-  isDate: __webpack_require__(115),
-  isEqual: __webpack_require__(239),
-  isFirstDayOfMonth: __webpack_require__(240),
-  isFriday: __webpack_require__(241),
-  isFuture: __webpack_require__(242),
-  isLastDayOfMonth: __webpack_require__(243),
-  isLeapYear: __webpack_require__(144),
-  isMonday: __webpack_require__(244),
-  isPast: __webpack_require__(245),
-  isSameDay: __webpack_require__(246),
-  isSameHour: __webpack_require__(146),
-  isSameISOWeek: __webpack_require__(148),
-  isSameISOYear: __webpack_require__(149),
-  isSameMinute: __webpack_require__(150),
-  isSameMonth: __webpack_require__(152),
-  isSameQuarter: __webpack_require__(153),
-  isSameSecond: __webpack_require__(155),
-  isSameWeek: __webpack_require__(123),
-  isSameYear: __webpack_require__(157),
-  isSaturday: __webpack_require__(247),
-  isSunday: __webpack_require__(248),
-  isThisHour: __webpack_require__(249),
-  isThisISOWeek: __webpack_require__(250),
-  isThisISOYear: __webpack_require__(251),
-  isThisMinute: __webpack_require__(252),
-  isThisMonth: __webpack_require__(253),
-  isThisQuarter: __webpack_require__(254),
-  isThisSecond: __webpack_require__(255),
-  isThisWeek: __webpack_require__(256),
-  isThisYear: __webpack_require__(257),
-  isThursday: __webpack_require__(258),
-  isToday: __webpack_require__(259),
-  isTomorrow: __webpack_require__(260),
-  isTuesday: __webpack_require__(261),
-  isValid: __webpack_require__(143),
-  isWednesday: __webpack_require__(262),
-  isWeekend: __webpack_require__(263),
-  isWithinRange: __webpack_require__(264),
-  isYesterday: __webpack_require__(265),
-  lastDayOfISOWeek: __webpack_require__(266),
-  lastDayOfISOYear: __webpack_require__(267),
-  lastDayOfMonth: __webpack_require__(268),
-  lastDayOfQuarter: __webpack_require__(269),
-  lastDayOfWeek: __webpack_require__(158),
-  lastDayOfYear: __webpack_require__(270),
-  max: __webpack_require__(271),
-  min: __webpack_require__(272),
+  addDays: __webpack_require__(7),
+  addHours: __webpack_require__(126),
+  addISOYears: __webpack_require__(127),
+  addMilliseconds: __webpack_require__(8),
+  addMinutes: __webpack_require__(129),
+  addMonths: __webpack_require__(81),
+  addQuarters: __webpack_require__(130),
+  addSeconds: __webpack_require__(131),
+  addWeeks: __webpack_require__(118),
+  addYears: __webpack_require__(132),
+  areRangesOverlapping: __webpack_require__(231),
+  closestIndexTo: __webpack_require__(232),
+  closestTo: __webpack_require__(233),
+  compareAsc: __webpack_require__(10),
+  compareDesc: __webpack_require__(119),
+  differenceInCalendarDays: __webpack_require__(80),
+  differenceInCalendarISOWeeks: __webpack_require__(234),
+  differenceInCalendarISOYears: __webpack_require__(133),
+  differenceInCalendarMonths: __webpack_require__(134),
+  differenceInCalendarQuarters: __webpack_require__(235),
+  differenceInCalendarWeeks: __webpack_require__(236),
+  differenceInCalendarYears: __webpack_require__(136),
+  differenceInDays: __webpack_require__(137),
+  differenceInHours: __webpack_require__(237),
+  differenceInISOYears: __webpack_require__(238),
+  differenceInMilliseconds: __webpack_require__(82),
+  differenceInMinutes: __webpack_require__(239),
+  differenceInMonths: __webpack_require__(120),
+  differenceInQuarters: __webpack_require__(240),
+  differenceInSeconds: __webpack_require__(121),
+  differenceInWeeks: __webpack_require__(241),
+  differenceInYears: __webpack_require__(242),
+  distanceInWords: __webpack_require__(139),
+  distanceInWordsStrict: __webpack_require__(243),
+  distanceInWordsToNow: __webpack_require__(244),
+  eachDay: __webpack_require__(245),
+  endOfDay: __webpack_require__(122),
+  endOfHour: __webpack_require__(246),
+  endOfISOWeek: __webpack_require__(247),
+  endOfISOYear: __webpack_require__(248),
+  endOfMinute: __webpack_require__(249),
+  endOfMonth: __webpack_require__(141),
+  endOfQuarter: __webpack_require__(250),
+  endOfSecond: __webpack_require__(251),
+  endOfToday: __webpack_require__(252),
+  endOfTomorrow: __webpack_require__(253),
+  endOfWeek: __webpack_require__(140),
+  endOfYear: __webpack_require__(254),
+  endOfYesterday: __webpack_require__(255),
+  format: __webpack_require__(256),
+  getDate: __webpack_require__(257),
+  getDay: __webpack_require__(258),
+  getDayOfYear: __webpack_require__(142),
+  getDaysInMonth: __webpack_require__(117),
+  getDaysInYear: __webpack_require__(259),
+  getHours: __webpack_require__(260),
+  getISODay: __webpack_require__(146),
+  getISOWeek: __webpack_require__(123),
+  getISOWeeksInYear: __webpack_require__(261),
+  getISOYear: __webpack_require__(3),
+  getMilliseconds: __webpack_require__(262),
+  getMinutes: __webpack_require__(263),
+  getMonth: __webpack_require__(264),
+  getOverlappingDaysInRanges: __webpack_require__(265),
+  getQuarter: __webpack_require__(135),
+  getSeconds: __webpack_require__(266),
+  getTime: __webpack_require__(267),
+  getYear: __webpack_require__(268),
+  isAfter: __webpack_require__(269),
+  isBefore: __webpack_require__(270),
+  isDate: __webpack_require__(116),
+  isEqual: __webpack_require__(271),
+  isFirstDayOfMonth: __webpack_require__(272),
+  isFriday: __webpack_require__(273),
+  isFuture: __webpack_require__(274),
+  isLastDayOfMonth: __webpack_require__(275),
+  isLeapYear: __webpack_require__(145),
+  isMonday: __webpack_require__(276),
+  isPast: __webpack_require__(277),
+  isSameDay: __webpack_require__(278),
+  isSameHour: __webpack_require__(147),
+  isSameISOWeek: __webpack_require__(149),
+  isSameISOYear: __webpack_require__(150),
+  isSameMinute: __webpack_require__(151),
+  isSameMonth: __webpack_require__(153),
+  isSameQuarter: __webpack_require__(154),
+  isSameSecond: __webpack_require__(156),
+  isSameWeek: __webpack_require__(124),
+  isSameYear: __webpack_require__(158),
+  isSaturday: __webpack_require__(279),
+  isSunday: __webpack_require__(280),
+  isThisHour: __webpack_require__(281),
+  isThisISOWeek: __webpack_require__(282),
+  isThisISOYear: __webpack_require__(283),
+  isThisMinute: __webpack_require__(284),
+  isThisMonth: __webpack_require__(285),
+  isThisQuarter: __webpack_require__(286),
+  isThisSecond: __webpack_require__(287),
+  isThisWeek: __webpack_require__(288),
+  isThisYear: __webpack_require__(289),
+  isThursday: __webpack_require__(290),
+  isToday: __webpack_require__(291),
+  isTomorrow: __webpack_require__(292),
+  isTuesday: __webpack_require__(293),
+  isValid: __webpack_require__(144),
+  isWednesday: __webpack_require__(294),
+  isWeekend: __webpack_require__(295),
+  isWithinRange: __webpack_require__(296),
+  isYesterday: __webpack_require__(297),
+  lastDayOfISOWeek: __webpack_require__(298),
+  lastDayOfISOYear: __webpack_require__(299),
+  lastDayOfMonth: __webpack_require__(300),
+  lastDayOfQuarter: __webpack_require__(301),
+  lastDayOfWeek: __webpack_require__(159),
+  lastDayOfYear: __webpack_require__(302),
+  max: __webpack_require__(303),
+  min: __webpack_require__(304),
   parse: __webpack_require__(0),
-  setDate: __webpack_require__(273),
-  setDay: __webpack_require__(274),
-  setDayOfYear: __webpack_require__(275),
-  setHours: __webpack_require__(276),
-  setISODay: __webpack_require__(277),
-  setISOWeek: __webpack_require__(278),
-  setISOYear: __webpack_require__(127),
-  setMilliseconds: __webpack_require__(279),
-  setMinutes: __webpack_require__(280),
-  setMonth: __webpack_require__(159),
-  setQuarter: __webpack_require__(281),
-  setSeconds: __webpack_require__(282),
-  setYear: __webpack_require__(283),
-  startOfDay: __webpack_require__(4),
-  startOfHour: __webpack_require__(147),
-  startOfISOWeek: __webpack_require__(3),
-  startOfISOYear: __webpack_require__(8),
-  startOfMinute: __webpack_require__(151),
-  startOfMonth: __webpack_require__(284),
-  startOfQuarter: __webpack_require__(154),
-  startOfSecond: __webpack_require__(156),
-  startOfToday: __webpack_require__(285),
-  startOfTomorrow: __webpack_require__(286),
-  startOfWeek: __webpack_require__(78),
-  startOfYear: __webpack_require__(142),
-  startOfYesterday: __webpack_require__(287),
-  subDays: __webpack_require__(288),
-  subHours: __webpack_require__(289),
-  subISOYears: __webpack_require__(137),
-  subMilliseconds: __webpack_require__(290),
-  subMinutes: __webpack_require__(291),
-  subMonths: __webpack_require__(292),
-  subQuarters: __webpack_require__(293),
-  subSeconds: __webpack_require__(294),
-  subWeeks: __webpack_require__(295),
-  subYears: __webpack_require__(296)
+  setDate: __webpack_require__(305),
+  setDay: __webpack_require__(306),
+  setDayOfYear: __webpack_require__(307),
+  setHours: __webpack_require__(308),
+  setISODay: __webpack_require__(309),
+  setISOWeek: __webpack_require__(310),
+  setISOYear: __webpack_require__(128),
+  setMilliseconds: __webpack_require__(311),
+  setMinutes: __webpack_require__(312),
+  setMonth: __webpack_require__(160),
+  setQuarter: __webpack_require__(313),
+  setSeconds: __webpack_require__(314),
+  setYear: __webpack_require__(315),
+  startOfDay: __webpack_require__(5),
+  startOfHour: __webpack_require__(148),
+  startOfISOWeek: __webpack_require__(4),
+  startOfISOYear: __webpack_require__(9),
+  startOfMinute: __webpack_require__(152),
+  startOfMonth: __webpack_require__(316),
+  startOfQuarter: __webpack_require__(155),
+  startOfSecond: __webpack_require__(157),
+  startOfToday: __webpack_require__(317),
+  startOfTomorrow: __webpack_require__(318),
+  startOfWeek: __webpack_require__(79),
+  startOfYear: __webpack_require__(143),
+  startOfYesterday: __webpack_require__(319),
+  subDays: __webpack_require__(320),
+  subHours: __webpack_require__(321),
+  subISOYears: __webpack_require__(138),
+  subMilliseconds: __webpack_require__(322),
+  subMinutes: __webpack_require__(323),
+  subMonths: __webpack_require__(324),
+  subQuarters: __webpack_require__(325),
+  subSeconds: __webpack_require__(326),
+  subWeeks: __webpack_require__(327),
+  subYears: __webpack_require__(328)
 }
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 var MILLISECONDS_IN_HOUR = 3600000
 
@@ -9157,11 +9511,11 @@ module.exports = addHours
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getISOYear = __webpack_require__(2)
-var setISOYear = __webpack_require__(127)
+var getISOYear = __webpack_require__(3)
+var setISOYear = __webpack_require__(128)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -9190,12 +9544,12 @@ module.exports = addISOYears
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfISOYear = __webpack_require__(8)
-var differenceInCalendarDays = __webpack_require__(79)
+var startOfISOYear = __webpack_require__(9)
+var differenceInCalendarDays = __webpack_require__(80)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -9232,10 +9586,10 @@ module.exports = setISOYear
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 var MILLISECONDS_IN_MINUTE = 60000
 
@@ -9264,10 +9618,10 @@ module.exports = addMinutes
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(80)
+var addMonths = __webpack_require__(81)
 
 /**
  * @category Quarter Helpers
@@ -9295,10 +9649,10 @@ module.exports = addQuarters
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 /**
  * @category Second Helpers
@@ -9325,10 +9679,10 @@ module.exports = addSeconds
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(80)
+var addMonths = __webpack_require__(81)
 
 /**
  * @category Year Helpers
@@ -9355,10 +9709,10 @@ module.exports = addYears
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getISOYear = __webpack_require__(2)
+var getISOYear = __webpack_require__(3)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -9389,7 +9743,7 @@ module.exports = differenceInCalendarISOYears
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9427,7 +9781,7 @@ module.exports = differenceInCalendarMonths
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9457,7 +9811,7 @@ module.exports = getQuarter
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9492,12 +9846,12 @@ module.exports = differenceInCalendarYears
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarDays = __webpack_require__(79)
-var compareAsc = __webpack_require__(9)
+var differenceInCalendarDays = __webpack_require__(80)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Day Helpers
@@ -9537,10 +9891,10 @@ module.exports = differenceInDays
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addISOYears = __webpack_require__(126)
+var addISOYears = __webpack_require__(127)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -9569,14 +9923,14 @@ module.exports = subISOYears
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(118)
+var compareDesc = __webpack_require__(119)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(120)
-var differenceInMonths = __webpack_require__(119)
-var enLocale = __webpack_require__(5)
+var differenceInSeconds = __webpack_require__(121)
+var differenceInMonths = __webpack_require__(120)
+var enLocale = __webpack_require__(6)
 
 var MINUTES_IN_DAY = 1440
 var MINUTES_IN_ALMOST_TWO_DAYS = 2520
@@ -9778,7 +10132,7 @@ module.exports = distanceInWords
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9822,7 +10176,7 @@ module.exports = endOfWeek
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9855,12 +10209,12 @@ module.exports = endOfMonth
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfYear = __webpack_require__(142)
-var differenceInCalendarDays = __webpack_require__(79)
+var startOfYear = __webpack_require__(143)
+var differenceInCalendarDays = __webpack_require__(80)
 
 /**
  * @category Day Helpers
@@ -9888,7 +10242,7 @@ module.exports = getDayOfYear
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9921,10 +10275,10 @@ module.exports = startOfYear
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(115)
+var isDate = __webpack_require__(116)
 
 /**
  * @category Common Helpers
@@ -9962,7 +10316,7 @@ module.exports = isValid
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9992,7 +10346,7 @@ module.exports = isLeapYear
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10030,10 +10384,10 @@ module.exports = getISODay
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfHour = __webpack_require__(147)
+var startOfHour = __webpack_require__(148)
 
 /**
  * @category Hour Helpers
@@ -10065,7 +10419,7 @@ module.exports = isSameHour
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10096,10 +10450,10 @@ module.exports = startOfHour
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(123)
+var isSameWeek = __webpack_require__(124)
 
 /**
  * @category ISO Week Helpers
@@ -10130,10 +10484,10 @@ module.exports = isSameISOWeek
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfISOYear = __webpack_require__(8)
+var startOfISOYear = __webpack_require__(9)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10167,10 +10521,10 @@ module.exports = isSameISOYear
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfMinute = __webpack_require__(151)
+var startOfMinute = __webpack_require__(152)
 
 /**
  * @category Minute Helpers
@@ -10203,7 +10557,7 @@ module.exports = isSameMinute
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10234,7 +10588,7 @@ module.exports = startOfMinute
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10269,10 +10623,10 @@ module.exports = isSameMonth
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfQuarter = __webpack_require__(154)
+var startOfQuarter = __webpack_require__(155)
 
 /**
  * @category Quarter Helpers
@@ -10304,7 +10658,7 @@ module.exports = isSameQuarter
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10338,10 +10692,10 @@ module.exports = startOfQuarter
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfSecond = __webpack_require__(156)
+var startOfSecond = __webpack_require__(157)
 
 /**
  * @category Second Helpers
@@ -10374,7 +10728,7 @@ module.exports = isSameSecond
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10405,7 +10759,7 @@ module.exports = startOfSecond
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10439,7 +10793,7 @@ module.exports = isSameYear
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10483,11 +10837,11 @@ module.exports = lastDayOfWeek
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(116)
+var getDaysInMonth = __webpack_require__(117)
 
 /**
  * @category Month Helpers
@@ -10525,196 +10879,1551 @@ module.exports = setMonth
 
 
 /***/ }),
-/* 160 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
 /* 161 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Arabic (ar)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        var num = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'],
+            map = { '٠': 0, '١': 1, '٢': 2, '٣': 3, '٤': 4, '٥': 5, '٦': 6, '٧': 7, '٨': 8, '٩': 9 };
+
+        date.setLocales('ar', {
+            MMMM: ['كانون الثاني يناير', 'شباط فبراير', 'آذار مارس', 'نيسان أبريل', 'أيار مايو', 'حزيران يونيو', 'تموز يوليو', 'آب أغسطس', 'أيلول سبتمبر', 'تشرين الأول أكتوبر', 'تشرين الثاني نوفمبر', 'كانون الأول ديسمبر'],
+            MMM: ['كانون الثاني يناير', 'شباط فبراير', 'آذار مارس', 'نيسان أبريل', 'أيار مايو', 'حزيران يونيو', 'تموز يوليو', 'آب أغسطس', 'أيلول سبتمبر', 'تشرين الأول أكتوبر', 'تشرين الثاني نوفمبر', 'كانون الأول ديسمبر'],
+            dddd: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+            ddd: ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+            dd: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
+            A: ['ص', 'م'],
+            formatter: {
+                post: function (str) {
+                    return str.replace(/\d/g, function (i) {
+                        return num[i | 0];
+                    });
+                }
+            },
+            parser: {
+                pre: function (str) {
+                    return str.replace(/[٠١٢٣٤٥٦٧٨٩]/g, function (i) {
+                        return '' + map[i];
+                    });
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 162 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Azerbaijani (az)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('az', {
+            MMMM: ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avqust', 'sentyabr', 'oktyabr', 'noyabr', 'dekabr'],
+            MMM: ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avq', 'sen', 'okt', 'noy', 'dek'],
+            dddd: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
+            ddd: ['Baz', 'BzE', 'ÇAx', 'Çər', 'CAx', 'Cüm', 'Şən'],
+            dd: ['Bz', 'BE', 'ÇA', 'Çə', 'CA', 'Cü', 'Şə'],
+            A: ['gecə', 'səhər', 'gündüz', 'axşam'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // gecə
+                    } else if (h < 12) {
+                        return this.A[1];   // səhər
+                    } else if (h < 17) {
+                        return this.A[2];   // gündüz
+                    }
+                    return this.A[3];       // axşam
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 2) {
+                        return h;               // gecə, səhər
+                    }
+                    return h > 11 ? h : h + 12; // gündüz, axşam
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 163 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Bengali (bn)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('bn', {
+            MMMM: ['জানুয়ারী', 'ফেবুয়ারী', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'অগাস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'],
+            MMM: ['জানু', 'ফেব', 'মার্চ', 'এপর', 'মে', 'জুন', 'জুল', 'অগ', 'সেপ্ট', 'অক্টো', 'নভ', 'ডিসেম্'],
+            dddd: ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পত্তিবার', 'শুক্রবার', 'শনিবার'],
+            ddd: ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহস্পত্তি', 'শুক্র', 'শনি'],
+            dd: ['রব', 'সম', 'মঙ্গ', 'বু', 'ব্রিহ', 'শু', 'শনি'],
+            A: ['রাত', 'সকাল', 'দুপুর', 'বিকাল'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // রাত
+                    } else if (h < 10) {
+                        return this.A[1];   // সকাল
+                    } else if (h < 17) {
+                        return this.A[2];   // দুপুর
+                    } else if (h < 20) {
+                        return this.A[3];   // বিকাল
+                    }
+                    return this.A[0];       // রাত
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h < 4 || h > 11 ? h : h + 12;    // রাত
+                    } else if (a < 2) {
+                        return h;                               // সকাল
+                    } else if (a < 3) {
+                        return h > 9 ? h : h + 12;              // দুপুর
+                    }
+                    return h + 12;                              // বিকাল
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 164 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Czech (cs)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('cs', {
+            MMMM: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen', 'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
+            MMM: ['led', 'úno', 'bře', 'dub', 'kvě', 'čvn', 'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
+            dddd: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
+            ddd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+            dd: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 165 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve German (de)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('de', {
+            MMMM: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+            MMM: ['Jan.', 'Febr.', 'Mrz.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sept.', 'Okt.', 'Nov.', 'Dez.'],
+            dddd: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+            ddd: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
+            dd: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+            A: ['Uhr nachmittags', 'Uhr morgens']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 166 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Greek (el)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('el', {
+            MMMM: {
+                nominative: ['Ιανουάριος', 'Φεβρουάριος', 'Μάρτιος', 'Απρίλιος', 'Μάιος', 'Ιούνιος', 'Ιούλιος', 'Αύγουστος', 'Σεπτέμβριος', 'Οκτώβριος', 'Νοέμβριος', 'Δεκέμβριος'],
+                genitive: ['Ιανουαρίου', 'Φεβρουαρίου', 'Μαρτίου', 'Απριλίου', 'Μαΐου', 'Ιουνίου', 'Ιουλίου', 'Αυγούστου', 'Σεπτεμβρίου', 'Οκτωβρίου', 'Νοεμβρίου', 'Δεκεμβρίου']
+            },
+            MMM: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαϊ', 'Ιουν', 'Ιουλ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'],
+            dddd: ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'],
+            ddd: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'],
+            dd: ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα'],
+            A: ['πμ', 'μμ'],
+            formatter: {
+                MMMM: function (d, formatString) {
+                    return this.MMMM[/D.*MMMM/.test(formatString) ? 'genitive' : 'nominative'][d.getMonth()];
+                },
+                hh: function (d) {
+                    return ('0' + d.getHours() % 12).slice(-2);
+                },
+                h: function (d) {
+                    return d.getHours() % 12;
+                }
+            },
+            parser: {
+                MMMM: function (str, formatString) {
+                    return this.parser.find(this.MMMM[/D.*MMMM/.test(formatString) ? 'genitive' : 'nominative'], str);
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 167 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Spanish (es)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('es', {
+            MMMM: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+            MMM: ['ene.', 'feb.', 'mar.', 'abr.', 'may.', 'jun.', 'jul.', 'ago.', 'sep.', 'oct.', 'nov.', 'dic.'],
+            dddd: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+            ddd: ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'],
+            dd: ['do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sá'],
+            A: ['de la mañana', 'de la tarde', 'de la noche'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 12) {
+                        return this.A[0];   // de la mañana
+                    } else if (h < 19) {
+                        return this.A[1];   // de la tarde
+                    }
+                    return this.A[2];       // de la noche
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h;   // de la mañana
+                    }
+                    return h > 11 ? h : h + 12; // de la tarde, de la noche
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 168 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Persian (fa)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        var num = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'],
+            map = { '۰': 0, '۱': 1, '۲': 2, '۳': 3, '۴': 4, '۵': 5, '۶': 6, '۷': 7, '۸': 8, '۹': 9 };
+
+        date.setLocales('fa', {
+            MMMM: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'],
+            MMM: ['ژانویه', 'فوریه', 'مارس', 'آوریل', 'مه', 'ژوئن', 'ژوئیه', 'اوت', 'سپتامبر', 'اکتبر', 'نوامبر', 'دسامبر'],
+            dddd: ['یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'],
+            ddd: ['یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'],
+            dd: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
+            A: ['قبل از ظهر', 'بعد از ظهر'],
+            formatter: {
+                post: function (str) {
+                    return str.replace(/\d/g, function (i) {
+                        return num[i | 0];
+                    });
+                }
+            },
+            parser: {
+                pre: function (str) {
+                    return str.replace(/[۰۱۲۳۴۵۶۷۸۹]/g, function (i) {
+                        return '' + map[i];
+                    });
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 169 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve French (fr)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('fr', {
+            MMMM: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+            MMM: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
+            dddd: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+            ddd: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+            dd: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+            A: ['matin', 'l\'après-midi']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 170 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Hindi (hi)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('hi', {
+            MMMM: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'],
+            MMM: ['जन.', 'फ़र.', 'मार्च', 'अप्रै.', 'मई', 'जून', 'जुल.', 'अग.', 'सित.', 'अक्टू.', 'नव.', 'दिस.'],
+            dddd: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरूवार', 'शुक्रवार', 'शनिवार'],
+            ddd: ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरू', 'शुक्र', 'शनि'],
+            dd: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
+            A: ['रात', 'सुबह', 'दोपहर', 'शाम'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // रात
+                    } else if (h < 10) {
+                        return this.A[1];   // सुबह
+                    } else if (h < 17) {
+                        return this.A[2];   // दोपहर
+                    } else if (h < 20) {
+                        return this.A[3];   // शाम
+                    }
+                    return this.A[0];       // रात
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h < 4 || h > 11 ? h : h + 12;    // रात
+                    } else if (a < 2) {
+                        return h;                               // सुबह
+                    } else if (a < 3) {
+                        return h > 9 ? h : h + 12;              // दोपहर
+                    }
+                    return h + 12;                              // शाम
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 171 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Hungarian (hu)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('hu', {
+            MMMM: ['január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december'],
+            MMM: ['jan', 'feb', 'márc', 'ápr', 'máj', 'jún', 'júl', 'aug', 'szept', 'okt', 'nov', 'dec'],
+            dddd: ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'],
+            ddd: ['vas', 'hét', 'kedd', 'sze', 'csüt', 'pén', 'szo'],
+            dd: ['v', 'h', 'k', 'sze', 'cs', 'p', 'szo'],
+            A: ['de', 'du']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 172 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Indonesian (id)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('id', {
+            MMMM: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
+            dddd: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+            ddd: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+            dd: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+            A: ['pagi', 'siang', 'sore', 'malam'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 11) {
+                        return this.A[0];   // pagi
+                    } else if (h < 15) {
+                        return this.A[1];   // siang
+                    } else if (h < 19) {
+                        return this.A[2];   // sore
+                    }
+                    return this.A[3];       // malam
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h;                       // pagi
+                    } else if (a < 2) {
+                        return h >= 11 ? h : h + 12;    // siang
+                    }
+                    return h + 12;                      // sore, malam
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 173 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Italian (it)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('it', {
+            MMMM: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+            MMM: ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'],
+            dddd: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+            ddd: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+            dd: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+            A: ['di mattina', 'di pomerrigio']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 174 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Japanese (ja)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('ja', {
+            MMMM: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            MMM: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            dddd: ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日'],
+            ddd: ['日', '月', '火', '水', '木', '金', '土'],
+            dd: ['日', '月', '火', '水', '木', '金', '土'],
+            A: ['午前', '午後'],
+            formatter: {
+                hh: function (d) {
+                    return ('0' + d.getHours() % 12).slice(-2);
+                },
+                h: function (d) {
+                    return d.getHours() % 12;
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 175 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Javanese (jv)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('jv', {
+            MMMM: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Nopember', 'Desember'],
+            MMM: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nop', 'Des'],
+            dddd: ['Minggu', 'Senen', 'Seloso', 'Rebu', 'Kemis', 'Jemuwah', 'Septu'],
+            ddd: ['Min', 'Sen', 'Sel', 'Reb', 'Kem', 'Jem', 'Sep'],
+            dd: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sp'],
+            A: ['enjing', 'siyang', 'sonten', 'ndalu'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 11) {
+                        return this.A[0];   // enjing
+                    } else if (h < 15) {
+                        return this.A[1];   // siyang
+                    } else if (h < 19) {
+                        return this.A[2];   // sonten
+                    }
+                    return this.A[3];       // ndalu
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h;                       // enjing
+                    } else if (a < 2) {
+                        return h >= 11 ? h : h + 12;    // siyang
+                    }
+                    return h + 12;                      // sonten, ndalu
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 176 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Korean (ko)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('ko', {
+            MMMM: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            MMM: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            dddd: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+            ddd: ['일', '월', '화', '수', '목', '금', '토'],
+            dd: ['일', '월', '화', '수', '목', '금', '토'],
+            A: ['오전', '오후']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 177 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Burmese (my)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        var num = ['၀', '၁', '၂', '၃', '၄', '၅', '၆', '၇', '၈', '၉'],
+            map = { '၀': 0, '၁': 1, '၂': 2, '၃': 3, '၄': 4, '၅': 5, '၆': 6, '၇': 7, '၈': 8, '၉': 9 };
+
+        date.setLocales('my', {
+            MMMM: ['ဇန်နဝါရီ', 'ဖေဖော်ဝါရီ', 'မတ်', 'ဧပြီ', 'မေ', 'ဇွန်', 'ဇူလိုင်', 'သြဂုတ်', 'စက်တင်ဘာ', 'အောက်တိုဘာ', 'နိုဝင်ဘာ', 'ဒီဇင်ဘာ'],
+            MMM: ['ဇန်', 'ဖေ', 'မတ်', 'ပြီ', 'မေ', 'ဇွန်', 'လိုင်', 'သြ', 'စက်', 'အောက်', 'နို', 'ဒီ'],
+            dddd: ['တနင်္ဂနွေ', 'တနင်္လာ', 'အင်္ဂါ', 'ဗုဒ္ဓဟူး', 'ကြာသပတေး', 'သောကြာ', 'စနေ'],
+            ddd: ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'],
+            dd: ['နွေ', 'လာ', 'ဂါ', 'ဟူး', 'ကြာ', 'သော', 'နေ'],
+            formatter: {
+                post: function (str) {
+                    return str.replace(/\d/g, function (i) {
+                        return num[i | 0];
+                    });
+                }
+            },
+            parser: {
+                pre: function (str) {
+                    return str.replace(/[၀၁၂၃၄၅၆၇၈၉]/g, function (i) {
+                        return '' + map[i];
+                    });
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 178 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Dutch (nl)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('nl', {
+            MMMM: ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+            MMM: {
+                withdots: ['jan.', 'feb.', 'mrt.', 'apr.', 'mei', 'jun.', 'jul.', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'],
+                withoutdots: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec']
+            },
+            dddd: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+            ddd: ['zo.', 'ma.', 'di.', 'wo.', 'do.', 'vr.', 'za.'],
+            dd: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+            formatter: {
+                MMM: function (d, formatString) {
+                    return this.MMM[/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots'][d.getMonth()];
+                }
+            },
+            parser: {
+                MMM: function (str, formatString) {
+                    return this.parser.find(this.MMM[/-MMM-/.test(formatString) ? 'withoutdots' : 'withdots'], str);
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 179 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Punjabi (pa-in)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        var num = ['੦', '੧', '੨', '੩', '੪', '੫', '੬', '੭', '੮', '੯'],
+            map = { '੦': 0, '੧': 1, '੨': 2, '੩': 3, '੪': 4, '੫': 5, '੬': 6, '੭': 7, '੮': 8, '੯': 9 };
+
+        date.setLocales('pa-in', {
+            MMMM: ['ਜਨਵਰੀ', 'ਫ਼ਰਵਰੀ', 'ਮਾਰਚ', 'ਅਪ੍ਰੈਲ', 'ਮਈ', 'ਜੂਨ', 'ਜੁਲਾਈ', 'ਅਗਸਤ', 'ਸਤੰਬਰ', 'ਅਕਤੂਬਰ', 'ਨਵੰਬਰ', 'ਦਸੰਬਰ'],
+            MMM: ['ਜਨਵਰੀ', 'ਫ਼ਰਵਰੀ', 'ਮਾਰਚ', 'ਅਪ੍ਰੈਲ', 'ਮਈ', 'ਜੂਨ', 'ਜੁਲਾਈ', 'ਅਗਸਤ', 'ਸਤੰਬਰ', 'ਅਕਤੂਬਰ', 'ਨਵੰਬਰ', 'ਦਸੰਬਰ'],
+            dddd: ['ਐਤਵਾਰ', 'ਸੋਮਵਾਰ', 'ਮੰਗਲਵਾਰ', 'ਬੁਧਵਾਰ', 'ਵੀਰਵਾਰ', 'ਸ਼ੁੱਕਰਵਾਰ', 'ਸ਼ਨੀਚਰਵਾਰ'],
+            ddd: ['ਐਤ', 'ਸੋਮ', 'ਮੰਗਲ', 'ਬੁਧ', 'ਵੀਰ', 'ਸ਼ੁਕਰ', 'ਸ਼ਨੀ'],
+            dd: ['ਐਤ', 'ਸੋਮ', 'ਮੰਗਲ', 'ਬੁਧ', 'ਵੀਰ', 'ਸ਼ੁਕਰ', 'ਸ਼ਨੀ'],
+            A: ['ਰਾਤ', 'ਸਵੇਰ', 'ਦੁਪਹਿਰ', 'ਸ਼ਾਮ'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // ਰਾਤ
+                    } else if (h < 10) {
+                        return this.A[1];   // ਸਵੇਰ
+                    } else if (h < 17) {
+                        return this.A[2];   // ਦੁਪਹਿਰ
+                    } else if (h < 20) {
+                        return this.A[3];   // ਸ਼ਾਮ
+                    }
+                    return this.A[0];       // ਰਾਤ
+                },
+                post: function (str) {
+                    return str.replace(/\d/g, function (i) {
+                        return num[i | 0];
+                    });
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 1) {
+                        return h < 4 || h > 11 ? h : h + 12;    // ਰਾਤ
+                    } else if (a < 2) {
+                        return h;                               // ਸਵੇਰ
+                    } else if (a < 3) {
+                        return h >= 10 ? h : h + 12;            // ਦੁਪਹਿਰ
+                    }
+                    return h + 12;                              // ਸ਼ਾਮ
+                },
+                pre: function (str) {
+                    return str.replace(/[੦੧੨੩੪੫੬੭੮੯]/g, function (i) {
+                        return '' + map[i];
+                    });
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 180 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Polish (pl)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('pl', {
+            MMMM: {
+                nominative: ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'],
+                subjective: ['stycznia', 'lutego', 'marca', 'kwietnia', 'maja', 'czerwca', 'lipca', 'sierpnia', 'września', 'października', 'listopada', 'grudnia']
+            },
+            MMM: ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'],
+            dddd: ['niedziela', 'poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota'],
+            ddd: ['nie', 'pon', 'wt', 'śr', 'czw', 'pt', 'sb'],
+            dd: ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
+            formatter: {
+                MMMM: function (d, formatString) {
+                    return this.MMMM[/D MMMM/.test(formatString) ? 'subjective' : 'nominative'][d.getMonth()];
+                }
+            },
+            parser: {
+                MMMM: function (str, formatString) {
+                    return this.parser.find(this.MMMM[/D MMMM/.test(formatString) ? 'subjective' : 'nominative'], str);
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 181 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Portuguese (pt)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('pt', {
+            MMMM: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            MMM: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dddd: ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
+            ddd: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+            dd: ['Dom', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sáb'],
+            A: ['da madrugada', 'da manhã', 'da tarde', 'da noite'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 5) {
+                        return this.A[0];   // da madrugada
+                    } else if (h < 12) {
+                        return this.A[1];   // da manhã
+                    } else if (h < 19) {
+                        return this.A[2];   // da tarde
+                    }
+                    return this.A[3];       // da noite
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 2) {
+                        return h;   // da madrugada, da manhã
+                    }
+                    return h > 11 ? h : h + 12; // da tarde, da noite
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 182 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Romanian (ro)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('ro', {
+            MMMM: ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'],
+            MMM: ['ian.', 'febr.', 'mart.', 'apr.', 'mai', 'iun.', 'iul.', 'aug.', 'sept.', 'oct.', 'nov.', 'dec.'],
+            dddd: ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'],
+            ddd: ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
+            dd: ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 183 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Russian (ru)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('ru', {
+            MMMM: ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'],
+            MMM: ['янв', 'фев', 'мар', 'апр', 'мая', 'июня', 'июля', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+            dddd: ['Воскресенье', 'Понедельник', 'Вторник', 'Среду', 'Четверг', 'Пятницу', 'Субботу'],
+            ddd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            dd: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            A: ['ночи', 'утра', 'дня', 'вечера'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // ночи
+                    } else if (h < 12) {
+                        return this.A[1];   // утра
+                    } else if (h < 17) {
+                        return this.A[2];   // дня
+                    }
+                    return this.A[3];       // вечера
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 2) {
+                        return h;   // ночи, утра
+                    }
+                    return h > 11 ? h : h + 12; // дня, вечера
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 184 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Serbian (sr)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('sr', {
+            MMMM: ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar'],
+            MMM: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'jun', 'jul', 'avg.', 'sep.', 'okt.', 'nov.', 'dec.'],
+            dddd: ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota'],
+            ddd: ['ned.', 'pon.', 'uto.', 'sre.', 'čet.', 'pet.', 'sub.'],
+            dd: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 185 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Thai (th)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('th', {
+            MMMM: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+            MMM: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+            dddd: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+            ddd: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์'],
+            dd: ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'],
+            A: ['ก่อนเที่ยง', 'หลังเที่ยง']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 186 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Turkish (tr)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('tr', {
+            MMMM: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            MMM: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+            dddd: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
+            ddd: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
+            dd: ['Pz', 'Pt', 'Sa', 'Ça', 'Pe', 'Cu', 'Ct']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 187 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Ukrainian (uk)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('uk', {
+            MMMM: ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'],
+            MMM: ['січ', 'лют', 'бер', 'квіт', 'трав', 'черв', 'лип', 'серп', 'вер', 'жовт', 'лист', 'груд'],
+            dddd: {
+                nominative: ['неділя', 'понеділок', 'вівторок', 'середа', 'четвер', 'п’ятниця', 'субота'],
+                accusative: ['неділю', 'понеділок', 'вівторок', 'середу', 'четвер', 'п’ятницю', 'суботу'],
+                genitive: ['неділі', 'понеділка', 'вівторка', 'середи', 'четверга', 'п’ятниці', 'суботи']
+            },
+            ddd: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+            dd: ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+            A: ['ночі', 'ранку', 'дня', 'вечора'],
+            formatter: {
+                A: function (d) {
+                    var h = d.getHours();
+                    if (h < 4) {
+                        return this.A[0];   // ночі
+                    } else if (h < 12) {
+                        return this.A[1];   // ранку
+                    } else if (h < 17) {
+                        return this.A[2];   // дня
+                    }
+                    return this.A[3];       // вечора
+                },
+                dddd: function (d, formatString) {
+                    var type = 'nominative';
+                    if (/(\[[ВвУу]\]) ?dddd/.test(formatString)) {
+                        type = 'accusative';
+                    } else if (/\[?(?:минулої|наступної)? ?\] ?dddd/.test(formatString)) {
+                        type = 'genitive';
+                    }
+                    return this.dddd[type][d.getDay()];
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 2) {
+                        return h;   // ночі, ранку
+                    }
+                    return h > 11 ? h : h + 12; // дня, вечора
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 188 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Uzbek (uz)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('uz', {
+            MMMM: ['январ', 'феврал', 'март', 'апрел', 'май', 'июн', 'июл', 'август', 'сентябр', 'октябр', 'ноябр', 'декабр'],
+            MMM: ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'],
+            dddd: ['Якшанба', 'Душанба', 'Сешанба', 'Чоршанба', 'Пайшанба', 'Жума', 'Шанба'],
+            ddd: ['Якш', 'Душ', 'Сеш', 'Чор', 'Пай', 'Жум', 'Шан'],
+            dd: ['Як', 'Ду', 'Се', 'Чо', 'Па', 'Жу', 'Ша']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 189 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Vietnamese (vi)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('vi', {
+            MMMM: ['tháng 1', 'tháng 2', 'tháng 3', 'tháng 4', 'tháng 5', 'tháng 6', 'tháng 7', 'tháng 8', 'tháng 9', 'tháng 10', 'tháng 11', 'tháng 12'],
+            MMM: ['Th01', 'Th02', 'Th03', 'Th04', 'Th05', 'Th06', 'Th07', 'Th08', 'Th09', 'Th10', 'Th11', 'Th12'],
+            dddd: ['chủ nhật', 'thứ hai', 'thứ ba', 'thứ tư', 'thứ năm', 'thứ sáu', 'thứ bảy'],
+            ddd: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+            dd: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+            A: ['sa', 'ch']
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 190 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Chinese (zh-cn)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('zh-cn', {
+            MMMM: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            MMM: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            dddd: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            ddd: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            dd: ['日', '一', '二', '三', '四', '五', '六'],
+            A: ['凌晨', '早上', '上午', '中午', '下午', '晚上'],
+            formatter: {
+                A: function (d) {
+                    var hm = d.getHours() * 100 + d.getMinutes();
+                    if (hm < 600) {
+                        return this.A[0];   // 凌晨
+                    } else if (hm < 900) {
+                        return this.A[1];   // 早上
+                    } else if (hm < 1130) {
+                        return this.A[2];   // 上午
+                    } else if (hm < 1230) {
+                        return this.A[3];   // 中午
+                    } else if (hm < 1800) {
+                        return this.A[4];   // 下午
+                    }
+                    return this.A[5];       // 晚上
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 4) {
+                        return h;   // 凌晨, 早上, 上午, 中午
+                    }
+                    return h > 11 ? h : h + 12; // 下午, 晚上
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 191 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * @preserve date-and-time.js locale configuration
+ * @preserve Chinese (zh-tw)
+ * @preserve It is using moment.js locale configuration as a reference.
+ */
+(function (global) {
+    'use strict';
+
+    var locale = function (date) {
+        date.setLocales('zh-tw', {
+            MMMM: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            MMM: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            dddd: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            ddd: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            dd: ['日', '一', '二', '三', '四', '五', '六'],
+            A: ['早上', '上午', '中午', '下午', '晚上'],
+            formatter: {
+                A: function (d) {
+                    var hm = d.getHours() * 100 + d.getMinutes();
+                    if (hm < 900) {
+                        return this.A[0];   // 早上
+                    } else if (hm < 1130) {
+                        return this.A[1];   // 上午
+                    } else if (hm < 1230) {
+                        return this.A[2];   // 中午
+                    } else if (hm < 1800) {
+                        return this.A[3];   // 下午
+                    }
+                    return this.A[4];       // 晚上
+                }
+            },
+            parser: {
+                h: function (h, a) {
+                    if (a < 3) {
+                        return h;   // 早上, 上午, 中午
+                    }
+                    return h > 11 ? h : h + 12; // 下午, 晚上
+                }
+            }
+        });
+    };
+
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        locale(__webpack_require__(1));
+    } else if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (locale),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {
+        locale(global.date);
+    }
+
+}(this));
+
 
 /***/ }),
 /* 192 */
@@ -10742,18 +12451,212 @@ module.exports = {"typings":"../../typings.d.ts"}
 
 /***/ }),
 /* 196 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 197 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 198 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 199 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 200 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 210 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 216 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../typings.d.ts"}
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 219 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 221 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 228 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defaultOptions__ = __webpack_require__(298);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_calendar__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_days__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_date_and_time__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_events__ = __webpack_require__(330);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_calendar__ = __webpack_require__(332);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_days__ = __webpack_require__(333);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10768,6 +12671,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
+// import date from 'date'
 
 
 
@@ -10804,7 +12709,7 @@ var bulmaCalendar = function (_EventEmitter) {
     _this._clickEvents = ['click', 'touch'];
 
     /// Set default options and merge with instance defined
-    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_4__defaultOptions__["a" /* default */], options);
+    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */], options);
 
     _this.onToggleDatePicker = _this.onToggleDatePicker.bind(_this);
     _this.onCloseDatePicker = _this.onCloseDatePicker.bind(_this);
@@ -10869,16 +12774,17 @@ var bulmaCalendar = function (_EventEmitter) {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
       if (date) {
+        var newDate = void 0;
         if (this.options.isRange) {
           var dates = this.element.value.split(' - ');
           if (dates.length) {
-            this.startDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](dates[0]);
+            this.startDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(dates[0], this.dateFormat);
           }
           if (dates.length === 2) {
-            this.endDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](dates[1]);
+            this.endDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(dates[1], this.dateFormat);
           }
         } else {
-          this.startDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](this.element.value);
+          this.startDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(this.element.value, this.dateFormat);
         }
       } else {
         var value = '';
@@ -10887,7 +12793,7 @@ var bulmaCalendar = function (_EventEmitter) {
             value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.startDate, this.dateFormat, { locale: this.locale }) + ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.endDate, this.dateFormat, { locale: this.locale });
           }
         } else if (this.startDate && this._isValidDate(this.startDate)) {
-          value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.startDate, this._dateFormat, {
+          value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.startDate, this.dateFormat, {
             locale: this.locale
           });
         }
@@ -11187,7 +13093,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
       // Use Element dataset values to override options
       var elementConfig = this.element.dataset ? Object.keys(this.element.dataset).filter(function (key) {
-        return Object.keys(__WEBPACK_IMPORTED_MODULE_4__defaultOptions__["a" /* default */]).includes(key);
+        return Object.keys(__WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */]).includes(key);
       }).reduce(function (obj, key) {
         return _extends({}, obj, _defineProperty({}, key, _this2.element.dataset[key]));
       }, {}) : {};
@@ -11232,13 +13138,13 @@ var bulmaCalendar = function (_EventEmitter) {
         if (this.options.isRange) {
           var dates = this.element.value.split(' - ');
           if (dates.length) {
-            this.startDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](dates[0]);
+            this.startDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(dates[0], this.dateFormat);
           }
           if (dates.length === 2) {
-            this.endDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](dates[1]);
+            this.endDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(dates[1], this.dateFormat);
           }
         } else {
-          this.startDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](this.element.value);
+          this.startDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(this.element.value, this.dateFormat);
         }
       }
       this._visibleDate = this._isValidDate(this.startDate) ? this.startDate : startDateToday;
@@ -11288,7 +13194,7 @@ var bulmaCalendar = function (_EventEmitter) {
       });
 
       // Create datePicker HTML Fragment based on Template
-      var datePickerFragment = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_5__templates_calendar__["a" /* default */])(_extends({}, this.options, {
+      var datePickerFragment = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates_calendar__["a" /* default */])(_extends({}, this.options, {
         id: this.id,
         date: this.date,
         locale: this.locale,
@@ -11519,7 +13425,7 @@ var bulmaCalendar = function (_EventEmitter) {
           // if not in range, no click action
           // if in this month, select the date
           // if out of this month, jump to the date
-          var onClick = !_this5._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](day.dataset.date), _this5.minDate, _this5.maxDate) ? null : _this5.onDateClickDatePicker;
+          var onClick = !_this5._isValidDate(new Date(day.dataset.date), _this5.minDate, _this5.maxDate) ? null : _this5.onDateClickDatePicker;
           day.addEventListener(clickEvent, onClick);
         });
 
@@ -11575,7 +13481,7 @@ var bulmaCalendar = function (_EventEmitter) {
         };
       });
 
-      this._ui.body.days.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates_days__["a" /* default */])(days)));
+      this._ui.body.days.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_days__["a" /* default */])(days)));
       this._ui.days = this._ui.body.days.querySelectorAll('.calendar-date');
       this._bindDaysEvents();
 
@@ -11842,7 +13748,7 @@ var bulmaCalendar = function (_EventEmitter) {
       var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
       this._lang = lang;
-      this._locale = __webpack_require__(301)("./" + lang);
+      this._locale = __webpack_require__(334)("./" + lang);
     }
   }, {
     key: 'locale',
@@ -11866,7 +13772,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this._date.start;
     },
     set: function set(date) {
-      this._date.start = date ? this._isValidDate(date, this.minDate, this.maxDate) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.start : undefined;
+      this._date.start = date ? this._isValidDate(date, this.minDate, this.maxDate) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : undefined : undefined;
     }
   }, {
     key: 'endDate',
@@ -11874,7 +13780,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this._date.end;
     },
     set: function set(date) {
-      this._date.end = date ? this._isValidDate(date, this.minDate, this.maxDate) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.end : undefined;
+      this._date.end = date ? this._isValidDate(date, this.minDate, this.maxDate) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : undefined : undefined;
     }
 
     // Get minDate
@@ -11942,12 +13848,12 @@ var bulmaCalendar = function (_EventEmitter) {
   }]);
 
   return bulmaCalendar;
-}(__WEBPACK_IMPORTED_MODULE_3__utils_events__["a" /* default */]);
+}(__WEBPACK_IMPORTED_MODULE_4__utils_events__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["default"] = (bulmaCalendar);
 
 /***/ }),
-/* 197 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11960,7 +13866,7 @@ var uuid = function uuid() {
 };
 
 /***/ }),
-/* 198 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11976,7 +13882,7 @@ var isDate = function isDate(unknown) {
 };
 
 /***/ }),
-/* 199 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12026,7 +13932,7 @@ module.exports = areRangesOverlapping
 
 
 /***/ }),
-/* 200 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12081,7 +13987,7 @@ module.exports = closestIndexTo
 
 
 /***/ }),
-/* 201 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12134,10 +14040,10 @@ module.exports = closestTo
 
 
 /***/ }),
-/* 202 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfISOWeek = __webpack_require__(3)
+var startOfISOWeek = __webpack_require__(4)
 
 var MILLISECONDS_IN_MINUTE = 60000
 var MILLISECONDS_IN_WEEK = 604800000
@@ -12182,10 +14088,10 @@ module.exports = differenceInCalendarISOWeeks
 
 
 /***/ }),
-/* 203 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getQuarter = __webpack_require__(134)
+var getQuarter = __webpack_require__(135)
 var parse = __webpack_require__(0)
 
 /**
@@ -12221,10 +14127,10 @@ module.exports = differenceInCalendarQuarters
 
 
 /***/ }),
-/* 204 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(78)
+var startOfWeek = __webpack_require__(79)
 
 var MILLISECONDS_IN_MINUTE = 60000
 var MILLISECONDS_IN_WEEK = 604800000
@@ -12279,10 +14185,10 @@ module.exports = differenceInCalendarWeeks
 
 
 /***/ }),
-/* 205 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(81)
+var differenceInMilliseconds = __webpack_require__(82)
 
 var MILLISECONDS_IN_HOUR = 3600000
 
@@ -12314,13 +14220,13 @@ module.exports = differenceInHours
 
 
 /***/ }),
-/* 206 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarISOYears = __webpack_require__(132)
-var compareAsc = __webpack_require__(9)
-var subISOYears = __webpack_require__(137)
+var differenceInCalendarISOYears = __webpack_require__(133)
+var compareAsc = __webpack_require__(10)
+var subISOYears = __webpack_require__(138)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -12362,10 +14268,10 @@ module.exports = differenceInISOYears
 
 
 /***/ }),
-/* 207 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(81)
+var differenceInMilliseconds = __webpack_require__(82)
 
 var MILLISECONDS_IN_MINUTE = 60000
 
@@ -12397,10 +14303,10 @@ module.exports = differenceInMinutes
 
 
 /***/ }),
-/* 208 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMonths = __webpack_require__(119)
+var differenceInMonths = __webpack_require__(120)
 
 /**
  * @category Quarter Helpers
@@ -12430,10 +14336,10 @@ module.exports = differenceInQuarters
 
 
 /***/ }),
-/* 209 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInDays = __webpack_require__(136)
+var differenceInDays = __webpack_require__(137)
 
 /**
  * @category Week Helpers
@@ -12463,12 +14369,12 @@ module.exports = differenceInWeeks
 
 
 /***/ }),
-/* 210 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarYears = __webpack_require__(135)
-var compareAsc = __webpack_require__(9)
+var differenceInCalendarYears = __webpack_require__(136)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Year Helpers
@@ -12507,13 +14413,13 @@ module.exports = differenceInYears
 
 
 /***/ }),
-/* 211 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(118)
+var compareDesc = __webpack_require__(119)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(120)
-var enLocale = __webpack_require__(5)
+var differenceInSeconds = __webpack_require__(121)
+var enLocale = __webpack_require__(6)
 
 var MINUTES_IN_DAY = 1440
 var MINUTES_IN_MONTH = 43200
@@ -12689,10 +14595,10 @@ module.exports = distanceInWordsStrict
 
 
 /***/ }),
-/* 212 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var distanceInWords = __webpack_require__(138)
+var distanceInWords = __webpack_require__(139)
 
 /**
  * @category Common Helpers
@@ -12780,7 +14686,7 @@ module.exports = distanceInWordsToNow
 
 
 /***/ }),
-/* 213 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12840,7 +14746,7 @@ module.exports = eachDay
 
 
 /***/ }),
-/* 214 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12871,10 +14777,10 @@ module.exports = endOfHour
 
 
 /***/ }),
-/* 215 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfWeek = __webpack_require__(139)
+var endOfWeek = __webpack_require__(140)
 
 /**
  * @category ISO Week Helpers
@@ -12902,11 +14808,11 @@ module.exports = endOfISOWeek
 
 
 /***/ }),
-/* 216 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getISOYear = __webpack_require__(2)
-var startOfISOWeek = __webpack_require__(3)
+var getISOYear = __webpack_require__(3)
+var startOfISOWeek = __webpack_require__(4)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -12941,7 +14847,7 @@ module.exports = endOfISOYear
 
 
 /***/ }),
-/* 217 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -12972,7 +14878,7 @@ module.exports = endOfMinute
 
 
 /***/ }),
-/* 218 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13006,7 +14912,7 @@ module.exports = endOfQuarter
 
 
 /***/ }),
-/* 219 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13037,10 +14943,10 @@ module.exports = endOfSecond
 
 
 /***/ }),
-/* 220 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfDay = __webpack_require__(121)
+var endOfDay = __webpack_require__(122)
 
 /**
  * @category Day Helpers
@@ -13064,7 +14970,7 @@ module.exports = endOfToday
 
 
 /***/ }),
-/* 221 */
+/* 253 */
 /***/ (function(module, exports) {
 
 /**
@@ -13097,7 +15003,7 @@ module.exports = endOfTomorrow
 
 
 /***/ }),
-/* 222 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13130,7 +15036,7 @@ module.exports = endOfYear
 
 
 /***/ }),
-/* 223 */
+/* 255 */
 /***/ (function(module, exports) {
 
 /**
@@ -13163,15 +15069,15 @@ module.exports = endOfYesterday
 
 
 /***/ }),
-/* 224 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getDayOfYear = __webpack_require__(141)
-var getISOWeek = __webpack_require__(122)
-var getISOYear = __webpack_require__(2)
+var getDayOfYear = __webpack_require__(142)
+var getISOWeek = __webpack_require__(123)
+var getISOYear = __webpack_require__(3)
 var parse = __webpack_require__(0)
-var isValid = __webpack_require__(143)
-var enLocale = __webpack_require__(5)
+var isValid = __webpack_require__(144)
+var enLocale = __webpack_require__(6)
 
 /**
  * @category Common Helpers
@@ -13497,7 +15403,7 @@ module.exports = format
 
 
 /***/ }),
-/* 225 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13527,7 +15433,7 @@ module.exports = getDate
 
 
 /***/ }),
-/* 226 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13557,10 +15463,10 @@ module.exports = getDay
 
 
 /***/ }),
-/* 227 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isLeapYear = __webpack_require__(144)
+var isLeapYear = __webpack_require__(145)
 
 /**
  * @category Year Helpers
@@ -13585,7 +15491,7 @@ module.exports = getDaysInYear
 
 
 /***/ }),
-/* 228 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13615,11 +15521,11 @@ module.exports = getHours
 
 
 /***/ }),
-/* 229 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfISOYear = __webpack_require__(8)
-var addWeeks = __webpack_require__(117)
+var startOfISOYear = __webpack_require__(9)
+var addWeeks = __webpack_require__(118)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -13654,7 +15560,7 @@ module.exports = getISOWeeksInYear
 
 
 /***/ }),
-/* 230 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13684,7 +15590,7 @@ module.exports = getMilliseconds
 
 
 /***/ }),
-/* 231 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13714,7 +15620,7 @@ module.exports = getMinutes
 
 
 /***/ }),
-/* 232 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13744,7 +15650,7 @@ module.exports = getMonth
 
 
 /***/ }),
-/* 233 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13812,7 +15718,7 @@ module.exports = getOverlappingDaysInRanges
 
 
 /***/ }),
-/* 234 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13842,7 +15748,7 @@ module.exports = getSeconds
 
 
 /***/ }),
-/* 235 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13872,7 +15778,7 @@ module.exports = getTime
 
 
 /***/ }),
-/* 236 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13902,7 +15808,7 @@ module.exports = getYear
 
 
 /***/ }),
-/* 237 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13933,7 +15839,7 @@ module.exports = isAfter
 
 
 /***/ }),
-/* 238 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13964,7 +15870,7 @@ module.exports = isBefore
 
 
 /***/ }),
-/* 239 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -13998,7 +15904,7 @@ module.exports = isEqual
 
 
 /***/ }),
-/* 240 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14026,7 +15932,7 @@ module.exports = isFirstDayOfMonth
 
 
 /***/ }),
-/* 241 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14054,7 +15960,7 @@ module.exports = isFriday
 
 
 /***/ }),
-/* 242 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14082,12 +15988,12 @@ module.exports = isFuture
 
 
 /***/ }),
-/* 243 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var endOfDay = __webpack_require__(121)
-var endOfMonth = __webpack_require__(140)
+var endOfDay = __webpack_require__(122)
+var endOfMonth = __webpack_require__(141)
 
 /**
  * @category Month Helpers
@@ -14113,7 +16019,7 @@ module.exports = isLastDayOfMonth
 
 
 /***/ }),
-/* 244 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14141,7 +16047,7 @@ module.exports = isMonday
 
 
 /***/ }),
-/* 245 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14169,10 +16075,10 @@ module.exports = isPast
 
 
 /***/ }),
-/* 246 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 /**
  * @category Day Helpers
@@ -14204,7 +16110,7 @@ module.exports = isSameDay
 
 
 /***/ }),
-/* 247 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14232,7 +16138,7 @@ module.exports = isSaturday
 
 
 /***/ }),
-/* 248 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14260,10 +16166,10 @@ module.exports = isSunday
 
 
 /***/ }),
-/* 249 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameHour = __webpack_require__(146)
+var isSameHour = __webpack_require__(147)
 
 /**
  * @category Hour Helpers
@@ -14289,10 +16195,10 @@ module.exports = isThisHour
 
 
 /***/ }),
-/* 250 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOWeek = __webpack_require__(148)
+var isSameISOWeek = __webpack_require__(149)
 
 /**
  * @category ISO Week Helpers
@@ -14319,10 +16225,10 @@ module.exports = isThisISOWeek
 
 
 /***/ }),
-/* 251 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOYear = __webpack_require__(149)
+var isSameISOYear = __webpack_require__(150)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -14350,10 +16256,10 @@ module.exports = isThisISOYear
 
 
 /***/ }),
-/* 252 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMinute = __webpack_require__(150)
+var isSameMinute = __webpack_require__(151)
 
 /**
  * @category Minute Helpers
@@ -14379,10 +16285,10 @@ module.exports = isThisMinute
 
 
 /***/ }),
-/* 253 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMonth = __webpack_require__(152)
+var isSameMonth = __webpack_require__(153)
 
 /**
  * @category Month Helpers
@@ -14407,10 +16313,10 @@ module.exports = isThisMonth
 
 
 /***/ }),
-/* 254 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameQuarter = __webpack_require__(153)
+var isSameQuarter = __webpack_require__(154)
 
 /**
  * @category Quarter Helpers
@@ -14435,10 +16341,10 @@ module.exports = isThisQuarter
 
 
 /***/ }),
-/* 255 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameSecond = __webpack_require__(155)
+var isSameSecond = __webpack_require__(156)
 
 /**
  * @category Second Helpers
@@ -14464,10 +16370,10 @@ module.exports = isThisSecond
 
 
 /***/ }),
-/* 256 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(123)
+var isSameWeek = __webpack_require__(124)
 
 /**
  * @category Week Helpers
@@ -14500,10 +16406,10 @@ module.exports = isThisWeek
 
 
 /***/ }),
-/* 257 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameYear = __webpack_require__(157)
+var isSameYear = __webpack_require__(158)
 
 /**
  * @category Year Helpers
@@ -14528,7 +16434,7 @@ module.exports = isThisYear
 
 
 /***/ }),
-/* 258 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14556,10 +16462,10 @@ module.exports = isThursday
 
 
 /***/ }),
-/* 259 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 /**
  * @category Day Helpers
@@ -14584,10 +16490,10 @@ module.exports = isToday
 
 
 /***/ }),
-/* 260 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 /**
  * @category Day Helpers
@@ -14614,7 +16520,7 @@ module.exports = isTomorrow
 
 
 /***/ }),
-/* 261 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14642,7 +16548,7 @@ module.exports = isTuesday
 
 
 /***/ }),
-/* 262 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14670,7 +16576,7 @@ module.exports = isWednesday
 
 
 /***/ }),
-/* 263 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14700,7 +16606,7 @@ module.exports = isWeekend
 
 
 /***/ }),
-/* 264 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14748,10 +16654,10 @@ module.exports = isWithinRange
 
 
 /***/ }),
-/* 265 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 /**
  * @category Day Helpers
@@ -14778,10 +16684,10 @@ module.exports = isYesterday
 
 
 /***/ }),
-/* 266 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var lastDayOfWeek = __webpack_require__(158)
+var lastDayOfWeek = __webpack_require__(159)
 
 /**
  * @category ISO Week Helpers
@@ -14809,11 +16715,11 @@ module.exports = lastDayOfISOWeek
 
 
 /***/ }),
-/* 267 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getISOYear = __webpack_require__(2)
-var startOfISOWeek = __webpack_require__(3)
+var getISOYear = __webpack_require__(3)
+var startOfISOWeek = __webpack_require__(4)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -14848,7 +16754,7 @@ module.exports = lastDayOfISOYear
 
 
 /***/ }),
-/* 268 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14881,7 +16787,7 @@ module.exports = lastDayOfMonth
 
 
 /***/ }),
-/* 269 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14915,7 +16821,7 @@ module.exports = lastDayOfQuarter
 
 
 /***/ }),
-/* 270 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14948,7 +16854,7 @@ module.exports = lastDayOfYear
 
 
 /***/ }),
-/* 271 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14986,7 +16892,7 @@ module.exports = max
 
 
 /***/ }),
-/* 272 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15024,7 +16930,7 @@ module.exports = min
 
 
 /***/ }),
-/* 273 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15056,11 +16962,11 @@ module.exports = setDate
 
 
 /***/ }),
-/* 274 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Weekday Helpers
@@ -15102,7 +17008,7 @@ module.exports = setDay
 
 
 /***/ }),
-/* 275 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15135,7 +17041,7 @@ module.exports = setDayOfYear
 
 
 /***/ }),
-/* 276 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15167,12 +17073,12 @@ module.exports = setHours
 
 
 /***/ }),
-/* 277 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var addDays = __webpack_require__(6)
-var getISODay = __webpack_require__(145)
+var addDays = __webpack_require__(7)
+var getISODay = __webpack_require__(146)
 
 /**
  * @category Weekday Helpers
@@ -15204,11 +17110,11 @@ module.exports = setISODay
 
 
 /***/ }),
-/* 278 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getISOWeek = __webpack_require__(122)
+var getISOWeek = __webpack_require__(123)
 
 /**
  * @category ISO Week Helpers
@@ -15240,7 +17146,7 @@ module.exports = setISOWeek
 
 
 /***/ }),
-/* 279 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15272,7 +17178,7 @@ module.exports = setMilliseconds
 
 
 /***/ }),
-/* 280 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15304,11 +17210,11 @@ module.exports = setMinutes
 
 
 /***/ }),
-/* 281 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var setMonth = __webpack_require__(159)
+var setMonth = __webpack_require__(160)
 
 /**
  * @category Quarter Helpers
@@ -15338,7 +17244,7 @@ module.exports = setQuarter
 
 
 /***/ }),
-/* 282 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15370,7 +17276,7 @@ module.exports = setSeconds
 
 
 /***/ }),
-/* 283 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15402,7 +17308,7 @@ module.exports = setYear
 
 
 /***/ }),
-/* 284 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15434,10 +17340,10 @@ module.exports = startOfMonth
 
 
 /***/ }),
-/* 285 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfDay = __webpack_require__(4)
+var startOfDay = __webpack_require__(5)
 
 /**
  * @category Day Helpers
@@ -15461,7 +17367,7 @@ module.exports = startOfToday
 
 
 /***/ }),
-/* 286 */
+/* 318 */
 /***/ (function(module, exports) {
 
 /**
@@ -15494,7 +17400,7 @@ module.exports = startOfTomorrow
 
 
 /***/ }),
-/* 287 */
+/* 319 */
 /***/ (function(module, exports) {
 
 /**
@@ -15527,10 +17433,10 @@ module.exports = startOfYesterday
 
 
 /***/ }),
-/* 288 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Day Helpers
@@ -15557,10 +17463,10 @@ module.exports = subDays
 
 
 /***/ }),
-/* 289 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addHours = __webpack_require__(125)
+var addHours = __webpack_require__(126)
 
 /**
  * @category Hour Helpers
@@ -15587,10 +17493,10 @@ module.exports = subHours
 
 
 /***/ }),
-/* 290 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 /**
  * @category Millisecond Helpers
@@ -15617,10 +17523,10 @@ module.exports = subMilliseconds
 
 
 /***/ }),
-/* 291 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMinutes = __webpack_require__(128)
+var addMinutes = __webpack_require__(129)
 
 /**
  * @category Minute Helpers
@@ -15647,10 +17553,10 @@ module.exports = subMinutes
 
 
 /***/ }),
-/* 292 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(80)
+var addMonths = __webpack_require__(81)
 
 /**
  * @category Month Helpers
@@ -15677,10 +17583,10 @@ module.exports = subMonths
 
 
 /***/ }),
-/* 293 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addQuarters = __webpack_require__(129)
+var addQuarters = __webpack_require__(130)
 
 /**
  * @category Quarter Helpers
@@ -15707,10 +17613,10 @@ module.exports = subQuarters
 
 
 /***/ }),
-/* 294 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addSeconds = __webpack_require__(130)
+var addSeconds = __webpack_require__(131)
 
 /**
  * @category Second Helpers
@@ -15737,10 +17643,10 @@ module.exports = subSeconds
 
 
 /***/ }),
-/* 295 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addWeeks = __webpack_require__(117)
+var addWeeks = __webpack_require__(118)
 
 /**
  * @category Week Helpers
@@ -15767,10 +17673,10 @@ module.exports = subWeeks
 
 
 /***/ }),
-/* 296 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addYears = __webpack_require__(131)
+var addYears = __webpack_require__(132)
 
 /**
  * @category Year Helpers
@@ -15797,7 +17703,91 @@ module.exports = subYears
 
 
 /***/ }),
-/* 297 */
+/* 329 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./ar": 161,
+	"./ar.js": 161,
+	"./az": 162,
+	"./az.js": 162,
+	"./bn": 163,
+	"./bn.js": 163,
+	"./cs": 164,
+	"./cs.js": 164,
+	"./de": 165,
+	"./de.js": 165,
+	"./el": 166,
+	"./el.js": 166,
+	"./es": 167,
+	"./es.js": 167,
+	"./fa": 168,
+	"./fa.js": 168,
+	"./fr": 169,
+	"./fr.js": 169,
+	"./hi": 170,
+	"./hi.js": 170,
+	"./hu": 171,
+	"./hu.js": 171,
+	"./id": 172,
+	"./id.js": 172,
+	"./it": 173,
+	"./it.js": 173,
+	"./ja": 174,
+	"./ja.js": 174,
+	"./jv": 175,
+	"./jv.js": 175,
+	"./ko": 176,
+	"./ko.js": 176,
+	"./my": 177,
+	"./my.js": 177,
+	"./nl": 178,
+	"./nl.js": 178,
+	"./pa-in": 179,
+	"./pa-in.js": 179,
+	"./pl": 180,
+	"./pl.js": 180,
+	"./pt": 181,
+	"./pt.js": 181,
+	"./ro": 182,
+	"./ro.js": 182,
+	"./ru": 183,
+	"./ru.js": 183,
+	"./sr": 184,
+	"./sr.js": 184,
+	"./th": 185,
+	"./th.js": 185,
+	"./tr": 186,
+	"./tr.js": 186,
+	"./uk": 187,
+	"./uk.js": 187,
+	"./uz": 188,
+	"./uz.js": 188,
+	"./vi": 189,
+	"./vi.js": 189,
+	"./zh-cn": 190,
+	"./zh-cn.js": 190,
+	"./zh-tw": 191,
+	"./zh-tw.js": 191
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 329;
+
+/***/ }),
+/* 330 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15980,7 +17970,7 @@ var EventEmitter = function () {
 /* harmony default export */ __webpack_exports__["a"] = (EventEmitter);
 
 /***/ }),
-/* 298 */
+/* 331 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16014,11 +18004,11 @@ var defaultOptions = {
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 299 */
+/* 332 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_date_fns__);
 
 
@@ -16037,7 +18027,7 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 300 */
+/* 333 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16048,494 +18038,494 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 301 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./_lib/build_formatting_tokens_reg_exp": 1,
-	"./_lib/build_formatting_tokens_reg_exp/": 1,
-	"./_lib/build_formatting_tokens_reg_exp/index": 1,
-	"./_lib/build_formatting_tokens_reg_exp/index.js": 1,
-	"./_lib/package": 160,
-	"./_lib/package.json": 160,
-	"./ar": 82,
-	"./ar/": 82,
-	"./ar/build_distance_in_words_locale": 12,
-	"./ar/build_distance_in_words_locale/": 12,
-	"./ar/build_distance_in_words_locale/index": 12,
-	"./ar/build_distance_in_words_locale/index.js": 12,
-	"./ar/build_format_locale": 13,
-	"./ar/build_format_locale/": 13,
-	"./ar/build_format_locale/index": 13,
-	"./ar/build_format_locale/index.js": 13,
-	"./ar/index": 82,
-	"./ar/index.js": 82,
-	"./ar/package": 161,
-	"./ar/package.json": 161,
-	"./bg": 83,
-	"./bg/": 83,
-	"./bg/build_distance_in_words_locale": 14,
-	"./bg/build_distance_in_words_locale/": 14,
-	"./bg/build_distance_in_words_locale/index": 14,
-	"./bg/build_distance_in_words_locale/index.js": 14,
-	"./bg/build_format_locale": 15,
-	"./bg/build_format_locale/": 15,
-	"./bg/build_format_locale/index": 15,
-	"./bg/build_format_locale/index.js": 15,
-	"./bg/index": 83,
-	"./bg/index.js": 83,
-	"./bg/package": 162,
-	"./bg/package.json": 162,
-	"./ca": 84,
-	"./ca/": 84,
-	"./ca/build_distance_in_words_locale": 16,
-	"./ca/build_distance_in_words_locale/": 16,
-	"./ca/build_distance_in_words_locale/index": 16,
-	"./ca/build_distance_in_words_locale/index.js": 16,
-	"./ca/build_format_locale": 17,
-	"./ca/build_format_locale/": 17,
-	"./ca/build_format_locale/index": 17,
-	"./ca/build_format_locale/index.js": 17,
-	"./ca/index": 84,
-	"./ca/index.js": 84,
-	"./ca/package": 163,
-	"./ca/package.json": 163,
-	"./cs": 85,
-	"./cs/": 85,
-	"./cs/build_distance_in_words_locale": 18,
-	"./cs/build_distance_in_words_locale/": 18,
-	"./cs/build_distance_in_words_locale/index": 18,
-	"./cs/build_distance_in_words_locale/index.js": 18,
-	"./cs/build_format_locale": 19,
-	"./cs/build_format_locale/": 19,
-	"./cs/build_format_locale/index": 19,
-	"./cs/build_format_locale/index.js": 19,
-	"./cs/index": 85,
-	"./cs/index.js": 85,
-	"./cs/package": 164,
-	"./cs/package.json": 164,
-	"./da": 86,
-	"./da/": 86,
-	"./da/build_distance_in_words_locale": 20,
-	"./da/build_distance_in_words_locale/": 20,
-	"./da/build_distance_in_words_locale/index": 20,
-	"./da/build_distance_in_words_locale/index.js": 20,
-	"./da/build_format_locale": 21,
-	"./da/build_format_locale/": 21,
-	"./da/build_format_locale/index": 21,
-	"./da/build_format_locale/index.js": 21,
-	"./da/index": 86,
-	"./da/index.js": 86,
-	"./da/package": 165,
-	"./da/package.json": 165,
-	"./de": 87,
-	"./de/": 87,
-	"./de/build_distance_in_words_locale": 22,
-	"./de/build_distance_in_words_locale/": 22,
-	"./de/build_distance_in_words_locale/index": 22,
-	"./de/build_distance_in_words_locale/index.js": 22,
-	"./de/build_format_locale": 23,
-	"./de/build_format_locale/": 23,
-	"./de/build_format_locale/index": 23,
-	"./de/build_format_locale/index.js": 23,
-	"./de/index": 87,
-	"./de/index.js": 87,
-	"./de/package": 166,
-	"./de/package.json": 166,
-	"./el": 88,
-	"./el/": 88,
-	"./el/build_distance_in_words_locale": 24,
-	"./el/build_distance_in_words_locale/": 24,
-	"./el/build_distance_in_words_locale/index": 24,
-	"./el/build_distance_in_words_locale/index.js": 24,
-	"./el/build_format_locale": 25,
-	"./el/build_format_locale/": 25,
-	"./el/build_format_locale/index": 25,
-	"./el/build_format_locale/index.js": 25,
-	"./el/index": 88,
-	"./el/index.js": 88,
-	"./el/package": 167,
-	"./el/package.json": 167,
-	"./en": 5,
-	"./en/": 5,
-	"./en/build_distance_in_words_locale": 10,
-	"./en/build_distance_in_words_locale/": 10,
-	"./en/build_distance_in_words_locale/index": 10,
-	"./en/build_distance_in_words_locale/index.js": 10,
-	"./en/build_format_locale": 11,
-	"./en/build_format_locale/": 11,
-	"./en/build_format_locale/index": 11,
-	"./en/build_format_locale/index.js": 11,
-	"./en/index": 5,
-	"./en/index.js": 5,
-	"./en/package": 168,
-	"./en/package.json": 168,
-	"./eo": 89,
-	"./eo/": 89,
-	"./eo/build_distance_in_words_locale": 26,
-	"./eo/build_distance_in_words_locale/": 26,
-	"./eo/build_distance_in_words_locale/index": 26,
-	"./eo/build_distance_in_words_locale/index.js": 26,
-	"./eo/build_format_locale": 27,
-	"./eo/build_format_locale/": 27,
-	"./eo/build_format_locale/index": 27,
-	"./eo/build_format_locale/index.js": 27,
-	"./eo/index": 89,
-	"./eo/index.js": 89,
-	"./eo/package": 169,
-	"./eo/package.json": 169,
-	"./es": 90,
-	"./es/": 90,
-	"./es/build_distance_in_words_locale": 28,
-	"./es/build_distance_in_words_locale/": 28,
-	"./es/build_distance_in_words_locale/index": 28,
-	"./es/build_distance_in_words_locale/index.js": 28,
-	"./es/build_format_locale": 29,
-	"./es/build_format_locale/": 29,
-	"./es/build_format_locale/index": 29,
-	"./es/build_format_locale/index.js": 29,
-	"./es/index": 90,
-	"./es/index.js": 90,
-	"./es/package": 170,
-	"./es/package.json": 170,
-	"./fi": 91,
-	"./fi/": 91,
-	"./fi/build_distance_in_words_locale": 30,
-	"./fi/build_distance_in_words_locale/": 30,
-	"./fi/build_distance_in_words_locale/index": 30,
-	"./fi/build_distance_in_words_locale/index.js": 30,
-	"./fi/build_format_locale": 31,
-	"./fi/build_format_locale/": 31,
-	"./fi/build_format_locale/index": 31,
-	"./fi/build_format_locale/index.js": 31,
-	"./fi/index": 91,
-	"./fi/index.js": 91,
-	"./fi/package": 171,
-	"./fi/package.json": 171,
-	"./fil": 92,
-	"./fil/": 92,
-	"./fil/build_distance_in_words_locale": 32,
-	"./fil/build_distance_in_words_locale/": 32,
-	"./fil/build_distance_in_words_locale/index": 32,
-	"./fil/build_distance_in_words_locale/index.js": 32,
-	"./fil/build_format_locale": 33,
-	"./fil/build_format_locale/": 33,
-	"./fil/build_format_locale/index": 33,
-	"./fil/build_format_locale/index.js": 33,
-	"./fil/index": 92,
-	"./fil/index.js": 92,
-	"./fil/package": 172,
-	"./fil/package.json": 172,
-	"./fr": 93,
-	"./fr/": 93,
-	"./fr/build_distance_in_words_locale": 34,
-	"./fr/build_distance_in_words_locale/": 34,
-	"./fr/build_distance_in_words_locale/index": 34,
-	"./fr/build_distance_in_words_locale/index.js": 34,
-	"./fr/build_format_locale": 35,
-	"./fr/build_format_locale/": 35,
-	"./fr/build_format_locale/index": 35,
-	"./fr/build_format_locale/index.js": 35,
-	"./fr/index": 93,
-	"./fr/index.js": 93,
-	"./fr/package": 173,
-	"./fr/package.json": 173,
-	"./hr": 94,
-	"./hr/": 94,
-	"./hr/build_distance_in_words_locale": 36,
-	"./hr/build_distance_in_words_locale/": 36,
-	"./hr/build_distance_in_words_locale/index": 36,
-	"./hr/build_distance_in_words_locale/index.js": 36,
-	"./hr/build_format_locale": 37,
-	"./hr/build_format_locale/": 37,
-	"./hr/build_format_locale/index": 37,
-	"./hr/build_format_locale/index.js": 37,
-	"./hr/index": 94,
-	"./hr/index.js": 94,
-	"./hr/package": 174,
-	"./hr/package.json": 174,
-	"./hu": 95,
-	"./hu/": 95,
-	"./hu/build_distance_in_words_locale": 38,
-	"./hu/build_distance_in_words_locale/": 38,
-	"./hu/build_distance_in_words_locale/index": 38,
-	"./hu/build_distance_in_words_locale/index.js": 38,
-	"./hu/build_format_locale": 39,
-	"./hu/build_format_locale/": 39,
-	"./hu/build_format_locale/index": 39,
-	"./hu/build_format_locale/index.js": 39,
-	"./hu/index": 95,
-	"./hu/index.js": 95,
-	"./hu/package": 175,
-	"./hu/package.json": 175,
-	"./id": 96,
-	"./id/": 96,
-	"./id/build_distance_in_words_locale": 40,
-	"./id/build_distance_in_words_locale/": 40,
-	"./id/build_distance_in_words_locale/index": 40,
-	"./id/build_distance_in_words_locale/index.js": 40,
-	"./id/build_format_locale": 41,
-	"./id/build_format_locale/": 41,
-	"./id/build_format_locale/index": 41,
-	"./id/build_format_locale/index.js": 41,
-	"./id/index": 96,
-	"./id/index.js": 96,
-	"./id/package": 176,
-	"./id/package.json": 176,
-	"./is": 97,
-	"./is/": 97,
-	"./is/build_distance_in_words_locale": 42,
-	"./is/build_distance_in_words_locale/": 42,
-	"./is/build_distance_in_words_locale/index": 42,
-	"./is/build_distance_in_words_locale/index.js": 42,
-	"./is/build_format_locale": 43,
-	"./is/build_format_locale/": 43,
-	"./is/build_format_locale/index": 43,
-	"./is/build_format_locale/index.js": 43,
-	"./is/index": 97,
-	"./is/index.js": 97,
-	"./is/package": 177,
-	"./is/package.json": 177,
-	"./it": 98,
-	"./it/": 98,
-	"./it/build_distance_in_words_locale": 44,
-	"./it/build_distance_in_words_locale/": 44,
-	"./it/build_distance_in_words_locale/index": 44,
-	"./it/build_distance_in_words_locale/index.js": 44,
-	"./it/build_format_locale": 45,
-	"./it/build_format_locale/": 45,
-	"./it/build_format_locale/index": 45,
-	"./it/build_format_locale/index.js": 45,
-	"./it/index": 98,
-	"./it/index.js": 98,
-	"./it/package": 178,
-	"./it/package.json": 178,
-	"./ja": 99,
-	"./ja/": 99,
-	"./ja/build_distance_in_words_locale": 46,
-	"./ja/build_distance_in_words_locale/": 46,
-	"./ja/build_distance_in_words_locale/index": 46,
-	"./ja/build_distance_in_words_locale/index.js": 46,
-	"./ja/build_format_locale": 47,
-	"./ja/build_format_locale/": 47,
-	"./ja/build_format_locale/index": 47,
-	"./ja/build_format_locale/index.js": 47,
-	"./ja/index": 99,
-	"./ja/index.js": 99,
-	"./ja/package": 179,
-	"./ja/package.json": 179,
-	"./ko": 100,
-	"./ko/": 100,
-	"./ko/build_distance_in_words_locale": 48,
-	"./ko/build_distance_in_words_locale/": 48,
-	"./ko/build_distance_in_words_locale/index": 48,
-	"./ko/build_distance_in_words_locale/index.js": 48,
-	"./ko/build_format_locale": 49,
-	"./ko/build_format_locale/": 49,
-	"./ko/build_format_locale/index": 49,
-	"./ko/build_format_locale/index.js": 49,
-	"./ko/index": 100,
-	"./ko/index.js": 100,
-	"./ko/package": 180,
-	"./ko/package.json": 180,
-	"./mk": 101,
-	"./mk/": 101,
-	"./mk/build_distance_in_words_locale": 50,
-	"./mk/build_distance_in_words_locale/": 50,
-	"./mk/build_distance_in_words_locale/index": 50,
-	"./mk/build_distance_in_words_locale/index.js": 50,
-	"./mk/build_format_locale": 51,
-	"./mk/build_format_locale/": 51,
-	"./mk/build_format_locale/index": 51,
-	"./mk/build_format_locale/index.js": 51,
-	"./mk/index": 101,
-	"./mk/index.js": 101,
-	"./mk/package": 181,
-	"./mk/package.json": 181,
-	"./nb": 102,
-	"./nb/": 102,
-	"./nb/build_distance_in_words_locale": 52,
-	"./nb/build_distance_in_words_locale/": 52,
-	"./nb/build_distance_in_words_locale/index": 52,
-	"./nb/build_distance_in_words_locale/index.js": 52,
-	"./nb/build_format_locale": 53,
-	"./nb/build_format_locale/": 53,
-	"./nb/build_format_locale/index": 53,
-	"./nb/build_format_locale/index.js": 53,
-	"./nb/index": 102,
-	"./nb/index.js": 102,
-	"./nb/package": 182,
-	"./nb/package.json": 182,
-	"./nl": 103,
-	"./nl/": 103,
-	"./nl/build_distance_in_words_locale": 54,
-	"./nl/build_distance_in_words_locale/": 54,
-	"./nl/build_distance_in_words_locale/index": 54,
-	"./nl/build_distance_in_words_locale/index.js": 54,
-	"./nl/build_format_locale": 55,
-	"./nl/build_format_locale/": 55,
-	"./nl/build_format_locale/index": 55,
-	"./nl/build_format_locale/index.js": 55,
-	"./nl/index": 103,
-	"./nl/index.js": 103,
-	"./nl/package": 183,
-	"./nl/package.json": 183,
-	"./package": 184,
-	"./package.json": 184,
-	"./pl": 104,
-	"./pl/": 104,
-	"./pl/build_distance_in_words_locale": 56,
-	"./pl/build_distance_in_words_locale/": 56,
-	"./pl/build_distance_in_words_locale/index": 56,
-	"./pl/build_distance_in_words_locale/index.js": 56,
-	"./pl/build_format_locale": 57,
-	"./pl/build_format_locale/": 57,
-	"./pl/build_format_locale/index": 57,
-	"./pl/build_format_locale/index.js": 57,
-	"./pl/index": 104,
-	"./pl/index.js": 104,
-	"./pl/package": 185,
-	"./pl/package.json": 185,
-	"./pt": 105,
-	"./pt/": 105,
-	"./pt/build_distance_in_words_locale": 58,
-	"./pt/build_distance_in_words_locale/": 58,
-	"./pt/build_distance_in_words_locale/index": 58,
-	"./pt/build_distance_in_words_locale/index.js": 58,
-	"./pt/build_format_locale": 59,
-	"./pt/build_format_locale/": 59,
-	"./pt/build_format_locale/index": 59,
-	"./pt/build_format_locale/index.js": 59,
-	"./pt/index": 105,
-	"./pt/index.js": 105,
-	"./pt/package": 186,
-	"./pt/package.json": 186,
-	"./ro": 106,
-	"./ro/": 106,
-	"./ro/build_distance_in_words_locale": 60,
-	"./ro/build_distance_in_words_locale/": 60,
-	"./ro/build_distance_in_words_locale/index": 60,
-	"./ro/build_distance_in_words_locale/index.js": 60,
-	"./ro/build_format_locale": 61,
-	"./ro/build_format_locale/": 61,
-	"./ro/build_format_locale/index": 61,
-	"./ro/build_format_locale/index.js": 61,
-	"./ro/index": 106,
-	"./ro/index.js": 106,
-	"./ro/package": 187,
-	"./ro/package.json": 187,
-	"./ru": 107,
-	"./ru/": 107,
-	"./ru/build_distance_in_words_locale": 62,
-	"./ru/build_distance_in_words_locale/": 62,
-	"./ru/build_distance_in_words_locale/index": 62,
-	"./ru/build_distance_in_words_locale/index.js": 62,
-	"./ru/build_format_locale": 63,
-	"./ru/build_format_locale/": 63,
-	"./ru/build_format_locale/index": 63,
-	"./ru/build_format_locale/index.js": 63,
-	"./ru/index": 107,
-	"./ru/index.js": 107,
-	"./ru/package": 188,
-	"./ru/package.json": 188,
-	"./sk": 108,
-	"./sk/": 108,
-	"./sk/build_distance_in_words_locale": 64,
-	"./sk/build_distance_in_words_locale/": 64,
-	"./sk/build_distance_in_words_locale/index": 64,
-	"./sk/build_distance_in_words_locale/index.js": 64,
-	"./sk/build_format_locale": 65,
-	"./sk/build_format_locale/": 65,
-	"./sk/build_format_locale/index": 65,
-	"./sk/build_format_locale/index.js": 65,
-	"./sk/index": 108,
-	"./sk/index.js": 108,
-	"./sk/package": 189,
-	"./sk/package.json": 189,
-	"./sl": 109,
-	"./sl/": 109,
-	"./sl/build_distance_in_words_locale": 66,
-	"./sl/build_distance_in_words_locale/": 66,
-	"./sl/build_distance_in_words_locale/index": 66,
-	"./sl/build_distance_in_words_locale/index.js": 66,
-	"./sl/build_format_locale": 67,
-	"./sl/build_format_locale/": 67,
-	"./sl/build_format_locale/index": 67,
-	"./sl/build_format_locale/index.js": 67,
-	"./sl/index": 109,
-	"./sl/index.js": 109,
-	"./sl/package": 190,
-	"./sl/package.json": 190,
-	"./sv": 110,
-	"./sv/": 110,
-	"./sv/build_distance_in_words_locale": 68,
-	"./sv/build_distance_in_words_locale/": 68,
-	"./sv/build_distance_in_words_locale/index": 68,
-	"./sv/build_distance_in_words_locale/index.js": 68,
-	"./sv/build_format_locale": 69,
-	"./sv/build_format_locale/": 69,
-	"./sv/build_format_locale/index": 69,
-	"./sv/build_format_locale/index.js": 69,
-	"./sv/index": 110,
-	"./sv/index.js": 110,
-	"./sv/package": 191,
-	"./sv/package.json": 191,
-	"./th": 111,
-	"./th/": 111,
-	"./th/build_distance_in_words_locale": 70,
-	"./th/build_distance_in_words_locale/": 70,
-	"./th/build_distance_in_words_locale/index": 70,
-	"./th/build_distance_in_words_locale/index.js": 70,
-	"./th/build_format_locale": 71,
-	"./th/build_format_locale/": 71,
-	"./th/build_format_locale/index": 71,
-	"./th/build_format_locale/index.js": 71,
-	"./th/index": 111,
-	"./th/index.js": 111,
-	"./th/package": 192,
-	"./th/package.json": 192,
-	"./tr": 112,
-	"./tr/": 112,
-	"./tr/build_distance_in_words_locale": 72,
-	"./tr/build_distance_in_words_locale/": 72,
-	"./tr/build_distance_in_words_locale/index": 72,
-	"./tr/build_distance_in_words_locale/index.js": 72,
-	"./tr/build_format_locale": 73,
-	"./tr/build_format_locale/": 73,
-	"./tr/build_format_locale/index": 73,
-	"./tr/build_format_locale/index.js": 73,
-	"./tr/index": 112,
-	"./tr/index.js": 112,
-	"./tr/package": 193,
-	"./tr/package.json": 193,
-	"./zh_cn": 113,
-	"./zh_cn/": 113,
-	"./zh_cn/build_distance_in_words_locale": 74,
-	"./zh_cn/build_distance_in_words_locale/": 74,
-	"./zh_cn/build_distance_in_words_locale/index": 74,
-	"./zh_cn/build_distance_in_words_locale/index.js": 74,
-	"./zh_cn/build_format_locale": 75,
-	"./zh_cn/build_format_locale/": 75,
-	"./zh_cn/build_format_locale/index": 75,
-	"./zh_cn/build_format_locale/index.js": 75,
-	"./zh_cn/index": 113,
-	"./zh_cn/index.js": 113,
-	"./zh_cn/package": 194,
-	"./zh_cn/package.json": 194,
-	"./zh_tw": 114,
-	"./zh_tw/": 114,
-	"./zh_tw/build_distance_in_words_locale": 76,
-	"./zh_tw/build_distance_in_words_locale/": 76,
-	"./zh_tw/build_distance_in_words_locale/index": 76,
-	"./zh_tw/build_distance_in_words_locale/index.js": 76,
-	"./zh_tw/build_format_locale": 77,
-	"./zh_tw/build_format_locale/": 77,
-	"./zh_tw/build_format_locale/index": 77,
-	"./zh_tw/build_format_locale/index.js": 77,
-	"./zh_tw/index": 114,
-	"./zh_tw/index.js": 114,
-	"./zh_tw/package": 195,
-	"./zh_tw/package.json": 195
+	"./_lib/build_formatting_tokens_reg_exp": 2,
+	"./_lib/build_formatting_tokens_reg_exp/": 2,
+	"./_lib/build_formatting_tokens_reg_exp/index": 2,
+	"./_lib/build_formatting_tokens_reg_exp/index.js": 2,
+	"./_lib/package": 192,
+	"./_lib/package.json": 192,
+	"./ar": 83,
+	"./ar/": 83,
+	"./ar/build_distance_in_words_locale": 13,
+	"./ar/build_distance_in_words_locale/": 13,
+	"./ar/build_distance_in_words_locale/index": 13,
+	"./ar/build_distance_in_words_locale/index.js": 13,
+	"./ar/build_format_locale": 14,
+	"./ar/build_format_locale/": 14,
+	"./ar/build_format_locale/index": 14,
+	"./ar/build_format_locale/index.js": 14,
+	"./ar/index": 83,
+	"./ar/index.js": 83,
+	"./ar/package": 193,
+	"./ar/package.json": 193,
+	"./bg": 84,
+	"./bg/": 84,
+	"./bg/build_distance_in_words_locale": 15,
+	"./bg/build_distance_in_words_locale/": 15,
+	"./bg/build_distance_in_words_locale/index": 15,
+	"./bg/build_distance_in_words_locale/index.js": 15,
+	"./bg/build_format_locale": 16,
+	"./bg/build_format_locale/": 16,
+	"./bg/build_format_locale/index": 16,
+	"./bg/build_format_locale/index.js": 16,
+	"./bg/index": 84,
+	"./bg/index.js": 84,
+	"./bg/package": 194,
+	"./bg/package.json": 194,
+	"./ca": 85,
+	"./ca/": 85,
+	"./ca/build_distance_in_words_locale": 17,
+	"./ca/build_distance_in_words_locale/": 17,
+	"./ca/build_distance_in_words_locale/index": 17,
+	"./ca/build_distance_in_words_locale/index.js": 17,
+	"./ca/build_format_locale": 18,
+	"./ca/build_format_locale/": 18,
+	"./ca/build_format_locale/index": 18,
+	"./ca/build_format_locale/index.js": 18,
+	"./ca/index": 85,
+	"./ca/index.js": 85,
+	"./ca/package": 195,
+	"./ca/package.json": 195,
+	"./cs": 86,
+	"./cs/": 86,
+	"./cs/build_distance_in_words_locale": 19,
+	"./cs/build_distance_in_words_locale/": 19,
+	"./cs/build_distance_in_words_locale/index": 19,
+	"./cs/build_distance_in_words_locale/index.js": 19,
+	"./cs/build_format_locale": 20,
+	"./cs/build_format_locale/": 20,
+	"./cs/build_format_locale/index": 20,
+	"./cs/build_format_locale/index.js": 20,
+	"./cs/index": 86,
+	"./cs/index.js": 86,
+	"./cs/package": 196,
+	"./cs/package.json": 196,
+	"./da": 87,
+	"./da/": 87,
+	"./da/build_distance_in_words_locale": 21,
+	"./da/build_distance_in_words_locale/": 21,
+	"./da/build_distance_in_words_locale/index": 21,
+	"./da/build_distance_in_words_locale/index.js": 21,
+	"./da/build_format_locale": 22,
+	"./da/build_format_locale/": 22,
+	"./da/build_format_locale/index": 22,
+	"./da/build_format_locale/index.js": 22,
+	"./da/index": 87,
+	"./da/index.js": 87,
+	"./da/package": 197,
+	"./da/package.json": 197,
+	"./de": 88,
+	"./de/": 88,
+	"./de/build_distance_in_words_locale": 23,
+	"./de/build_distance_in_words_locale/": 23,
+	"./de/build_distance_in_words_locale/index": 23,
+	"./de/build_distance_in_words_locale/index.js": 23,
+	"./de/build_format_locale": 24,
+	"./de/build_format_locale/": 24,
+	"./de/build_format_locale/index": 24,
+	"./de/build_format_locale/index.js": 24,
+	"./de/index": 88,
+	"./de/index.js": 88,
+	"./de/package": 198,
+	"./de/package.json": 198,
+	"./el": 89,
+	"./el/": 89,
+	"./el/build_distance_in_words_locale": 25,
+	"./el/build_distance_in_words_locale/": 25,
+	"./el/build_distance_in_words_locale/index": 25,
+	"./el/build_distance_in_words_locale/index.js": 25,
+	"./el/build_format_locale": 26,
+	"./el/build_format_locale/": 26,
+	"./el/build_format_locale/index": 26,
+	"./el/build_format_locale/index.js": 26,
+	"./el/index": 89,
+	"./el/index.js": 89,
+	"./el/package": 199,
+	"./el/package.json": 199,
+	"./en": 6,
+	"./en/": 6,
+	"./en/build_distance_in_words_locale": 11,
+	"./en/build_distance_in_words_locale/": 11,
+	"./en/build_distance_in_words_locale/index": 11,
+	"./en/build_distance_in_words_locale/index.js": 11,
+	"./en/build_format_locale": 12,
+	"./en/build_format_locale/": 12,
+	"./en/build_format_locale/index": 12,
+	"./en/build_format_locale/index.js": 12,
+	"./en/index": 6,
+	"./en/index.js": 6,
+	"./en/package": 200,
+	"./en/package.json": 200,
+	"./eo": 90,
+	"./eo/": 90,
+	"./eo/build_distance_in_words_locale": 27,
+	"./eo/build_distance_in_words_locale/": 27,
+	"./eo/build_distance_in_words_locale/index": 27,
+	"./eo/build_distance_in_words_locale/index.js": 27,
+	"./eo/build_format_locale": 28,
+	"./eo/build_format_locale/": 28,
+	"./eo/build_format_locale/index": 28,
+	"./eo/build_format_locale/index.js": 28,
+	"./eo/index": 90,
+	"./eo/index.js": 90,
+	"./eo/package": 201,
+	"./eo/package.json": 201,
+	"./es": 91,
+	"./es/": 91,
+	"./es/build_distance_in_words_locale": 29,
+	"./es/build_distance_in_words_locale/": 29,
+	"./es/build_distance_in_words_locale/index": 29,
+	"./es/build_distance_in_words_locale/index.js": 29,
+	"./es/build_format_locale": 30,
+	"./es/build_format_locale/": 30,
+	"./es/build_format_locale/index": 30,
+	"./es/build_format_locale/index.js": 30,
+	"./es/index": 91,
+	"./es/index.js": 91,
+	"./es/package": 202,
+	"./es/package.json": 202,
+	"./fi": 92,
+	"./fi/": 92,
+	"./fi/build_distance_in_words_locale": 31,
+	"./fi/build_distance_in_words_locale/": 31,
+	"./fi/build_distance_in_words_locale/index": 31,
+	"./fi/build_distance_in_words_locale/index.js": 31,
+	"./fi/build_format_locale": 32,
+	"./fi/build_format_locale/": 32,
+	"./fi/build_format_locale/index": 32,
+	"./fi/build_format_locale/index.js": 32,
+	"./fi/index": 92,
+	"./fi/index.js": 92,
+	"./fi/package": 203,
+	"./fi/package.json": 203,
+	"./fil": 93,
+	"./fil/": 93,
+	"./fil/build_distance_in_words_locale": 33,
+	"./fil/build_distance_in_words_locale/": 33,
+	"./fil/build_distance_in_words_locale/index": 33,
+	"./fil/build_distance_in_words_locale/index.js": 33,
+	"./fil/build_format_locale": 34,
+	"./fil/build_format_locale/": 34,
+	"./fil/build_format_locale/index": 34,
+	"./fil/build_format_locale/index.js": 34,
+	"./fil/index": 93,
+	"./fil/index.js": 93,
+	"./fil/package": 204,
+	"./fil/package.json": 204,
+	"./fr": 94,
+	"./fr/": 94,
+	"./fr/build_distance_in_words_locale": 35,
+	"./fr/build_distance_in_words_locale/": 35,
+	"./fr/build_distance_in_words_locale/index": 35,
+	"./fr/build_distance_in_words_locale/index.js": 35,
+	"./fr/build_format_locale": 36,
+	"./fr/build_format_locale/": 36,
+	"./fr/build_format_locale/index": 36,
+	"./fr/build_format_locale/index.js": 36,
+	"./fr/index": 94,
+	"./fr/index.js": 94,
+	"./fr/package": 205,
+	"./fr/package.json": 205,
+	"./hr": 95,
+	"./hr/": 95,
+	"./hr/build_distance_in_words_locale": 37,
+	"./hr/build_distance_in_words_locale/": 37,
+	"./hr/build_distance_in_words_locale/index": 37,
+	"./hr/build_distance_in_words_locale/index.js": 37,
+	"./hr/build_format_locale": 38,
+	"./hr/build_format_locale/": 38,
+	"./hr/build_format_locale/index": 38,
+	"./hr/build_format_locale/index.js": 38,
+	"./hr/index": 95,
+	"./hr/index.js": 95,
+	"./hr/package": 206,
+	"./hr/package.json": 206,
+	"./hu": 96,
+	"./hu/": 96,
+	"./hu/build_distance_in_words_locale": 39,
+	"./hu/build_distance_in_words_locale/": 39,
+	"./hu/build_distance_in_words_locale/index": 39,
+	"./hu/build_distance_in_words_locale/index.js": 39,
+	"./hu/build_format_locale": 40,
+	"./hu/build_format_locale/": 40,
+	"./hu/build_format_locale/index": 40,
+	"./hu/build_format_locale/index.js": 40,
+	"./hu/index": 96,
+	"./hu/index.js": 96,
+	"./hu/package": 207,
+	"./hu/package.json": 207,
+	"./id": 97,
+	"./id/": 97,
+	"./id/build_distance_in_words_locale": 41,
+	"./id/build_distance_in_words_locale/": 41,
+	"./id/build_distance_in_words_locale/index": 41,
+	"./id/build_distance_in_words_locale/index.js": 41,
+	"./id/build_format_locale": 42,
+	"./id/build_format_locale/": 42,
+	"./id/build_format_locale/index": 42,
+	"./id/build_format_locale/index.js": 42,
+	"./id/index": 97,
+	"./id/index.js": 97,
+	"./id/package": 208,
+	"./id/package.json": 208,
+	"./is": 98,
+	"./is/": 98,
+	"./is/build_distance_in_words_locale": 43,
+	"./is/build_distance_in_words_locale/": 43,
+	"./is/build_distance_in_words_locale/index": 43,
+	"./is/build_distance_in_words_locale/index.js": 43,
+	"./is/build_format_locale": 44,
+	"./is/build_format_locale/": 44,
+	"./is/build_format_locale/index": 44,
+	"./is/build_format_locale/index.js": 44,
+	"./is/index": 98,
+	"./is/index.js": 98,
+	"./is/package": 209,
+	"./is/package.json": 209,
+	"./it": 99,
+	"./it/": 99,
+	"./it/build_distance_in_words_locale": 45,
+	"./it/build_distance_in_words_locale/": 45,
+	"./it/build_distance_in_words_locale/index": 45,
+	"./it/build_distance_in_words_locale/index.js": 45,
+	"./it/build_format_locale": 46,
+	"./it/build_format_locale/": 46,
+	"./it/build_format_locale/index": 46,
+	"./it/build_format_locale/index.js": 46,
+	"./it/index": 99,
+	"./it/index.js": 99,
+	"./it/package": 210,
+	"./it/package.json": 210,
+	"./ja": 100,
+	"./ja/": 100,
+	"./ja/build_distance_in_words_locale": 47,
+	"./ja/build_distance_in_words_locale/": 47,
+	"./ja/build_distance_in_words_locale/index": 47,
+	"./ja/build_distance_in_words_locale/index.js": 47,
+	"./ja/build_format_locale": 48,
+	"./ja/build_format_locale/": 48,
+	"./ja/build_format_locale/index": 48,
+	"./ja/build_format_locale/index.js": 48,
+	"./ja/index": 100,
+	"./ja/index.js": 100,
+	"./ja/package": 211,
+	"./ja/package.json": 211,
+	"./ko": 101,
+	"./ko/": 101,
+	"./ko/build_distance_in_words_locale": 49,
+	"./ko/build_distance_in_words_locale/": 49,
+	"./ko/build_distance_in_words_locale/index": 49,
+	"./ko/build_distance_in_words_locale/index.js": 49,
+	"./ko/build_format_locale": 50,
+	"./ko/build_format_locale/": 50,
+	"./ko/build_format_locale/index": 50,
+	"./ko/build_format_locale/index.js": 50,
+	"./ko/index": 101,
+	"./ko/index.js": 101,
+	"./ko/package": 212,
+	"./ko/package.json": 212,
+	"./mk": 102,
+	"./mk/": 102,
+	"./mk/build_distance_in_words_locale": 51,
+	"./mk/build_distance_in_words_locale/": 51,
+	"./mk/build_distance_in_words_locale/index": 51,
+	"./mk/build_distance_in_words_locale/index.js": 51,
+	"./mk/build_format_locale": 52,
+	"./mk/build_format_locale/": 52,
+	"./mk/build_format_locale/index": 52,
+	"./mk/build_format_locale/index.js": 52,
+	"./mk/index": 102,
+	"./mk/index.js": 102,
+	"./mk/package": 213,
+	"./mk/package.json": 213,
+	"./nb": 103,
+	"./nb/": 103,
+	"./nb/build_distance_in_words_locale": 53,
+	"./nb/build_distance_in_words_locale/": 53,
+	"./nb/build_distance_in_words_locale/index": 53,
+	"./nb/build_distance_in_words_locale/index.js": 53,
+	"./nb/build_format_locale": 54,
+	"./nb/build_format_locale/": 54,
+	"./nb/build_format_locale/index": 54,
+	"./nb/build_format_locale/index.js": 54,
+	"./nb/index": 103,
+	"./nb/index.js": 103,
+	"./nb/package": 214,
+	"./nb/package.json": 214,
+	"./nl": 104,
+	"./nl/": 104,
+	"./nl/build_distance_in_words_locale": 55,
+	"./nl/build_distance_in_words_locale/": 55,
+	"./nl/build_distance_in_words_locale/index": 55,
+	"./nl/build_distance_in_words_locale/index.js": 55,
+	"./nl/build_format_locale": 56,
+	"./nl/build_format_locale/": 56,
+	"./nl/build_format_locale/index": 56,
+	"./nl/build_format_locale/index.js": 56,
+	"./nl/index": 104,
+	"./nl/index.js": 104,
+	"./nl/package": 215,
+	"./nl/package.json": 215,
+	"./package": 216,
+	"./package.json": 216,
+	"./pl": 105,
+	"./pl/": 105,
+	"./pl/build_distance_in_words_locale": 57,
+	"./pl/build_distance_in_words_locale/": 57,
+	"./pl/build_distance_in_words_locale/index": 57,
+	"./pl/build_distance_in_words_locale/index.js": 57,
+	"./pl/build_format_locale": 58,
+	"./pl/build_format_locale/": 58,
+	"./pl/build_format_locale/index": 58,
+	"./pl/build_format_locale/index.js": 58,
+	"./pl/index": 105,
+	"./pl/index.js": 105,
+	"./pl/package": 217,
+	"./pl/package.json": 217,
+	"./pt": 106,
+	"./pt/": 106,
+	"./pt/build_distance_in_words_locale": 59,
+	"./pt/build_distance_in_words_locale/": 59,
+	"./pt/build_distance_in_words_locale/index": 59,
+	"./pt/build_distance_in_words_locale/index.js": 59,
+	"./pt/build_format_locale": 60,
+	"./pt/build_format_locale/": 60,
+	"./pt/build_format_locale/index": 60,
+	"./pt/build_format_locale/index.js": 60,
+	"./pt/index": 106,
+	"./pt/index.js": 106,
+	"./pt/package": 218,
+	"./pt/package.json": 218,
+	"./ro": 107,
+	"./ro/": 107,
+	"./ro/build_distance_in_words_locale": 61,
+	"./ro/build_distance_in_words_locale/": 61,
+	"./ro/build_distance_in_words_locale/index": 61,
+	"./ro/build_distance_in_words_locale/index.js": 61,
+	"./ro/build_format_locale": 62,
+	"./ro/build_format_locale/": 62,
+	"./ro/build_format_locale/index": 62,
+	"./ro/build_format_locale/index.js": 62,
+	"./ro/index": 107,
+	"./ro/index.js": 107,
+	"./ro/package": 219,
+	"./ro/package.json": 219,
+	"./ru": 108,
+	"./ru/": 108,
+	"./ru/build_distance_in_words_locale": 63,
+	"./ru/build_distance_in_words_locale/": 63,
+	"./ru/build_distance_in_words_locale/index": 63,
+	"./ru/build_distance_in_words_locale/index.js": 63,
+	"./ru/build_format_locale": 64,
+	"./ru/build_format_locale/": 64,
+	"./ru/build_format_locale/index": 64,
+	"./ru/build_format_locale/index.js": 64,
+	"./ru/index": 108,
+	"./ru/index.js": 108,
+	"./ru/package": 220,
+	"./ru/package.json": 220,
+	"./sk": 109,
+	"./sk/": 109,
+	"./sk/build_distance_in_words_locale": 65,
+	"./sk/build_distance_in_words_locale/": 65,
+	"./sk/build_distance_in_words_locale/index": 65,
+	"./sk/build_distance_in_words_locale/index.js": 65,
+	"./sk/build_format_locale": 66,
+	"./sk/build_format_locale/": 66,
+	"./sk/build_format_locale/index": 66,
+	"./sk/build_format_locale/index.js": 66,
+	"./sk/index": 109,
+	"./sk/index.js": 109,
+	"./sk/package": 221,
+	"./sk/package.json": 221,
+	"./sl": 110,
+	"./sl/": 110,
+	"./sl/build_distance_in_words_locale": 67,
+	"./sl/build_distance_in_words_locale/": 67,
+	"./sl/build_distance_in_words_locale/index": 67,
+	"./sl/build_distance_in_words_locale/index.js": 67,
+	"./sl/build_format_locale": 68,
+	"./sl/build_format_locale/": 68,
+	"./sl/build_format_locale/index": 68,
+	"./sl/build_format_locale/index.js": 68,
+	"./sl/index": 110,
+	"./sl/index.js": 110,
+	"./sl/package": 222,
+	"./sl/package.json": 222,
+	"./sv": 111,
+	"./sv/": 111,
+	"./sv/build_distance_in_words_locale": 69,
+	"./sv/build_distance_in_words_locale/": 69,
+	"./sv/build_distance_in_words_locale/index": 69,
+	"./sv/build_distance_in_words_locale/index.js": 69,
+	"./sv/build_format_locale": 70,
+	"./sv/build_format_locale/": 70,
+	"./sv/build_format_locale/index": 70,
+	"./sv/build_format_locale/index.js": 70,
+	"./sv/index": 111,
+	"./sv/index.js": 111,
+	"./sv/package": 223,
+	"./sv/package.json": 223,
+	"./th": 112,
+	"./th/": 112,
+	"./th/build_distance_in_words_locale": 71,
+	"./th/build_distance_in_words_locale/": 71,
+	"./th/build_distance_in_words_locale/index": 71,
+	"./th/build_distance_in_words_locale/index.js": 71,
+	"./th/build_format_locale": 72,
+	"./th/build_format_locale/": 72,
+	"./th/build_format_locale/index": 72,
+	"./th/build_format_locale/index.js": 72,
+	"./th/index": 112,
+	"./th/index.js": 112,
+	"./th/package": 224,
+	"./th/package.json": 224,
+	"./tr": 113,
+	"./tr/": 113,
+	"./tr/build_distance_in_words_locale": 73,
+	"./tr/build_distance_in_words_locale/": 73,
+	"./tr/build_distance_in_words_locale/index": 73,
+	"./tr/build_distance_in_words_locale/index.js": 73,
+	"./tr/build_format_locale": 74,
+	"./tr/build_format_locale/": 74,
+	"./tr/build_format_locale/index": 74,
+	"./tr/build_format_locale/index.js": 74,
+	"./tr/index": 113,
+	"./tr/index.js": 113,
+	"./tr/package": 225,
+	"./tr/package.json": 225,
+	"./zh_cn": 114,
+	"./zh_cn/": 114,
+	"./zh_cn/build_distance_in_words_locale": 75,
+	"./zh_cn/build_distance_in_words_locale/": 75,
+	"./zh_cn/build_distance_in_words_locale/index": 75,
+	"./zh_cn/build_distance_in_words_locale/index.js": 75,
+	"./zh_cn/build_format_locale": 76,
+	"./zh_cn/build_format_locale/": 76,
+	"./zh_cn/build_format_locale/index": 76,
+	"./zh_cn/build_format_locale/index.js": 76,
+	"./zh_cn/index": 114,
+	"./zh_cn/index.js": 114,
+	"./zh_cn/package": 226,
+	"./zh_cn/package.json": 226,
+	"./zh_tw": 115,
+	"./zh_tw/": 115,
+	"./zh_tw/build_distance_in_words_locale": 77,
+	"./zh_tw/build_distance_in_words_locale/": 77,
+	"./zh_tw/build_distance_in_words_locale/index": 77,
+	"./zh_tw/build_distance_in_words_locale/index.js": 77,
+	"./zh_tw/build_format_locale": 78,
+	"./zh_tw/build_format_locale/": 78,
+	"./zh_tw/build_format_locale/index": 78,
+	"./zh_tw/build_format_locale/index.js": 78,
+	"./zh_tw/index": 115,
+	"./zh_tw/index.js": 115,
+	"./zh_tw/package": 227,
+	"./zh_tw/package.json": 227
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -16551,7 +18541,7 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 301;
+webpackContext.id = 334;
 
 /***/ })
 /******/ ])["default"];

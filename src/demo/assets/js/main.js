@@ -2,7 +2,10 @@ ready(function () {
   bulmaCalendar.attach('#datepickerDemoInline');
   bulmaCalendar.attach('#datepickerDemoInlineRange');
 
-  calendars = bulmaCalendar.attach('#datepickerDemoDefault');
+  calendars = bulmaCalendar.attach('#datepickerDemoDefault', {
+    dateFormat: 'DD/MM/YYYY',
+    clearButton: false
+  });
   [].forEach.call(calendars, function (calendar) {
     calendar.on('datepicker:date:selected', function (datePicker) {
       alert('Selected date: ' + datePicker.date);
@@ -11,7 +14,7 @@ ready(function () {
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
-    dateFormat: 'D/M/YYYYY',
+    dateFormat: 'D/M/YYYY',
     startDate: new Date('02/11/2018'),
     minDate: '01/01/2018',
     maxDate: '12/31/2018',
