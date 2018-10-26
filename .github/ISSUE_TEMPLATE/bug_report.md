@@ -35,5 +35,5 @@ var bulmaCalendar = BulmaCalendar.attach();
 
 **Additional context/Screenshots**
 Add any other context about the problem here.
+
 **If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem** via [codepen](https://codepen.io) or similar.
-If applicable, add screenshots to help explain.
