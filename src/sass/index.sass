@@ -207,7 +207,7 @@ $calendar-date-padding: .1rem 0 !default
                 border: $calendar-date-hover-border
                 content: ""
                 height: 100%
-                width: 100%;
+                width: 100%
                 position: absolute
                 right: 0
                 top: 50%
@@ -350,3 +350,8 @@ $calendar-date-padding: .1rem 0 !default
 
 .datepicker
   +datepicker
+
+[id^="datePicker"]
+  &:not(.is-inline)
+    position: absolute
+    z-index: 10

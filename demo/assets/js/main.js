@@ -14,10 +14,10 @@ ready(function () {
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
-    dateFormat: 'D/M/YYYY',
-    startDate: new Date('02/11/2018'),
-    minDate: '01/01/2018',
-    maxDate: '12/31/2018',
+    dateFormat: 'DD/MM/YYYY',
+    startDate: new Date('07/11/2018'),
+    minDate: '06/11/2018',
+    maxDate: '08/11/2018',
     lang: 'fr'
   });
 

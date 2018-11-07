@@ -12829,9 +12829,6 @@ var bulmaCalendar = function (_EventEmitter) {
       this._ui.navigation.previous.removeAttribute('disabled');
       this._ui.navigation.next.removeAttribute('disabled');
       this._ui.container.classList.add('is-active');
-      if (this.options.displayMode === 'default') {
-        this._adjustPosition();
-      }
       this._open = true;
       this._focus = true;
 
@@ -13125,11 +13122,11 @@ var bulmaCalendar = function (_EventEmitter) {
     key: '_initDates',
     value: function _initDates() {
       // Transform start date according to dateFormat option
-      this.minDate = this.options.minDate;
-      this.maxDate = this.options.maxDate;
+      this.minDate = this.options.minDate ? __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(this.options.minDate, this.dateFormat) : undefined;
+      this.maxDate = this.options.maxDate ? __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(this.options.maxDate, this.dateFormat) : undefined;
 
       var today = new Date();
-      var startDateToday = this._isValidDate(today, this.options.minDate, this.options.maxDate) ? today : this.options.minDate;
+      var startDateToday = this._isValidDate(today, this.options.minDate, this.options.maxDate) ? today : this.minDate;
 
       this.startDate = this.options.startDate;
       this.endDate = this.options.isRange ? this.options.endDate : undefined;
@@ -13284,14 +13281,17 @@ var bulmaCalendar = function (_EventEmitter) {
         this._ui.footer.validate.classList.add('is-hidden');
       }
 
-      // Add datepicker HTML element to Document Body
-      if (this.options.displayMode === 'inline') {
+      // Add datepicker HTML element to DOM
+      if (this.options.displayMode !== 'dialog') {
         var wrapper = document.createElement('div');
         this.element.parentNode.insertBefore(wrapper, this.element);
         wrapper.appendChild(this.element);
-        this.element.classList.add('is-hidden');
+        if (this.options.displayMode === 'inline') {
+          container.classList.add('is-inline');
+          this.element.classList.add('is-hidden');
+          container.classList.remove('datepicker');
+        }
         wrapper.appendChild(datePickerFragment);
-        container.classList.remove('datepicker');
         this._refreshCalendar();
       } else {
         document.body.appendChild(datePickerFragment);
@@ -13308,12 +13308,6 @@ var bulmaCalendar = function (_EventEmitter) {
     key: '_bindEvents',
     value: function _bindEvents() {
       var _this4 = this;
-
-      window.addEventListener('scroll', function () {
-        if (_this4.options.displayMode === 'default') {
-          _this4._adjustPosition();
-        }
-      });
 
       document.addEventListener('keydown', function (e) {
         if (_this4._focus) {
@@ -13450,7 +13444,7 @@ var bulmaCalendar = function (_EventEmitter) {
         var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["isSameMonth"](_this6._visibleDate, theDate);
         var isInRange = _this6.options.isRange && __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](theDate, _this6.startDate, _this6.endDate);
         var isDisabled = _this6.maxDate ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](theDate, _this6.maxDate) : false;
-        isDisabled = _this6.minDate ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](theDate, _this6.minDate) : isDisabled;
+        isDisabled = !isDisabled && _this6.minDate ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](theDate, _this6.minDate) : isDisabled;
 
         if (_this6.options.disabledDates) {
           for (var j = 0; j < _this6.options.disabledDates.length; j++) {
@@ -13650,42 +13644,6 @@ var bulmaCalendar = function (_EventEmitter) {
           locale: this.locale
         }) : '&nbsp;';
       }
-    }
-
-    /**
-     * Recalculate calendar position
-     * @method _adjustPosition
-     * @return {void}
-     */
-
-  }, {
-    key: '_adjustPosition',
-    value: function _adjustPosition() {
-      //var width = this.elementCalendar.offsetWidth,
-      // height = this.elementCalendar.offsetHeight,
-      // viewportWidth = window.innerWidth || document.documentElement.clientWidth,
-      // viewportHeight = window.innerHeight || document.documentElement.clientHeight,
-      // scrollTop = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop,
-      var left = void 0,
-          top = void 0,
-          clientRect = void 0;
-
-      if (typeof this.element.getBoundingClientRect === 'function') {
-        clientRect = this.element.getBoundingClientRect();
-        left = clientRect.left + window.pageXOffset;
-        top = clientRect.bottom + window.pageYOffset;
-      } else {
-        left = this.element.offsetLeft;
-        top = this.element.offsetTop + this.element.offsetHeight;
-        while (this.element = this.element.offsetParent) {
-          left += this.element.offsetLeft;
-          top += this.element.offsetTop;
-        }
-      }
-
-      this._ui.container.style.position = 'absolute';
-      this._ui.container.style.left = left + 'px';
-      this._ui.container.style.top = top + 'px';
     }
   }, {
     key: '_isValidDate',
@@ -18033,7 +17991,7 @@ var defaultOptions = {
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (days) {
   return '' + days.map(function (theDate) {
-    return '<div data-date="' + theDate.date.toString() + '" class="calendar-date' + (theDate.isThisMonth ? ' is-current-month' : '') + (theDate.isDisabled ? ' is-disabled' : '') + (theDate.isRange && theDate.isInRange ? ' calendar-range' : '') + (theDate.isStartDate ? ' calendar-range-start' : '') + (theDate.isEndDate ? ' calendar-range-end' : '') + '">\n      <button class="date-item' + (theDate.isToday ? ' is-today' : '') + (theDate.isStartDate ? ' is-active' : '') + '">' + theDate.date.getDate() + '</button>\n  </div>';
+    return '<div data-date="' + theDate.date.toString() + '" class="calendar-date' + (theDate.isThisMonth ? ' is-current-month' : '') + (theDate.isDisabled ? ' is-disabled' : '') + (theDate.isRange && theDate.isInRange ? ' calendar-range' : '') + (theDate.isStartDate ? ' calendar-range-start' : '') + (theDate.isEndDate ? ' calendar-range-end' : '') + '">\n      <button class="date-item' + (theDate.isToday ? ' is-today' : '') + (theDate.isStartDate ? ' is-active' : '') + '"  type="button">' + theDate.date.getDate() + '</button>\n  </div>';
   }).join('');
 });
 

@@ -84,7 +84,12 @@ gulp.task('build:styles', function () {
 				browsers: pkg.broswers
 			})]))
 			.pipe(cleancss())
-			.pipe(gulp.dest(config.sass.destination));
+			.pipe(gulp.dest(config.sass.destination))
+			.pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'css/')
+				.on('error', function (err) {
+					log(colors.red('[Error]'), err.toString());
+				})
+			);
 	} else {
 		return gulp.src('.').pipe(nop());
 	}
@@ -145,6 +150,11 @@ gulp.task('build:scripts', function () {
 				log(colors.red('[Error]'), err.toString());
 			}))
 			.pipe(gulp.dest(config.javascript.destination)
+				.on('error', function (err) {
+					log(colors.red('[Error]'), err.toString());
+				})
+			)
+			.pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'js/')
 				.on('error', function (err) {
 					log(colors.red('[Error]'), err.toString());
 				})
