@@ -32,13 +32,13 @@ export default (data) => {
         </div>` : ''}
       </div>
       <div class="calendar-nav">
-        <button class="calendar-nav-previous button is-small is-text">${data.icons.previous}</button>
+        <button type="button" class="calendar-nav-previous button is-small is-text">${data.icons.previous}</button>
         <div class="calendar-nav-month-year">
           <div class="calendar-nav-month">${format(data.visibleDate, 'MMMM', { locale: data.locale })}</div>
           &nbsp;
           <div class="calendar-nav-year">${format(data.visibleDate, 'YYYY', { locale: data.locale })}</div>
         </div>
-        <button class="calendar-nav-next button is-small is-text">${data.icons.next}</button>
+        <button type="button" class="calendar-nav-next button is-small is-text">${data.icons.next}</button>
       </div>
       <div class="calendar-body">
         <div class="calendar-dates is-active">
@@ -59,10 +59,10 @@ export default (data) => {
         </div>
       </div>
       <div class="calendar-footer">
-        <button class="calendar-footer-validate has-text-success button is-small is-text">${data.icons.validate ? data.icons.validate : ''} Validate</button>
-        <button class="calendar-footer-today has-text-warning button is-small is-text">${data.icons.today ? data.icons.today : ''} Today</button>
-        <button class="calendar-footer-clear has-text-danger button is-small is-text">${data.icons.clear ? data.icons.clear : ''} Clear</button>
-        <button class="calendar-footer-cancel button is-small is-text">${data.icons.cancel ? data.icons.cancel : ''} Cancel</button>
+        <button type="button" class="calendar-footer-validate has-text-success button is-small is-text">${data.icons.validate ? data.icons.validate : ''} Validate</button>
+        <button type="button" class="calendar-footer-today has-text-warning button is-small is-text">${data.icons.today ? data.icons.today : ''} Today</button>
+        <button type="button" class="calendar-footer-clear has-text-danger button is-small is-text">${data.icons.clear ? data.icons.clear : ''} Clear</button>
+        <button type="button" class="calendar-footer-cancel button is-small is-text">${data.icons.cancel ? data.icons.cancel : ''} Cancel</button>
       </div>
     </div>
   </div>`;
