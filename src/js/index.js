@@ -1,24 +1,14 @@
 import * as utils from './utils/index';
 import * as types from './utils/type';
 import * as dateFns from 'date-fns';
-// import date from 'date'
-import dateUtils from 'date-and-time';
-
 import EventEmitter from './utils/events';
-import defaultOptions from './defaultOptions';
-import templateCalendar from './templates/calendar';
-import templateDays from './templates/days';
 
-let _supportsPassive = false;
-try {
-  var opts = Object.defineProperty({}, 'passive', {
-    get: () => {
-      _supportsPassive = true;
-    }
-  });
-  window.addEventListener('testPassive', null, opts);
-  window.removeEventListener('testPassive', null, opts);
-} catch (e) {}
+import datePicker from './datePicker';
+
+import defaultOptions from './defaultOptions';
+import template from './templates';
+import templateselection from './templates/header';
+import templateFooter from './templates/footer';
 
 export default class bulmaCalendar extends EventEmitter {
   constructor(selector, options = {}) {
@@ -30,27 +20,34 @@ export default class bulmaCalendar extends EventEmitter {
       throw new Error('An invalid selector or non-DOM node has been provided.');
     }
     this._clickEvents = ['click', 'touch'];
+    this._supportsPassive = utils.detectSupportsPassive();
 
-    /// Set default options and merge with instance defined
+    // Use Element dataset values to override options
+    const elementConfig = this.element.dataset ? Object.keys(this.element.dataset)
+      .filter(key => Object.keys(defaultOptions).includes(key))
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: this.element.dataset[key]
+        };
+      }, {}) : {};
+    // Set default options - dataset attributes are master
     this.options = {
       ...defaultOptions,
-      ...options
+      ...options,
+      ...elementConfig
     };
 
-    this.onToggleDatePicker = this.onToggleDatePicker.bind(this);
-    this.onCloseDatePicker = this.onCloseDatePicker.bind(this);
-    this.onPreviousDatePicker = this.onPreviousDatePicker.bind(this);
-    this.onNextDatePicker = this.onNextDatePicker.bind(this);
-    this.onSelectMonthDatePicker = this.onSelectMonthDatePicker.bind(this);
-    this.onMonthClickDatePicker = this.onMonthClickDatePicker.bind(this);
-    this.onSelectYearDatePicker = this.onSelectYearDatePicker.bind(this);
-    this.onYearClickDatePicker = this.onYearClickDatePicker.bind(this);
-    this.onDateClickDatePicker = this.onDateClickDatePicker.bind(this);
-    this.onDocumentClickDatePicker = this.onDocumentClickDatePicker.bind(this);
-    this.onValidateClickDatePicker = this.onValidateClickDatePicker.bind(this);
-    this.onTodayClickDatePicker = this.onTodayClickDatePicker.bind(this);
-    this.onClearClickDatePicker = this.onClearClickDatePicker.bind(this);
-    this.onCancelClickDatePicker = this.onCancelClickDatePicker.bind(this);
+    this._id = utils.uuid('bulmaDatePicker');
+
+    this._onToggle = this._onToggle.bind(this);
+    this._onClose = this._onClose.bind(this);
+    this._onDocumentClick = this._onDocumentClick.bind(this);
+    this._onValidateClick = this._onValidateClick.bind(this);
+    this._onTodayClick = this._onTodayClick.bind(this);
+    this._onClearClick = this._onClearClick.bind(this);
+    this._onCancelClick = this._onCancelClick.bind(this);
+    this._onSelectDate = this._onSelectDate.bind(this);
 
     // Initiate plugin
     this._init();
@@ -61,14 +58,18 @@ export default class bulmaCalendar extends EventEmitter {
    * @method
    * @return {Array} Array of all datePicker instances
    */
-  static attach(selector = 'input[type="date"]', options = {}) {
-    let datepickerInstances = new Array();
+  static attach(selector = '.bulma-datepicker', options = {}) {
+    let instance = [];
 
-    const datepickers = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-    [].forEach.call(datepickers, datepicker => {
-      datepickerInstances.push(new bulmaCalendar(datepicker, options));
-    });
-    return datepickerInstances;
+    const elements = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+    if (elements.length > 1) {
+      [].forEach.call(elements, ement => {
+        instance.push(new bulmaCalendar(ement, options));
+      });
+      return instances;
+    } else if (elements.length === 1) {
+      return new bulmaCalendar(elements[0], options);
+    }
   }
 
   /****************************************************
@@ -78,185 +79,101 @@ export default class bulmaCalendar extends EventEmitter {
    ****************************************************/
 
   /**
-   * Get id of current datePicker
+   * Get id of current instance
    */
   get id() {
     return this._id;
   }
 
-  // Get current datePicker language
+  // Set language
+  set lang(lang = 'en') {
+    try {
+      this._locale = require('date-fns/locale/' + lang);
+    } catch (e) {
+      lang = 'en';
+      this._locale = require('date-fns/locale/' + lang);
+    } finally {
+      this._lang = lang;
+      this.datePicker.lang = lang;
+      return this;
+    }
+  }
+  // Get current language
   get lang() {
     return this._lang;
   }
-
-  // Set datePicker language
-  set lang(lang = 'en') {
-    this._lang = lang;
-    this._locale = require('date-fns/locale/' + lang);
-  }
-
   get locale() {
     return this._locale;
   }
 
-  // Get date object
-  get date() {
-    return this._date || {
-      start: undefined,
-      end: undefined
-    };
-  }
-
-  get startDate() {
-    return this._date.start;
-  }
-
-  get endDate() {
-    return this._date.end;
-  }
-
-  set startDate(date) {
-    this._date.start = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : undefined) : undefined;
-  }
-
-  set endDate(date) {
-    this._date.end = date ? (this._isValidDate(date, this.minDate, this.maxDate) ? dateFns.startOfDay(date) : undefined) : undefined;
-  }
-
-  // Get minDate
-  get minDate() {
-    return this._minDate;
-  }
-
-  // Set minDate
-  set minDate(date = undefined) {
-    this._minDate = date ? (this._isValidDate(date) ? dateFns.startOfDay(date) : this._minDate) : undefined;
+  // Set format (set to yyyy-mm-dd HH:mm:ss by default)
+  set format(format) {
+    this._format = format;
     return this;
   }
+  // Get format
+  get format() {
+    return this._format;
+  }
 
-  // Get maxDate
-  get maxDate() {
-    return this._maxDate;
+  /**
+   * * Date setter and getter
+   */
+  set date(date = null) {
+    this.datePicker.date = date;
+    return this;
+  }
+  // Get date object
+  get date() {
+    return this.datePicker.date;
+  }
+
+  set startDate(date = undefined) {
+    this.datePicker.start = date;
+    return this;
+  }
+  get startDate() {
+    return this.datePicker.start;
+  }
+
+  set endDate(date = undefined) {
+    this.datePicker.end = date;
+    return this;
+  }
+  get endDate() {
+    return this.datePicker.end;
+  }
+
+  /**
+   * minDate getter and setters
+   */
+  set minDate(date = undefined) {
+    this.datePicker.minDate = date;
+    return this;
+  }
+  // Get minDate
+  get minDate() {
+    return this.datePicker.minDate;
   }
 
   // Set maxDate
-  set maxDate(date = null) {
-    this._maxDate = date ? (this._isValidDate(date) ? dateFns.startOfDay(date) : this._maxDate) : undefined;
+  set maxDate(date = undefined) {
+    this.datePicker.maxDate = date;
     return this;
   }
-
-  // Get dateFormat
-  get dateFormat() {
-    return this._dateFormat;
+  // Get maxDate
+  get maxDate() {
+    return this.datePicker.maxDate;
   }
 
   // Set dateFormat (set to yyyy-mm-dd by default)
   set dateFormat(dateFormat) {
-    this._dateFormat = dateFormat;
+    this.datePicker.dateFormat = dateFormat;
     return this;
   }
-
-
-  /****************************************************
-   *                                                  *
-   * PUBLIC FUNCTIONS                                 *
-   *                                                  *
-   ****************************************************/
-  isRange() {
-    return this.options.isRange;
-  }
-
-  /**
-   * Returns true if calendar picker is open, otherwise false.
-   * @method isOpen
-   * @return {boolean}
-   */
-  isOpen() {
-    return this._open;
-  }
-
-  /**
-   * Get / Set datePicker value
-   * @param {*} date 
-   */
-  value(date = null) {
-    if (date) {
-      let newDate;
-      if (this.options.isRange) {
-        const dates = this.element.value.split(' - ');
-        if (dates.length) {
-          this.startDate = dateUtils.parse(dates[0], this.dateFormat);
-        }
-        if (dates.length === 2) {
-          this.endDate = dateUtils.parse(dates[1], this.dateFormat);
-        }
-      } else {
-        this.startDate = dateUtils.parse(this.element.value, this.dateFormat);
-      }
-    } else {
-      let value = '';
-      if (this.options.isRange) {
-        if (this.startDate && this._isValidDate(this.startDate) && this.endDate && this._isValidDate(this.endDate)) {
-          value = `${dateFns.format(this.startDate, this.dateFormat, { locale: this.locale })} - ${dateFns.format(this.endDate, this.dateFormat, { locale: this.locale })}`;
-        }
-      } else if (this.startDate && this._isValidDate(this.startDate)) {
-        value = dateFns.format(this.startDate, this.dateFormat, {
-          locale: this.locale
-        });
-      }
-      this.emit('date:selected', this.date, this);
-      return value;
-    }
-  }
-
-  clear() {
-    this._clear();
-  }
-
-  /**
-   * Show datePicker HTML Component
-   * @method show
-   * @return {void}
-   */
-  show() {
-    this._snapshots = [];
-    this._snapshot();
-    if (this.element.value) {
-      this.value(this.element.value);
-    }
-    this._visibleDate = this._isValidDate(this.startDate, this.minDate, this.maxDate) ? this.startDate : this._visibleDate;
-    this._refreshCalendar();
-    this._ui.body.dates.classList.add('is-active');
-    this._ui.body.months.classList.remove('is-active');
-    this._ui.body.years.classList.remove('is-active');
-    this._ui.navigation.previous.removeAttribute('disabled');
-    this._ui.navigation.next.removeAttribute('disabled');
-    this._ui.container.classList.add('is-active');
-    this._open = true;
-    this._focus = true;
-
-    this.emit('show', this);
-  }
-
-  /**
-   * Hide datePicker HTML Component
-   * @method hide
-   * @return {void}
-   */
-  hide() {
-    this._open = false;
-    this._focus = false;
-    this._ui.container.classList.remove('is-active');
-    this.emit('hide', this);
-  }
-
-  /**
-   * Destroy datePicker
-   * @method destroy
-   * @return {[type]} [description]
-   */
-  destroy() {
-    this._ui.container.remove();
+  // Get dateFormat
+  get dateFormat() {
+    return this.datePicker.dateFormat;
   }
 
   /****************************************************
@@ -264,19 +181,30 @@ export default class bulmaCalendar extends EventEmitter {
    * EVENTS FUNCTIONS                                 *
    *                                                  *
    ****************************************************/
-  onDocumentClickDatePicker(e) {
-    if (!_supportsPassive) {
+  _onSelectDate(e) {
+    this.refresh();
+    this.save();
+    if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
+      this.hide();
+    }
+    this.emit(e.type, e.data);
+  }
+
+  _onDocumentClick(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
-    if (this.options.displayMode !== 'inline' && this._open) {
-      this.onCloseDatePicker(e);
+    // Check is e.target not within datepicker element
+    const target = e.target || e.srcElement;
+    if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
+      this._onClose(e);
     }
   }
 
-  onToggleDatePicker(e) {
-    if (!_supportsPassive) {
+  _onToggle(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
@@ -288,59 +216,58 @@ export default class bulmaCalendar extends EventEmitter {
     }
   }
 
-  onValidateClickDatePicker(e) {
-    if (!_supportsPassive) {
+  _onValidateClick(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
-    this.onCloseDatePicker(e);
+    this.save();
+
+    if (this.options.displayMode !== 'inline') {
+      this._onClose(e);
+    }
   }
 
-  onTodayClickDatePicker(e) {
-    if (!_supportsPassive) {
+  _onTodayClick(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
-    if (!this.options.isRange) {
-      this.startDate = new Date();
-      this._visibleDate = this.startDate;
-    } else {
-      this._setStartAndEnd(new Date());
-      this._visibleDate = this.startDate;
-    }
-    this.element.value = this.value();
-    this.element.setAttribute('value', this.value());
-    this._refreshCalendar();
+    this.datePicker.value(new Date());
+    this.datePicker.refresh();
+
+    // TODO: check if closeOnSelect
+    this.save();
   }
 
-  onClearClickDatePicker(e) {
-    if (!_supportsPassive) {
+  _onClearClick(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
-    this._clear();
+    this.clear();
   }
 
-  onCancelClickDatePicker(e) {
-    if (!_supportsPassive) {
+  _onCancelClick(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
     if (this._snapshots.length) {
-      this.startDate = this._snapshots[0].start;
-      this.endDate = this._snapshots[0].end;
+      this.datePicker = this._snapshots[0].datePicker;
     }
-    this.element.value = this.value();
-    this.element.setAttribute('value', this.value());
-    this.onCloseDatePicker(e);
+    this.save();
+    if (this.options.displayMode !== 'inline') {
+      this._onClose(e);
+    }
   }
 
-  onCloseDatePicker(e) {
-    if (!_supportsPassive) {
+  _onClose(e) {
+    if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
@@ -348,102 +275,140 @@ export default class bulmaCalendar extends EventEmitter {
     this.hide();
   }
 
-  onPreviousDatePicker(e) {
-    if (!_supportsPassive) {
-      e.preventDefault();
-    }
-    e.stopPropagation();
-
-
-    const prevMonth = dateFns.lastDayOfMonth(dateFns.subMonths(new Date(dateFns.getYear(this._visibleDate), dateFns.getMonth(this._visibleDate)), 1));
-    const day = Math.min(dateFns.getDaysInMonth(prevMonth), dateFns.getDate(this._visibleDate));
-    this._visibleDate = this.minDate ? dateFns.max(dateFns.setDate(prevMonth, day), this.minDate) : dateFns.setDate(prevMonth, day);
-
-    this._refreshCalendar();
+  /****************************************************
+   *                                                  *
+   * PUBLIC FUNCTIONS                                 *
+   *                                                  *
+   ****************************************************/
+  isRange() {
+    return this.options.isRange;
   }
 
-  onNextDatePicker(e) {
-    if (!_supportsPassive) {
-      e.preventDefault();
-    }
-    e.stopPropagation();
-
-    const nextMonth = dateFns.addMonths(this._visibleDate, 1);
-    const day = Math.min(dateFns.getDaysInMonth(nextMonth), dateFns.getDate(this._visibleDate));
-    this._visibleDate = this.maxDate ? dateFns.min(dateFns.setDate(nextMonth, day), this.maxDate) : dateFns.setDate(nextMonth, day);
-
-    this._refreshCalendar();
+  /**
+   * Returns true if datetime picker is open, otherwise false.
+   * @method isOpen
+   * @return {boolean}
+   */
+  isOpen() {
+    return this._open;
   }
 
-  onDateClickDatePicker(e) {
-    if (!_supportsPassive) {
-      e.preventDefault();
+  /**
+   * Get / Set ement value
+   * @param {*} date 
+   */
+  value(value = null) {
+    if (value) {
+      this.datePicker.value(value);
+      this.refresh();
+    } else {
+      return this.datePicker.value();
     }
-    e.stopPropagation();
+  }
 
-    if (!e.currentTarget.classList.contains('is-disabled')) {
-      this._setStartAndEnd(e.currentTarget.dataset.date);
+  refresh() {
+    this._ui.header.start.day.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, 'DD', {
+      locale: this.locale
+    }) : '--';
+    this._ui.header.start.month.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, 'MMMM YYYY', {
+      locale: this.locale
+    }) : '';
+    if (this.datePicker.start) {
+      this._ui.header.start.weekday.classList.remove('is-hidden');
+      this._ui.header.start.weekday.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, 'dddd', {
+        locale: this.locale
+      }) : '';
+    } else {
+      this._ui.header.start.weekday.classList.add('is-hidden');
+    }
 
-      this._refreshCalendar();
-      if (this.options.displayMode === 'inline' || this.options.closeOnSelect) {
-        this.element.value = this.value();
-        this.element.setAttribute('value', this.value());
+    if (this._ui.header.end) {
+      this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, 'DD', {
+        locale: this.locale
+      }) : '--';
+      this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, 'MMMM YYYY', {
+        locale: this.locale
+      }) : '';
+      if (this.datePicker.end) {
+        this._ui.header.end.weekday.classList.remove('is-hidden');
+        this._ui.header.end.weekday.innerHTML = this.datePicker.end ? dateFns.format(this.datePicker.end, 'dddd', {
+          locale: this.locale
+        }) : '';
+      } else {
+        this._ui.header.end.weekday.classList.add('is-hidden');
       }
-
-      if ((!this.options.isRange || (this.startDate && this._isValidDate(this.startDate) && this.endDate && this._isValidDate(this.endDate))) && this.options.closeOnSelect) {
-        this.hide();
-      }
     }
+    this.datePicker.refresh();
+    this.emit('refresh', this);
   }
 
-  onSelectMonthDatePicker(e) {
-    e.stopPropagation();
-    this._ui.body.dates.classList.remove('is-active');
-    this._ui.body.years.classList.remove('is-active');
-    this._ui.body.months.classList.add('is-active');
-    this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-    this._ui.navigation.next.setAttribute('disabled', 'disabled');
+  clear() {
+    this.datePicker.clear();
+
+    this.refresh();
+    this.element.value = '';
+    this.emit('clear', this);
   }
 
-  onSelectYearDatePicker(e) {
-    e.stopPropagation();
+  /**
+   * Show datePicker HTML Component
+   * @method show
+   * @return {void}
+   */
+  show() {
+    this._snapshots = [];
+    this.snapshot();
 
-    this._ui.body.dates.classList.remove('is-active');
-    this._ui.body.months.classList.remove('is-active');
-    this._ui.body.years.classList.add('is-active');
-    this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-    this._ui.navigation.next.setAttribute('disabled', 'disabled');
-
-    const currentYear = this._ui.body.years.querySelector('.calendar-year.is-active');
-    if (currentYear) {
-      this._ui.body.years.scrollTop = currentYear.offsetTop - this._ui.body.years.offsetTop - (this._ui.body.years.clientHeight / 2);
+    if (this.element.value) {
+      this.datePicker.value(this.element.value);
+      this.refresh();
     }
+
+    this.datePicker.show();
+
+    if (this._ui.modal) {
+      this._ui.modal.classList.add('is-active');
+    }
+    this._ui.wrapper.classList.add('is-active');
+    this._open = true;
+    this.emit('show', this);
   }
 
-  onMonthClickDatePicker(e) {
-    if (!_supportsPassive) {
-      e.preventDefault();
+  /**
+   * Hide datePicker HTML Component
+   * @method hide
+   * @return {void}
+   */
+  hide() {
+    this._open = false;
+    this._focus = false;
+    if (this._ui.modal) {
+      this._ui.modal.classList.remove('is-active');
     }
-
-    e.stopPropagation();
-    const newDate = dateFns.setMonth(this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
-    this._visibleDate = this.minDate ? dateFns.max(newDate, this.minDate) : newDate;
-    this._visibleDate = this.maxDate ? dateFns.min(this._visibleDate, this.maxDate) : this._visibleDate;
-
-    this._refreshCalendar();
+    this._ui.wrapper.classList.remove('is-active');
+    this.emit('hide', this);
   }
 
-  onYearClickDatePicker(e) {
-    if (!_supportsPassive) {
-      e.preventDefault();
-    }
+  // Set element value to datetime selected based on format
+  save() {
+    const date = this.value();
+    this.element.value = date;
+  }
 
-    e.stopPropagation();
-    const newDate = dateFns.setYear(this._visibleDate, parseInt(e.currentTarget.dataset.year));
-    this._visibleDate = this.minDate ? dateFns.max(newDate, this.minDate) : newDate;
-    this._visibleDate = this.maxDate ? dateFns.min(this._visibleDate, this.maxDate) : this._visibleDate;
+  snapshot() {
+    // this._snapshots.push([
+    //   ...this.datePicker,
+    //   ...this.timePicker
+    // ]);
+  }
 
-    this._refreshCalendar();
+  /**
+   * Destroy datePicker
+   * @method destroy
+   * @return {[type]} [description]
+   */
+  destroy() {
+    this._ui.wrapper.remove();
   }
 
   /****************************************************
@@ -457,215 +422,129 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {datePicker} Current plugin instance
    */
   _init() {
-    this._id = utils.uuid('datePicker');
-    this._snapshots = [];
-
-    // Cahnge element type to prevent browser default type="date" behavior
-    if (this.element.tagName.toLowerCase() === 'input' && this.element.getAttribute('type').toLowerCase() === 'date') {
-      this.element.setAttribute('type', 'text');
-    }
-
-    // Use Element dataset values to override options
-    const elementConfig = this.element.dataset ? Object.keys(this.element.dataset)
-      .filter(key => Object.keys(defaultOptions).includes(key))
-      .reduce((obj, key) => {
-        return {
-          ...obj,
-          [key]: this.element.dataset[key]
-        };
-      }, {}) : {};
-    this.options = {
-      ...this.options,
-      ...elementConfig
-    };
-
-    this.lang = this.options.lang;
-    this.dateFormat = this.options.dateFormat || 'MM/DD/YYYY';
-    this._date = {
-      start: undefined,
-      end: undefined
-    };
     this._open = false;
-    if (this.options.displayMode !== 'inline' && window.matchMedia('screen and (max-width: 768px)').matches) {
-      this.options.displayMode = 'dialog';
-    }
-
-    this._initDates();
-    this._build();
-    this._bindEvents();
-
-    this.emit('ready', this);
-
-    return this;
-  }
-
-  // Init dates used by datePicker core system
-  _initDates() {
-    // Transform start date according to dateFormat option
-    this.minDate = this.options.minDate ? dateUtils.parse(this.options.minDate, this.dateFormat) : undefined;
-    this.maxDate = this.options.maxDate? dateUtils.parse(this.options.maxDate, this.dateFormat) : undefined;
-
-    const today = new Date();
-    const startDateToday = this._isValidDate(today, this.options.minDate, this.options.maxDate) ? today : this.minDate;
-
-    this.startDate = this.options.startDate;
-    this.endDate = this.options.isRange ? this.options.endDate : undefined;
+    this._snapshots = []; // Use to revert selection
+    // Change element type to prevent browser default type="date" behavior
+    this.element.setAttribute('type', 'text');
+    this.datePicker = new datePicker({
+      ...this.options,
+      lang: this.lang
+    });
 
     if (this.element.value) {
-      if (this.options.isRange) {
-        const dates = this.element.value.split(' - ');
-        if (dates.length) {
-          this.startDate = dateUtils.parse(dates[0], this.dateFormat);
-        }
-        if (dates.length === 2) {
-          this.endDate = dateUtils.parse(dates[1], this.dateFormat);
-        }
-      } else {
-        this.startDate = dateUtils.parse(this.element.value, this.dateFormat);
-      }
-    }
-    this._visibleDate = this._isValidDate(this.startDate) ? this.startDate : startDateToday;
-
-    if (this.options.disabledDates) {
-      if (!Array.isArray(this.options.disabledDates)) {
-        this.options.disabledDates = [this.options.disabledDates];
-      }
-      for (var i = 0; i < this.options.disabledDates.length; i++) {
-        this.options.disabledDates[i] = dateFns.format(this.options.disabledDates[i], this.options.dateFormat, {
-          locale: this.locale
-        });
-      }
+      this.datePicker.value(this.element.value);
     }
 
-    this._snapshot();
+    this.lang = this.options.lang;
+    // Set export format based on component type
+    this.format = this._type === 'date' ? this.options.dateFormat : `${this.options.dateFormat}`;
+
+    // Force dialog display mode on mobile devices
+    if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
+      this.options.displayMode = 'dialog';
+    }
+    if (window.matchMedia('screen and (max-width: 768px)').matches) {
+      if (this.options.displayMode === 'default') {
+        this.options.displayMode = 'dialog';
+      }
+      this.options.displayDual = false;
+    }
+
+    this._build();
+    this._bindEvents();
+    this.save();
+
+    this.emit('ready', this);
   }
 
   /**
-   * Build datePicker HTML component and append it to the DOM
+   * Build datePicker HTML component and bulmaCalendarend it to the DOM
    * @method _build
    * @return {datePicker} Current plugin instance
    */
   _build() {
-    // the 7 days of the week (Sun-Sat)
-    const labels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addDays(d, i + this.options.weekStart), 'ddd', {
-      locale: this.locale
-    }));
-    // the 12 months of the year (Jan-SDecat)
-    const months = new Array(12).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addMonths(d, i), 'MM', {
-      locale: this.locale
-    }));
-    // the 7 days of the week (Sun-Sat)
-    const years = new Array(100).fill(dateFns.subYears(this._visibleDate, 50)).map((d, i) => dateFns.format(dateFns.addYears(d, i), 'YYYY', {
-      locale: this.locale
-    }));
-
-    // Create datePicker HTML Fragment based on Template
-    const datePickerFragment = document.createRange().createContextualFragment(templateCalendar({
+    const headerNode = document.createRange().createContextualFragment(templateselection({
       ...this.options,
-      id: this.id,
-      date: this.date,
-      locale: this.locale,
-      visibleDate: this._visibleDate,
-      labels: {
-        from: this.options.labelFrom,
-        to: this.options.labelTo,
-        weekdays: labels
-      },
-      months: months,
-      years: years,
-      isRange: this.options.isRange,
-      month: dateFns.format(this.month, 'MM', {
-        locale: this.locale
-      })
+      type: this._type,
+      datePicker: this.options.type !== 'time'
+    }));
+    const footerNode = document.createRange().createContextualFragment(templateFooter(this.options));
+    const elementNode = document.createRange().createContextualFragment(template({
+      ...this.options,
+      id: this.id
     }));
 
     // Save pointer to each datePicker element for later use
-    const container = datePickerFragment.querySelector('#' + this.id);
     this._ui = {
-      container: container,
-      calendar: container.querySelector('.calendar'),
+      modal: elementNode.querySelector('.modal'),
+      wrapper: elementNode.querySelector('.bulma-datepicker'),
+      container: elementNode.querySelector('.bulma-datepicker-container'),
+      calendar: elementNode.querySelector('.ement'),
       overlay: this.options.displayMode === 'dialog' ? {
-        background: container.querySelector('.modal-background'),
-        close: container.querySelector('.modal-close')
+        background: elementNode.querySelector('.modal-background'),
+        close: elementNode.querySelector('.modal-close')
       } : undefined,
       header: {
-        container: container.querySelector('.calendar-header'),
+        container: headerNode.querySelector('.bulma-datepicker-header'),
         start: {
-          container: container.querySelector('.calendar-selection-start'),
-          day: container.querySelector('.calendar-selection-start .calendar-selection-day'),
-          month: container.querySelector('.calendar-selection-start .calendar-selection-month'),
-          weekday: container.querySelector('.calendar-selection-start .calendar-selection-weekday'),
-          empty: container.querySelector('.calendar-selection-start .empty')
+          container: headerNode.querySelector('.bulma-datepicker-selection-start'),
+          day: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-day'),
+          month: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-month'),
+          weekday: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-weekday'),
+          empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
         },
         end: this.options.isRange ? {
-          container: container.querySelector('.calendar-selection-end'),
-          day: container.querySelector('.calendar-selection-end .calendar-selection-day'),
-          month: container.querySelector('.calendar-selection-end .calendar-selection-month'),
-          weekday: container.querySelector('.calendar-selection-end .calendar-selection-weekday'),
-          empty: container.querySelector('.calendar-selection-start .empty')
+          container: headerNode.querySelector('.bulma-datepicker-selection-end'),
+          day: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-day'),
+          month: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-month'),
+          weekday: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-weekday'),
+          empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
         } : undefined
       },
-      navigation: {
-        container: container.querySelector('.calendar-nav'),
-        previous: container.querySelector('.calendar-nav-previous'),
-        next: container.querySelector('.calendar-nav-next'),
-        month: container.querySelector('.calendar-nav-month'),
-        year: container.querySelector('.calendar-nav-year')
-      },
       footer: {
-        container: container.querySelector('.calendar-footer'),
-        validate: container.querySelector('.calendar-footer-validate'),
-        today: container.querySelector('.calendar-footer-today'),
-        clear: container.querySelector('.calendar-footer-clear'),
-        cancel: container.querySelector('.calendar-footer-cancel'),
-      },
-      body: {
-        dates: container.querySelector('.calendar-dates'),
-        days: container.querySelector('.calendar-days'),
-        weekdays: container.querySelector('.calendar-weekdays'),
-        months: container.querySelector('.calendar-months'),
-        years: container.querySelector('.calendar-years')
+        container: footerNode.querySelector('.bulma-datepicker-footer'),
+        validate: footerNode.querySelector('.bulma-datepicker-footer-validate'),
+        today: footerNode.querySelector('.bulma-datepicker-footer-today'),
+        clear: footerNode.querySelector('.bulma-datepicker-footer-clear'),
+        cancel: footerNode.querySelector('.bulma-datepicker-footer-cancel'),
       }
     };
 
-    if (!this.options.showHeader) {
-      this._ui.header.container.classList.add('is-hidden');
-    }
     if (!this.options.showFooter) {
       this._ui.footer.container.classList.add('is-hidden');
     }
-    if (!this.options.todayButton) {
+    if (!this.options.showTodayButton) {
       this._ui.footer.today.classList.add('is-hidden');
     }
-    if (!this.options.clearButton) {
+    if (!this.options.showClearButton) {
       this._ui.footer.clear.classList.add('is-hidden');
     }
 
-    if (this.options.displayMode === 'inline' && this._ui.footer.validate) {
-      this._ui.footer.validate.classList.add('is-hidden');
-    }
-    if (this.options.displayMode === 'inline' && this._ui.footer.cancel) {
-      this._ui.footer.cancel.classList.add('is-hidden');
-    }
     if (this.options.closeOnSelect && this._ui.footer.validate) {
       this._ui.footer.validate.classList.add('is-hidden');
     }
 
-    // Add datepicker HTML element to DOM
-    if (this.options.displayMode !== 'dialog') {
-      const wrapper = document.createElement('div');
-      this.element.parentNode.insertBefore(wrapper, this.element);
-      wrapper.appendChild(this.element);
-      if (this.options.displayMode === 'inline') {
-        container.classList.add('is-inline');
-        this.element.classList.add('is-hidden');
-        container.classList.remove('datepicker');
-      }
-      wrapper.appendChild(datePickerFragment);
-      this._refreshCalendar();
-    } else {
-      document.body.appendChild(datePickerFragment);
+    this._ui.container.appendChild(headerNode);
+    this._ui.container.appendChild(this.datePicker.render());
+
+    this._ui.wrapper.appendChild(footerNode);
+    this._ui.wrapper.classList.add(`is-${this.options.color}`);
+    // Add datepicker HTML element to Document Body
+    this.element.parentNode.insertBefore(elementNode, this.element.nextSibling);
+    // this.element.classList.add('is-hidden');
+
+    if (this.element.getAttribute('type') === 'date') {
+      this.element.setAttributes('type', 'text');
     }
+
+    if (this.options.displayMode === 'inline') {
+      this._ui.wrapper.classList.add('is-active');
+      this.element.classList.add('is-hidden');
+    } else {
+      this._ui.wrapper.style.position = 'absolute';
+      this._ui.wrapper.classList.add('is-datetimepicker-default');
+    }
+    this.refresh();
   }
 
   /**
@@ -674,23 +553,18 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {void}
    */
   _bindEvents() {
-    document.addEventListener('keydown', e => {
-      if (this._focus) {
-        switch (e.keyCode || e.which) {
-          case 37:
-            this.onPreviousDatePicker(e);
-            break;
-          case 39:
-            this.onNextDatePicker(e);
-            break;
-        }
-      }
+    this._clickEvents.forEach(clickEvent => {
+      document.body.addEventListener(clickEvent, this._onDocumentClick);
     });
+
+    this.datePicker.on('select', this._onSelectDate);
+    this.datePicker.on('select:start', this._onSelectDate);
+    this.datePicker.on('select:end', this._onSelectDate);
 
     // Bind event to element in order to display/hide datePicker on click
     if (this.options.toggleOnInputClick === true) {
       this._clickEvents.forEach(clickEvent => {
-        this.element.addEventListener(clickEvent, this.onToggleDatePicker);
+        this.element.addEventListener(clickEvent, this._onToggle);
       });
     }
 
@@ -698,326 +572,39 @@ export default class bulmaCalendar extends EventEmitter {
       // Bind close event on Close button
       if (this._ui.overlay.close) {
         this._clickEvents.forEach(clickEvent => {
-          this.this._ui.overlay.close.addEventListener(clickEvent, this.onCloseDatePicker);
+          this.this._ui.overlay.close.addEventListener(clickEvent, this._onClose);
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
         this._clickEvents.forEach(clickEvent => {
-          this._ui.overlay.background.addEventListener(clickEvent, this.onCloseDatePicker);
+          this._ui.overlay.background.addEventListener(clickEvent, this._onClose);
         });
       }
     }
 
-    // Bind year navigation events
-    if (this._ui.navigation.previous) {
-      this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.previous.addEventListener(clickEvent, this.onPreviousDatePicker);
-      });
-    }
-    if (this._ui.navigation.next) {
-      this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.next.addEventListener(clickEvent, this.onNextDatePicker);
-      });
-    }
-
-    if (this._ui.navigation.month) {
-      this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.month.addEventListener(clickEvent, this.onSelectMonthDatePicker);
-      });
-    }
-    if (this._ui.navigation.year) {
-      this._clickEvents.forEach(clickEvent => {
-        this._ui.navigation.year.addEventListener(clickEvent, this.onSelectYearDatePicker);
-      });
-    }
-
-    const months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
-    months.forEach(month => {
-      this._clickEvents.forEach(clickEvent => {
-        month.addEventListener(clickEvent, this.onMonthClickDatePicker);
-      });
-    });
-
-    const years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
-    years.forEach(year => {
-      this._clickEvents.forEach(clickEvent => {
-        year.addEventListener(clickEvent, this.onYearClickDatePicker);
-      });
-    });
-
     if (this._ui.footer.validate) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.validate.addEventListener(clickEvent, this.onValidateClickDatePicker);
+        this._ui.footer.validate.addEventListener(clickEvent, this._onValidateClick);
       });
     }
     if (this._ui.footer.today) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.today.addEventListener(clickEvent, this.onTodayClickDatePicker);
+        this._ui.footer.today.addEventListener(clickEvent, this._onTodayClick);
       });
     }
     if (this._ui.footer.clear) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.clear.addEventListener(clickEvent, this.onClearClickDatePicker);
+        this._ui.footer.clear.addEventListener(clickEvent, this._onClearClick);
       });
     }
+    this._clickEvents.forEach(clickEvent => {
+      // this._ui.dummy.clear.addEventListener(clickEvent, this._onClearClick);
+    });
     if (this._ui.footer.cancel) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.cancel.addEventListener(clickEvent, this.onCancelClickDatePicker);
+        this._ui.footer.cancel.addEventListener(clickEvent, this._onCancelClick);
       });
     }
-  }
-
-  /**
-   * Bind events on each Day item
-   * @method _bindDaysEvents
-   * @return {void}
-   */
-  _bindDaysEvents() {
-    [].forEach.call(this._ui.days, (day) => {
-      this._clickEvents.forEach(clickEvent => {
-        // if not in range, no click action
-        // if in this month, select the date
-        // if out of this month, jump to the date
-        const onClick = !this._isValidDate(new Date(day.dataset.date), this.minDate, this.maxDate) ? null : this.onDateClickDatePicker;
-        day.addEventListener(clickEvent, onClick);
-      });
-
-      day.addEventListener('hover', e => {
-        e.preventDEfault();
-      });
-    });
-  }
-
-  _renderDays() {
-    // first day of current month view
-    const start = dateFns.startOfWeek(dateFns.startOfMonth(this._visibleDate));
-    // last day of current month view
-    const end = dateFns.endOfWeek(dateFns.endOfMonth(this._visibleDate));
-
-    // get all days and whether they are within the current month and range
-    const days = new Array(dateFns.differenceInDays(end, start) + 1)
-      .fill(start)
-      .map((s, i) => {
-        const theDate = dateFns.addDays(s, i + this.options.weekStart);
-        const isThisMonth = dateFns.isSameMonth(this._visibleDate, theDate);
-        const isInRange = this.options.isRange && dateFns.isWithinRange(theDate, this.startDate, this.endDate);
-        let isDisabled = this.maxDate ? dateFns.isAfter(theDate, this.maxDate) : false;
-        isDisabled = !isDisabled && this.minDate ? dateFns.isBefore(theDate, this.minDate) : isDisabled;
-
-        if (this.options.disabledDates) {
-          for (let j = 0; j < this.options.disabledDates.length; j++) {
-            if (dateFns.getTime(theDate) == dateFns.getTime(this.options.disabledDates[j])) {
-              isDisabled = true;
-            }
-          }
-        }
-
-        if (this.options.disabledWeekDays) {
-          const disabledWeekDays = types.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : this.options.disabledWeekDays;
-          disabledWeekDays.forEach(day => {
-            if (dateFns.getDay(theDate) == day) {
-              isDisabled = true;
-            }
-          });
-        }
-
-        return {
-          date: theDate,
-          isRange: this.options.isRange,
-          isToday: dateFns.isToday(theDate),
-          isStartDate: dateFns.isEqual(this.startDate, theDate),
-          isEndDate: dateFns.isEqual(this.endDate, theDate),
-          isDisabled: isDisabled,
-          isThisMonth,
-          isInRange
-        };
-      });
-
-    this._ui.body.days.appendChild(document.createRange().createContextualFragment(templateDays(days)));
-    this._ui.days = this._ui.body.days.querySelectorAll('.calendar-date');
-    this._bindDaysEvents();
-
-    this.emit('rendered', this);
-  }
-
-  _togglePreviousButton(active = true) {
-    if (!active) {
-      this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-    } else {
-      this._ui.navigation.previous.removeAttribute('disabled');
-    }
-  }
-
-  _toggleNextButton(active = true) {
-    if (!active) {
-      this._ui.navigation.next.setAttribute('disabled', 'disabled');
-    } else {
-      this._ui.navigation.next.removeAttribute('disabled');
-    }
-  }
-
-  _setStartAndEnd(date) {
-    this._snapshot();
-    if (this.options.isRange && (!this._isValidDate(this.startDate) || (this._isValidDate(this.startDate) && this._isValidDate(this.endDate)))) {
-      this.startDate = dateFns.parse(date);
-      this.endDate = undefined;
-      this.emit('startDate:selected', this.date, this);
-    } else if (this.options.isRange && !this._isValidDate(this.endDate)) {
-      if (dateFns.isBefore(date, this.startDate)) {
-        this.endDate = this.startDate;
-        this.startDate = dateFns.parse(date);
-        this.emit('startDate:selected', this.date, this);
-        this.emit('endDate:selected', this.date, this);
-      } else if (dateFns.isAfter(date, this.startDate)) {
-        this.endDate = dateFns.parse(date);
-        this.emit('endDate:selected', this.date, this);
-      } else {
-        this.startDate = dateFns.parse(date);
-        this.endDate = undefined;
-      }
-    } else {
-      this.startDate = dateFns.parse(date);
-      this.endDate = undefined;
-    }
-
-    if (this.options.isRange && this._isValidDate(this.startDate) && this._isValidDate(this.endDate)) {
-      new Array(dateFns.differenceInDays(this.endDate, this.startDate) + 1)
-        .fill(this.startDate)
-        .map((s, i) => {
-          const theDate = dateFns.addDays(s, i);
-          const dateElement = this._ui.body.dates.querySelector(`.calendar-date[data-date="${theDate.toString()}"]`);
-          if (dateElement) {
-            if (dateFns.isEqual(this.startDate, theDate)) {
-              dateElement.classList.add('calendar-range-start');
-            }
-            if (dateFns.isEqual(this.endDate, theDate)) {
-              dateElement.classList.add('calendar-range-end');
-            }
-            dateElement.classList.add('calendar-range');
-          }
-        });
-    }
-  }
-
-  _clear() {
-    this.startDate = undefined;
-    this.endDate = undefined;
-    this.element.value = this.value();
-    this.element.setAttribute('value', this.value());
-    if (this.options.displayMode !== 'inline' && this._open) {
-      this.hide();
-    }
-    this._refreshCalendar();
-  }
-
-  /**
-   * Refresh calendar with new year/month days
-   * @method _refreshCalendar
-   * @return {[type]}        [description]
-   */
-  _refreshCalendar() {
-    // this.elementCalendarNavDay.innerHTML = this.date.date();
-    this._ui.body.days.innerHTML = '';
-
-    if (this.minDate && dateFns.differenceInMonths(this._visibleDate, this.minDate) === 0) {
-      this._togglePreviousButton(false);
-    } else {
-      this._togglePreviousButton();
-    }
-
-    if (this.maxDate && dateFns.differenceInMonths(this._visibleDate, this.maxDate) === 0) {
-      this._toggleNextButton(false);
-    } else {
-      this._toggleNextButton();
-    }
-
-    this._refreshCalendarHeader();
-
-    this._ui.navigation.month.innerHTML = dateFns.format(this._visibleDate, 'MMMM', {
-      locale: this.locale
-    });
-    this._ui.navigation.year.innerHTML = dateFns.format(this._visibleDate, 'YYYY', {
-      locale: this.locale
-    });
-
-    const months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
-    months.forEach(month => {
-      month.classList.remove('is-active');
-      if (month.dataset.month === dateFns.format(this._visibleDate, 'MM', {
-          locale: this.locale
-        })) {
-        month.classList.add('is-active');
-      }
-    });
-    const years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
-    years.forEach(year => {
-      year.classList.remove('is-active');
-      if (year.dataset.year === dateFns.format(this._visibleDate, 'YYYY', {
-          locale: this.locale
-        })) {
-        year.classList.add('is-active');
-      }
-    });
-
-    this._renderDays();
-
-    this._ui.body.dates.classList.add('is-active');
-    this._ui.body.months.classList.remove('is-active');
-    this._ui.body.years.classList.remove('is-active');
-    this._ui.navigation.previous.removeAttribute('disabled');
-    this._ui.navigation.next.removeAttribute('disabled');
-
-    return this;
-  }
-
-  _refreshCalendarHeader() {
-    this._ui.header.start.day.innerHTML = this._isValidDate(this.startDate) ? dateFns.getDate(this.startDate) : '&nbsp;';
-    this._ui.header.start.weekday.innerHTML = this._isValidDate(this.startDate) ? dateFns.format(this.startDate, 'dddd', {
-      locale: this.locale
-    }) : '&nbsp;';
-    this._ui.header.start.month.innerHTML = this._isValidDate(this.startDate) ? dateFns.format(this.startDate, 'MMMM YYYY', {
-      locale: this.locale
-    }) : '&nbsp;';
-
-    if (this._ui.header.end) {
-      this._ui.header.end.day.innerHTML = (this.options.isRange && this._isValidDate(this.endDate)) ? dateFns.getDate(this.endDate) : '&nbsp;';
-      this._ui.header.end.weekday.innerHTML = (this.options.isRange && this._isValidDate(this.endDate)) ? dateFns.format(this.endDate, 'dddd', {
-        locale: this.locale
-      }) : '&nbsp;';
-      this._ui.header.end.month.innerHTML = (this.options.isRange && this._isValidDate(this.endDate)) ? dateFns.format(this.endDate, 'MMMM YYYY', {
-        locale: this.locale
-      }) : '&nbsp;';
-    }
-  }
-
-  _isValidDate(date, minDate, maxDate) {
-    try {
-      if (!date) {
-        return false;
-      }
-      if (dateFns.isValid(date)) {
-        if (!minDate && !maxDate) {
-          return true;
-        }
-        if (minDate && maxDate) {
-          return dateFns.isWithinRange(date, minDate, maxDate);
-        }
-        if (maxDate) {
-          return dateFns.isBefore(date, maxDate) || dateFns.isEqual(date, maxDate);
-        }
-        return dateFns.isAfter(date, minDate) || dateFns.isEqual(date, minDate);
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
-
-  _snapshot() {
-    this._snapshots.push({
-      ...this._date
-    });
   }
 }

@@ -67,7 +67,10 @@ export default class EventEmitter {
           this._listeners.set(name, []);
         }
 
-        (this._listeners.get(name)).push({once: once, callback: callback});
+        (this._listeners.get(name)).push({
+          once: once,
+          callback: callback
+        });
       }
     }
   }
@@ -112,7 +115,11 @@ export default class EventEmitter {
           if (listener.once) {
             listeners[index] = null;
           }
-          listener.callback(data);
+          listener.callback({
+            type: name,
+            timestamp: (new Date()).getTime(),
+            data: data
+          });
         }
       });
 

@@ -16,6 +16,7 @@ const defaultOptions = {
   labelFrom: '',
   labelTo: '',
   weekStart: 0,
+  weekDaysFormat: 'ddd',
   closeOnOverlayClick: true,
   closeOnSelect: true,
   toggleOnInputClick: true,

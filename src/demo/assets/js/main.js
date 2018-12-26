@@ -1,28 +1,33 @@
 ready(function () {
   bulmaCalendar.attach('#datepickerDemoInline');
   bulmaCalendar.attach('#datepickerDemoInlineRange');
+  bulmaCalendar.attach('#datepickerDemoRangeDialog', {
+    displayMode: 'dialog'
+  });
 
-  calendars = bulmaCalendar.attach('#datepickerDemoDefault', {
+  calendars = [bulmaCalendar.attach('#datepickerDemoDefault', {
     dateFormat: 'DD/MM/YYYY',
     clearButton: false
-  });
+  })];
+  // console.log(calendars);
+
   [].forEach.call(calendars, function (calendar) {
-    calendar.on('datepicker:date:selected', function (datePicker) {
-      alert('Selected date: ' + datePicker.date);
+    calendar.on('select', function (datePicker) {
+      console.log('Selected date: ' + datePicker.data.value());
     });
   });
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
     dateFormat: 'D/M/YYYY',
-    startDate: new Date('02/11/2018'),
+    startDate: new Date(),
     minDate: '01/01/2018',
-    maxDate: '12/31/2018',
-    lang: 'fr'
+    maxDate: '12/31/2018'
   });
 
   bulmaCalendar.attach('#datepickerDemoDisabledDates', {
     displayMode: 'dialog',
+    startDate: new Date(),
     disabledDates: [
       new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
       new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
@@ -31,11 +36,13 @@ ready(function () {
 
   bulmaCalendar.attach('#datepickerDemoDisabledWeekDays', {
     displayMode: 'dialog',
+    startDate: new Date(),
     disabledWeekDays: '0,6'
   });
 
   bulmaCalendar.attach('#datepickerDemoWeekStart', {
     displayMode: 'dialog',
+    startDate: new Date(),
     weekStart: 1
   });
 
@@ -55,7 +62,7 @@ ready(function () {
   var trigger = document.querySelector('#datepicker-trigger');
   if (trigger) {
     trigger.addEventListener('click', function (e) {
-      datepicker[0].show();
+      datepicker.show();
     });
   }
 
@@ -69,7 +76,7 @@ ready(function () {
   var trigger2 = document.querySelector('#datepicker-trigger2');
   if (trigger2) {
     trigger2.addEventListener('click', function (e) {
-      datepicker2[0].show();
+      datepicker2.show();
     });
   }
 });

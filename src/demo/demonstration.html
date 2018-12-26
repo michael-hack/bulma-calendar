@@ -13,27 +13,30 @@ title: Demonstrations
 {% endcapture %}
 
 {% capture calendar_datepicker_example %}
-<input id="datepickerDemoDefault" class="input" type="date" value="09/25/2018">
+<input id="datepickerDemoDefault" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_range %}
 <input id="datepickerDemoRange" class="input" data-is-range="true" type="date">
 {% endcapture %}
+{% capture calendar_datepicker_example_range_dialog %}
+<input id="datepickerDemoRangeDialog" class="input" data-is-range="true" type="date">
+{% endcapture %}
 
 {% capture calendar_datepicker_example_dialog %}
-<input id="datepickerDemoDialog" class="input" type="date" value="25/09/2018">
+<input id="datepickerDemoDialog" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_disabled_dates %}
-<input id="datepickerDemoDisabledDates" class="input" type="date" value="09/25/2018">
+<input id="datepickerDemoDisabledDates" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_disabled_weekdays %}
-<input id="datepickerDemoDisabledWeekDays" class="input" type="date" value="09/25/2018">
+<input id="datepickerDemoDisabledWeekDays" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_weekstart %}
-<input id="datepickerDemoWeekStart" class="input" type="date" value="09/25/2018">
+<input id="datepickerDemoWeekStart" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_labels %}
@@ -100,6 +103,7 @@ title: Demonstrations
 <div class="tabs">
   <ul>
     <li class="is-active"><a href="#range">Default</a></li>
+    <li><a href="#range-dialog">Dialog</a></li>
     <li><a href="#range-labels">Custom labels</a></li>
   </ul>
 </div>
@@ -107,6 +111,9 @@ title: Demonstrations
 <div class="tab-contents">
   <div id="range" class="tab-content is-active">
     {{calendar_datepicker_example_inline_range}}
+  </div>
+  <div id="range-dialog" class="tab-content">
+    {{calendar_datepicker_example_range_dialog}}
   </div>
 
   <div id="range-labels" class="tab-content">
