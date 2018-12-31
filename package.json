@@ -3,7 +3,7 @@
   "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
   "main": "./dist/js/bulma-calendar.min.js",
   "style": "./dist/css/bulma-calendar.min.css",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "scripts": {
     "commit": "git-cz",
     "travis-deploy-once": "travis-deploy-once",
@@ -82,8 +82,8 @@
     ]
   },
   "files": [
-    "dist/**",
-    "src/**",
+    "dist",
+    "src",
     "LICENSE",
     "README.md"
   ]
