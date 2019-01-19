@@ -59,12 +59,12 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {Array} Array of all datePicker instances
    */
   static attach(selector = '.bulma-datepicker', options = {}) {
-    let instance = [];
+    let instances = [];
 
     const elements = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
     if (elements.length > 1) {
       [].forEach.call(elements, ement => {
-        instance.push(new bulmaCalendar(ement, options));
+        instances.push(new bulmaCalendar(ement, options));
       });
       return instances;
     } else if (elements.length === 1) {
