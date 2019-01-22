@@ -191,6 +191,10 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   _onDocumentClick(e) {
+    if (!this._open) {
+      return;
+    }
+    
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -198,7 +202,7 @@ export default class bulmaCalendar extends EventEmitter {
 
     // Check is e.target not within datepicker element
     const target = e.target || e.srcElement;
-    if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
+    if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline') {
       this._onClose(e);
     }
   }
