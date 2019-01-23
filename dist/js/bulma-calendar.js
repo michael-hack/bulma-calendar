@@ -12213,12 +12213,12 @@ var bulmaCalendar = function (_EventEmitter) {
       var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.bulma-datepicker';
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      var instance = [];
+      var instances = [];
 
       var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
       if (elements.length > 1) {
         [].forEach.call(elements, function (ement) {
-          instance.push(new bulmaCalendar(ement, options));
+          instances.push(new bulmaCalendar(ement, options));
         });
         return instances;
       } else if (elements.length === 1) {
