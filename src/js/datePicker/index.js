@@ -653,12 +653,19 @@ export default class datePicker extends EventEmitter {
 			if (dateFns.isBefore(date, this.start)) {
 				this.end = this.start;
 				this.start = date;
-				if (withEvents)
+				if (withEvents) {
 					this.emit('select', this);
+				}
 			} else if (dateFns.isAfter(date, this.start)) {
 				this.end = date;
-				if (withEvents)
+				if (withEvents) {
 					this.emit('select', this);
+				}
+			} else if (this.options.allowSameDayRange) {
+				this.end = date;
+				if (withEvents) {
+					this.emit('select', this);
+				}
 			} else {
 				this.start = date;
 				this.end = undefined;

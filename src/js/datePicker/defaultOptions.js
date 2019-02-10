@@ -1,6 +1,7 @@
 const defaultOptions = {
   color: 'primary',
   isRange: false,
+  allowSameDayRange: true,
   lang: 'en', // internationalization
   startDate: undefined,
   endDate: undefined,

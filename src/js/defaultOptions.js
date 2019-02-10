@@ -4,6 +4,7 @@ const defaultOptions = {
   minDate: null,
   maxDate: null,
   isRange: false,
+  allowSameDayRange: true,
   disabledDates: [],
   disabledWeekDays: undefined,
   lang: 'en', // internationalization
