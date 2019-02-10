@@ -514,6 +514,9 @@ export default class bulmaCalendar extends EventEmitter {
       }
     };
 
+    if (!this.options.showHeader) {
+      this._ui.header.container.classList.add('is-hidden');
+    }
     if (!this.options.showFooter) {
       this._ui.footer.container.classList.add('is-hidden');
     }
