@@ -187,7 +187,7 @@ export default class bulmaCalendar extends EventEmitter {
     if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
       this.hide();
     }
-    this.emit(e.type, e.data);
+    this.emit(e.type, this);
   }
 
   _onDocumentClick(e) {
@@ -458,6 +458,10 @@ export default class bulmaCalendar extends EventEmitter {
     this._bindEvents();
     this.save();
 
+    if (types.isFunction(this._options.onReady)) {
+      this._options.onReady(this);
+    }
+    
     this.emit('ready', this);
   }
 
