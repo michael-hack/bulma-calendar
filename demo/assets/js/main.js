@@ -74,7 +74,7 @@ ready(function () {
   });
   var trigger2 = document.querySelector('#datepicker-trigger2');
   if (trigger2) {
-    trigger2.addEventListener('click', function (e) {
+    trigger2.addEventListener('click', function(e) {
       datepicker2.show();
     });
   }

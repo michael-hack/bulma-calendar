@@ -120,9 +120,13 @@ options:
   type: Boolean
   description: 'Automatically open datepicker when click into input element'
   value: true
+- name: onReady
+  type: Function
+  description: 'Define the on ready event handler here'
+  value: 'null'
 events:
 - name: 'ready'
-  description: 'Triggered when calendar is initialized and ready for use'
+  description: 'Triggered when calendar is initialized and ready for use (YOU MUST define the event handler with the onReady option)'
   parameters: 'Calendar instance'
 - name: 'rendered'
   description: 'Triggered when calendar is rendered in DOM'

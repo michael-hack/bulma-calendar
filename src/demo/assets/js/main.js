@@ -1,9 +1,5 @@
 ready(function () {
-  bulmaCalendar.attach('#datepickerDemoInline', {
-    onReady: function(datepicker) {
-      alert('Inline ready');
-    }
-  });
+  bulmaCalendar.attach('#datepickerDemoInline');
   bulmaCalendar.attach('#datepickerDemoInlineRange');
   bulmaCalendar.attach('#datepickerDemoRangeDialog', {
     displayMode: 'dialog'
