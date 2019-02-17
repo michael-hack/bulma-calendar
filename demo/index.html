@@ -8,12 +8,12 @@
 
   <title>Documentation</title>
 
-  <link rel="canonical" href="/">
+  <link rel="canonical" href="https://demo.creativebulma.net/components/calendar//">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" rel="stylesheet">
-  <link href="/assets/css/highlight.css" rel="stylesheet">
-  <link href="/assets/css/documentation.min.css" rel="stylesheet">
-  <link href="/assets/css/bulma-calendar.min.css" rel="stylesheet">
+  <link href="https://demo.creativebulma.net/components/calendar//assets/css/highlight.css" rel="stylesheet">
+  <link href="https://demo.creativebulma.net/components/calendar//assets/css/documentation.min.css" rel="stylesheet">
+  <link href="https://demo.creativebulma.net/components/calendar//assets/css/bulma-calendar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
     crossorigin="anonymous">
 
@@ -51,7 +51,7 @@
 
   
   <li>
-    <a class="menu-item" href="/demonstration">Demonstration</a>
+    <a class="menu-item" href="https://demo.creativebulma.net/components/calendar//demonstration">Demonstration</a>
   </li>
   
 
@@ -63,21 +63,21 @@
     </a>
     <ul class="menu-dropdown">
       
-        <li><a class="menu-item" href="/#features">Features</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#features">Features</a></li>
       
-        <li><a class="menu-item" href="/#installation">Installation</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#installation">Installation</a></li>
       
-        <li><a class="menu-item" href="/#content">Content</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#content">Content</a></li>
       
-        <li><a class="menu-item" href="/#html-structure">HTML Structure</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#html-structure">HTML Structure</a></li>
       
-        <li><a class="menu-item" href="/#integration">Integration</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#integration">Integration</a></li>
       
-        <li><a class="menu-item" href="/#options">Options</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#options">Options</a></li>
       
-        <li><a class="menu-item" href="/#methods">Methods</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#methods">Methods</a></li>
       
-        <li><a class="menu-item" href="/#events">Events</a></li>
+        <li><a class="menu-item" href="https://demo.creativebulma.net/components/calendar//#events">Events</a></li>
       
     </ul>
   </li>
@@ -85,13 +85,13 @@
 
   
   <li>
-    <a class="menu-item" href="/customization">Customization</a>
+    <a class="menu-item" href="https://demo.creativebulma.net/components/calendar//customization">Customization</a>
   </li>
   
 
   
   <li>
-    <a class="menu-item" href="/changelog">Changelog</a>
+    <a class="menu-item" href="https://demo.creativebulma.net/components/calendar//changelog">Changelog</a>
   </li>
   
 
@@ -1108,7 +1108,7 @@
           <code style="white-space: nowrap;">ready</code>
         </td>
         <td>
-          <span>Triggered when calendar is intialized</span>
+          <span>Triggered when calendar is initialized and ready for use</span>
         </td>
         <td>
           <code>Calendar instance</code>
@@ -1121,6 +1121,30 @@
         </td>
         <td>
           <span>Triggered when calendar is rendered in DOM</span>
+        </td>
+        <td>
+          <code>Calendar instance</code>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">refresh</code>
+        </td>
+        <td>
+          <span>Triggered when calendar is refreshed</span>
+        </td>
+        <td>
+          <code>Calendar instance</code>
+        </td>
+      </tr>
+      
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">clear</code>
+        </td>
+        <td>
+          <span>Triggered when calendar data is cleared</span>
         </td>
         <td>
           <code>Calendar instance</code>
@@ -1153,37 +1177,25 @@
       
       <tr>
         <td>
-          <code style="white-space: nowrap;">date:selected</code>
+          <code style="white-space: nowrap;">select</code>
         </td>
         <td>
-          <span>Triggered when a date is selected (for range date = when both start and end dates have been selected)</span>
+          <span>Triggered when the date is selected (or when end date is selected in range mode)</span>
         </td>
         <td>
-          <code>Object{startDate, endDate}, Calendar instance</code>
-        </td>
-      </tr>
-      
-      <tr>
-        <td>
-          <code style="white-space: nowrap;">startDate:selected</code>
-        </td>
-        <td>
-          <span>Triggered when the start date is selected</span>
-        </td>
-        <td>
-          <code>Object{startDate, endDate}, Calendar instance</code>
+          <code>Calendar instance</code>
         </td>
       </tr>
       
       <tr>
         <td>
-          <code style="white-space: nowrap;">endDate:selected</code>
+          <code style="white-space: nowrap;">select:start</code>
         </td>
         <td>
-          <span>Triggered when the end date is selected</span>
+          <span>Triggered when the start date is selected (only triggered in range mode)</span>
         </td>
         <td>
-          <code>Object{startDate, endDate}, Calendar instance</code>
+          <code>Calendar instance</code>
         </td>
       </tr>
       
@@ -1196,9 +1208,9 @@
     </div>
   </div>
 
-  <script src="/assets/js/doc.js"></script>
-  <script src="/assets/js/bulma-calendar.min.js"></script>
-  <script src="/assets/js/main.js"></script>
+  <script src="https://demo.creativebulma.net/components/calendar//assets/js/doc.js"></script>
+  <script src="https://demo.creativebulma.net/components/calendar//assets/js/bulma-calendar.min.js"></script>
+  <script src="https://demo.creativebulma.net/components/calendar//assets/js/main.js"></script>
 </body>
 
 </html>
