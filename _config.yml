@@ -2,7 +2,7 @@
 title:         "Calendar"
 description:   "Responsive - Interactive Calendar Picker"
 version:       5.0.6
-url:           https://demo.creativebulma.net/components/calendar/
+# url:           https://demo.creativebulma.net/components/calendar/
 
 # Build
 markdown:      kramdown
