@@ -11599,6 +11599,7 @@ var bulmaCalendar = function (_EventEmitter) {
       if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
         this.hide();
       }
+
       this.emit(e.type, e.data);
     }
   }, {
@@ -11874,6 +11875,10 @@ var bulmaCalendar = function (_EventEmitter) {
   }, {
     key: '_init',
     value: function _init() {
+      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](this.options.onReady)) {
+        this.on('ready', this.options.onReady);
+      }
+
       this._open = false;
       this._snapshots = []; // Use to revert selection
       // Change element type to prevent browser default type="date" behavior
@@ -17065,6 +17070,7 @@ var defaultOptions = {
   closeOnOverlayClick: true,
   closeOnSelect: true,
   toggleOnInputClick: true,
+  onReady: null,
   icons: {
     previous: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>\n    </svg>',
     next: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>\n    </svg>'

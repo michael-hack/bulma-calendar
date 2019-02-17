@@ -187,7 +187,8 @@ export default class bulmaCalendar extends EventEmitter {
     if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
       this.hide();
     }
-    this.emit(e.type, this);
+
+    this.emit(e.type, e.data);
   }
 
   _onDocumentClick(e) {
@@ -426,6 +427,10 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {datePicker} Current plugin instance
    */
   _init() {
+    if (types.isFunction(this.options.onReady)) {
+      this.on('ready', this.options.onReady);
+    }
+
     this._open = false;
     this._snapshots = []; // Use to revert selection
     // Change element type to prevent browser default type="date" behavior
@@ -458,10 +463,6 @@ export default class bulmaCalendar extends EventEmitter {
     this._bindEvents();
     this.save();
 
-    if (types.isFunction(this._options.onReady)) {
-      this._options.onReady(this);
-    }
-    
     this.emit('ready', this);
   }
 

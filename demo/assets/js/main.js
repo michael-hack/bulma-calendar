@@ -9,7 +9,6 @@ ready(function () {
     dateFormat: 'DD/MM/YYYY',
     clearButton: false
   })];
-  // console.log(calendars);
 
   [].forEach.call(calendars, function (calendar) {
     calendar.on('select', function (datePicker) {

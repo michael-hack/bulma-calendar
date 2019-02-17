@@ -1,5 +1,9 @@
 ready(function () {
-  bulmaCalendar.attach('#datepickerDemoInline');
+  bulmaCalendar.attach('#datepickerDemoInline', {
+    onReady: function(datepicker) {
+      alert('Inline ready');
+    }
+  });
   bulmaCalendar.attach('#datepickerDemoInlineRange');
   bulmaCalendar.attach('#datepickerDemoRangeDialog', {
     displayMode: 'dialog'
@@ -9,7 +13,6 @@ ready(function () {
     dateFormat: 'DD/MM/YYYY',
     clearButton: false
   })];
-  // console.log(calendars);
 
   [].forEach.call(calendars, function (calendar) {
     calendar.on('select', function (datePicker) {
@@ -75,7 +78,7 @@ ready(function () {
   });
   var trigger2 = document.querySelector('#datepicker-trigger2');
   if (trigger2) {
-    trigger2.addEventListener('click', function (e) {
+    trigger2.addEventListener('click', function(e) {
       datepicker2.show();
     });
   }
