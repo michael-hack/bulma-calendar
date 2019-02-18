@@ -48,6 +48,15 @@ for(var i = 0; i < calendars.length; i++) {
 		console.log(date);
 	});
 }
+
+// To access to bulmaCalendar instance of an element
+var element = document.querySelector('#my-element');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', function(datepicker) {
+		console.log(datepicker.data.value());
+	});
+}
 {% endcapture %}
 
 {% capture component_init_es6 %}
@@ -61,6 +70,15 @@ calendars.forEach(calendar => {
 		console.log(date);
 	});
 });
+
+// To access to bulmaCalendar instance of an element
+const element = document.querySelector('#my-element');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', datepicker => {
+		console.log(datepicker.data.value());
+	});
+}
 {% endcapture %}
 
 {% capture component_init_vuejs %}

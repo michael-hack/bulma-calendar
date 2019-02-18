@@ -14,11 +14,14 @@ ready(function () {
   });
 
   var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
-  [].forEach.call(calendars, function(calendar) {
-    calendar.on('select', function (datePicker) {
-      console.log('Selected date: ' + datePicker.data.value());
-    });
-  });
+  // To access to bulmaCalendar instance of an element
+const element = document.querySelector('#datepickerDemoDefault');
+if (element) {
+	// bulmaCalendar instance is available as element.bulmaCalendar
+	element.bulmaCalendar.on('select', function(datepicker) {
+		console.log(datepicker.data.value());
+	});
+}
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',

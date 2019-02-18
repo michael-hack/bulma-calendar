@@ -12491,14 +12491,22 @@ var bulmaCalendar = function (_EventEmitter) {
   }], [{
     key: 'attach',
     value: function attach() {
+      var _this3 = this;
+
       var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'input[type="date"]';
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       var instances = new Array();
 
-      var datetimepickers = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-      [].forEach.call(datetimepickers, function (datetimepicker) {
-        instances.push(new bulmaCalendar(datetimepicker, options));
+      var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+      [].forEach.call(elements, function (element) {
+        if (typeof element[_this3.constructor.name] === 'undefined') {
+          var instance = new bulmaCalendar(element, options);
+          element.bulmaCalendar = instance;
+          instances.push(instance);
+        } else {
+          instances.push(element[_this3.constructor.name]);
+        }
       });
 
       return instances;

@@ -94,11 +94,8 @@ gulp.task('build:styles', function () {
 // Copy original sass file to dist
 gulp.task('build:styles:copy', function () {
   if (fs.existsSync(config.sass.source + config.sass.input)) {
-    gulp.src(config.sass.source + config.sass.input)
+    return gulp.src(config.sass.source + config.sass.input)
       .pipe(concat(config.sass.output.filename + '.sass'))
-      .pipe(gulp.dest(config.sass.destination));
-    return gulp.src(config.sass.source + 'index.scss')
-      .pipe(concat(config.sass.output.filename + '.scss'))
       .pipe(gulp.dest(config.sass.destination));
   } else {
     return gulp.src('.').pipe(nop());
