@@ -77,7 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(116)
+var isDate = __webpack_require__(119)
 
 var MILLISECONDS_IN_HOUR = 3600000
 var MILLISECONDS_IN_MINUTE = 60000
@@ -550,8 +550,8 @@ module.exports = startOfDay
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(10)
-var buildFormatLocale = __webpack_require__(11)
+var buildDistanceInWordsLocale = __webpack_require__(11)
+var buildFormatLocale = __webpack_require__(12)
 
 /**
  * @category Locales
@@ -565,6 +565,168 @@ module.exports = {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  addDays: __webpack_require__(7),
+  addHours: __webpack_require__(129),
+  addISOYears: __webpack_require__(130),
+  addMilliseconds: __webpack_require__(8),
+  addMinutes: __webpack_require__(132),
+  addMonths: __webpack_require__(81),
+  addQuarters: __webpack_require__(133),
+  addSeconds: __webpack_require__(134),
+  addWeeks: __webpack_require__(121),
+  addYears: __webpack_require__(135),
+  areRangesOverlapping: __webpack_require__(201),
+  closestIndexTo: __webpack_require__(202),
+  closestTo: __webpack_require__(203),
+  compareAsc: __webpack_require__(10),
+  compareDesc: __webpack_require__(122),
+  differenceInCalendarDays: __webpack_require__(80),
+  differenceInCalendarISOWeeks: __webpack_require__(204),
+  differenceInCalendarISOYears: __webpack_require__(136),
+  differenceInCalendarMonths: __webpack_require__(137),
+  differenceInCalendarQuarters: __webpack_require__(205),
+  differenceInCalendarWeeks: __webpack_require__(206),
+  differenceInCalendarYears: __webpack_require__(139),
+  differenceInDays: __webpack_require__(140),
+  differenceInHours: __webpack_require__(207),
+  differenceInISOYears: __webpack_require__(208),
+  differenceInMilliseconds: __webpack_require__(82),
+  differenceInMinutes: __webpack_require__(209),
+  differenceInMonths: __webpack_require__(123),
+  differenceInQuarters: __webpack_require__(210),
+  differenceInSeconds: __webpack_require__(124),
+  differenceInWeeks: __webpack_require__(211),
+  differenceInYears: __webpack_require__(212),
+  distanceInWords: __webpack_require__(142),
+  distanceInWordsStrict: __webpack_require__(213),
+  distanceInWordsToNow: __webpack_require__(214),
+  eachDay: __webpack_require__(215),
+  endOfDay: __webpack_require__(125),
+  endOfHour: __webpack_require__(216),
+  endOfISOWeek: __webpack_require__(217),
+  endOfISOYear: __webpack_require__(218),
+  endOfMinute: __webpack_require__(219),
+  endOfMonth: __webpack_require__(144),
+  endOfQuarter: __webpack_require__(220),
+  endOfSecond: __webpack_require__(221),
+  endOfToday: __webpack_require__(222),
+  endOfTomorrow: __webpack_require__(223),
+  endOfWeek: __webpack_require__(143),
+  endOfYear: __webpack_require__(224),
+  endOfYesterday: __webpack_require__(225),
+  format: __webpack_require__(226),
+  getDate: __webpack_require__(227),
+  getDay: __webpack_require__(228),
+  getDayOfYear: __webpack_require__(145),
+  getDaysInMonth: __webpack_require__(120),
+  getDaysInYear: __webpack_require__(229),
+  getHours: __webpack_require__(230),
+  getISODay: __webpack_require__(149),
+  getISOWeek: __webpack_require__(126),
+  getISOWeeksInYear: __webpack_require__(231),
+  getISOYear: __webpack_require__(2),
+  getMilliseconds: __webpack_require__(232),
+  getMinutes: __webpack_require__(233),
+  getMonth: __webpack_require__(234),
+  getOverlappingDaysInRanges: __webpack_require__(235),
+  getQuarter: __webpack_require__(138),
+  getSeconds: __webpack_require__(236),
+  getTime: __webpack_require__(237),
+  getYear: __webpack_require__(238),
+  isAfter: __webpack_require__(239),
+  isBefore: __webpack_require__(240),
+  isDate: __webpack_require__(119),
+  isEqual: __webpack_require__(241),
+  isFirstDayOfMonth: __webpack_require__(242),
+  isFriday: __webpack_require__(243),
+  isFuture: __webpack_require__(244),
+  isLastDayOfMonth: __webpack_require__(245),
+  isLeapYear: __webpack_require__(148),
+  isMonday: __webpack_require__(246),
+  isPast: __webpack_require__(247),
+  isSameDay: __webpack_require__(248),
+  isSameHour: __webpack_require__(150),
+  isSameISOWeek: __webpack_require__(152),
+  isSameISOYear: __webpack_require__(153),
+  isSameMinute: __webpack_require__(154),
+  isSameMonth: __webpack_require__(156),
+  isSameQuarter: __webpack_require__(157),
+  isSameSecond: __webpack_require__(159),
+  isSameWeek: __webpack_require__(127),
+  isSameYear: __webpack_require__(161),
+  isSaturday: __webpack_require__(249),
+  isSunday: __webpack_require__(250),
+  isThisHour: __webpack_require__(251),
+  isThisISOWeek: __webpack_require__(252),
+  isThisISOYear: __webpack_require__(253),
+  isThisMinute: __webpack_require__(254),
+  isThisMonth: __webpack_require__(255),
+  isThisQuarter: __webpack_require__(256),
+  isThisSecond: __webpack_require__(257),
+  isThisWeek: __webpack_require__(258),
+  isThisYear: __webpack_require__(259),
+  isThursday: __webpack_require__(260),
+  isToday: __webpack_require__(261),
+  isTomorrow: __webpack_require__(262),
+  isTuesday: __webpack_require__(263),
+  isValid: __webpack_require__(147),
+  isWednesday: __webpack_require__(264),
+  isWeekend: __webpack_require__(265),
+  isWithinRange: __webpack_require__(266),
+  isYesterday: __webpack_require__(267),
+  lastDayOfISOWeek: __webpack_require__(268),
+  lastDayOfISOYear: __webpack_require__(269),
+  lastDayOfMonth: __webpack_require__(270),
+  lastDayOfQuarter: __webpack_require__(271),
+  lastDayOfWeek: __webpack_require__(162),
+  lastDayOfYear: __webpack_require__(272),
+  max: __webpack_require__(273),
+  min: __webpack_require__(274),
+  parse: __webpack_require__(0),
+  setDate: __webpack_require__(275),
+  setDay: __webpack_require__(276),
+  setDayOfYear: __webpack_require__(277),
+  setHours: __webpack_require__(278),
+  setISODay: __webpack_require__(279),
+  setISOWeek: __webpack_require__(280),
+  setISOYear: __webpack_require__(131),
+  setMilliseconds: __webpack_require__(281),
+  setMinutes: __webpack_require__(282),
+  setMonth: __webpack_require__(163),
+  setQuarter: __webpack_require__(283),
+  setSeconds: __webpack_require__(284),
+  setYear: __webpack_require__(285),
+  startOfDay: __webpack_require__(4),
+  startOfHour: __webpack_require__(151),
+  startOfISOWeek: __webpack_require__(3),
+  startOfISOYear: __webpack_require__(9),
+  startOfMinute: __webpack_require__(155),
+  startOfMonth: __webpack_require__(286),
+  startOfQuarter: __webpack_require__(158),
+  startOfSecond: __webpack_require__(160),
+  startOfToday: __webpack_require__(287),
+  startOfTomorrow: __webpack_require__(288),
+  startOfWeek: __webpack_require__(79),
+  startOfYear: __webpack_require__(146),
+  startOfYesterday: __webpack_require__(289),
+  subDays: __webpack_require__(290),
+  subHours: __webpack_require__(291),
+  subISOYears: __webpack_require__(141),
+  subMilliseconds: __webpack_require__(292),
+  subMinutes: __webpack_require__(293),
+  subMonths: __webpack_require__(294),
+  subQuarters: __webpack_require__(295),
+  subSeconds: __webpack_require__(296),
+  subWeeks: __webpack_require__(297),
+  subYears: __webpack_require__(298)
+}
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -596,7 +758,7 @@ module.exports = addDays
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -627,7 +789,7 @@ module.exports = addMilliseconds
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(2)
@@ -665,7 +827,7 @@ module.exports = startOfISOYear
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -722,7 +884,7 @@ module.exports = compareAsc
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -827,7 +989,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -921,7 +1083,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1026,7 +1188,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -1105,7 +1267,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1210,7 +1372,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -1303,7 +1465,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1408,7 +1570,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -1498,7 +1660,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -1706,7 +1868,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -1785,7 +1947,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1890,7 +2052,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -1969,7 +2131,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2160,7 +2322,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -2243,7 +2405,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2348,7 +2510,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -2441,7 +2603,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2546,7 +2708,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -2621,7 +2783,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2726,7 +2888,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -2805,7 +2967,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2947,7 +3109,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -3019,7 +3181,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3124,7 +3286,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -3236,7 +3398,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3341,7 +3503,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -3469,7 +3631,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3653,7 +3815,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -3742,7 +3904,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3847,7 +4009,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -3941,7 +4103,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4046,7 +4208,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -4138,7 +4300,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4243,7 +4405,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -4322,7 +4484,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4427,7 +4589,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -4506,7 +4668,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4611,7 +4773,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -4690,7 +4852,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4795,7 +4957,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -4874,7 +5036,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4979,7 +5141,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -5068,7 +5230,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5173,7 +5335,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -5252,7 +5414,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5357,7 +5519,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -5436,7 +5598,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -5607,7 +5769,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -5683,7 +5845,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5788,7 +5950,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -5867,7 +6029,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5972,7 +6134,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -6052,7 +6214,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 function declension (scheme, count) {
@@ -6292,7 +6454,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -6387,7 +6549,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -6595,7 +6757,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -6674,7 +6836,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -6813,7 +6975,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -6892,7 +7054,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7014,7 +7176,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -7092,7 +7254,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7201,7 +7363,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -7268,7 +7430,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7384,7 +7546,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -7496,7 +7658,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7601,7 +7763,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -7668,7 +7830,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7773,7 +7935,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(1)
@@ -7849,168 +8011,6 @@ function ordinal (number) {
 }
 
 module.exports = buildFormatLocale
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  addDays: __webpack_require__(6),
-  addHours: __webpack_require__(128),
-  addISOYears: __webpack_require__(129),
-  addMilliseconds: __webpack_require__(7),
-  addMinutes: __webpack_require__(131),
-  addMonths: __webpack_require__(81),
-  addQuarters: __webpack_require__(132),
-  addSeconds: __webpack_require__(133),
-  addWeeks: __webpack_require__(118),
-  addYears: __webpack_require__(134),
-  areRangesOverlapping: __webpack_require__(201),
-  closestIndexTo: __webpack_require__(202),
-  closestTo: __webpack_require__(203),
-  compareAsc: __webpack_require__(9),
-  compareDesc: __webpack_require__(119),
-  differenceInCalendarDays: __webpack_require__(80),
-  differenceInCalendarISOWeeks: __webpack_require__(204),
-  differenceInCalendarISOYears: __webpack_require__(135),
-  differenceInCalendarMonths: __webpack_require__(136),
-  differenceInCalendarQuarters: __webpack_require__(205),
-  differenceInCalendarWeeks: __webpack_require__(206),
-  differenceInCalendarYears: __webpack_require__(138),
-  differenceInDays: __webpack_require__(139),
-  differenceInHours: __webpack_require__(207),
-  differenceInISOYears: __webpack_require__(208),
-  differenceInMilliseconds: __webpack_require__(82),
-  differenceInMinutes: __webpack_require__(209),
-  differenceInMonths: __webpack_require__(120),
-  differenceInQuarters: __webpack_require__(210),
-  differenceInSeconds: __webpack_require__(121),
-  differenceInWeeks: __webpack_require__(211),
-  differenceInYears: __webpack_require__(212),
-  distanceInWords: __webpack_require__(141),
-  distanceInWordsStrict: __webpack_require__(213),
-  distanceInWordsToNow: __webpack_require__(214),
-  eachDay: __webpack_require__(215),
-  endOfDay: __webpack_require__(122),
-  endOfHour: __webpack_require__(216),
-  endOfISOWeek: __webpack_require__(217),
-  endOfISOYear: __webpack_require__(218),
-  endOfMinute: __webpack_require__(219),
-  endOfMonth: __webpack_require__(143),
-  endOfQuarter: __webpack_require__(220),
-  endOfSecond: __webpack_require__(221),
-  endOfToday: __webpack_require__(222),
-  endOfTomorrow: __webpack_require__(223),
-  endOfWeek: __webpack_require__(142),
-  endOfYear: __webpack_require__(224),
-  endOfYesterday: __webpack_require__(225),
-  format: __webpack_require__(226),
-  getDate: __webpack_require__(227),
-  getDay: __webpack_require__(228),
-  getDayOfYear: __webpack_require__(144),
-  getDaysInMonth: __webpack_require__(117),
-  getDaysInYear: __webpack_require__(229),
-  getHours: __webpack_require__(230),
-  getISODay: __webpack_require__(148),
-  getISOWeek: __webpack_require__(123),
-  getISOWeeksInYear: __webpack_require__(231),
-  getISOYear: __webpack_require__(2),
-  getMilliseconds: __webpack_require__(232),
-  getMinutes: __webpack_require__(233),
-  getMonth: __webpack_require__(234),
-  getOverlappingDaysInRanges: __webpack_require__(235),
-  getQuarter: __webpack_require__(137),
-  getSeconds: __webpack_require__(236),
-  getTime: __webpack_require__(237),
-  getYear: __webpack_require__(238),
-  isAfter: __webpack_require__(239),
-  isBefore: __webpack_require__(240),
-  isDate: __webpack_require__(116),
-  isEqual: __webpack_require__(241),
-  isFirstDayOfMonth: __webpack_require__(242),
-  isFriday: __webpack_require__(243),
-  isFuture: __webpack_require__(244),
-  isLastDayOfMonth: __webpack_require__(245),
-  isLeapYear: __webpack_require__(147),
-  isMonday: __webpack_require__(246),
-  isPast: __webpack_require__(247),
-  isSameDay: __webpack_require__(248),
-  isSameHour: __webpack_require__(149),
-  isSameISOWeek: __webpack_require__(151),
-  isSameISOYear: __webpack_require__(152),
-  isSameMinute: __webpack_require__(153),
-  isSameMonth: __webpack_require__(155),
-  isSameQuarter: __webpack_require__(156),
-  isSameSecond: __webpack_require__(158),
-  isSameWeek: __webpack_require__(124),
-  isSameYear: __webpack_require__(160),
-  isSaturday: __webpack_require__(249),
-  isSunday: __webpack_require__(250),
-  isThisHour: __webpack_require__(251),
-  isThisISOWeek: __webpack_require__(252),
-  isThisISOYear: __webpack_require__(253),
-  isThisMinute: __webpack_require__(254),
-  isThisMonth: __webpack_require__(255),
-  isThisQuarter: __webpack_require__(256),
-  isThisSecond: __webpack_require__(257),
-  isThisWeek: __webpack_require__(258),
-  isThisYear: __webpack_require__(259),
-  isThursday: __webpack_require__(260),
-  isToday: __webpack_require__(261),
-  isTomorrow: __webpack_require__(262),
-  isTuesday: __webpack_require__(263),
-  isValid: __webpack_require__(146),
-  isWednesday: __webpack_require__(264),
-  isWeekend: __webpack_require__(265),
-  isWithinRange: __webpack_require__(266),
-  isYesterday: __webpack_require__(267),
-  lastDayOfISOWeek: __webpack_require__(268),
-  lastDayOfISOYear: __webpack_require__(269),
-  lastDayOfMonth: __webpack_require__(270),
-  lastDayOfQuarter: __webpack_require__(271),
-  lastDayOfWeek: __webpack_require__(161),
-  lastDayOfYear: __webpack_require__(272),
-  max: __webpack_require__(273),
-  min: __webpack_require__(274),
-  parse: __webpack_require__(0),
-  setDate: __webpack_require__(275),
-  setDay: __webpack_require__(276),
-  setDayOfYear: __webpack_require__(277),
-  setHours: __webpack_require__(278),
-  setISODay: __webpack_require__(279),
-  setISOWeek: __webpack_require__(280),
-  setISOYear: __webpack_require__(130),
-  setMilliseconds: __webpack_require__(281),
-  setMinutes: __webpack_require__(282),
-  setMonth: __webpack_require__(162),
-  setQuarter: __webpack_require__(283),
-  setSeconds: __webpack_require__(284),
-  setYear: __webpack_require__(285),
-  startOfDay: __webpack_require__(4),
-  startOfHour: __webpack_require__(150),
-  startOfISOWeek: __webpack_require__(3),
-  startOfISOYear: __webpack_require__(8),
-  startOfMinute: __webpack_require__(154),
-  startOfMonth: __webpack_require__(286),
-  startOfQuarter: __webpack_require__(157),
-  startOfSecond: __webpack_require__(159),
-  startOfToday: __webpack_require__(287),
-  startOfTomorrow: __webpack_require__(288),
-  startOfWeek: __webpack_require__(79),
-  startOfYear: __webpack_require__(145),
-  startOfYesterday: __webpack_require__(289),
-  subDays: __webpack_require__(290),
-  subHours: __webpack_require__(291),
-  subISOYears: __webpack_require__(140),
-  subMilliseconds: __webpack_require__(292),
-  subMinutes: __webpack_require__(293),
-  subMonths: __webpack_require__(294),
-  subQuarters: __webpack_require__(295),
-  subSeconds: __webpack_require__(296),
-  subWeeks: __webpack_require__(297),
-  subYears: __webpack_require__(298)
-}
 
 
 /***/ }),
@@ -8109,7 +8109,7 @@ module.exports = differenceInCalendarDays
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(117)
+var getDaysInMonth = __webpack_require__(120)
 
 /**
  * @category Month Helpers
@@ -8183,8 +8183,514 @@ module.exports = differenceInMilliseconds
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(12)
-var buildFormatLocale = __webpack_require__(13)
+var map = {
+	"./_lib/build_formatting_tokens_reg_exp": 1,
+	"./_lib/build_formatting_tokens_reg_exp/": 1,
+	"./_lib/build_formatting_tokens_reg_exp/index": 1,
+	"./_lib/build_formatting_tokens_reg_exp/index.js": 1,
+	"./_lib/package": 164,
+	"./_lib/package.json": 164,
+	"./ar": 84,
+	"./ar/": 84,
+	"./ar/build_distance_in_words_locale": 13,
+	"./ar/build_distance_in_words_locale/": 13,
+	"./ar/build_distance_in_words_locale/index": 13,
+	"./ar/build_distance_in_words_locale/index.js": 13,
+	"./ar/build_format_locale": 14,
+	"./ar/build_format_locale/": 14,
+	"./ar/build_format_locale/index": 14,
+	"./ar/build_format_locale/index.js": 14,
+	"./ar/index": 84,
+	"./ar/index.js": 84,
+	"./ar/package": 165,
+	"./ar/package.json": 165,
+	"./bg": 85,
+	"./bg/": 85,
+	"./bg/build_distance_in_words_locale": 15,
+	"./bg/build_distance_in_words_locale/": 15,
+	"./bg/build_distance_in_words_locale/index": 15,
+	"./bg/build_distance_in_words_locale/index.js": 15,
+	"./bg/build_format_locale": 16,
+	"./bg/build_format_locale/": 16,
+	"./bg/build_format_locale/index": 16,
+	"./bg/build_format_locale/index.js": 16,
+	"./bg/index": 85,
+	"./bg/index.js": 85,
+	"./bg/package": 166,
+	"./bg/package.json": 166,
+	"./ca": 86,
+	"./ca/": 86,
+	"./ca/build_distance_in_words_locale": 17,
+	"./ca/build_distance_in_words_locale/": 17,
+	"./ca/build_distance_in_words_locale/index": 17,
+	"./ca/build_distance_in_words_locale/index.js": 17,
+	"./ca/build_format_locale": 18,
+	"./ca/build_format_locale/": 18,
+	"./ca/build_format_locale/index": 18,
+	"./ca/build_format_locale/index.js": 18,
+	"./ca/index": 86,
+	"./ca/index.js": 86,
+	"./ca/package": 167,
+	"./ca/package.json": 167,
+	"./cs": 87,
+	"./cs/": 87,
+	"./cs/build_distance_in_words_locale": 19,
+	"./cs/build_distance_in_words_locale/": 19,
+	"./cs/build_distance_in_words_locale/index": 19,
+	"./cs/build_distance_in_words_locale/index.js": 19,
+	"./cs/build_format_locale": 20,
+	"./cs/build_format_locale/": 20,
+	"./cs/build_format_locale/index": 20,
+	"./cs/build_format_locale/index.js": 20,
+	"./cs/index": 87,
+	"./cs/index.js": 87,
+	"./cs/package": 168,
+	"./cs/package.json": 168,
+	"./da": 88,
+	"./da/": 88,
+	"./da/build_distance_in_words_locale": 21,
+	"./da/build_distance_in_words_locale/": 21,
+	"./da/build_distance_in_words_locale/index": 21,
+	"./da/build_distance_in_words_locale/index.js": 21,
+	"./da/build_format_locale": 22,
+	"./da/build_format_locale/": 22,
+	"./da/build_format_locale/index": 22,
+	"./da/build_format_locale/index.js": 22,
+	"./da/index": 88,
+	"./da/index.js": 88,
+	"./da/package": 169,
+	"./da/package.json": 169,
+	"./de": 89,
+	"./de/": 89,
+	"./de/build_distance_in_words_locale": 23,
+	"./de/build_distance_in_words_locale/": 23,
+	"./de/build_distance_in_words_locale/index": 23,
+	"./de/build_distance_in_words_locale/index.js": 23,
+	"./de/build_format_locale": 24,
+	"./de/build_format_locale/": 24,
+	"./de/build_format_locale/index": 24,
+	"./de/build_format_locale/index.js": 24,
+	"./de/index": 89,
+	"./de/index.js": 89,
+	"./de/package": 170,
+	"./de/package.json": 170,
+	"./el": 90,
+	"./el/": 90,
+	"./el/build_distance_in_words_locale": 25,
+	"./el/build_distance_in_words_locale/": 25,
+	"./el/build_distance_in_words_locale/index": 25,
+	"./el/build_distance_in_words_locale/index.js": 25,
+	"./el/build_format_locale": 26,
+	"./el/build_format_locale/": 26,
+	"./el/build_format_locale/index": 26,
+	"./el/build_format_locale/index.js": 26,
+	"./el/index": 90,
+	"./el/index.js": 90,
+	"./el/package": 171,
+	"./el/package.json": 171,
+	"./en": 5,
+	"./en/": 5,
+	"./en/build_distance_in_words_locale": 11,
+	"./en/build_distance_in_words_locale/": 11,
+	"./en/build_distance_in_words_locale/index": 11,
+	"./en/build_distance_in_words_locale/index.js": 11,
+	"./en/build_format_locale": 12,
+	"./en/build_format_locale/": 12,
+	"./en/build_format_locale/index": 12,
+	"./en/build_format_locale/index.js": 12,
+	"./en/index": 5,
+	"./en/index.js": 5,
+	"./en/package": 172,
+	"./en/package.json": 172,
+	"./eo": 91,
+	"./eo/": 91,
+	"./eo/build_distance_in_words_locale": 27,
+	"./eo/build_distance_in_words_locale/": 27,
+	"./eo/build_distance_in_words_locale/index": 27,
+	"./eo/build_distance_in_words_locale/index.js": 27,
+	"./eo/build_format_locale": 28,
+	"./eo/build_format_locale/": 28,
+	"./eo/build_format_locale/index": 28,
+	"./eo/build_format_locale/index.js": 28,
+	"./eo/index": 91,
+	"./eo/index.js": 91,
+	"./eo/package": 173,
+	"./eo/package.json": 173,
+	"./es": 92,
+	"./es/": 92,
+	"./es/build_distance_in_words_locale": 29,
+	"./es/build_distance_in_words_locale/": 29,
+	"./es/build_distance_in_words_locale/index": 29,
+	"./es/build_distance_in_words_locale/index.js": 29,
+	"./es/build_format_locale": 30,
+	"./es/build_format_locale/": 30,
+	"./es/build_format_locale/index": 30,
+	"./es/build_format_locale/index.js": 30,
+	"./es/index": 92,
+	"./es/index.js": 92,
+	"./es/package": 174,
+	"./es/package.json": 174,
+	"./fi": 93,
+	"./fi/": 93,
+	"./fi/build_distance_in_words_locale": 31,
+	"./fi/build_distance_in_words_locale/": 31,
+	"./fi/build_distance_in_words_locale/index": 31,
+	"./fi/build_distance_in_words_locale/index.js": 31,
+	"./fi/build_format_locale": 32,
+	"./fi/build_format_locale/": 32,
+	"./fi/build_format_locale/index": 32,
+	"./fi/build_format_locale/index.js": 32,
+	"./fi/index": 93,
+	"./fi/index.js": 93,
+	"./fi/package": 175,
+	"./fi/package.json": 175,
+	"./fil": 94,
+	"./fil/": 94,
+	"./fil/build_distance_in_words_locale": 33,
+	"./fil/build_distance_in_words_locale/": 33,
+	"./fil/build_distance_in_words_locale/index": 33,
+	"./fil/build_distance_in_words_locale/index.js": 33,
+	"./fil/build_format_locale": 34,
+	"./fil/build_format_locale/": 34,
+	"./fil/build_format_locale/index": 34,
+	"./fil/build_format_locale/index.js": 34,
+	"./fil/index": 94,
+	"./fil/index.js": 94,
+	"./fil/package": 176,
+	"./fil/package.json": 176,
+	"./fr": 95,
+	"./fr/": 95,
+	"./fr/build_distance_in_words_locale": 35,
+	"./fr/build_distance_in_words_locale/": 35,
+	"./fr/build_distance_in_words_locale/index": 35,
+	"./fr/build_distance_in_words_locale/index.js": 35,
+	"./fr/build_format_locale": 36,
+	"./fr/build_format_locale/": 36,
+	"./fr/build_format_locale/index": 36,
+	"./fr/build_format_locale/index.js": 36,
+	"./fr/index": 95,
+	"./fr/index.js": 95,
+	"./fr/package": 177,
+	"./fr/package.json": 177,
+	"./hr": 96,
+	"./hr/": 96,
+	"./hr/build_distance_in_words_locale": 37,
+	"./hr/build_distance_in_words_locale/": 37,
+	"./hr/build_distance_in_words_locale/index": 37,
+	"./hr/build_distance_in_words_locale/index.js": 37,
+	"./hr/build_format_locale": 38,
+	"./hr/build_format_locale/": 38,
+	"./hr/build_format_locale/index": 38,
+	"./hr/build_format_locale/index.js": 38,
+	"./hr/index": 96,
+	"./hr/index.js": 96,
+	"./hr/package": 178,
+	"./hr/package.json": 178,
+	"./hu": 97,
+	"./hu/": 97,
+	"./hu/build_distance_in_words_locale": 39,
+	"./hu/build_distance_in_words_locale/": 39,
+	"./hu/build_distance_in_words_locale/index": 39,
+	"./hu/build_distance_in_words_locale/index.js": 39,
+	"./hu/build_format_locale": 40,
+	"./hu/build_format_locale/": 40,
+	"./hu/build_format_locale/index": 40,
+	"./hu/build_format_locale/index.js": 40,
+	"./hu/index": 97,
+	"./hu/index.js": 97,
+	"./hu/package": 179,
+	"./hu/package.json": 179,
+	"./id": 98,
+	"./id/": 98,
+	"./id/build_distance_in_words_locale": 41,
+	"./id/build_distance_in_words_locale/": 41,
+	"./id/build_distance_in_words_locale/index": 41,
+	"./id/build_distance_in_words_locale/index.js": 41,
+	"./id/build_format_locale": 42,
+	"./id/build_format_locale/": 42,
+	"./id/build_format_locale/index": 42,
+	"./id/build_format_locale/index.js": 42,
+	"./id/index": 98,
+	"./id/index.js": 98,
+	"./id/package": 180,
+	"./id/package.json": 180,
+	"./is": 99,
+	"./is/": 99,
+	"./is/build_distance_in_words_locale": 43,
+	"./is/build_distance_in_words_locale/": 43,
+	"./is/build_distance_in_words_locale/index": 43,
+	"./is/build_distance_in_words_locale/index.js": 43,
+	"./is/build_format_locale": 44,
+	"./is/build_format_locale/": 44,
+	"./is/build_format_locale/index": 44,
+	"./is/build_format_locale/index.js": 44,
+	"./is/index": 99,
+	"./is/index.js": 99,
+	"./is/package": 181,
+	"./is/package.json": 181,
+	"./it": 100,
+	"./it/": 100,
+	"./it/build_distance_in_words_locale": 45,
+	"./it/build_distance_in_words_locale/": 45,
+	"./it/build_distance_in_words_locale/index": 45,
+	"./it/build_distance_in_words_locale/index.js": 45,
+	"./it/build_format_locale": 46,
+	"./it/build_format_locale/": 46,
+	"./it/build_format_locale/index": 46,
+	"./it/build_format_locale/index.js": 46,
+	"./it/index": 100,
+	"./it/index.js": 100,
+	"./it/package": 182,
+	"./it/package.json": 182,
+	"./ja": 101,
+	"./ja/": 101,
+	"./ja/build_distance_in_words_locale": 47,
+	"./ja/build_distance_in_words_locale/": 47,
+	"./ja/build_distance_in_words_locale/index": 47,
+	"./ja/build_distance_in_words_locale/index.js": 47,
+	"./ja/build_format_locale": 48,
+	"./ja/build_format_locale/": 48,
+	"./ja/build_format_locale/index": 48,
+	"./ja/build_format_locale/index.js": 48,
+	"./ja/index": 101,
+	"./ja/index.js": 101,
+	"./ja/package": 183,
+	"./ja/package.json": 183,
+	"./ko": 102,
+	"./ko/": 102,
+	"./ko/build_distance_in_words_locale": 49,
+	"./ko/build_distance_in_words_locale/": 49,
+	"./ko/build_distance_in_words_locale/index": 49,
+	"./ko/build_distance_in_words_locale/index.js": 49,
+	"./ko/build_format_locale": 50,
+	"./ko/build_format_locale/": 50,
+	"./ko/build_format_locale/index": 50,
+	"./ko/build_format_locale/index.js": 50,
+	"./ko/index": 102,
+	"./ko/index.js": 102,
+	"./ko/package": 184,
+	"./ko/package.json": 184,
+	"./mk": 103,
+	"./mk/": 103,
+	"./mk/build_distance_in_words_locale": 51,
+	"./mk/build_distance_in_words_locale/": 51,
+	"./mk/build_distance_in_words_locale/index": 51,
+	"./mk/build_distance_in_words_locale/index.js": 51,
+	"./mk/build_format_locale": 52,
+	"./mk/build_format_locale/": 52,
+	"./mk/build_format_locale/index": 52,
+	"./mk/build_format_locale/index.js": 52,
+	"./mk/index": 103,
+	"./mk/index.js": 103,
+	"./mk/package": 185,
+	"./mk/package.json": 185,
+	"./nb": 104,
+	"./nb/": 104,
+	"./nb/build_distance_in_words_locale": 53,
+	"./nb/build_distance_in_words_locale/": 53,
+	"./nb/build_distance_in_words_locale/index": 53,
+	"./nb/build_distance_in_words_locale/index.js": 53,
+	"./nb/build_format_locale": 54,
+	"./nb/build_format_locale/": 54,
+	"./nb/build_format_locale/index": 54,
+	"./nb/build_format_locale/index.js": 54,
+	"./nb/index": 104,
+	"./nb/index.js": 104,
+	"./nb/package": 186,
+	"./nb/package.json": 186,
+	"./nl": 105,
+	"./nl/": 105,
+	"./nl/build_distance_in_words_locale": 55,
+	"./nl/build_distance_in_words_locale/": 55,
+	"./nl/build_distance_in_words_locale/index": 55,
+	"./nl/build_distance_in_words_locale/index.js": 55,
+	"./nl/build_format_locale": 56,
+	"./nl/build_format_locale/": 56,
+	"./nl/build_format_locale/index": 56,
+	"./nl/build_format_locale/index.js": 56,
+	"./nl/index": 105,
+	"./nl/index.js": 105,
+	"./nl/package": 187,
+	"./nl/package.json": 187,
+	"./package": 188,
+	"./package.json": 188,
+	"./pl": 106,
+	"./pl/": 106,
+	"./pl/build_distance_in_words_locale": 57,
+	"./pl/build_distance_in_words_locale/": 57,
+	"./pl/build_distance_in_words_locale/index": 57,
+	"./pl/build_distance_in_words_locale/index.js": 57,
+	"./pl/build_format_locale": 58,
+	"./pl/build_format_locale/": 58,
+	"./pl/build_format_locale/index": 58,
+	"./pl/build_format_locale/index.js": 58,
+	"./pl/index": 106,
+	"./pl/index.js": 106,
+	"./pl/package": 189,
+	"./pl/package.json": 189,
+	"./pt": 107,
+	"./pt/": 107,
+	"./pt/build_distance_in_words_locale": 59,
+	"./pt/build_distance_in_words_locale/": 59,
+	"./pt/build_distance_in_words_locale/index": 59,
+	"./pt/build_distance_in_words_locale/index.js": 59,
+	"./pt/build_format_locale": 60,
+	"./pt/build_format_locale/": 60,
+	"./pt/build_format_locale/index": 60,
+	"./pt/build_format_locale/index.js": 60,
+	"./pt/index": 107,
+	"./pt/index.js": 107,
+	"./pt/package": 190,
+	"./pt/package.json": 190,
+	"./ro": 108,
+	"./ro/": 108,
+	"./ro/build_distance_in_words_locale": 61,
+	"./ro/build_distance_in_words_locale/": 61,
+	"./ro/build_distance_in_words_locale/index": 61,
+	"./ro/build_distance_in_words_locale/index.js": 61,
+	"./ro/build_format_locale": 62,
+	"./ro/build_format_locale/": 62,
+	"./ro/build_format_locale/index": 62,
+	"./ro/build_format_locale/index.js": 62,
+	"./ro/index": 108,
+	"./ro/index.js": 108,
+	"./ro/package": 191,
+	"./ro/package.json": 191,
+	"./ru": 109,
+	"./ru/": 109,
+	"./ru/build_distance_in_words_locale": 63,
+	"./ru/build_distance_in_words_locale/": 63,
+	"./ru/build_distance_in_words_locale/index": 63,
+	"./ru/build_distance_in_words_locale/index.js": 63,
+	"./ru/build_format_locale": 64,
+	"./ru/build_format_locale/": 64,
+	"./ru/build_format_locale/index": 64,
+	"./ru/build_format_locale/index.js": 64,
+	"./ru/index": 109,
+	"./ru/index.js": 109,
+	"./ru/package": 192,
+	"./ru/package.json": 192,
+	"./sk": 110,
+	"./sk/": 110,
+	"./sk/build_distance_in_words_locale": 65,
+	"./sk/build_distance_in_words_locale/": 65,
+	"./sk/build_distance_in_words_locale/index": 65,
+	"./sk/build_distance_in_words_locale/index.js": 65,
+	"./sk/build_format_locale": 66,
+	"./sk/build_format_locale/": 66,
+	"./sk/build_format_locale/index": 66,
+	"./sk/build_format_locale/index.js": 66,
+	"./sk/index": 110,
+	"./sk/index.js": 110,
+	"./sk/package": 193,
+	"./sk/package.json": 193,
+	"./sl": 111,
+	"./sl/": 111,
+	"./sl/build_distance_in_words_locale": 67,
+	"./sl/build_distance_in_words_locale/": 67,
+	"./sl/build_distance_in_words_locale/index": 67,
+	"./sl/build_distance_in_words_locale/index.js": 67,
+	"./sl/build_format_locale": 68,
+	"./sl/build_format_locale/": 68,
+	"./sl/build_format_locale/index": 68,
+	"./sl/build_format_locale/index.js": 68,
+	"./sl/index": 111,
+	"./sl/index.js": 111,
+	"./sl/package": 194,
+	"./sl/package.json": 194,
+	"./sv": 112,
+	"./sv/": 112,
+	"./sv/build_distance_in_words_locale": 69,
+	"./sv/build_distance_in_words_locale/": 69,
+	"./sv/build_distance_in_words_locale/index": 69,
+	"./sv/build_distance_in_words_locale/index.js": 69,
+	"./sv/build_format_locale": 70,
+	"./sv/build_format_locale/": 70,
+	"./sv/build_format_locale/index": 70,
+	"./sv/build_format_locale/index.js": 70,
+	"./sv/index": 112,
+	"./sv/index.js": 112,
+	"./sv/package": 195,
+	"./sv/package.json": 195,
+	"./th": 113,
+	"./th/": 113,
+	"./th/build_distance_in_words_locale": 71,
+	"./th/build_distance_in_words_locale/": 71,
+	"./th/build_distance_in_words_locale/index": 71,
+	"./th/build_distance_in_words_locale/index.js": 71,
+	"./th/build_format_locale": 72,
+	"./th/build_format_locale/": 72,
+	"./th/build_format_locale/index": 72,
+	"./th/build_format_locale/index.js": 72,
+	"./th/index": 113,
+	"./th/index.js": 113,
+	"./th/package": 196,
+	"./th/package.json": 196,
+	"./tr": 114,
+	"./tr/": 114,
+	"./tr/build_distance_in_words_locale": 73,
+	"./tr/build_distance_in_words_locale/": 73,
+	"./tr/build_distance_in_words_locale/index": 73,
+	"./tr/build_distance_in_words_locale/index.js": 73,
+	"./tr/build_format_locale": 74,
+	"./tr/build_format_locale/": 74,
+	"./tr/build_format_locale/index": 74,
+	"./tr/build_format_locale/index.js": 74,
+	"./tr/index": 114,
+	"./tr/index.js": 114,
+	"./tr/package": 197,
+	"./tr/package.json": 197,
+	"./zh_cn": 115,
+	"./zh_cn/": 115,
+	"./zh_cn/build_distance_in_words_locale": 75,
+	"./zh_cn/build_distance_in_words_locale/": 75,
+	"./zh_cn/build_distance_in_words_locale/index": 75,
+	"./zh_cn/build_distance_in_words_locale/index.js": 75,
+	"./zh_cn/build_format_locale": 76,
+	"./zh_cn/build_format_locale/": 76,
+	"./zh_cn/build_format_locale/index": 76,
+	"./zh_cn/build_format_locale/index.js": 76,
+	"./zh_cn/index": 115,
+	"./zh_cn/index.js": 115,
+	"./zh_cn/package": 198,
+	"./zh_cn/package.json": 198,
+	"./zh_tw": 116,
+	"./zh_tw/": 116,
+	"./zh_tw/build_distance_in_words_locale": 77,
+	"./zh_tw/build_distance_in_words_locale/": 77,
+	"./zh_tw/build_distance_in_words_locale/index": 77,
+	"./zh_tw/build_distance_in_words_locale/index.js": 77,
+	"./zh_tw/build_format_locale": 78,
+	"./zh_tw/build_format_locale/": 78,
+	"./zh_tw/build_format_locale/index": 78,
+	"./zh_tw/build_format_locale/index.js": 78,
+	"./zh_tw/index": 116,
+	"./zh_tw/index.js": 116,
+	"./zh_tw/package": 199,
+	"./zh_tw/package.json": 199
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 83;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var buildDistanceInWordsLocale = __webpack_require__(13)
+var buildFormatLocale = __webpack_require__(14)
 
 /**
  * @category Locales
@@ -8198,11 +8704,11 @@ module.exports = {
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(14)
-var buildFormatLocale = __webpack_require__(15)
+var buildDistanceInWordsLocale = __webpack_require__(15)
+var buildFormatLocale = __webpack_require__(16)
 
 /**
  * @category Locales
@@ -8216,11 +8722,11 @@ module.exports = {
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(16)
-var buildFormatLocale = __webpack_require__(17)
+var buildDistanceInWordsLocale = __webpack_require__(17)
+var buildFormatLocale = __webpack_require__(18)
 
 /**
  * @category Locales
@@ -8234,11 +8740,11 @@ module.exports = {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(18)
-var buildFormatLocale = __webpack_require__(19)
+var buildDistanceInWordsLocale = __webpack_require__(19)
+var buildFormatLocale = __webpack_require__(20)
 
 /**
  * @category Locales
@@ -8252,11 +8758,11 @@ module.exports = {
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(20)
-var buildFormatLocale = __webpack_require__(21)
+var buildDistanceInWordsLocale = __webpack_require__(21)
+var buildFormatLocale = __webpack_require__(22)
 
 /**
  * @category Locales
@@ -8271,11 +8777,11 @@ module.exports = {
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(22)
-var buildFormatLocale = __webpack_require__(23)
+var buildDistanceInWordsLocale = __webpack_require__(23)
+var buildFormatLocale = __webpack_require__(24)
 
 /**
  * @category Locales
@@ -8290,11 +8796,11 @@ module.exports = {
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(24)
-var buildFormatLocale = __webpack_require__(25)
+var buildDistanceInWordsLocale = __webpack_require__(25)
+var buildFormatLocale = __webpack_require__(26)
 
 /**
  * @category Locales
@@ -8308,11 +8814,11 @@ module.exports = {
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(26)
-var buildFormatLocale = __webpack_require__(27)
+var buildDistanceInWordsLocale = __webpack_require__(27)
+var buildFormatLocale = __webpack_require__(28)
 
 /**
  * @category Locales
@@ -8325,11 +8831,11 @@ module.exports = {
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(28)
-var buildFormatLocale = __webpack_require__(29)
+var buildDistanceInWordsLocale = __webpack_require__(29)
+var buildFormatLocale = __webpack_require__(30)
 
 /**
  * @category Locales
@@ -8345,11 +8851,11 @@ module.exports = {
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(30)
-var buildFormatLocale = __webpack_require__(31)
+var buildDistanceInWordsLocale = __webpack_require__(31)
+var buildFormatLocale = __webpack_require__(32)
 
 /**
  * @category Locales
@@ -8363,11 +8869,11 @@ module.exports = {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(32)
-var buildFormatLocale = __webpack_require__(33)
+var buildDistanceInWordsLocale = __webpack_require__(33)
+var buildFormatLocale = __webpack_require__(34)
 
 /**
  * @category Locales
@@ -8381,11 +8887,11 @@ module.exports = {
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(34)
-var buildFormatLocale = __webpack_require__(35)
+var buildDistanceInWordsLocale = __webpack_require__(35)
+var buildFormatLocale = __webpack_require__(36)
 
 /**
  * @category Locales
@@ -8400,11 +8906,11 @@ module.exports = {
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(36)
-var buildFormatLocale = __webpack_require__(37)
+var buildDistanceInWordsLocale = __webpack_require__(37)
+var buildFormatLocale = __webpack_require__(38)
 
 /**
  * @category Locales
@@ -8418,11 +8924,11 @@ module.exports = {
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(38)
-var buildFormatLocale = __webpack_require__(39)
+var buildDistanceInWordsLocale = __webpack_require__(39)
+var buildFormatLocale = __webpack_require__(40)
 
 /**
  * @category Locales
@@ -8435,11 +8941,11 @@ module.exports = {
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(40)
-var buildFormatLocale = __webpack_require__(41)
+var buildDistanceInWordsLocale = __webpack_require__(41)
+var buildFormatLocale = __webpack_require__(42)
 
 /**
  * @category Locales
@@ -8454,11 +8960,11 @@ module.exports = {
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(42)
-var buildFormatLocale = __webpack_require__(43)
+var buildDistanceInWordsLocale = __webpack_require__(43)
+var buildFormatLocale = __webpack_require__(44)
 
 /**
  * @category Locales
@@ -8472,11 +8978,11 @@ module.exports = {
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(44)
-var buildFormatLocale = __webpack_require__(45)
+var buildDistanceInWordsLocale = __webpack_require__(45)
+var buildFormatLocale = __webpack_require__(46)
 
 /**
  * @category Locales
@@ -8490,11 +8996,11 @@ module.exports = {
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(46)
-var buildFormatLocale = __webpack_require__(47)
+var buildDistanceInWordsLocale = __webpack_require__(47)
+var buildFormatLocale = __webpack_require__(48)
 
 /**
  * @category Locales
@@ -8509,11 +9015,11 @@ module.exports = {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(48)
-var buildFormatLocale = __webpack_require__(49)
+var buildDistanceInWordsLocale = __webpack_require__(49)
+var buildFormatLocale = __webpack_require__(50)
 
 /**
  * @category Locales
@@ -8527,11 +9033,11 @@ module.exports = {
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(50)
-var buildFormatLocale = __webpack_require__(51)
+var buildDistanceInWordsLocale = __webpack_require__(51)
+var buildFormatLocale = __webpack_require__(52)
 
 /**
  * @category Locales
@@ -8545,11 +9051,11 @@ module.exports = {
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(52)
-var buildFormatLocale = __webpack_require__(53)
+var buildDistanceInWordsLocale = __webpack_require__(53)
+var buildFormatLocale = __webpack_require__(54)
 
 /**
  * @category Locales
@@ -8563,11 +9069,11 @@ module.exports = {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(54)
-var buildFormatLocale = __webpack_require__(55)
+var buildDistanceInWordsLocale = __webpack_require__(55)
+var buildFormatLocale = __webpack_require__(56)
 
 /**
  * @category Locales
@@ -8582,11 +9088,11 @@ module.exports = {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(56)
-var buildFormatLocale = __webpack_require__(57)
+var buildDistanceInWordsLocale = __webpack_require__(57)
+var buildFormatLocale = __webpack_require__(58)
 
 /**
  * @category Locales
@@ -8601,11 +9107,11 @@ module.exports = {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(58)
-var buildFormatLocale = __webpack_require__(59)
+var buildDistanceInWordsLocale = __webpack_require__(59)
+var buildFormatLocale = __webpack_require__(60)
 
 /**
  * @category Locales
@@ -8619,11 +9125,11 @@ module.exports = {
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(60)
-var buildFormatLocale = __webpack_require__(61)
+var buildDistanceInWordsLocale = __webpack_require__(61)
+var buildFormatLocale = __webpack_require__(62)
 
 /**
  * @category Locales
@@ -8637,11 +9143,11 @@ module.exports = {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(62)
-var buildFormatLocale = __webpack_require__(63)
+var buildDistanceInWordsLocale = __webpack_require__(63)
+var buildFormatLocale = __webpack_require__(64)
 
 /**
  * @category Locales
@@ -8654,11 +9160,11 @@ module.exports = {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(64)
-var buildFormatLocale = __webpack_require__(65)
+var buildDistanceInWordsLocale = __webpack_require__(65)
+var buildFormatLocale = __webpack_require__(66)
 
 /**
  * @category Locales
@@ -8672,11 +9178,11 @@ module.exports = {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(66)
-var buildFormatLocale = __webpack_require__(67)
+var buildDistanceInWordsLocale = __webpack_require__(67)
+var buildFormatLocale = __webpack_require__(68)
 
 /**
  * @category Locales
@@ -8690,11 +9196,11 @@ module.exports = {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(68)
-var buildFormatLocale = __webpack_require__(69)
+var buildDistanceInWordsLocale = __webpack_require__(69)
+var buildFormatLocale = __webpack_require__(70)
 
 /**
  * @category Locales
@@ -8708,11 +9214,11 @@ module.exports = {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(70)
-var buildFormatLocale = __webpack_require__(71)
+var buildDistanceInWordsLocale = __webpack_require__(71)
+var buildFormatLocale = __webpack_require__(72)
 
 /**
  * @category Locales
@@ -8726,11 +9232,11 @@ module.exports = {
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(72)
-var buildFormatLocale = __webpack_require__(73)
+var buildDistanceInWordsLocale = __webpack_require__(73)
+var buildFormatLocale = __webpack_require__(74)
 
 /**
  * @category Locales
@@ -8744,11 +9250,11 @@ module.exports = {
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(74)
-var buildFormatLocale = __webpack_require__(75)
+var buildDistanceInWordsLocale = __webpack_require__(75)
+var buildFormatLocale = __webpack_require__(76)
 
 /**
  * @category Locales
@@ -8763,11 +9269,11 @@ module.exports = {
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(76)
-var buildFormatLocale = __webpack_require__(77)
+var buildDistanceInWordsLocale = __webpack_require__(77)
+var buildFormatLocale = __webpack_require__(78)
 
 /**
  * @category Locales
@@ -8781,7 +9287,142 @@ module.exports = {
 
 
 /***/ }),
-/* 116 */
+/* 117 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return uuid; });
+/* unused harmony export deepMerge */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return detectSupportsPassive; });
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var uuid = function uuid() {
+	var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	return prefix + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+		return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+	});
+};
+var deepMerge = function deepMerge() {
+	for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
+		sources[_key] = arguments[_key];
+	}
+
+	var acc = {};
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = sources[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var source = _step.value;
+
+			if (source instanceof Array) {
+				if (!(acc instanceof Array)) {
+					acc = [];
+				}
+				acc = [].concat(_toConsumableArray(acc), _toConsumableArray(source));
+			} else if (source instanceof Object) {
+				var _iteratorNormalCompletion2 = true;
+				var _didIteratorError2 = false;
+				var _iteratorError2 = undefined;
+
+				try {
+					for (var _iterator2 = Object.entries(source)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+						var _ref = _step2.value;
+
+						var _ref2 = _slicedToArray(_ref, 2);
+
+						var key = _ref2[0];
+						var value = _ref2[1];
+
+						if (value instanceof Object && key in acc) {
+							value = deepMerge(acc[key], value);
+						}
+						acc = _extends({}, acc, _defineProperty({}, key, value));
+					}
+				} catch (err) {
+					_didIteratorError2 = true;
+					_iteratorError2 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion2 && _iterator2.return) {
+							_iterator2.return();
+						}
+					} finally {
+						if (_didIteratorError2) {
+							throw _iteratorError2;
+						}
+					}
+				}
+			}
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+
+	return acc;
+};
+
+var detectSupportsPassive = function detectSupportsPassive() {
+	var supportsPassive = false;
+
+	try {
+		var opts = Object.defineProperty({}, 'passive', {
+			get: function get() {
+				supportsPassive = true;
+			}
+		});
+
+		window.addEventListener('testPassive', null, opts);
+		window.removeEventListener('testPassive', null, opts);
+	} catch (e) {}
+
+	return supportsPassive;
+};
+
+/***/ }),
+/* 118 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFunction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isObject; });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var isFunction = function isFunction(unknown) {
+  return typeof unknown === 'function';
+};
+var isString = function isString(unknown) {
+  return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
+};
+var isDate = function isDate(unknown) {
+  return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
+};
+var isObject = function isObject(unknown) {
+  return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
+};
+
+/***/ }),
+/* 119 */
 /***/ (function(module, exports) {
 
 /**
@@ -8807,7 +9448,7 @@ module.exports = isDate
 
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8841,10 +9482,10 @@ module.exports = getDaysInMonth
 
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Week Helpers
@@ -8872,7 +9513,7 @@ module.exports = addWeeks
 
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8929,12 +9570,12 @@ module.exports = compareDesc
 
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarMonths = __webpack_require__(136)
-var compareAsc = __webpack_require__(9)
+var differenceInCalendarMonths = __webpack_require__(137)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Month Helpers
@@ -8973,7 +9614,7 @@ module.exports = differenceInMonths
 
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var differenceInMilliseconds = __webpack_require__(82)
@@ -9007,7 +9648,7 @@ module.exports = differenceInSeconds
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9038,12 +9679,12 @@ module.exports = endOfDay
 
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
 var startOfISOWeek = __webpack_require__(3)
-var startOfISOYear = __webpack_require__(8)
+var startOfISOYear = __webpack_require__(9)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -9078,7 +9719,7 @@ module.exports = getISOWeek
 
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfWeek = __webpack_require__(79)
@@ -9125,574 +9766,200 @@ module.exports = isSameWeek
 
 
 /***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./_lib/build_formatting_tokens_reg_exp": 1,
-	"./_lib/build_formatting_tokens_reg_exp/": 1,
-	"./_lib/build_formatting_tokens_reg_exp/index": 1,
-	"./_lib/build_formatting_tokens_reg_exp/index.js": 1,
-	"./_lib/package": 164,
-	"./_lib/package.json": 164,
-	"./ar": 83,
-	"./ar/": 83,
-	"./ar/build_distance_in_words_locale": 12,
-	"./ar/build_distance_in_words_locale/": 12,
-	"./ar/build_distance_in_words_locale/index": 12,
-	"./ar/build_distance_in_words_locale/index.js": 12,
-	"./ar/build_format_locale": 13,
-	"./ar/build_format_locale/": 13,
-	"./ar/build_format_locale/index": 13,
-	"./ar/build_format_locale/index.js": 13,
-	"./ar/index": 83,
-	"./ar/index.js": 83,
-	"./ar/package": 165,
-	"./ar/package.json": 165,
-	"./bg": 84,
-	"./bg/": 84,
-	"./bg/build_distance_in_words_locale": 14,
-	"./bg/build_distance_in_words_locale/": 14,
-	"./bg/build_distance_in_words_locale/index": 14,
-	"./bg/build_distance_in_words_locale/index.js": 14,
-	"./bg/build_format_locale": 15,
-	"./bg/build_format_locale/": 15,
-	"./bg/build_format_locale/index": 15,
-	"./bg/build_format_locale/index.js": 15,
-	"./bg/index": 84,
-	"./bg/index.js": 84,
-	"./bg/package": 166,
-	"./bg/package.json": 166,
-	"./ca": 85,
-	"./ca/": 85,
-	"./ca/build_distance_in_words_locale": 16,
-	"./ca/build_distance_in_words_locale/": 16,
-	"./ca/build_distance_in_words_locale/index": 16,
-	"./ca/build_distance_in_words_locale/index.js": 16,
-	"./ca/build_format_locale": 17,
-	"./ca/build_format_locale/": 17,
-	"./ca/build_format_locale/index": 17,
-	"./ca/build_format_locale/index.js": 17,
-	"./ca/index": 85,
-	"./ca/index.js": 85,
-	"./ca/package": 167,
-	"./ca/package.json": 167,
-	"./cs": 86,
-	"./cs/": 86,
-	"./cs/build_distance_in_words_locale": 18,
-	"./cs/build_distance_in_words_locale/": 18,
-	"./cs/build_distance_in_words_locale/index": 18,
-	"./cs/build_distance_in_words_locale/index.js": 18,
-	"./cs/build_format_locale": 19,
-	"./cs/build_format_locale/": 19,
-	"./cs/build_format_locale/index": 19,
-	"./cs/build_format_locale/index.js": 19,
-	"./cs/index": 86,
-	"./cs/index.js": 86,
-	"./cs/package": 168,
-	"./cs/package.json": 168,
-	"./da": 87,
-	"./da/": 87,
-	"./da/build_distance_in_words_locale": 20,
-	"./da/build_distance_in_words_locale/": 20,
-	"./da/build_distance_in_words_locale/index": 20,
-	"./da/build_distance_in_words_locale/index.js": 20,
-	"./da/build_format_locale": 21,
-	"./da/build_format_locale/": 21,
-	"./da/build_format_locale/index": 21,
-	"./da/build_format_locale/index.js": 21,
-	"./da/index": 87,
-	"./da/index.js": 87,
-	"./da/package": 169,
-	"./da/package.json": 169,
-	"./de": 88,
-	"./de/": 88,
-	"./de/build_distance_in_words_locale": 22,
-	"./de/build_distance_in_words_locale/": 22,
-	"./de/build_distance_in_words_locale/index": 22,
-	"./de/build_distance_in_words_locale/index.js": 22,
-	"./de/build_format_locale": 23,
-	"./de/build_format_locale/": 23,
-	"./de/build_format_locale/index": 23,
-	"./de/build_format_locale/index.js": 23,
-	"./de/index": 88,
-	"./de/index.js": 88,
-	"./de/package": 170,
-	"./de/package.json": 170,
-	"./el": 89,
-	"./el/": 89,
-	"./el/build_distance_in_words_locale": 24,
-	"./el/build_distance_in_words_locale/": 24,
-	"./el/build_distance_in_words_locale/index": 24,
-	"./el/build_distance_in_words_locale/index.js": 24,
-	"./el/build_format_locale": 25,
-	"./el/build_format_locale/": 25,
-	"./el/build_format_locale/index": 25,
-	"./el/build_format_locale/index.js": 25,
-	"./el/index": 89,
-	"./el/index.js": 89,
-	"./el/package": 171,
-	"./el/package.json": 171,
-	"./en": 5,
-	"./en/": 5,
-	"./en/build_distance_in_words_locale": 10,
-	"./en/build_distance_in_words_locale/": 10,
-	"./en/build_distance_in_words_locale/index": 10,
-	"./en/build_distance_in_words_locale/index.js": 10,
-	"./en/build_format_locale": 11,
-	"./en/build_format_locale/": 11,
-	"./en/build_format_locale/index": 11,
-	"./en/build_format_locale/index.js": 11,
-	"./en/index": 5,
-	"./en/index.js": 5,
-	"./en/package": 172,
-	"./en/package.json": 172,
-	"./eo": 90,
-	"./eo/": 90,
-	"./eo/build_distance_in_words_locale": 26,
-	"./eo/build_distance_in_words_locale/": 26,
-	"./eo/build_distance_in_words_locale/index": 26,
-	"./eo/build_distance_in_words_locale/index.js": 26,
-	"./eo/build_format_locale": 27,
-	"./eo/build_format_locale/": 27,
-	"./eo/build_format_locale/index": 27,
-	"./eo/build_format_locale/index.js": 27,
-	"./eo/index": 90,
-	"./eo/index.js": 90,
-	"./eo/package": 173,
-	"./eo/package.json": 173,
-	"./es": 91,
-	"./es/": 91,
-	"./es/build_distance_in_words_locale": 28,
-	"./es/build_distance_in_words_locale/": 28,
-	"./es/build_distance_in_words_locale/index": 28,
-	"./es/build_distance_in_words_locale/index.js": 28,
-	"./es/build_format_locale": 29,
-	"./es/build_format_locale/": 29,
-	"./es/build_format_locale/index": 29,
-	"./es/build_format_locale/index.js": 29,
-	"./es/index": 91,
-	"./es/index.js": 91,
-	"./es/package": 174,
-	"./es/package.json": 174,
-	"./fi": 92,
-	"./fi/": 92,
-	"./fi/build_distance_in_words_locale": 30,
-	"./fi/build_distance_in_words_locale/": 30,
-	"./fi/build_distance_in_words_locale/index": 30,
-	"./fi/build_distance_in_words_locale/index.js": 30,
-	"./fi/build_format_locale": 31,
-	"./fi/build_format_locale/": 31,
-	"./fi/build_format_locale/index": 31,
-	"./fi/build_format_locale/index.js": 31,
-	"./fi/index": 92,
-	"./fi/index.js": 92,
-	"./fi/package": 175,
-	"./fi/package.json": 175,
-	"./fil": 93,
-	"./fil/": 93,
-	"./fil/build_distance_in_words_locale": 32,
-	"./fil/build_distance_in_words_locale/": 32,
-	"./fil/build_distance_in_words_locale/index": 32,
-	"./fil/build_distance_in_words_locale/index.js": 32,
-	"./fil/build_format_locale": 33,
-	"./fil/build_format_locale/": 33,
-	"./fil/build_format_locale/index": 33,
-	"./fil/build_format_locale/index.js": 33,
-	"./fil/index": 93,
-	"./fil/index.js": 93,
-	"./fil/package": 176,
-	"./fil/package.json": 176,
-	"./fr": 94,
-	"./fr/": 94,
-	"./fr/build_distance_in_words_locale": 34,
-	"./fr/build_distance_in_words_locale/": 34,
-	"./fr/build_distance_in_words_locale/index": 34,
-	"./fr/build_distance_in_words_locale/index.js": 34,
-	"./fr/build_format_locale": 35,
-	"./fr/build_format_locale/": 35,
-	"./fr/build_format_locale/index": 35,
-	"./fr/build_format_locale/index.js": 35,
-	"./fr/index": 94,
-	"./fr/index.js": 94,
-	"./fr/package": 177,
-	"./fr/package.json": 177,
-	"./hr": 95,
-	"./hr/": 95,
-	"./hr/build_distance_in_words_locale": 36,
-	"./hr/build_distance_in_words_locale/": 36,
-	"./hr/build_distance_in_words_locale/index": 36,
-	"./hr/build_distance_in_words_locale/index.js": 36,
-	"./hr/build_format_locale": 37,
-	"./hr/build_format_locale/": 37,
-	"./hr/build_format_locale/index": 37,
-	"./hr/build_format_locale/index.js": 37,
-	"./hr/index": 95,
-	"./hr/index.js": 95,
-	"./hr/package": 178,
-	"./hr/package.json": 178,
-	"./hu": 96,
-	"./hu/": 96,
-	"./hu/build_distance_in_words_locale": 38,
-	"./hu/build_distance_in_words_locale/": 38,
-	"./hu/build_distance_in_words_locale/index": 38,
-	"./hu/build_distance_in_words_locale/index.js": 38,
-	"./hu/build_format_locale": 39,
-	"./hu/build_format_locale/": 39,
-	"./hu/build_format_locale/index": 39,
-	"./hu/build_format_locale/index.js": 39,
-	"./hu/index": 96,
-	"./hu/index.js": 96,
-	"./hu/package": 179,
-	"./hu/package.json": 179,
-	"./id": 97,
-	"./id/": 97,
-	"./id/build_distance_in_words_locale": 40,
-	"./id/build_distance_in_words_locale/": 40,
-	"./id/build_distance_in_words_locale/index": 40,
-	"./id/build_distance_in_words_locale/index.js": 40,
-	"./id/build_format_locale": 41,
-	"./id/build_format_locale/": 41,
-	"./id/build_format_locale/index": 41,
-	"./id/build_format_locale/index.js": 41,
-	"./id/index": 97,
-	"./id/index.js": 97,
-	"./id/package": 180,
-	"./id/package.json": 180,
-	"./is": 98,
-	"./is/": 98,
-	"./is/build_distance_in_words_locale": 42,
-	"./is/build_distance_in_words_locale/": 42,
-	"./is/build_distance_in_words_locale/index": 42,
-	"./is/build_distance_in_words_locale/index.js": 42,
-	"./is/build_format_locale": 43,
-	"./is/build_format_locale/": 43,
-	"./is/build_format_locale/index": 43,
-	"./is/build_format_locale/index.js": 43,
-	"./is/index": 98,
-	"./is/index.js": 98,
-	"./is/package": 181,
-	"./is/package.json": 181,
-	"./it": 99,
-	"./it/": 99,
-	"./it/build_distance_in_words_locale": 44,
-	"./it/build_distance_in_words_locale/": 44,
-	"./it/build_distance_in_words_locale/index": 44,
-	"./it/build_distance_in_words_locale/index.js": 44,
-	"./it/build_format_locale": 45,
-	"./it/build_format_locale/": 45,
-	"./it/build_format_locale/index": 45,
-	"./it/build_format_locale/index.js": 45,
-	"./it/index": 99,
-	"./it/index.js": 99,
-	"./it/package": 182,
-	"./it/package.json": 182,
-	"./ja": 100,
-	"./ja/": 100,
-	"./ja/build_distance_in_words_locale": 46,
-	"./ja/build_distance_in_words_locale/": 46,
-	"./ja/build_distance_in_words_locale/index": 46,
-	"./ja/build_distance_in_words_locale/index.js": 46,
-	"./ja/build_format_locale": 47,
-	"./ja/build_format_locale/": 47,
-	"./ja/build_format_locale/index": 47,
-	"./ja/build_format_locale/index.js": 47,
-	"./ja/index": 100,
-	"./ja/index.js": 100,
-	"./ja/package": 183,
-	"./ja/package.json": 183,
-	"./ko": 101,
-	"./ko/": 101,
-	"./ko/build_distance_in_words_locale": 48,
-	"./ko/build_distance_in_words_locale/": 48,
-	"./ko/build_distance_in_words_locale/index": 48,
-	"./ko/build_distance_in_words_locale/index.js": 48,
-	"./ko/build_format_locale": 49,
-	"./ko/build_format_locale/": 49,
-	"./ko/build_format_locale/index": 49,
-	"./ko/build_format_locale/index.js": 49,
-	"./ko/index": 101,
-	"./ko/index.js": 101,
-	"./ko/package": 184,
-	"./ko/package.json": 184,
-	"./mk": 102,
-	"./mk/": 102,
-	"./mk/build_distance_in_words_locale": 50,
-	"./mk/build_distance_in_words_locale/": 50,
-	"./mk/build_distance_in_words_locale/index": 50,
-	"./mk/build_distance_in_words_locale/index.js": 50,
-	"./mk/build_format_locale": 51,
-	"./mk/build_format_locale/": 51,
-	"./mk/build_format_locale/index": 51,
-	"./mk/build_format_locale/index.js": 51,
-	"./mk/index": 102,
-	"./mk/index.js": 102,
-	"./mk/package": 185,
-	"./mk/package.json": 185,
-	"./nb": 103,
-	"./nb/": 103,
-	"./nb/build_distance_in_words_locale": 52,
-	"./nb/build_distance_in_words_locale/": 52,
-	"./nb/build_distance_in_words_locale/index": 52,
-	"./nb/build_distance_in_words_locale/index.js": 52,
-	"./nb/build_format_locale": 53,
-	"./nb/build_format_locale/": 53,
-	"./nb/build_format_locale/index": 53,
-	"./nb/build_format_locale/index.js": 53,
-	"./nb/index": 103,
-	"./nb/index.js": 103,
-	"./nb/package": 186,
-	"./nb/package.json": 186,
-	"./nl": 104,
-	"./nl/": 104,
-	"./nl/build_distance_in_words_locale": 54,
-	"./nl/build_distance_in_words_locale/": 54,
-	"./nl/build_distance_in_words_locale/index": 54,
-	"./nl/build_distance_in_words_locale/index.js": 54,
-	"./nl/build_format_locale": 55,
-	"./nl/build_format_locale/": 55,
-	"./nl/build_format_locale/index": 55,
-	"./nl/build_format_locale/index.js": 55,
-	"./nl/index": 104,
-	"./nl/index.js": 104,
-	"./nl/package": 187,
-	"./nl/package.json": 187,
-	"./package": 188,
-	"./package.json": 188,
-	"./pl": 105,
-	"./pl/": 105,
-	"./pl/build_distance_in_words_locale": 56,
-	"./pl/build_distance_in_words_locale/": 56,
-	"./pl/build_distance_in_words_locale/index": 56,
-	"./pl/build_distance_in_words_locale/index.js": 56,
-	"./pl/build_format_locale": 57,
-	"./pl/build_format_locale/": 57,
-	"./pl/build_format_locale/index": 57,
-	"./pl/build_format_locale/index.js": 57,
-	"./pl/index": 105,
-	"./pl/index.js": 105,
-	"./pl/package": 189,
-	"./pl/package.json": 189,
-	"./pt": 106,
-	"./pt/": 106,
-	"./pt/build_distance_in_words_locale": 58,
-	"./pt/build_distance_in_words_locale/": 58,
-	"./pt/build_distance_in_words_locale/index": 58,
-	"./pt/build_distance_in_words_locale/index.js": 58,
-	"./pt/build_format_locale": 59,
-	"./pt/build_format_locale/": 59,
-	"./pt/build_format_locale/index": 59,
-	"./pt/build_format_locale/index.js": 59,
-	"./pt/index": 106,
-	"./pt/index.js": 106,
-	"./pt/package": 190,
-	"./pt/package.json": 190,
-	"./ro": 107,
-	"./ro/": 107,
-	"./ro/build_distance_in_words_locale": 60,
-	"./ro/build_distance_in_words_locale/": 60,
-	"./ro/build_distance_in_words_locale/index": 60,
-	"./ro/build_distance_in_words_locale/index.js": 60,
-	"./ro/build_format_locale": 61,
-	"./ro/build_format_locale/": 61,
-	"./ro/build_format_locale/index": 61,
-	"./ro/build_format_locale/index.js": 61,
-	"./ro/index": 107,
-	"./ro/index.js": 107,
-	"./ro/package": 191,
-	"./ro/package.json": 191,
-	"./ru": 108,
-	"./ru/": 108,
-	"./ru/build_distance_in_words_locale": 62,
-	"./ru/build_distance_in_words_locale/": 62,
-	"./ru/build_distance_in_words_locale/index": 62,
-	"./ru/build_distance_in_words_locale/index.js": 62,
-	"./ru/build_format_locale": 63,
-	"./ru/build_format_locale/": 63,
-	"./ru/build_format_locale/index": 63,
-	"./ru/build_format_locale/index.js": 63,
-	"./ru/index": 108,
-	"./ru/index.js": 108,
-	"./ru/package": 192,
-	"./ru/package.json": 192,
-	"./sk": 109,
-	"./sk/": 109,
-	"./sk/build_distance_in_words_locale": 64,
-	"./sk/build_distance_in_words_locale/": 64,
-	"./sk/build_distance_in_words_locale/index": 64,
-	"./sk/build_distance_in_words_locale/index.js": 64,
-	"./sk/build_format_locale": 65,
-	"./sk/build_format_locale/": 65,
-	"./sk/build_format_locale/index": 65,
-	"./sk/build_format_locale/index.js": 65,
-	"./sk/index": 109,
-	"./sk/index.js": 109,
-	"./sk/package": 193,
-	"./sk/package.json": 193,
-	"./sl": 110,
-	"./sl/": 110,
-	"./sl/build_distance_in_words_locale": 66,
-	"./sl/build_distance_in_words_locale/": 66,
-	"./sl/build_distance_in_words_locale/index": 66,
-	"./sl/build_distance_in_words_locale/index.js": 66,
-	"./sl/build_format_locale": 67,
-	"./sl/build_format_locale/": 67,
-	"./sl/build_format_locale/index": 67,
-	"./sl/build_format_locale/index.js": 67,
-	"./sl/index": 110,
-	"./sl/index.js": 110,
-	"./sl/package": 194,
-	"./sl/package.json": 194,
-	"./sv": 111,
-	"./sv/": 111,
-	"./sv/build_distance_in_words_locale": 68,
-	"./sv/build_distance_in_words_locale/": 68,
-	"./sv/build_distance_in_words_locale/index": 68,
-	"./sv/build_distance_in_words_locale/index.js": 68,
-	"./sv/build_format_locale": 69,
-	"./sv/build_format_locale/": 69,
-	"./sv/build_format_locale/index": 69,
-	"./sv/build_format_locale/index.js": 69,
-	"./sv/index": 111,
-	"./sv/index.js": 111,
-	"./sv/package": 195,
-	"./sv/package.json": 195,
-	"./th": 112,
-	"./th/": 112,
-	"./th/build_distance_in_words_locale": 70,
-	"./th/build_distance_in_words_locale/": 70,
-	"./th/build_distance_in_words_locale/index": 70,
-	"./th/build_distance_in_words_locale/index.js": 70,
-	"./th/build_format_locale": 71,
-	"./th/build_format_locale/": 71,
-	"./th/build_format_locale/index": 71,
-	"./th/build_format_locale/index.js": 71,
-	"./th/index": 112,
-	"./th/index.js": 112,
-	"./th/package": 196,
-	"./th/package.json": 196,
-	"./tr": 113,
-	"./tr/": 113,
-	"./tr/build_distance_in_words_locale": 72,
-	"./tr/build_distance_in_words_locale/": 72,
-	"./tr/build_distance_in_words_locale/index": 72,
-	"./tr/build_distance_in_words_locale/index.js": 72,
-	"./tr/build_format_locale": 73,
-	"./tr/build_format_locale/": 73,
-	"./tr/build_format_locale/index": 73,
-	"./tr/build_format_locale/index.js": 73,
-	"./tr/index": 113,
-	"./tr/index.js": 113,
-	"./tr/package": 197,
-	"./tr/package.json": 197,
-	"./zh_cn": 114,
-	"./zh_cn/": 114,
-	"./zh_cn/build_distance_in_words_locale": 74,
-	"./zh_cn/build_distance_in_words_locale/": 74,
-	"./zh_cn/build_distance_in_words_locale/index": 74,
-	"./zh_cn/build_distance_in_words_locale/index.js": 74,
-	"./zh_cn/build_format_locale": 75,
-	"./zh_cn/build_format_locale/": 75,
-	"./zh_cn/build_format_locale/index": 75,
-	"./zh_cn/build_format_locale/index.js": 75,
-	"./zh_cn/index": 114,
-	"./zh_cn/index.js": 114,
-	"./zh_cn/package": 198,
-	"./zh_cn/package.json": 198,
-	"./zh_tw": 115,
-	"./zh_tw/": 115,
-	"./zh_tw/build_distance_in_words_locale": 76,
-	"./zh_tw/build_distance_in_words_locale/": 76,
-	"./zh_tw/build_distance_in_words_locale/index": 76,
-	"./zh_tw/build_distance_in_words_locale/index.js": 76,
-	"./zh_tw/build_format_locale": 77,
-	"./zh_tw/build_format_locale/": 77,
-	"./zh_tw/build_format_locale/index": 77,
-	"./zh_tw/build_format_locale/index.js": 77,
-	"./zh_tw/index": 115,
-	"./zh_tw/index.js": 115,
-	"./zh_tw/package": 199,
-	"./zh_tw/package.json": 199
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 125;
-
-/***/ }),
-/* 126 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return uuid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return detectSupportsPassive; });
-var uuid = function uuid() {
-	var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-	return prefix + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
-		return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-	});
-};
-
-var detectSupportsPassive = function detectSupportsPassive() {
-	var supportsPassive = false;
-
-	try {
-		var opts = Object.defineProperty({}, 'passive', {
-			get: function get() {
-				supportsPassive = true;
-			}
-		});
-
-		window.addEventListener('testPassive', null, opts);
-		window.removeEventListener('testPassive', null, opts);
-	} catch (e) {}
-
-	return supportsPassive;
-};
-
-/***/ }),
-/* 127 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFunction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isDate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isObject; });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var isFunction = function isFunction(unknown) {
-  return typeof unknown === 'function';
-};
-
-var isString = function isString(unknown) {
-  return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
-};
-
-var isDate = function isDate(unknown) {
-  return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
-};
-
-var isObject = function isObject(unknown) {
-  return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
-};
-
-/***/ }),
 /* 128 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var EventEmitter = function () {
+  function EventEmitter() {
+    var listeners = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, EventEmitter);
+
+    this._listeners = new Map(listeners);
+    this._middlewares = new Map();
+  }
+
+  _createClass(EventEmitter, [{
+    key: "listenerCount",
+    value: function listenerCount(eventName) {
+      if (!this._listeners.has(eventName)) {
+        return 0;
+      }
+
+      var eventListeners = this._listeners.get(eventName);
+      return eventListeners.length;
+    }
+  }, {
+    key: "removeListeners",
+    value: function removeListeners() {
+      var _this = this;
+
+      var eventName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var middleware = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      if (eventName !== null) {
+        if (Array.isArray(eventName)) {
+          name.forEach(function (e) {
+            return _this.removeListeners(e, middleware);
+          });
+        } else {
+          this._listeners.delete(eventName);
+
+          if (middleware) {
+            this.removeMiddleware(eventName);
+          }
+        }
+      } else {
+        this._listeners = new Map();
+      }
+    }
+  }, {
+    key: "middleware",
+    value: function middleware(eventName, fn) {
+      var _this2 = this;
+
+      if (Array.isArray(eventName)) {
+        name.forEach(function (e) {
+          return _this2.middleware(e, fn);
+        });
+      } else {
+        if (!Array.isArray(this._middlewares.get(eventName))) {
+          this._middlewares.set(eventName, []);
+        }
+
+        this._middlewares.get(eventName).push(fn);
+      }
+    }
+  }, {
+    key: "removeMiddleware",
+    value: function removeMiddleware() {
+      var _this3 = this;
+
+      var eventName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      if (eventName !== null) {
+        if (Array.isArray(eventName)) {
+          name.forEach(function (e) {
+            return _this3.removeMiddleware(e);
+          });
+        } else {
+          this._middlewares.delete(eventName);
+        }
+      } else {
+        this._middlewares = new Map();
+      }
+    }
+  }, {
+    key: "on",
+    value: function on(name, callback) {
+      var _this4 = this;
+
+      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      if (Array.isArray(name)) {
+        name.forEach(function (e) {
+          return _this4.on(e, callback);
+        });
+      } else {
+        name = name.toString();
+        var split = name.split(/,|, | /);
+
+        if (split.length > 1) {
+          split.forEach(function (e) {
+            return _this4.on(e, callback);
+          });
+        } else {
+          if (!Array.isArray(this._listeners.get(name))) {
+            this._listeners.set(name, []);
+          }
+
+          this._listeners.get(name).push({
+            once: once,
+            callback: callback
+          });
+        }
+      }
+    }
+  }, {
+    key: "once",
+    value: function once(name, callback) {
+      this.on(name, callback, true);
+    }
+  }, {
+    key: "emit",
+    value: function emit(name, data) {
+      var _this5 = this;
+
+      var silent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      name = name.toString();
+      var listeners = this._listeners.get(name);
+      var middlewares = null;
+      var doneCount = 0;
+      var execute = silent;
+
+      if (Array.isArray(listeners)) {
+        listeners.forEach(function (listener, index) {
+          // Start Middleware checks unless we're doing a silent emit
+          if (!silent) {
+            middlewares = _this5._middlewares.get(name);
+            // Check and execute Middleware
+            if (Array.isArray(middlewares)) {
+              middlewares.forEach(function (middleware) {
+                middleware(data, function () {
+                  var newData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+                  if (newData !== null) {
+                    data = newData;
+                  }
+                  doneCount++;
+                }, name);
+              });
+
+              if (doneCount >= middlewares.length) {
+                execute = true;
+              }
+            } else {
+              execute = true;
+            }
+          }
+
+          // If Middleware checks have been passed, execute
+          if (execute) {
+            if (listener.once) {
+              listeners[index] = null;
+            }
+            listener.callback({
+              type: name,
+              timeStamp: new Date().getTime(),
+              data: data
+            });
+          }
+        });
+
+        // Dirty way of removing used Events
+        while (listeners.indexOf(null) !== -1) {
+          listeners.splice(listeners.indexOf(null), 1);
+        }
+      }
+    }
+  }]);
+
+  return EventEmitter;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (EventEmitter);
+
+/***/ }),
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 var MILLISECONDS_IN_HOUR = 3600000
 
@@ -9721,11 +9988,11 @@ module.exports = addHours
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(2)
-var setISOYear = __webpack_require__(130)
+var setISOYear = __webpack_require__(131)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -9754,11 +10021,11 @@ module.exports = addISOYears
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfISOYear = __webpack_require__(8)
+var startOfISOYear = __webpack_require__(9)
 var differenceInCalendarDays = __webpack_require__(80)
 
 /**
@@ -9796,10 +10063,10 @@ module.exports = setISOYear
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 var MILLISECONDS_IN_MINUTE = 60000
 
@@ -9828,7 +10095,7 @@ module.exports = addMinutes
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMonths = __webpack_require__(81)
@@ -9859,10 +10126,10 @@ module.exports = addQuarters
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 /**
  * @category Second Helpers
@@ -9889,7 +10156,7 @@ module.exports = addSeconds
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMonths = __webpack_require__(81)
@@ -9919,7 +10186,7 @@ module.exports = addYears
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(2)
@@ -9953,7 +10220,7 @@ module.exports = differenceInCalendarISOYears
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9991,7 +10258,7 @@ module.exports = differenceInCalendarMonths
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10021,7 +10288,7 @@ module.exports = getQuarter
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10056,12 +10323,12 @@ module.exports = differenceInCalendarYears
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
 var differenceInCalendarDays = __webpack_require__(80)
-var compareAsc = __webpack_require__(9)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Day Helpers
@@ -10101,10 +10368,10 @@ module.exports = differenceInDays
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addISOYears = __webpack_require__(129)
+var addISOYears = __webpack_require__(130)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10133,13 +10400,13 @@ module.exports = subISOYears
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(119)
+var compareDesc = __webpack_require__(122)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(121)
-var differenceInMonths = __webpack_require__(120)
+var differenceInSeconds = __webpack_require__(124)
+var differenceInMonths = __webpack_require__(123)
 var enLocale = __webpack_require__(5)
 
 var MINUTES_IN_DAY = 1440
@@ -10342,7 +10609,7 @@ module.exports = distanceInWords
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10386,7 +10653,7 @@ module.exports = endOfWeek
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10419,11 +10686,11 @@ module.exports = endOfMonth
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfYear = __webpack_require__(145)
+var startOfYear = __webpack_require__(146)
 var differenceInCalendarDays = __webpack_require__(80)
 
 /**
@@ -10452,7 +10719,7 @@ module.exports = getDayOfYear
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10485,10 +10752,10 @@ module.exports = startOfYear
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(116)
+var isDate = __webpack_require__(119)
 
 /**
  * @category Common Helpers
@@ -10526,7 +10793,7 @@ module.exports = isValid
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10556,7 +10823,7 @@ module.exports = isLeapYear
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10594,10 +10861,10 @@ module.exports = getISODay
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfHour = __webpack_require__(150)
+var startOfHour = __webpack_require__(151)
 
 /**
  * @category Hour Helpers
@@ -10629,7 +10896,7 @@ module.exports = isSameHour
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10660,10 +10927,10 @@ module.exports = startOfHour
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(124)
+var isSameWeek = __webpack_require__(127)
 
 /**
  * @category ISO Week Helpers
@@ -10694,10 +10961,10 @@ module.exports = isSameISOWeek
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfISOYear = __webpack_require__(8)
+var startOfISOYear = __webpack_require__(9)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10731,10 +10998,10 @@ module.exports = isSameISOYear
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfMinute = __webpack_require__(154)
+var startOfMinute = __webpack_require__(155)
 
 /**
  * @category Minute Helpers
@@ -10767,7 +11034,7 @@ module.exports = isSameMinute
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10798,7 +11065,7 @@ module.exports = startOfMinute
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10833,10 +11100,10 @@ module.exports = isSameMonth
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfQuarter = __webpack_require__(157)
+var startOfQuarter = __webpack_require__(158)
 
 /**
  * @category Quarter Helpers
@@ -10868,7 +11135,7 @@ module.exports = isSameQuarter
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10902,10 +11169,10 @@ module.exports = startOfQuarter
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfSecond = __webpack_require__(159)
+var startOfSecond = __webpack_require__(160)
 
 /**
  * @category Second Helpers
@@ -10938,7 +11205,7 @@ module.exports = isSameSecond
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10969,7 +11236,7 @@ module.exports = startOfSecond
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11003,7 +11270,7 @@ module.exports = isSameYear
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11047,11 +11314,11 @@ module.exports = lastDayOfWeek
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(117)
+var getDaysInMonth = __webpack_require__(120)
 
 /**
  * @category Month Helpers
@@ -11087,196 +11354,6 @@ function setMonth (dirtyDate, dirtyMonth) {
 
 module.exports = setMonth
 
-
-/***/ }),
-/* 163 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var EventEmitter = function () {
-  function EventEmitter() {
-    var listeners = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-    _classCallCheck(this, EventEmitter);
-
-    this._listeners = new Map(listeners);
-    this._middlewares = new Map();
-  }
-
-  _createClass(EventEmitter, [{
-    key: "listenerCount",
-    value: function listenerCount(eventName) {
-      if (!this._listeners.has(eventName)) {
-        return 0;
-      }
-
-      var eventListeners = this._listeners.get(eventName);
-      return eventListeners.length;
-    }
-  }, {
-    key: "removeListeners",
-    value: function removeListeners() {
-      var _this = this;
-
-      var eventName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      var middleware = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      if (eventName !== null) {
-        if (Array.isArray(eventName)) {
-          name.forEach(function (e) {
-            return _this.removeListeners(e, middleware);
-          });
-        } else {
-          this._listeners.delete(eventName);
-
-          if (middleware) {
-            this.removeMiddleware(eventName);
-          }
-        }
-      } else {
-        this._listeners = new Map();
-      }
-    }
-  }, {
-    key: "middleware",
-    value: function middleware(eventName, fn) {
-      var _this2 = this;
-
-      if (Array.isArray(eventName)) {
-        name.forEach(function (e) {
-          return _this2.middleware(e, fn);
-        });
-      } else {
-        if (!Array.isArray(this._middlewares.get(eventName))) {
-          this._middlewares.set(eventName, []);
-        }
-
-        this._middlewares.get(eventName).push(fn);
-      }
-    }
-  }, {
-    key: "removeMiddleware",
-    value: function removeMiddleware() {
-      var _this3 = this;
-
-      var eventName = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      if (eventName !== null) {
-        if (Array.isArray(eventName)) {
-          name.forEach(function (e) {
-            return _this3.removeMiddleware(e);
-          });
-        } else {
-          this._middlewares.delete(eventName);
-        }
-      } else {
-        this._middlewares = new Map();
-      }
-    }
-  }, {
-    key: "on",
-    value: function on(name, callback) {
-      var _this4 = this;
-
-      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      if (Array.isArray(name)) {
-        name.forEach(function (e) {
-          return _this4.on(e, callback);
-        });
-      } else {
-        name = name.toString();
-        var split = name.split(/,|, | /);
-
-        if (split.length > 1) {
-          split.forEach(function (e) {
-            return _this4.on(e, callback);
-          });
-        } else {
-          if (!Array.isArray(this._listeners.get(name))) {
-            this._listeners.set(name, []);
-          }
-
-          this._listeners.get(name).push({
-            once: once,
-            callback: callback
-          });
-        }
-      }
-    }
-  }, {
-    key: "once",
-    value: function once(name, callback) {
-      this.on(name, callback, true);
-    }
-  }, {
-    key: "emit",
-    value: function emit(name, data) {
-      var _this5 = this;
-
-      var silent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      name = name.toString();
-      var listeners = this._listeners.get(name);
-      var middlewares = null;
-      var doneCount = 0;
-      var execute = silent;
-
-      if (Array.isArray(listeners)) {
-        listeners.forEach(function (listener, index) {
-          // Start Middleware checks unless we're doing a silent emit
-          if (!silent) {
-            middlewares = _this5._middlewares.get(name);
-            // Check and execute Middleware
-            if (Array.isArray(middlewares)) {
-              middlewares.forEach(function (middleware) {
-                middleware(data, function () {
-                  var newData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-                  if (newData !== null) {
-                    data = newData;
-                  }
-                  doneCount++;
-                }, name);
-              });
-
-              if (doneCount >= middlewares.length) {
-                execute = true;
-              }
-            } else {
-              execute = true;
-            }
-          }
-
-          // If Middleware checks have been passed, execute
-          if (execute) {
-            if (listener.once) {
-              listeners[index] = null;
-            }
-            listener.callback({
-              type: name,
-              timestamp: new Date().getTime(),
-              data: data
-            });
-          }
-        });
-
-        // Dirty way of removing used Events
-        while (listeners.indexOf(null) !== -1) {
-          listeners.splice(listeners.indexOf(null), 1);
-        }
-      }
-    }
-  }]);
-
-  return EventEmitter;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (EventEmitter);
 
 /***/ }),
 /* 164 */
@@ -11500,16 +11577,19 @@ module.exports = {"typings":"../../typings.d.ts"}
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__datePicker__ = __webpack_require__(299);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(306);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates__ = __webpack_require__(307);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_header__ = __webpack_require__(308);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_footer__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__timePicker__ = __webpack_require__(306);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__defaultOptions__ = __webpack_require__(309);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates__ = __webpack_require__(310);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_header__ = __webpack_require__(311);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__templates_footer__ = __webpack_require__(312);
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11521,6 +11601,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -11554,23 +11635,34 @@ var bulmaCalendar = function (_EventEmitter) {
 
     // Use Element dataset values to override options
     var elementConfig = _this.element.dataset ? Object.keys(_this.element.dataset).filter(function (key) {
-      return Object.keys(__WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */]).includes(key);
+      return Object.keys(__WEBPACK_IMPORTED_MODULE_6__defaultOptions__["a" /* default */]).includes(key);
     }).reduce(function (obj, key) {
       return _extends({}, obj, _defineProperty({}, key, _this.element.dataset[key]));
     }, {}) : {};
     // Set default options - dataset attributes are master
-    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */], options, elementConfig);
+    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_6__defaultOptions__["a" /* default */], options, elementConfig);
 
-    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('bulmaDatePicker');
+    switch (_this.element.getAttribute('type')) {
+      case 'date':
+        _this.options.type = 'date';
+        break;
+      case 'time':
+        _this.options.type = 'time';
+        break;
+      default:
+        _this.options.type = 'datetime';
+        break;
+    }
+    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('datetimePicker');
 
-    _this._onToggle = _this._onToggle.bind(_this);
-    _this._onClose = _this._onClose.bind(_this);
-    _this._onDocumentClick = _this._onDocumentClick.bind(_this);
-    _this._onValidateClick = _this._onValidateClick.bind(_this);
-    _this._onTodayClick = _this._onTodayClick.bind(_this);
-    _this._onClearClick = _this._onClearClick.bind(_this);
-    _this._onCancelClick = _this._onCancelClick.bind(_this);
-    _this._onSelectDate = _this._onSelectDate.bind(_this);
+    _this.onToggleDateTimePicker = _this.onToggleDateTimePicker.bind(_this);
+    _this.onCloseDateTimePicker = _this.onCloseDateTimePicker.bind(_this);
+    _this.onDocumentClickDateTimePicker = _this.onDocumentClickDateTimePicker.bind(_this);
+    _this.onValidateClickDateTimePicker = _this.onValidateClickDateTimePicker.bind(_this);
+    _this.onTodayClickDateTimePicker = _this.onTodayClickDateTimePicker.bind(_this);
+    _this.onClearClickDateTimePicker = _this.onClearClickDateTimePicker.bind(_this);
+    _this.onCancelClickDateTimePicker = _this.onCancelClickDateTimePicker.bind(_this);
+    _this.onSelectDateTimePicker = _this.onSelectDateTimePicker.bind(_this);
 
     // Initiate plugin
     _this._init();
@@ -11585,7 +11677,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
 
   _createClass(bulmaCalendar, [{
-    key: '_onSelectDate',
+    key: 'onSelectDateTimePicker',
 
 
     /****************************************************
@@ -11593,22 +11685,17 @@ var bulmaCalendar = function (_EventEmitter) {
      * EVENTS FUNCTIONS                                 *
      *                                                  *
      ****************************************************/
-    value: function _onSelectDate(e) {
+    value: function onSelectDateTimePicker(e) {
       this.refresh();
       this.save();
       if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
         this.hide();
       }
-
-      this.emit(e.type, e.data);
+      this.emit(e.type, this);
     }
   }, {
-    key: '_onDocumentClick',
-    value: function _onDocumentClick(e) {
-      if (!this._open) {
-        return;
-      }
-
+    key: 'onDocumentClickDateTimePicker',
+    value: function onDocumentClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11616,13 +11703,13 @@ var bulmaCalendar = function (_EventEmitter) {
 
       // Check is e.target not within datepicker element
       var target = e.target || e.srcElement;
-      if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline') {
-        this._onClose(e);
+      if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
+        this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: '_onToggle',
-    value: function _onToggle(e) {
+    key: 'onToggleDateTimePicker',
+    value: function onToggleDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11635,22 +11722,23 @@ var bulmaCalendar = function (_EventEmitter) {
       }
     }
   }, {
-    key: '_onValidateClick',
-    value: function _onValidateClick(e) {
+    key: 'onValidateClickDateTimePicker',
+    value: function onValidateClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
       e.stopPropagation();
 
       this.save();
+      this.emit('select', this);
 
       if (this.options.displayMode !== 'inline') {
-        this._onClose(e);
+        this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: '_onTodayClick',
-    value: function _onTodayClick(e) {
+    key: 'onTodayClickDateTimePicker',
+    value: function onTodayClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11659,12 +11747,15 @@ var bulmaCalendar = function (_EventEmitter) {
       this.datePicker.value(new Date());
       this.datePicker.refresh();
 
+      this.timePicker.value(new Date());
+      this.timePicker.refresh();
+
       // TODO: check if closeOnSelect
       this.save();
     }
   }, {
-    key: '_onClearClick',
-    value: function _onClearClick(e) {
+    key: 'onClearClickDateTimePicker',
+    value: function onClearClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11673,8 +11764,8 @@ var bulmaCalendar = function (_EventEmitter) {
       this.clear();
     }
   }, {
-    key: '_onCancelClick',
-    value: function _onCancelClick(e) {
+    key: 'onCancelClickDateTimePicker',
+    value: function onCancelClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11682,15 +11773,16 @@ var bulmaCalendar = function (_EventEmitter) {
 
       if (this._snapshots.length) {
         this.datePicker = this._snapshots[0].datePicker;
+        this.timePicker = this._snapshots[0].timePicker;
       }
       this.save();
       if (this.options.displayMode !== 'inline') {
-        this._onClose(e);
+        this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: '_onClose',
-    value: function _onClose(e) {
+    key: 'onCloseDateTimePicker',
+    value: function onCloseDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
       }
@@ -11724,7 +11816,7 @@ var bulmaCalendar = function (_EventEmitter) {
     }
 
     /**
-     * Get / Set ement value
+     * Get / Set datetimePicker value
      * @param {*} date 
      */
 
@@ -11735,9 +11827,33 @@ var bulmaCalendar = function (_EventEmitter) {
 
       if (_value) {
         this.datePicker.value(_value);
-        this.refresh();
+        this.timePicker.value(_value);
       } else {
-        return this.datePicker.value();
+        var string = '';
+        switch (this.options.type) {
+          case 'date':
+            string = this.datePicker.value();
+            break;
+          case 'time':
+            string = this.timePicker.value();
+            break;
+          case 'datetime':
+            var start = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.start, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.start)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.start))) : undefined;
+            var end = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](this.datePicker.end) : undefined;
+
+            if (end && this.options.isRange) {
+              end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.end, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.end)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.end)));
+            }
+
+            string = start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(start), this.format, {
+              locale: this.locale
+            }) : '';
+            if (end) {
+              string += ' - ' + (end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(end), this.format, { locale: this.locale }) : '');
+            }
+            break;
+        }
+        return string;
       }
     }
   }, {
@@ -11758,6 +11874,12 @@ var bulmaCalendar = function (_EventEmitter) {
         this._ui.header.start.weekday.classList.add('is-hidden');
       }
 
+      if (this._ui.header.start.hour) {
+        this._ui.header.start.hour.innerHTML = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH:mm', {
+          locale: this.locale
+        }) : '--:--';
+      }
+
       if (this._ui.header.end) {
         this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'DD', {
           locale: this.locale
@@ -11773,17 +11895,27 @@ var bulmaCalendar = function (_EventEmitter) {
         } else {
           this._ui.header.end.weekday.classList.add('is-hidden');
         }
+
+        if (this._ui.header.end && this._ui.header.end.hour) {
+          this._ui.header.end.hour.innerHTML = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH:mm', {
+            locale: this.locale
+          }) : '--:--';
+        }
       }
-      this.datePicker.refresh();
       this.emit('refresh', this);
     }
   }, {
     key: 'clear',
     value: function clear() {
       this.datePicker.clear();
+      this.timePicker.clear();
 
       this.refresh();
       this.element.value = '';
+      this._ui.dummy.dummy_1.value = '';
+      if (this._ui.dummy.dummy_2) {
+        this._ui.dummy.dummy_2.value = '';
+      }
       this.emit('clear', this);
     }
 
@@ -11801,10 +11933,11 @@ var bulmaCalendar = function (_EventEmitter) {
 
       if (this.element.value) {
         this.datePicker.value(this.element.value);
-        this.refresh();
+        this.timePicker.value(this.element.value);
       }
 
       this.datePicker.show();
+      this.timePicker.hide();
 
       if (this._ui.modal) {
         this._ui.modal.classList.add('is-active');
@@ -11838,7 +11971,17 @@ var bulmaCalendar = function (_EventEmitter) {
     key: 'save',
     value: function save() {
       var date = this.value();
+
+      var _date$split = date.split(' - '),
+          _date$split2 = _slicedToArray(_date$split, 2),
+          start = _date$split2[0],
+          end = _date$split2[1];
+
       this.element.value = date;
+      this._ui.dummy.dummy_1.value = start ? start : '';
+      if (this._ui.dummy.dummy_2) {
+        this._ui.dummy.dummy_2.value = end ? end : '';
+      }
     }
   }, {
     key: 'snapshot',
@@ -11875,25 +12018,27 @@ var bulmaCalendar = function (_EventEmitter) {
   }, {
     key: '_init',
     value: function _init() {
-      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](this.options.onReady)) {
-        this.on('ready', this.options.onReady);
-      }
-
       this._open = false;
       this._snapshots = []; // Use to revert selection
+      // Set component type (date / time / datetime)
+      this.options.type = ['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1 ? this.element.getAttribute('type').toLowerCase() : this.options.type;
+      this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
       // Change element type to prevent browser default type="date" behavior
       this.element.setAttribute('type', 'text');
       this.datePicker = new __WEBPACK_IMPORTED_MODULE_4__datePicker__["a" /* default */](_extends({}, this.options, {
         lang: this.lang
       }));
-
+      this.timePicker = new __WEBPACK_IMPORTED_MODULE_5__timePicker__["a" /* default */](_extends({}, this.options, {
+        lang: this.lang
+      }));
       if (this.element.value) {
         this.datePicker.value(this.element.value);
+        this.timePicker.value(this.element.value);
       }
 
       this.lang = this.options.lang;
       // Set export format based on component type
-      this.format = this._type === 'date' ? this.options.dateFormat : '' + this.options.dateFormat;
+      this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : this.options.dateFormat + ' ' + this.options.timeFormat;
 
       // Force dialog display mode on mobile devices
       if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
@@ -11910,11 +12055,14 @@ var bulmaCalendar = function (_EventEmitter) {
       this._bindEvents();
       this.save();
 
+      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](this.options.onReady)) {
+        this.on('ready', this.options.onReady);
+      }
       this.emit('ready', this);
     }
 
     /**
-     * Build datePicker HTML component and bulmaCalendarend it to the DOM
+     * Build datePicker HTML component and append it to the DOM
      * @method _build
      * @return {datePicker} Current plugin instance
      */
@@ -11922,54 +12070,61 @@ var bulmaCalendar = function (_EventEmitter) {
   }, {
     key: '_build',
     value: function _build() {
-      var headerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_header__["a" /* default */])(_extends({}, this.options, {
+      var headerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates_header__["a" /* default */])(_extends({}, this.options, {
         type: this._type,
-        datePicker: this.options.type !== 'time'
+        datePicker: this.options.type !== 'time',
+        timePicker: this.options.type !== 'date'
       })));
-      var footerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates_footer__["a" /* default */])(this.options));
-      var elementNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates__["a" /* default */])(_extends({}, this.options, {
+      var footerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_9__templates_footer__["a" /* default */])(this.options));
+      var datetimePickerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates__["a" /* default */])(_extends({}, this.options, {
         id: this.id
       })));
 
       // Save pointer to each datePicker element for later use
       this._ui = {
-        modal: elementNode.querySelector('.modal'),
-        wrapper: elementNode.querySelector('.bulma-datepicker'),
-        container: elementNode.querySelector('.bulma-datepicker-container'),
-        calendar: elementNode.querySelector('.ement'),
+        modal: datetimePickerNode.querySelector('.modal'),
+        wrapper: datetimePickerNode.querySelector('.datetimepicker'),
+        container: datetimePickerNode.querySelector('.datetimepicker-container'),
+        dummy: {
+          container: datetimePickerNode.querySelector('.datetimepicker-dummy'),
+          wrapper: datetimePickerNode.querySelector('.datetimepicker-dummy-wrapper'),
+          dummy_1: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)'),
+          dummy_2: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)'),
+          clear: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-clear-button')
+        },
+        calendar: datetimePickerNode.querySelector('.datetimepicker'),
         overlay: this.options.displayMode === 'dialog' ? {
-          background: elementNode.querySelector('.modal-background'),
-          close: elementNode.querySelector('.modal-close')
+          background: datetimePickerNode.querySelector('.modal-background'),
+          close: datetimePickerNode.querySelector('.modal-close')
         } : undefined,
         header: {
-          container: headerNode.querySelector('.bulma-datepicker-header'),
+          container: headerNode.querySelector('.datetimepicker-header'),
           start: {
-            container: headerNode.querySelector('.bulma-datepicker-selection-start'),
-            day: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-day'),
-            month: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-month'),
-            weekday: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-weekday'),
-            empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
+            container: headerNode.querySelector('.datetimepicker-selection-start'),
+            day: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-day'),
+            month: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-month'),
+            weekday: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-weekday'),
+            hour: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour'),
+            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
           },
           end: this.options.isRange ? {
-            container: headerNode.querySelector('.bulma-datepicker-selection-end'),
-            day: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-day'),
-            month: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-month'),
-            weekday: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-weekday'),
-            empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
+            container: headerNode.querySelector('.datetimepicker-selection-end'),
+            day: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-day'),
+            month: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-month'),
+            weekday: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-weekday'),
+            hour: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour'),
+            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
           } : undefined
         },
         footer: {
-          container: footerNode.querySelector('.bulma-datepicker-footer'),
-          validate: footerNode.querySelector('.bulma-datepicker-footer-validate'),
-          today: footerNode.querySelector('.bulma-datepicker-footer-today'),
-          clear: footerNode.querySelector('.bulma-datepicker-footer-clear'),
-          cancel: footerNode.querySelector('.bulma-datepicker-footer-cancel')
+          container: footerNode.querySelector('.datetimepicker-footer'),
+          validate: footerNode.querySelector('.datetimepicker-footer-validate'),
+          today: footerNode.querySelector('.datetimepicker-footer-today'),
+          clear: footerNode.querySelector('.datetimepicker-footer-clear'),
+          cancel: footerNode.querySelector('.datetimepicker-footer-cancel')
         }
       };
 
-      if (!this.options.showHeader) {
-        this._ui.header.container.classList.add('is-hidden');
-      }
       if (!this.options.showFooter) {
         this._ui.footer.container.classList.add('is-hidden');
       }
@@ -11985,22 +12140,43 @@ var bulmaCalendar = function (_EventEmitter) {
       }
 
       this._ui.container.appendChild(headerNode);
-      this._ui.container.appendChild(this.datePicker.render());
+      switch (this._type) {
+        case 'date':
+          this._ui.container.appendChild(this.datePicker.render());
+          break;
+        case 'time':
+          this._ui.container.appendChild(this.timePicker.render());
+          if (this._ui.footer.validate) {
+            this._ui.footer.validate.classList.remove('is-hidden');
+          }
+          if (this._ui.footer.today) {
+            this._ui.footer.today.classList.add('is-hidden');
+          }
+          break;
+        case 'datetime':
+          this.options.closeOnSelect = false;
+          if (this._ui.footer.validate) {
+            this._ui.footer.validate.classList.remove('is-hidden');
+          }
+          this._ui.container.appendChild(this.datePicker.render());
+          this._ui.container.appendChild(this.timePicker.render());
+          break;
+      }
 
       this._ui.wrapper.appendChild(footerNode);
       this._ui.wrapper.classList.add('is-' + this.options.color);
+      this._ui.dummy.container.classList.add('is-' + this.options.color);
       // Add datepicker HTML element to Document Body
-      this.element.parentNode.insertBefore(elementNode, this.element.nextSibling);
-      // this.element.classList.add('is-hidden');
-
-      if (this.element.getAttribute('type') === 'date') {
-        this.element.setAttributes('type', 'text');
-      }
+      this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
+      this._ui.dummy.wrapper.appendChild(this.element);
+      this.element.classList.add('is-hidden');
+      // this.element.style.visibility = 'hidden';
+      // this.element.style.position = 'absolute';
 
       if (this.options.displayMode === 'inline') {
         this._ui.wrapper.classList.add('is-active');
-        this.element.classList.add('is-hidden');
       } else {
+        this._ui.dummy.container.classList.remove('is-hidden');
         this._ui.wrapper.style.position = 'absolute';
         this._ui.wrapper.classList.add('is-datetimepicker-default');
       }
@@ -12019,17 +12195,21 @@ var bulmaCalendar = function (_EventEmitter) {
       var _this2 = this;
 
       this._clickEvents.forEach(function (clickEvent) {
-        document.body.addEventListener(clickEvent, _this2._onDocumentClick);
+        document.body.addEventListener(clickEvent, _this2.onDocumentClickDateTimePicker);
       });
 
-      this.datePicker.on('select', this._onSelectDate);
-      this.datePicker.on('select:start', this._onSelectDate);
-      this.datePicker.on('select:end', this._onSelectDate);
+      this.datePicker.on('select', this.onSelectDateTimePicker);
+      this.datePicker.on('select:start', this.onSelectDateTimePicker);
+      this.datePicker.on('select:end', this.onSelectDateTimePicker);
+      this.timePicker.on('select', this.onSelectDateTimePicker);
+      this.timePicker.on('select:start', this.onSelectDateTimePicker);
+      this.timePicker.on('select:end', this.onSelectDateTimePicker);
 
       // Bind event to element in order to display/hide datePicker on click
       if (this.options.toggleOnInputClick === true) {
         this._clickEvents.forEach(function (clickEvent) {
-          _this2.element.addEventListener(clickEvent, _this2._onToggle);
+          _this2._ui.dummy.wrapper.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
+          _this2.element.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
         });
       }
 
@@ -12037,38 +12217,38 @@ var bulmaCalendar = function (_EventEmitter) {
         // Bind close event on Close button
         if (this._ui.overlay.close) {
           this._clickEvents.forEach(function (clickEvent) {
-            _this2.this._ui.overlay.close.addEventListener(clickEvent, _this2._onClose);
+            _this2.this._ui.overlay.close.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
           });
         }
         // Bind close event on overlay based on options
         if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
           this._clickEvents.forEach(function (clickEvent) {
-            _this2._ui.overlay.background.addEventListener(clickEvent, _this2._onClose);
+            _this2._ui.overlay.background.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
           });
         }
       }
 
       if (this._ui.footer.validate) {
         this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.validate.addEventListener(clickEvent, _this2._onValidateClick);
+          _this2._ui.footer.validate.addEventListener(clickEvent, _this2.onValidateClickDateTimePicker);
         });
       }
       if (this._ui.footer.today) {
         this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.today.addEventListener(clickEvent, _this2._onTodayClick);
+          _this2._ui.footer.today.addEventListener(clickEvent, _this2.onTodayClickDateTimePicker);
         });
       }
       if (this._ui.footer.clear) {
         this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.clear.addEventListener(clickEvent, _this2._onClearClick);
+          _this2._ui.footer.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
         });
       }
       this._clickEvents.forEach(function (clickEvent) {
-        // this._ui.dummy.clear.addEventListener(clickEvent, this._onClearClick);
+        _this2._ui.dummy.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
       });
       if (this._ui.footer.cancel) {
         this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.cancel.addEventListener(clickEvent, _this2._onCancelClick);
+          _this2._ui.footer.cancel.addEventListener(clickEvent, _this2.onCancelClickDateTimePicker);
         });
       }
     }
@@ -12097,13 +12277,14 @@ var bulmaCalendar = function (_EventEmitter) {
       var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
       try {
-        this._locale = __webpack_require__(125)("./" + lang);
+        this._locale = __webpack_require__(83)("./" + lang);
       } catch (e) {
         lang = 'en';
-        this._locale = __webpack_require__(125)("./" + lang);
+        this._locale = __webpack_require__(83)("./" + lang);
       } finally {
         this._lang = lang;
         this.datePicker.lang = lang;
+        this.timePicker.lang = lang;
         return this;
       }
     }
@@ -12219,23 +12400,108 @@ var bulmaCalendar = function (_EventEmitter) {
     get: function get() {
       return this.datePicker.dateFormat;
     }
+
+    /**
+     * * Time setter and getter
+     */
+
+  }, {
+    key: 'time',
+    set: function set() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+      this.timePicker.time = time;
+      return this;
+    }
+    // Get time object
+    ,
+    get: function get() {
+      return this.timePicker.time;
+    }
+  }, {
+    key: 'startTime',
+    set: function set() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      this.timePicker.start = time;
+      return this;
+    },
+    get: function get() {
+      return this.timePicker.start;
+    }
+  }, {
+    key: 'endTime',
+    set: function set() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      this.timePicker.end = time;
+      return this;
+    },
+    get: function get() {
+      return this.timePicker.end;
+    }
+
+    /**
+     * minTime getter and setters
+     */
+
+  }, {
+    key: 'minTime',
+    set: function set() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      this.timePicker.minTime = time;
+      return this;
+    }
+    // Get minTime
+    ,
+    get: function get() {
+      return this.timePicker.minTime;
+    }
+
+    // Set maxTime
+
+  }, {
+    key: 'maxTime',
+    set: function set() {
+      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      this.timePicker.maxTime = time;
+      return this;
+    }
+    // Get maxTime
+    ,
+    get: function get() {
+      return this.timePicker.maxTime;
+    }
+
+    // Set timeFormat (set to HH:MM:SS by default)
+
+  }, {
+    key: 'timeFormat',
+    set: function set(timeFormat) {
+      this.timePicker.dateFormat = timeFormat;
+      return this;
+    }
+    // Get timeFormat
+    ,
+    get: function get() {
+      return this.timePicker.timeFormat;
+    }
   }], [{
     key: 'attach',
     value: function attach() {
-      var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.bulma-datepicker';
+      var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'input[type="date"]';
       var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      var instances = [];
+      var instances = new Array();
 
-      var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-      if (elements.length > 1) {
-        [].forEach.call(elements, function (ement) {
-          instances.push(new bulmaCalendar(ement, options));
-        });
-        return instances;
-      } else if (elements.length === 1) {
-        return new bulmaCalendar(elements[0], options);
-      }
+      var datetimepickers = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+      [].forEach.call(datetimepickers, function (datetimepicker) {
+        instances.push(new bulmaCalendar(datetimepicker, options));
+      });
+
+      return instances;
     }
   }]);
 
@@ -12454,7 +12720,7 @@ module.exports = differenceInCalendarISOWeeks
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getQuarter = __webpack_require__(137)
+var getQuarter = __webpack_require__(138)
 var parse = __webpack_require__(0)
 
 /**
@@ -12587,9 +12853,9 @@ module.exports = differenceInHours
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarISOYears = __webpack_require__(135)
-var compareAsc = __webpack_require__(9)
-var subISOYears = __webpack_require__(140)
+var differenceInCalendarISOYears = __webpack_require__(136)
+var compareAsc = __webpack_require__(10)
+var subISOYears = __webpack_require__(141)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -12669,7 +12935,7 @@ module.exports = differenceInMinutes
 /* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMonths = __webpack_require__(120)
+var differenceInMonths = __webpack_require__(123)
 
 /**
  * @category Quarter Helpers
@@ -12702,7 +12968,7 @@ module.exports = differenceInQuarters
 /* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInDays = __webpack_require__(139)
+var differenceInDays = __webpack_require__(140)
 
 /**
  * @category Week Helpers
@@ -12736,8 +13002,8 @@ module.exports = differenceInWeeks
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarYears = __webpack_require__(138)
-var compareAsc = __webpack_require__(9)
+var differenceInCalendarYears = __webpack_require__(139)
+var compareAsc = __webpack_require__(10)
 
 /**
  * @category Year Helpers
@@ -12779,9 +13045,9 @@ module.exports = differenceInYears
 /* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(119)
+var compareDesc = __webpack_require__(122)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(121)
+var differenceInSeconds = __webpack_require__(124)
 var enLocale = __webpack_require__(5)
 
 var MINUTES_IN_DAY = 1440
@@ -12961,7 +13227,7 @@ module.exports = distanceInWordsStrict
 /* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var distanceInWords = __webpack_require__(141)
+var distanceInWords = __webpack_require__(142)
 
 /**
  * @category Common Helpers
@@ -13143,7 +13409,7 @@ module.exports = endOfHour
 /* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfWeek = __webpack_require__(142)
+var endOfWeek = __webpack_require__(143)
 
 /**
  * @category ISO Week Helpers
@@ -13309,7 +13575,7 @@ module.exports = endOfSecond
 /* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfDay = __webpack_require__(122)
+var endOfDay = __webpack_require__(125)
 
 /**
  * @category Day Helpers
@@ -13435,11 +13701,11 @@ module.exports = endOfYesterday
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getDayOfYear = __webpack_require__(144)
-var getISOWeek = __webpack_require__(123)
+var getDayOfYear = __webpack_require__(145)
+var getISOWeek = __webpack_require__(126)
 var getISOYear = __webpack_require__(2)
 var parse = __webpack_require__(0)
-var isValid = __webpack_require__(146)
+var isValid = __webpack_require__(147)
 var enLocale = __webpack_require__(5)
 
 /**
@@ -13829,7 +14095,7 @@ module.exports = getDay
 /* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isLeapYear = __webpack_require__(147)
+var isLeapYear = __webpack_require__(148)
 
 /**
  * @category Year Helpers
@@ -13887,8 +14153,8 @@ module.exports = getHours
 /* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfISOYear = __webpack_require__(8)
-var addWeeks = __webpack_require__(118)
+var startOfISOYear = __webpack_require__(9)
+var addWeeks = __webpack_require__(121)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -14355,8 +14621,8 @@ module.exports = isFuture
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var endOfDay = __webpack_require__(122)
-var endOfMonth = __webpack_require__(143)
+var endOfDay = __webpack_require__(125)
+var endOfMonth = __webpack_require__(144)
 
 /**
  * @category Month Helpers
@@ -14532,7 +14798,7 @@ module.exports = isSunday
 /* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameHour = __webpack_require__(149)
+var isSameHour = __webpack_require__(150)
 
 /**
  * @category Hour Helpers
@@ -14561,7 +14827,7 @@ module.exports = isThisHour
 /* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOWeek = __webpack_require__(151)
+var isSameISOWeek = __webpack_require__(152)
 
 /**
  * @category ISO Week Helpers
@@ -14591,7 +14857,7 @@ module.exports = isThisISOWeek
 /* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOYear = __webpack_require__(152)
+var isSameISOYear = __webpack_require__(153)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -14622,7 +14888,7 @@ module.exports = isThisISOYear
 /* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMinute = __webpack_require__(153)
+var isSameMinute = __webpack_require__(154)
 
 /**
  * @category Minute Helpers
@@ -14651,7 +14917,7 @@ module.exports = isThisMinute
 /* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMonth = __webpack_require__(155)
+var isSameMonth = __webpack_require__(156)
 
 /**
  * @category Month Helpers
@@ -14679,7 +14945,7 @@ module.exports = isThisMonth
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameQuarter = __webpack_require__(156)
+var isSameQuarter = __webpack_require__(157)
 
 /**
  * @category Quarter Helpers
@@ -14707,7 +14973,7 @@ module.exports = isThisQuarter
 /* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameSecond = __webpack_require__(158)
+var isSameSecond = __webpack_require__(159)
 
 /**
  * @category Second Helpers
@@ -14736,7 +15002,7 @@ module.exports = isThisSecond
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(124)
+var isSameWeek = __webpack_require__(127)
 
 /**
  * @category Week Helpers
@@ -14772,7 +15038,7 @@ module.exports = isThisWeek
 /* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameYear = __webpack_require__(160)
+var isSameYear = __webpack_require__(161)
 
 /**
  * @category Year Helpers
@@ -15050,7 +15316,7 @@ module.exports = isYesterday
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var lastDayOfWeek = __webpack_require__(161)
+var lastDayOfWeek = __webpack_require__(162)
 
 /**
  * @category ISO Week Helpers
@@ -15329,7 +15595,7 @@ module.exports = setDate
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Weekday Helpers
@@ -15440,8 +15706,8 @@ module.exports = setHours
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var addDays = __webpack_require__(6)
-var getISODay = __webpack_require__(148)
+var addDays = __webpack_require__(7)
+var getISODay = __webpack_require__(149)
 
 /**
  * @category Weekday Helpers
@@ -15477,7 +15743,7 @@ module.exports = setISODay
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getISOWeek = __webpack_require__(123)
+var getISOWeek = __webpack_require__(126)
 
 /**
  * @category ISO Week Helpers
@@ -15577,7 +15843,7 @@ module.exports = setMinutes
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var setMonth = __webpack_require__(162)
+var setMonth = __webpack_require__(163)
 
 /**
  * @category Quarter Helpers
@@ -15799,7 +16065,7 @@ module.exports = startOfYesterday
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addDays = __webpack_require__(6)
+var addDays = __webpack_require__(7)
 
 /**
  * @category Day Helpers
@@ -15829,7 +16095,7 @@ module.exports = subDays
 /* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addHours = __webpack_require__(128)
+var addHours = __webpack_require__(129)
 
 /**
  * @category Hour Helpers
@@ -15859,7 +16125,7 @@ module.exports = subHours
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMilliseconds = __webpack_require__(7)
+var addMilliseconds = __webpack_require__(8)
 
 /**
  * @category Millisecond Helpers
@@ -15889,7 +16155,7 @@ module.exports = subMilliseconds
 /* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMinutes = __webpack_require__(131)
+var addMinutes = __webpack_require__(132)
 
 /**
  * @category Minute Helpers
@@ -15949,7 +16215,7 @@ module.exports = subMonths
 /* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addQuarters = __webpack_require__(132)
+var addQuarters = __webpack_require__(133)
 
 /**
  * @category Quarter Helpers
@@ -15979,7 +16245,7 @@ module.exports = subQuarters
 /* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addSeconds = __webpack_require__(133)
+var addSeconds = __webpack_require__(134)
 
 /**
  * @category Second Helpers
@@ -16009,7 +16275,7 @@ module.exports = subSeconds
 /* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addWeeks = __webpack_require__(118)
+var addWeeks = __webpack_require__(121)
 
 /**
  * @category Week Helpers
@@ -16039,7 +16305,7 @@ module.exports = subWeeks
 /* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addYears = __webpack_require__(134)
+var addYears = __webpack_require__(135)
 
 /**
  * @category Year Helpers
@@ -16070,11 +16336,11 @@ module.exports = subYears
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_datepicker__ = __webpack_require__(300);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_days__ = __webpack_require__(301);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_weekdays__ = __webpack_require__(302);
@@ -16103,14 +16369,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var onPreviousDatePicker = Symbol('onPreviousDatePicker');
-var onNextDatePicker = Symbol('onNextDatePicker');
-var onSelectMonthDatePicker = Symbol('onSelectMonthDatePicker');
-var onMonthClickDatePicker = Symbol('onMonthClickDatePicker');
-var onSelectYearDatePicker = Symbol('onSelectYearDatePicker');
-var onYearClickDatePicker = Symbol('onYearClickDatePicker');
-var onDateClickDatePicker = Symbol('onDateClickDatePicker');
-
 var datePicker = function (_EventEmitter) {
 	_inherits(datePicker, _EventEmitter);
 
@@ -16128,13 +16386,13 @@ var datePicker = function (_EventEmitter) {
 		_this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('datePicker');
 		_this.node = null;
 
-		_this[onPreviousDatePicker] = _this[onPreviousDatePicker].bind(_this);
-		_this[onNextDatePicker] = _this[onNextDatePicker].bind(_this);
-		_this[onSelectMonthDatePicker] = _this[onSelectMonthDatePicker].bind(_this);
-		_this[onMonthClickDatePicker] = _this[onMonthClickDatePicker].bind(_this);
-		_this[onSelectYearDatePicker] = _this[onSelectYearDatePicker].bind(_this);
-		_this[onYearClickDatePicker] = _this[onYearClickDatePicker].bind(_this);
-		_this[onDateClickDatePicker] = _this[onDateClickDatePicker].bind(_this);
+		_this.onPreviousDatePicker = _this.onPreviousDatePicker.bind(_this);
+		_this.onNextDatePicker = _this.onNextDatePicker.bind(_this);
+		_this.onSelectMonthDatePicker = _this.onSelectMonthDatePicker.bind(_this);
+		_this.onMonthClickDatePicker = _this.onMonthClickDatePicker.bind(_this);
+		_this.onSelectYearDatePicker = _this.onSelectYearDatePicker.bind(_this);
+		_this.onYearClickDatePicker = _this.onYearClickDatePicker.bind(_this);
+		_this.onDateClickDatePicker = _this.onDateClickDatePicker.bind(_this);
 
 		_this._init();
 		return _this;
@@ -16151,7 +16409,7 @@ var datePicker = function (_EventEmitter) {
 
 
 	_createClass(datePicker, [{
-		key: onPreviousDatePicker,
+		key: 'onPreviousDatePicker',
 
 
 		/****************************************************
@@ -16159,7 +16417,7 @@ var datePicker = function (_EventEmitter) {
    * EVENTS FUNCTIONS                                 *
    *                                                  *
    ****************************************************/
-		value: function value(e) {
+		value: function onPreviousDatePicker(e) {
 			if (!this._supportsPassive) {
 				e.preventDefault();
 			}
@@ -16172,8 +16430,8 @@ var datePicker = function (_EventEmitter) {
 			this.refresh();
 		}
 	}, {
-		key: onNextDatePicker,
-		value: function value(e) {
+		key: 'onNextDatePicker',
+		value: function onNextDatePicker(e) {
 			if (!this._supportsPassive) {
 				e.preventDefault();
 			}
@@ -16186,8 +16444,8 @@ var datePicker = function (_EventEmitter) {
 			this.refresh();
 		}
 	}, {
-		key: onSelectMonthDatePicker,
-		value: function value(e) {
+		key: 'onSelectMonthDatePicker',
+		value: function onSelectMonthDatePicker(e) {
 			e.stopPropagation();
 
 			if (this.options.enableMonthSwitch) {
@@ -16199,8 +16457,8 @@ var datePicker = function (_EventEmitter) {
 			}
 		}
 	}, {
-		key: onSelectYearDatePicker,
-		value: function value(e) {
+		key: 'onSelectYearDatePicker',
+		value: function onSelectYearDatePicker(e) {
 			e.stopPropagation();
 
 			if (this.options.enableYearSwitch) {
@@ -16217,8 +16475,8 @@ var datePicker = function (_EventEmitter) {
 			}
 		}
 	}, {
-		key: onMonthClickDatePicker,
-		value: function value(e) {
+		key: 'onMonthClickDatePicker',
+		value: function onMonthClickDatePicker(e) {
 			if (!this._supportsPassive) {
 				e.preventDefault();
 			}
@@ -16231,8 +16489,8 @@ var datePicker = function (_EventEmitter) {
 			this.refresh();
 		}
 	}, {
-		key: onYearClickDatePicker,
-		value: function value(e) {
+		key: 'onYearClickDatePicker',
+		value: function onYearClickDatePicker(e) {
 			if (!this._supportsPassive) {
 				e.preventDefault();
 			}
@@ -16245,8 +16503,8 @@ var datePicker = function (_EventEmitter) {
 			this.refresh();
 		}
 	}, {
-		key: onDateClickDatePicker,
-		value: function value(e) {
+		key: 'onDateClickDatePicker',
+		value: function onDateClickDatePicker(e) {
 			if (!this._supportsPassive) {
 				e.preventDefault();
 			}
@@ -16256,15 +16514,7 @@ var datePicker = function (_EventEmitter) {
 				this._select(e.currentTarget.dataset.date);
 
 				this.refresh();
-
-				// if ((!this.options.isRange || (this.start && this._isValidDate(this.start) && this.end && this._isValidDate(this.end))) && this.options.closeOnSelect) {
-				// 	this.hide();
-				// }
 			}
-			// this.emit('select', {
-			// 	date: this.date,
-			// 	instance: this
-			// });
 		}
 
 		/****************************************************
@@ -16384,10 +16634,10 @@ var datePicker = function (_EventEmitter) {
 						}
 					}
 					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](_value)) {
-						this._select(_value, false);
+						this._select(_value);
 					}
 				} else {
-					this._select(_value, false);
+					this._select(_value);
 				}
 			} else {
 				var string = this.start && this._isValidDate(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, {
@@ -16429,7 +16679,7 @@ var datePicker = function (_EventEmitter) {
 			var months = this._ui.body.months.querySelectorAll('.datepicker-month') || [];
 			months.forEach(function (month) {
 				_this2._clickEvents.forEach(function (clickEvent) {
-					month.addEventListener(clickEvent, _this2[onMonthClickDatePicker]);
+					month.addEventListener(clickEvent, _this2.onMonthClickDatePicker);
 				});
 				month.classList.remove('is-active');
 				if (month.dataset.month === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'MM', {
@@ -16452,7 +16702,7 @@ var datePicker = function (_EventEmitter) {
 			var years = this._ui.body.years.querySelectorAll('.datepicker-year') || [];
 			years.forEach(function (year) {
 				_this2._clickEvents.forEach(function (clickEvent) {
-					year.addEventListener(clickEvent, _this2[onYearClickDatePicker]);
+					year.addEventListener(clickEvent, _this2.onYearClickDatePicker);
 				});
 				year.classList.remove('is-active');
 				if (year.dataset.year === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'YYYY', {
@@ -16464,7 +16714,7 @@ var datePicker = function (_EventEmitter) {
 
 			// the 7 days of the week (Sun-Sat)
 			var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate)).map(function (d, i) {
-				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i + _this2.options.weekStart), _this2.options.weekDaysFormat, {
+				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i + _this2.options.weekStart), 'ddd', {
 					locale: _this2.locale
 				});
 			});
@@ -16546,8 +16796,8 @@ var datePicker = function (_EventEmitter) {
 				});
 			}
 			this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
-			this.min = this.options.minDate;
-			this.max = this.options.maxDate;
+			this.min = this.options.min;
+			this.max = this.options.max;
 			this._date = {
 				start: this.options.startDate,
 				end: this.options.isRange ? this.options.endDate : undefined
@@ -16595,10 +16845,10 @@ var datePicker = function (_EventEmitter) {
 				if (_this3._focus) {
 					switch (e.keyCode || e.which) {
 						case 37:
-							_this3[onPreviousDatePicker](e);
+							_this3.onPreviousDatePicker(e);
 							break;
 						case 39:
-							_this3[onNextDatePicker](e);
+							_this3.onNextDatePicker(e);
 							break;
 					}
 				}
@@ -16607,37 +16857,37 @@ var datePicker = function (_EventEmitter) {
 			// Bind year navigation events
 			if (this._ui.navigation.previous) {
 				this._clickEvents.forEach(function (clickEvent) {
-					_this3._ui.navigation.previous.addEventListener(clickEvent, _this3[onPreviousDatePicker]);
+					_this3._ui.navigation.previous.addEventListener(clickEvent, _this3.onPreviousDatePicker);
 				});
 			}
 			if (this._ui.navigation.next) {
 				this._clickEvents.forEach(function (clickEvent) {
-					_this3._ui.navigation.next.addEventListener(clickEvent, _this3[onNextDatePicker]);
+					_this3._ui.navigation.next.addEventListener(clickEvent, _this3.onNextDatePicker);
 				});
 			}
 
 			if (this._ui.navigation.month) {
 				this._clickEvents.forEach(function (clickEvent) {
-					_this3._ui.navigation.month.addEventListener(clickEvent, _this3[onSelectMonthDatePicker]);
+					_this3._ui.navigation.month.addEventListener(clickEvent, _this3.onSelectMonthDatePicker);
 				});
 			}
 			if (this._ui.navigation.year) {
 				this._clickEvents.forEach(function (clickEvent) {
-					_this3._ui.navigation.year.addEventListener(clickEvent, _this3[onSelectYearDatePicker]);
+					_this3._ui.navigation.year.addEventListener(clickEvent, _this3.onSelectYearDatePicker);
 				});
 			}
 
 			var months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
 			months.forEach(function (month) {
 				_this3._clickEvents.forEach(function (clickEvent) {
-					month.addEventListener(clickEvent, _this3[onMonthClickDatePicker]);
+					month.addEventListener(clickEvent, _this3.onMonthClickDatePicker);
 				});
 			});
 
 			var years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
 			years.forEach(function (year) {
 				_this3._clickEvents.forEach(function (clickEvent) {
-					year.addEventListener(clickEvent, _this3[onYearClickDatePicker]);
+					year.addEventListener(clickEvent, _this3.onYearClickDatePicker);
 				});
 			});
 		}
@@ -16658,7 +16908,7 @@ var datePicker = function (_EventEmitter) {
 					// if not in range, no click action
 					// if in this month, select the date
 					// if out of this month, jump to the date
-					var onClick = !_this4._isValidDate(new Date(day.dataset.date), _this4.min, _this4.max) ? null : _this4[onDateClickDatePicker];
+					var onClick = !_this4._isValidDate(new Date(day.dataset.date), _this4.min, _this4.max) ? null : _this4.onDateClickDatePicker;
 					day.addEventListener(clickEvent, onClick);
 				});
 
@@ -16730,40 +16980,33 @@ var datePicker = function (_EventEmitter) {
 			var _this6 = this;
 
 			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-			var withEvents = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
 			this.snapshot();
 			date = __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](date) ? date : new Date(date);
 			if (this.options.isRange && (!this._isValidDate(this.start) || this._isValidDate(this.start) && this._isValidDate(this.end))) {
 				this.start = date;
 				this.end = undefined;
-				if (withEvents) this.emit('select:start', this);
+				this.emit('select:start', this);
 			} else if (this.options.isRange && !this._isValidDate(this.end)) {
 				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](date, this.start)) {
 					this.end = this.start;
 					this.start = date;
-					if (withEvents) {
-						this.emit('select', this);
-					}
+					this.emit('select', this);
 				} else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](date, this.start)) {
 					this.end = date;
-					if (withEvents) {
-						this.emit('select', this);
-					}
+					this.emit('select', this);
 				} else if (this.options.allowSameDayRange) {
 					this.end = date;
-					if (withEvents) {
-						this.emit('select', this);
-					}
+					this.emit('select', this);
 				} else {
 					this.start = date;
 					this.end = undefined;
-					if (withEvents) this.emit('select:start', this);
+					this.emit('select:start', this);
 				}
 			} else {
 				this.start = date;
 				this.end = undefined;
-				if (withEvents) this.emit('select', this);
+				this.emit('select', this);
 			}
 			this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
 
@@ -16789,9 +17032,6 @@ var datePicker = function (_EventEmitter) {
 			try {
 				if (!date) {
 					return false;
-				}
-				if (!__WEBPACK_IMPORTED_MODULE_2_date_fns__["isDate"](date)) {
-					date = __WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date);
 				}
 				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](date)) {
 					if (!min && !max) {
@@ -16861,7 +17101,7 @@ var datePicker = function (_EventEmitter) {
 			var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
 			this._lang = lang;
-			this._locale = __webpack_require__(125)("./" + lang);
+			this._locale = __webpack_require__(83)("./" + lang);
 			return this;
 		}
 		// Get current datePicker language
@@ -16953,7 +17193,7 @@ var datePicker = function (_EventEmitter) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-  return "<div class=\"datepicker\">\n    <div class=\"datepicker-nav\">\n        <button class=\"datepicker-nav-previous button is-small is-text\" type=\"button\">" + data.icons.previous + "</button>\n        <div class=\"datepicker-nav-month-year\">\n          <div class=\"datepicker-nav-month\"></div>\n          &nbsp;\n          <div class=\"datepicker-nav-year\"></div>\n        </div>\n        <button class=\"datepicker-nav-next button is-small is-text\" type=\"button\">" + data.icons.next + "</button>\n      </div>\n      <div class=\"datepicker-body\">\n        <div class=\"datepicker-dates is-active\"></div>\n        <div class=\"datepicker-months\"></div>\n        <div class=\"datepicker-years\"></div>\n      </div>\n    </div>";
+  return "<div class=\"datepicker\">\n    <div class=\"datepicker-nav\">\n        <button class=\"datepicker-nav-previous button is-small is-text\">" + data.icons.previous + "</button>\n        <div class=\"datepicker-nav-month-year\">\n          <div class=\"datepicker-nav-month\"></div>\n          &nbsp;\n          <div class=\"datepicker-nav-year\"></div>\n        </div>\n        <button class=\"datepicker-nav-next button is-small is-text\">" + data.icons.next + "</button>\n      </div>\n      <div class=\"datepicker-body\">\n        <div class=\"datepicker-dates is-active\"></div>\n        <div class=\"datepicker-months\"></div>\n        <div class=\"datepicker-years\"></div>\n      </div>\n    </div>";
 });
 
 /***/ }),
@@ -16983,7 +17223,7 @@ var datePicker = function (_EventEmitter) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_date_fns__);
 
 
@@ -17002,7 +17242,7 @@ var datePicker = function (_EventEmitter) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_date_fns__);
 
 
@@ -17030,7 +17270,6 @@ var defaultOptions = {
   disabledWeekDays: undefined,
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
-  weekDaysFormat: 'ddd',
   enableMonthSwitch: true,
   enableYearSwitch: true
 };
@@ -17042,42 +17281,749 @@ var defaultOptions = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var defaultOptions = {
-  startDate: undefined,
-  endDate: undefined,
-  minDate: null,
-  maxDate: null,
-  isRange: false,
-  allowSameDayRange: true,
-  disabledDates: [],
-  disabledWeekDays: undefined,
-  lang: 'en', // internationalization
-  dateFormat: 'MM/DD/YYYY',
-  displayMode: 'default',
-  showHeader: true,
-  showFooter: true,
-  todayButton: true,
-  clearButton: true,
-  cancelLabel: 'Cancel',
-  clearLabel: 'Clear',
-  todayLabel: 'Today',
-  nowLabel: 'Now',
-  validateLabel: 'Validate',
-  labelFrom: '',
-  labelTo: '',
-  weekStart: 0,
-  weekDaysFormat: 'ddd',
-  closeOnOverlayClick: true,
-  closeOnSelect: true,
-  toggleOnInputClick: true,
-  onReady: null,
-  icons: {
-    previous: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>\n    </svg>',
-    next: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>\n    </svg>'
-  }
-};
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(307);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(308);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-/* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+
+
+
+var timePicker = function (_EventEmitter) {
+	_inherits(timePicker, _EventEmitter);
+
+	function timePicker() {
+		var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+		_classCallCheck(this, timePicker);
+
+		var _this = _possibleConstructorReturn(this, (timePicker.__proto__ || Object.getPrototypeOf(timePicker)).call(this));
+
+		_this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */], options);
+
+		_this._clickEvents = ['click', 'touch'];
+		_this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* detectSupportsPassive */]();
+		_this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('timePicker');
+		_this.node = null;
+
+		_this.onPreviousHourStartTimePicker = _this.onPreviousHourStartTimePicker.bind(_this);
+		_this.onNextHourStartTimePicker = _this.onNextHourStartTimePicker.bind(_this);
+		_this.onPreviousMinuteStartTimePicker = _this.onPreviousMinuteStartTimePicker.bind(_this);
+		_this.onNextMinuteStartTimePicker = _this.onNextMinuteStartTimePicker.bind(_this);
+		_this.onPreviousHourEndTimePicker = _this.onPreviousHourEndTimePicker.bind(_this);
+		_this.onNextHourEndTimePicker = _this.onNextHourEndTimePicker.bind(_this);
+		_this.onPreviousMinuteEndTimePicker = _this.onPreviousMinuteEndTimePicker.bind(_this);
+		_this.onNextMinuteEndTimePicker = _this.onNextMinuteEndTimePicker.bind(_this);
+
+		_this._init();
+		return _this;
+	}
+
+	/****************************************************
+  *                                                  *
+  * PRIVATE FUNCTIONS                                *
+  *                                                  *
+  ****************************************************/
+
+
+	_createClass(timePicker, [{
+		key: '_init',
+		value: function _init() {
+			this._open = false;
+			this._snapshots = [];
+			this.lang = this.options.lang;
+			this.format = this.options.format || 'HH:mm';
+			this.min = this.options.min;
+			this.max = this.options.max;
+			this._time = {
+				start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
+				end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
+			};
+			this.start = this.options.start || __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
+			this.end = this.options.isRange ? this.options.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+
+			this._build();
+			this._bindEvents();
+
+			this.emit('ready', this);
+		}
+	}, {
+		key: '_build',
+		value: function _build() {
+			this.node = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_4__templates_timepicker__["a" /* default */])({
+				locale: this.locale,
+				isRange: this.options.isRange,
+				icons: this.options.icons
+			}));
+
+			this._ui = {
+				container: this.node.firstChild,
+				start: {
+					container: this.node.querySelector('.timepicker-start'),
+					hours: {
+						container: this.node.querySelector('.timepicker-start .timepicker-hours'),
+						input: this.node.querySelector('.timepicker-start .timepicker-hours input'),
+						number: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-input-number'),
+						previous: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-previous'),
+						next: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-next')
+					},
+					minutes: {
+						container: this.node.querySelector('.timepicker-start .timepicker-minutes'),
+						input: this.node.querySelector('.timepicker-start .timepicker-minutes input'),
+						number: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-input-number'),
+						previous: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-previous'),
+						next: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-next')
+					}
+				},
+				end: {
+					container: this.node.querySelector('.timepicker-end'),
+					hours: {
+						container: this.node.querySelector('.timepicker-end .timepicker-hours'),
+						input: this.node.querySelector('.timepicker-end .timepicker-hours input'),
+						number: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-input-number'),
+						previous: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-previous'),
+						next: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-next')
+					},
+					minutes: {
+						container: this.node.querySelector('.timepicker-end .timepicker-minutes'),
+						input: this.node.querySelector('.timepicker-end .timepicker-minutes input'),
+						number: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-input-number'),
+						previous: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-previous'),
+						next: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-next')
+					}
+				}
+			};
+		}
+	}, {
+		key: '_bindEvents',
+		value: function _bindEvents() {
+			var _this2 = this;
+
+			this._clickEvents.forEach(function (clickEvent) {
+				_this2._ui.start.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourStartTimePicker);
+				_this2._ui.start.hours.next.addEventListener(clickEvent, _this2.onNextHourStartTimePicker);
+				_this2._ui.start.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteStartTimePicker);
+				_this2._ui.start.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteStartTimePicker);
+
+				if (_this2.options.isRange) {
+					_this2._ui.end.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourEndTimePicker);
+					_this2._ui.end.hours.next.addEventListener(clickEvent, _this2.onNextHourEndTimePicker);
+					_this2._ui.end.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteEndTimePicker);
+					_this2._ui.end.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteEndTimePicker);
+				}
+			});
+		}
+	}, {
+		key: '_select',
+		value: function _select() {
+			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			this.snapshot();
+			time = __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](time) ? time : new Date(time);
+			if (this.options.isRange && (!this._isValidTime(this.start) || this._isValidTime(this.start) && this._isValidTime(this.end))) {
+				this.start = time;
+				this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+				this.emit('select:start', this);
+			} else if (this.options.isRange && !this._isValidTime(this.end)) {
+				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, this.start)) {
+					this.end = this.start;
+					this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+					this.emit('select', this);
+				} else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, this.start)) {
+					this.end = time;
+					this.emit('select', this);
+				} else {
+					this.start = time;
+					this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+					this.emit('select:start', this);
+				}
+			} else {
+				this.start = time;
+				this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+				this.emit('select', this);
+			}
+		}
+	}, {
+		key: '_isValidTime',
+		value: function _isValidTime(time, min, max) {
+			try {
+				if (!time) {
+					return false;
+				}
+				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](time)) {
+					if (!min && !max) {
+						return true;
+					}
+					if (min && max) {
+						return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](time, min, max);
+					}
+					if (max) {
+						return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, max);
+					}
+					return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, min);
+				} else {
+					return false;
+				}
+			} catch (e) {
+				return false;
+			}
+		}
+
+		/****************************************************
+   *                                                  *
+   * GETTERS and SETTERS                              *
+   *                                                  *
+   ****************************************************/
+		/**
+   * Get id of current TimePicker
+   */
+
+	}, {
+		key: 'onPreviousHourStartTimePicker',
+
+
+		/****************************************************
+   *                                                  *
+   * EVENTS FUNCTIONS                                 *
+   *                                                  *
+   ****************************************************/
+		value: function onPreviousHourStartTimePicker(e) {
+			var _this3 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.start, 1);
+			setTimeout(function () {
+				_this3._ui.start.hours.number.classList.add('is-decrement-hide');
+
+				setTimeout(function () {
+					_this3._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
+					_this3._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
+					_this3._ui.start.hours.number.classList.add('is-decrement-visible');
+				}, 100);
+
+				setTimeout(function () {
+					_this3._ui.start.hours.number.classList.remove('is-decrement-hide');
+					_this3._ui.start.hours.number.classList.remove('is-decrement-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit(this.options.isRange ? 'select:start' : 'select', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onNextHourStartTimePicker',
+		value: function onNextHourStartTimePicker(e) {
+			var _this4 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.start, 1);
+			setTimeout(function () {
+				_this4._ui.start.hours.number.classList.add('is-increment-hide');
+
+				setTimeout(function () {
+					_this4._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
+					_this4._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
+					_this4._ui.start.hours.number.classList.add('is-increment-visible');
+				}, 100);
+
+				setTimeout(function () {
+					_this4._ui.start.hours.number.classList.remove('is-increment-hide');
+					_this4._ui.start.hours.number.classList.remove('is-increment-visible');
+				}, 1100);
+			}, 100);
+
+			// this._selec(this.time);
+
+			// this.emit(this.options.isRange ? 'select:start' : 'select', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onPreviousMinuteStartTimePicker',
+		value: function onPreviousMinuteStartTimePicker(e) {
+			var _this5 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.start, this.options.minuteSteps);
+			setTimeout(function () {
+				_this5._ui.start.minutes.number.classList.add('is-decrement-hide');
+
+				setTimeout(function () {
+					_this5._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
+					_this5._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
+					_this5._ui.start.minutes.number.classList.add('is-decrement-visible');
+
+					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH') !== _this5._ui.start.hours.input.value) {
+						_this5._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
+						_this5._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
+						_this5._ui.start.hours.number.classList.add('is-decrement-visible');
+					}
+				}, 100);
+
+				setTimeout(function () {
+					_this5._ui.start.minutes.number.classList.remove('is-decrement-hide');
+					_this5._ui.start.minutes.number.classList.remove('is-decrement-visible');
+
+					_this5._ui.start.hours.number.classList.remove('is-decrement-hide');
+					_this5._ui.start.hours.number.classList.remove('is-decrement-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit(this.options.isRange ? 'select:start' : 'select', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onNextMinuteStartTimePicker',
+		value: function onNextMinuteStartTimePicker(e) {
+			var _this6 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.start, this.options.minuteSteps);
+			setTimeout(function () {
+				_this6._ui.start.minutes.number.classList.add('is-increment-hide');
+
+				setTimeout(function () {
+					_this6._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
+					_this6._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
+					_this6._ui.start.minutes.number.classList.add('is-increment-visible');
+
+					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH') !== _this6._ui.start.hours.input.value) {
+						_this6._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
+						_this6._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
+						_this6._ui.start.hours.number.classList.add('is-increment-visible');
+					}
+				}, 100);
+
+				setTimeout(function () {
+					_this6._ui.start.minutes.number.classList.remove('is-increment-hide');
+					_this6._ui.start.minutes.number.classList.remove('is-increment-visible');
+
+					_this6._ui.start.hours.number.classList.remove('is-increment-hide');
+					_this6._ui.start.hours.number.classList.remove('is-increment-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit(this.options.isRange ? 'select:start' : 'select', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onPreviousHourEndTimePicker',
+		value: function onPreviousHourEndTimePicker(e) {
+			var _this7 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.end, 1);
+			setTimeout(function () {
+				_this7._ui.end.hours.number.classList.add('is-decrement-hide');
+
+				setTimeout(function () {
+					_this7._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
+					_this7._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
+					_this7._ui.end.hours.number.classList.add('is-decrement-visible');
+				}, 100);
+
+				setTimeout(function () {
+					_this7._ui.end.hours.number.classList.remove('is-decrement-hide');
+					_this7._ui.end.hours.number.classList.remove('is-decrement-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit('select:end', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onNextHourEndTimePicker',
+		value: function onNextHourEndTimePicker(e) {
+			var _this8 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.end, 1);
+			setTimeout(function () {
+				_this8._ui.end.hours.number.classList.add('is-increment-hide');
+
+				setTimeout(function () {
+					_this8._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
+					_this8._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
+					_this8._ui.end.hours.number.classList.add('is-increment-visible');
+				}, 100);
+
+				setTimeout(function () {
+					_this8._ui.end.hours.number.classList.remove('is-increment-hide');
+					_this8._ui.end.hours.number.classList.remove('is-increment-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit('select:end', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onPreviousMinuteEndTimePicker',
+		value: function onPreviousMinuteEndTimePicker(e) {
+			var _this9 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.end, this.options.minuteSteps);
+			setTimeout(function () {
+				_this9._ui.end.minutes.number.classList.add('is-decrement-hide');
+
+				setTimeout(function () {
+					_this9._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
+					_this9._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
+					_this9._ui.end.minutes.number.classList.add('is-decrement-visible');
+
+					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH') !== _this9._ui.end.hours.input.value) {
+						_this9._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
+						_this9._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
+						_this9._ui.end.hours.number.classList.add('is-decrement-visible');
+					}
+				}, 100);
+
+				setTimeout(function () {
+					_this9._ui.end.minutes.number.classList.remove('is-decrement-hide');
+					_this9._ui.end.minutes.number.classList.remove('is-decrement-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit('select:end', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+	}, {
+		key: 'onNextMinuteEndTimePicker',
+		value: function onNextMinuteEndTimePicker(e) {
+			var _this10 = this;
+
+			if (!this._supportsPassive) {
+				e.preventDefault();
+			}
+			e.stopPropagation();
+
+			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.end, this.options.minuteSteps);
+			setTimeout(function () {
+				_this10._ui.end.minutes.number.classList.add('is-increment-hide');
+
+				setTimeout(function () {
+					_this10._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
+					_this10._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
+					_this10._ui.end.minutes.number.classList.add('is-increment-visible');
+
+					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH') !== _this10._ui.end.hours.input.value) {
+						_this10._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
+						_this10._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
+						_this10._ui.end.hours.number.classList.add('is-increment-visible');
+					}
+				}, 100);
+
+				setTimeout(function () {
+					_this10._ui.end.minutes.number.classList.remove('is-increment-hide');
+					_this10._ui.end.minutes.number.classList.remove('is-increment-visible');
+				}, 1100);
+			}, 100);
+
+			// this.emit('select:end', {
+			// 	time: this.time,
+			// 	instance: this
+			// });
+		}
+
+		/****************************************************
+   *                                                  *
+   * PUBLIC FUNCTIONS                                 *
+   *                                                  *
+   ****************************************************/
+
+	}, {
+		key: 'isRange',
+		value: function isRange() {
+			return this.options.isRange;
+		}
+	}, {
+		key: 'show',
+		value: function show() {
+			if (!this._open) {
+				this._ui.container.classList.add('is-active');
+				this._open = true;
+				this._focus = true;
+
+				this.emit('show', this);
+			}
+		}
+	}, {
+		key: 'hide',
+		value: function hide() {
+			this._open = false;
+			this._focus = false;
+			this._ui.container.classList.remove('is-active');
+			this.emit('hide', this);
+		}
+	}, {
+		key: 'toggle',
+		value: function toggle() {
+			if (!this._open) {
+				this.show();
+			} else {
+				this.hide();
+			}
+		}
+
+		/**
+   * Get / Set TimePicker value
+   * @param {null|time|Object|String} time optional if null then return the current time as String
+   */
+
+	}, {
+		key: 'value',
+		value: function value() {
+			var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+			if (_value) {
+				if (this.options.isRange) {
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](_value)) {
+						var times = _value.split(' - ');
+						if (times.length) {
+							this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(times[0]), this.format, {
+								locale: this.locale
+							});
+						}
+						if (times.length === 2) {
+							this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(times[1]), this.format, {
+								locale: this.locale
+							});
+						}
+					}
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](_value)) {
+						this._select(_value);
+					}
+				} else {
+					this._select(_value);
+				}
+			} else {
+				var string = this.start && this._isValidTime(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, {
+					locale: this.locale
+				}) : '';
+
+				if (this.options.isRange) {
+					if (this.end && this._isValidTime(this.end)) {
+						string += ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, this.format, { locale: this.locale });
+					}
+				}
+
+				return string;
+			}
+		}
+
+		/**
+   * Refresh Timepicker with new year/month days
+   * @method _refreshTimepicker
+   * @return {[type]}        [description]
+   */
+
+	}, {
+		key: 'refresh',
+		value: function refresh() {
+			this._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
+			this._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
+			this._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
+			this._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
+			if (this.options.isRange) {
+				this._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
+				this._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
+				this._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
+				this._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
+			}
+
+			return this;
+		}
+	}, {
+		key: 'clear',
+		value: function clear() {
+			this.time = {
+				start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
+				end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
+			};
+			this.refresh();
+		}
+	}, {
+		key: 'snapshot',
+		value: function snapshot() {
+			this._snapshots.push(_extends({}, this._time));
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			this.refresh();
+			return this.node;
+		}
+	}, {
+		key: 'id',
+		get: function get() {
+			return this._id;
+		}
+	}, {
+		key: 'time',
+		set: function set(time) {
+			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](time) && time.start && time.end) {
+				this._time = time;
+			}
+			return this;
+		},
+		get: function get() {
+			return this._time || {
+				start: undefined,
+				end: undefined
+			};
+		}
+
+		// Set TimePicker language
+
+	}, {
+		key: 'lang',
+		set: function set() {
+			var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+			this._lang = lang;
+			this._locale = __webpack_require__(83)("./" + lang);
+			return this;
+		}
+		// Get current TimePicker language
+		,
+		get: function get() {
+			return this._lang;
+		}
+	}, {
+		key: 'locale',
+		get: function get() {
+			return this._locale;
+		}
+	}, {
+		key: 'start',
+		set: function set(time) {
+			this._time.start = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.start : __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
+			return this;
+		},
+		get: function get() {
+			return this._time.start;
+		}
+	}, {
+		key: 'end',
+		set: function set(time) {
+			this._time.end = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+			return this;
+		},
+		get: function get() {
+			return this._time.end;
+		}
+
+		// Set min
+
+	}, {
+		key: 'min',
+		set: function set() {
+			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			this._min = time ? this._isValidTime(time) ? time : this._min : undefined;
+			return this;
+		}
+		// Get min
+		,
+		get: function get() {
+			return this._min;
+		}
+
+		// Set max
+
+	}, {
+		key: 'max',
+		set: function set() {
+			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+			this._max = time ? this._isValidTime(time) ? time : this._max : undefined;
+			return this;
+		}
+		// Get max
+		,
+		get: function get() {
+			return this._max;
+		}
+
+		// Set time format (set to HH:mm by default)
+
+	}, {
+		key: 'format',
+		set: function set() {
+			var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'HH:mm';
+
+			this._format = format;
+			return this;
+		}
+		// Get time format
+		,
+		get: function get() {
+			return this._format;
+		}
+	}]);
+
+	return timePicker;
+}(__WEBPACK_IMPORTED_MODULE_3__utils_events__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (timePicker);
 
 /***/ }),
 /* 307 */
@@ -17085,7 +18031,7 @@ var defaultOptions = {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-  return '<div id=\'' + data.id + '\'>\n    <div class="bulma-datepicker-wrapper' + (data.displayMode === 'dialog' ? ' modal' : '') + '">\n        <div class="modal-background' + (data.displayMode === 'dialog' ? '' : ' is-hidden') + '"></div>\n        <div class="bulma-datepicker">\n          <div class="bulma-datepicker-container' + (data.headerPosition === 'top' ? '' : ' has-header-bottom') + '"></div>\n        </div>\n    </div>\n  </div>';
+  return '<div class="timepicker">\n    <div class="timepicker-start">\n      <div class="timepicker-hours">\n        <span class="timepicker-next">+</span>\n        <div class="timepicker-input">\n          <input type="number">\n          <div class="timepicker-input-number"></div>\n        </div>\n        <span class="timepicker-previous">-</span>\n      </div>\n      <div class="timepicker-time-divider">:</div>\n      <div class="timepicker-minutes">\n        <span class="timepicker-next">+</span>\n        <div class="timepicker-input">\n          <input type="number">\n          <div class="timepicker-input-number"></div>\n        </div>\n        <span class="timepicker-previous">-</span>\n      </div>\n    </div>\n    ' + (data.isRange ? '<div class="timepicker-end">\n      <div class="timepicker-hours">\n        <span class="timepicker-next">+</span>\n        <div class="timepicker-input">\n          <input type="number">\n          <div class="timepicker-input-number"></div>\n        </div>\n        <span class="timepicker-previous">-</span>\n      </div>\n      <div class="timepicker-time-divider">:</div>\n      <div class="timepicker-minutes">\n        <span class="timepicker-next">+</span>\n        <div class="timepicker-input">\n          <input type="number">\n          <div class="timepicker-input-number"></div>\n        </div>\n        <span class="timepicker-previous">-</span>\n      </div>\n    </div>' : '') + '\n  </div>';
 });
 
 /***/ }),
@@ -17093,17 +18039,99 @@ var defaultOptions = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (data) {
-	return '<div class="bulma-datepicker-header' + (data.type === 'time' ? ' is-hidden' : '') + (data.type === 'date' ? ' is-date-only' : '') + '">\n\t\t<div class="bulma-datepicker-selection-details">\n\t\t\t<div class="bulma-datepicker-selection-from' + (data.labelFrom === '' ? ' is-hidden' : '') + '">' + data.labelFrom + '</div>\n\t\t\t<div class="bulma-datepicker-selection-start' + (data.isRange ? '' : ' is-centered') + '">\n\t\t\t\t<div class="bulma-datepicker-selection-wrapper">\n\t\t\t\t\t<div class="bulma-datepicker-selection-day"></div>\n\t\t\t\t\t<div class="bulma-datepicker-selection-date">\n\t\t\t\t\t\t<div class="bulma-datepicker-selection-month"></div>\n\t\t\t\t\t\t<div class="bulma-datepicker-selection-weekday"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t' + (data.isRange ? '\n\t\t<div class="bulma-datepicker-selection-details">\n\t\t\t<div class="bulma-datepicker-selection-to' + (data.labelTo === '' ? ' is-hidden' : '') + '">' + data.labelTo + '</div>\n\t\t\t<div class="bulma-datepicker-selection-end">\n\t\t\t\t<div class="bulma-datepicker-selection-wrapper">\n\t\t\t\t\t<div class="bulma-datepicker-selection-day"></div>\n\t\t\t\t\t<div class="bulma-datepicker-selection-date">\n\t\t\t\t\t\t<div class="bulma-datepicker-selection-month"></div>\n\t\t\t\t\t\t<div class="bulma-datepicker-selection-weekday"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>' : '') + '\n\t</div>';
-});
+var defaultOptions = {
+  timeFormat: 'HH:mm',
+  color: 'primary',
+  isRange: false,
+  lang: 'en', // internationalization
+  startTime: undefined,
+  endTime: undefined,
+  minTime: null,
+  maxTime: null,
+  minuteSteps: 5
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
 /* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var defaultOptions = {
+  type: 'datetime',
+  color: 'primary',
+  isRange: false,
+  allowSameDayRange: true,
+  lang: navigator.language.substring(0, 2) || 'en', // internationalization
+  dateFormat: 'MM/DD/YYYY',
+  timeFormat: 'HH:mm',
+  displayMode: 'default',
+  position: 'auto',
+  showHeader: true,
+  headerPosition: 'top',
+  showFooter: true,
+  showButtons: true,
+  showTodayButton: true,
+  showClearButton: true,
+  cancelLabel: 'Cancel',
+  clearLabel: 'Clear',
+  todayLabel: 'Today',
+  nowLabel: 'Now',
+  validateLabel: 'Validate',
+  enableMonthSwitch: true,
+  enableYearSwitch: true,
+  startDate: undefined,
+  endDate: undefined,
+  minDate: null,
+  maxDate: null,
+  disabledDates: [],
+  disabledWeekDays: undefined,
+  weekStart: 0,
+  startTime: undefined,
+  endTime: undefined,
+  minuteSteps: 5,
+  labelFrom: '',
+  labelTo: '',
+  closeOnOverlayClick: true,
+  closeOnSelect: true,
+  toggleOnInputClick: true,
+  onReady: null,
+  icons: {
+    previous: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>\n    </svg>',
+    next: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>\n    </svg>',
+    time: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path fill="currentcolor" d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z"/>\n\t      <path fill="currentcolor" d="M30,6c-0.552,0-1,0.447-1,1v23H14c-0.552,0-1,0.447-1,1s0.448,1,1,1h16c0.552,0,1-0.447,1-1V7C31,6.447,30.552,6,30,6z"/>\n      </g>\n    </svg>',
+    date: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path d="M57,4h-7V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H19V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H3C2.447,4,2,4.447,2,5v11v43c0,0.553,0.447,1,1,1h54c0.553,0,1-0.447,1-1V16V5C58,4.447,57.553,4,57,4z M43,2h5v3v3h-5V5V2z M12,2h5v3v3h-5V5V2z M4,6h6v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h22v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h6v9H4V6zM4,58V17h52v41H4z"/>\n        <path d="M38,23h-7h-2h-7h-2h-9v9v2v7v2v9h9h2h7h2h7h2h9v-9v-2v-7v-2v-9h-9H38z M31,25h7v7h-7V25z M38,41h-7v-7h7V41z M22,34h7v7h-7V34z M22,25h7v7h-7V25z M13,25h7v7h-7V25z M13,34h7v7h-7V34z M20,50h-7v-7h7V50z M29,50h-7v-7h7V50z M38,50h-7v-7h7V50z M47,50h-7v-7h7V50z M47,41h-7v-7h7V41z M47,25v7h-7v-7H47z"/>\n      </g>\n    </svg>'
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
+
+/***/ }),
+/* 310 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-	return '<div class="bulma-datepicker-footer">\n\t\t<button class="bulma-datepicker-footer-validate has-text-success button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '" type="button">' + (data.icons.validate ? data.icons.validate : '') + data.validateLabel + ' </button>\n\t\t<button class="bulma-datepicker-footer-today has-text-warning button is-small is-text" type="button">' + (data.icons.today ? data.icons.today : '') + data.todayLabel + '</button>\n\t\t<button class="bulma-datepicker-footer-clear has-text-danger button is-small is-text" type="button">' + (data.icons.clear ? data.icons.clear : '') + data.clearLabel + '</button>\n\t\t<button class="bulma-datepicker-footer-cancel button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '" type="button">' + (data.icons.cancel ? data.icons.cancel : '') + data.cancelLabel + '</button>\n\t</div>';
+  return '<div id=\'' + data.id + '\'>\n    <div class="datetimepicker-dummy is-hidden">\n      <div class="datetimepicker-dummy-wrapper">\n        <input placeholder="' + data.labelFrom + '" readonly="readonly" class="datetimepicker-dummy-input' + (data.isRange ? ' is-datetimepicker-range' : '') + '" type="text">\n        ' + (data.isRange ? '<input placeholder="' + data.labelTo + '" readonly="readonly" class="datetimepicker-dummy-input" type="text">' : '') + '\n      </div>\n      <button class="datetimepicker-clear-button">\uFF0B</button>\n    </div>\n    <div class="dateimepicker-wrapper' + (data.displayMode === 'dialog' ? ' modal' : '') + '">\n        <div class="modal-background' + (data.displayMode === 'dialog' ? '' : ' is-hidden') + '"></div>\n        <div class="datetimepicker">\n          <div class="datetimepicker-container' + (data.headerPosition === 'top' ? '' : ' has-header-bottom') + '"></div>\n        </div>\n    </div>\n  </div>';
+});
+
+/***/ }),
+/* 311 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (data) {
+	return '<div class="datetimepicker-header' + (data.type === 'time' ? ' is-hidden' : '') + (data.type === 'date' ? ' is-date-only' : '') + '">\n\t\t<div class="datetimepicker-selection-details">\n\t\t\t<div class="datetimepicker-selection-from' + (data.labelFrom === '' ? ' is-hidden' : '') + '">' + data.labelFrom + '</div>\n\t\t\t<div class="datetimepicker-selection-start' + (data.isRange ? '' : ' is-centered') + '">\n\t\t\t\t<div class="datetimepicker-selection-wrapper">\n\t\t\t\t\t<div class="datetimepicker-selection-day"></div>\n\t\t\t\t\t<div class="datetimepicker-selection-date">\n\t\t\t\t\t\t<div class="datetimepicker-selection-month"></div>\n\t\t\t\t\t\t<div class="datetimepicker-selection-weekday"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t' + (data.type !== 'date' ? '<div class="datetimepicker-selection-time">\n\t\t\t\t\t<div class="datetimepicker-selection-time-icon">\n\t\t\t\t\t\t<figure class="image is-16x16">\n\t\t\t\t\t\t\t' + (data.icons ? data.icons.time : '') + '\n\t\t\t\t\t\t</figure>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="datetimepicker-selection-hour"></div>\n\t\t\t\t</div>' : '') + '\n\t\t\t</div>\n\t\t</div>\n\t\t' + (data.isRange ? '\n\t\t<div class="datetimepicker-selection-details">\n\t\t\t<div class="datetimepicker-selection-to' + (data.labelTo === '' ? ' is-hidden' : '') + '">' + data.labelTo + '</div>\n\t\t\t<div class="datetimepicker-selection-end">\n\t\t\t\t<div class="datetimepicker-selection-wrapper">\n\t\t\t\t\t<div class="datetimepicker-selection-day"></div>\n\t\t\t\t\t<div class="datetimepicker-selection-date">\n\t\t\t\t\t\t<div class="datetimepicker-selection-month"></div>\n\t\t\t\t\t\t<div class="datetimepicker-selection-weekday"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t' + (data.type !== 'date' ? '<div class="datetimepicker-selection-time">\n\t\t\t\t\t<div class="datetimepicker-selection-time-icon">\n\t\t\t\t\t\t<figure class="image is-16x16">\n\t\t\t\t\t\t\t' + (data.icons ? data.icons.time : '') + '\n\t\t\t\t\t\t</figure>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="datetimepicker-selection-hour"></div>\n\t\t\t\t</div>' : '') + '\n\t\t\t</div>\n\t\t</div>' : '') + '\n\t</div>';
+});
+
+/***/ }),
+/* 312 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (data) {
+	return '<div class="datetimepicker-footer">\n\t\t<button class = "datetimepicker-footer-validate has-text-success button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.validate ? data.icons.validate : '') + data.validateLabel + ' </button>\n\t\t<button class = "datetimepicker-footer-today has-text-warning button is-small is-text">' + (data.icons.today ? data.icons.today : '') + data.todayLabel + '</button>\n\t\t<button class = "datetimepicker-footer-clear has-text-danger button is-small is-text">' + (data.icons.clear ? data.icons.clear : '') + data.clearLabel + '</button>\n\t\t<button class = "datetimepicker-footer-cancel button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.cancel ? data.icons.cancel : '') + data.cancelLabel + '</button>\n\t</div>';
 });
 
 /***/ })

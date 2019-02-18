@@ -1,0 +1,28 @@
+<div class="table-container">
+  <table class="table is-bordered {{ table_class }}">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for setter in site.data.setters %}
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">{{ setter.name }}</code>
+        </td>
+        <td>
+          <span>{{ setter.description }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

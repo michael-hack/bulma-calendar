@@ -1,0 +1,72 @@
+- name: 'show()'
+  description: 'Open date picker (not available with "inline" display style)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'hide()'
+  description: 'Close date picker (not available with "inline" display style)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'isOpen()'
+  description: 'Check if date picker is open or not'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'boolean'
+    description: 'True if date picker is open else False'
+- name: 'isRange()'
+  description: 'Check if current instance is a range date picker'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'boolean'
+    description: 'True if the instance is a range date picker'
+- name: 'value()'
+  description: 'Get the date picker value as formatted string if no parameter else set the passed value'
+  parameters:
+  - name: 'value'
+    type: 'String|null'
+    description: 'Formatted date value if no parameter passed else null'
+  returns:
+  - type: 'Object{startDate, endDate}'
+    description: 'Date picker selected date (if not range calendar then endDate is undefined)'
+- name: 'refresh()'
+  description: 'Force calendar refresh'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'save()'
+  description: 'Force to set calendar data into UI inputs'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''
+- name: 'clear()'
+  description: 'Clear date selection (startDate and endDate are set to undefined)'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'none'
+    description: ''

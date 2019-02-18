@@ -1,0 +1,168 @@
+- name: 'type'
+  type: String
+  description: 'Component type: date|time|datetime'
+  value: 'datetime'
+- name: 'color'
+  type: String
+  description: 'Picker dominant color'
+  value: 'primary'
+- name: 'isRange'
+  type: Boolean
+  description: 'Range capability (start and end date/time selection'
+  value: 'false'
+- name: 'allowSameDayRange'
+  type: Boolean
+  description: 'Possibility to select same date as start and end date in range mode'
+  value: 'true'
+- name: 'lang'
+  type: String
+  description: 'Display lang (from language supported by <a href="https://date-fns.org/v1.29.0/docs/format" targer="_blank">date-fns</a>)'
+  value: 'navigator.language.substring(0, 2) || "en"'
+- name: 'dateFormat'
+  type: String
+  description: 'Date format pattern'
+  value: 'MM/DD/YYYY'
+- name: 'timeFormat'
+  type: String
+  description: 'Time format pattern'
+  value: 'HH:mm'
+- name: 'displayMode'
+  type: String
+  description: 'Display mode: default|dialog|inline'
+  value: 'default'
+- name: 'position'
+  type: String
+  description: ''
+  value: 'auto'
+- name: 'showHeader'
+  type: Boolean
+  description: 'Show/Hide header block (with current selection)'
+  value: 'true'
+- name: 'headerPosition'
+  type: Boolean
+  description: 'Header block position: top|bottom'
+  value: 'top'
+- name: 'showFooter'
+  type: Boolean
+  description: 'Show/Hide footer block'
+  value: 'true'
+- name: 'showButtons'
+  type: Boolean
+  description: 'Show/Hide buttons'
+  value: 'true'
+- name: 'showTodayButton'
+  type: Boolean
+  description: 'Show/Hide Today Button'
+  value: 'true'
+- name: 'showClearButton'
+  type: Boolean
+  description: 'Show/Hide Clear Button'
+  value: 'true'
+- name: 'cancelLabel'
+  type: String
+  description: 'Cancel button label'
+  value: 'Cancel'
+- name: 'clearLabel'
+  type: String
+  description: 'Clear button label'
+  value: 'Clear'
+- name: 'todayLabel'
+  type: String
+  description: 'Today button label'
+  value: 'Today'
+- name: 'nowLabel'
+  type: String
+  description: 'Now button label'
+  value: 'Now'
+- name: 'validateLabel'
+  type: String
+  description: 'Validate button label'
+  value: 'Validate'
+- name: 'enableMonthSwitch'
+  type: Boolean
+  description: 'Enable/disable month switch'
+  value: 'true'
+- name: 'enableYearSwitch'
+  type: Boolean
+  description: 'Enable/disable year switch'
+  value: 'true'
+- name: 'startDate'
+  type: Date
+  description: 'Pre-selected start date'
+  value: 'undefined'
+- name: 'endDate'
+  type: Date
+  description: 'Pre-selected end date'
+  value: 'undefined'
+- name: 'minDate'
+  type: Date
+  description: 'Minimum date allowed'
+  value: 'null'
+- name: 'maxDate'
+  type: Date
+  description: 'Maximum date allowed'
+  value: 'null'
+- name: 'disabledDates'
+  type: Array of date
+  description: 'List of disabled dates'
+  value: []
+- name: 'disabledWeekDays'
+  type: Array of day number
+  description: 'List of disabled week days'
+  value: 'undefined'
+- name: 'weekStart'
+  type: Integer
+  description: 'Default weekstart day number (sunday by default)'
+  value: 0,
+- name: 'startTime'
+  type: Date
+  description: 'Pre-selected start time'
+  value: 'undefined'
+- name: 'endTime'
+  type: Date
+  description: 'Pre-selected end time'
+  value: 'undefined'
+- name: 'minuteSteps'
+  type: Integer
+  description: 'Steps for minutes selector'
+  value: 5
+- name: 'labelFrom'
+  type: String
+  description: 'From label'
+  value: ''
+- name: 'labelTo'
+  type: String
+  description: 'To label'
+  value: ''
+- name: 'closeOnOverlayClick'
+  type: Boolean
+  description: 'Close picker on overlay click (only for dialog display style)'
+  value: 'true'
+- name: 'closeOnSelect'
+  type: Boolean
+  description: 'Automatically close the datePicker when date selected (or range date selected) - not available for inline display style. If set to False then a validate button will be displayed into the footer section.'
+  value: 'true'
+- name: 'toggleOnInputClick'
+  type: Boolean
+  description: 'Automatically open datepicker when click into input element'
+  value: 'true'
+- name: 'onReady'
+  type: Function
+  description: 'Callback to trigger once picker initiated'
+  value: 'null'
+- name: 'icons.previous'
+  type: String
+  description: 'Previous button icon'
+  value: 'Svg content'
+- name: 'icons.next'
+  type: String
+  description: 'Next button icon'
+  value: 'Svg content'
+- name: 'icons.time'
+  type: String
+  description: 'Time icon'
+  value: 'Svg content'
+- name: 'icons.date'
+  type: String
+  description: 'Date icon'
+  value: 'Svg content'

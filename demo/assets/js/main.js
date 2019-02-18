@@ -1,16 +1,20 @@
 ready(function () {
+  bulmaCalendar.attach('#datepickerDemoRange');
   bulmaCalendar.attach('#datepickerDemoInline');
+  bulmaCalendar.attach('#datepickerDemoInlineInfo');
+  bulmaCalendar.attach('#datepickerDemoInlineSuccess');
+  bulmaCalendar.attach('#datepickerDemoInlineWarning');
+  bulmaCalendar.attach('#datepickerDemoInlineDanger');
+  bulmaCalendar.attach('#datepickerDemoInlineGrey');
+  bulmaCalendar.attach('#datepickerDemoInlineBlack');
   bulmaCalendar.attach('#datepickerDemoInlineRange');
-  bulmaCalendar.attach('#datepickerDemoRangeDialog', {
-    displayMode: 'dialog'
+  bulmaCalendar.attach('#datepickerDemoRangeLabels', {
+    labelFrom: 'Check-in',
+    labelTo: 'Check-out'
   });
 
-  calendars = [bulmaCalendar.attach('#datepickerDemoDefault', {
-    dateFormat: 'DD/MM/YYYY',
-    clearButton: false
-  })];
-
-  [].forEach.call(calendars, function (calendar) {
+  var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
+  [].forEach.call(calendars, function(calendar) {
     calendar.on('select', function (datePicker) {
       console.log('Selected date: ' + datePicker.data.value());
     });
@@ -18,15 +22,14 @@ ready(function () {
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
-    dateFormat: 'D/M/YYYY',
-    startDate: new Date(),
+    startDate: new Date('02/11/2018'),
     minDate: '01/01/2018',
-    maxDate: '12/31/2018'
+    maxDate: '12/31/2018',
+    lang: 'fr'
   });
 
   bulmaCalendar.attach('#datepickerDemoDisabledDates', {
     displayMode: 'dialog',
-    startDate: new Date(),
     disabledDates: [
       new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
       new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
@@ -35,13 +38,11 @@ ready(function () {
 
   bulmaCalendar.attach('#datepickerDemoDisabledWeekDays', {
     displayMode: 'dialog',
-    startDate: new Date(),
     disabledWeekDays: '0,6'
   });
 
   bulmaCalendar.attach('#datepickerDemoWeekStart', {
     displayMode: 'dialog',
-    startDate: new Date(),
     weekStart: 1
   });
 
@@ -61,7 +62,7 @@ ready(function () {
   var trigger = document.querySelector('#datepicker-trigger');
   if (trigger) {
     trigger.addEventListener('click', function (e) {
-      datepicker.show();
+      datepicker[0].show();
     });
   }
 
@@ -74,8 +75,8 @@ ready(function () {
   });
   var trigger2 = document.querySelector('#datepicker-trigger2');
   if (trigger2) {
-    trigger2.addEventListener('click', function(e) {
-      datepicker2.show();
+    trigger2.addEventListener('click', function (e) {
+      datepicker2[0].show();
     });
   }
 });

@@ -117,7 +117,7 @@ export default class EventEmitter {
           }
           listener.callback({
             type: name,
-            timestamp: (new Date()).getTime(),
+            timeStamp: (new Date()).getTime(),
             data: data
           });
         }

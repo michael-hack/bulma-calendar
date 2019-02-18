@@ -16,10 +16,12 @@ $calendar-selection-padding: .3rem 0 !default
 $calendar-selection-nav-padding: .5em !default
 $calendar-date-padding: .1rem 0 !default
 
-=bulma-datepicker-header
-  .bulma-datepicker-header
+@import timepicker
+
+=datetimepicker-header
+  .datetimepicker-header
     display: flex
-    flex-direction: row
+    flex-direction: column
     flex: 1
     text-align: left
     position: relative
@@ -28,29 +30,29 @@ $calendar-date-padding: .1rem 0 !default
     box-shadow: 0 .2rem .2rem -.2rem rgba(10,10,10,.1)
     &.is-date-only
       flex-direction: row
-      .bulma-datepicker-selection-end
-        .bulma-datepicker-selection-wrapper
+      .datetimepicker-selection-end
+        .datetimepicker-selection-wrapper
           justify-content: flex-end !important
-    .bulma-datepicker-selection-details
+    .datetimepicker-selection-details
       flex: 1
-    .bulma-datepicker-selection-from,
-    .bulma-datepicker-selection-to
+    .datetimepicker-selection-from,
+    .datetimepicker-selection-to
       font-size: .65rem
       color: $grey-light
       text-transform: uppercase
       padding: 0
-    .bulma-datepicker-selection-start,
-    .bulma-datepicker-selection-end
+    .datetimepicker-selection-start,
+    .datetimepicker-selection-end
       padding: 0
       display: flex
       flex: 1
       flex-direction: row
-      .bulma-datepicker-selection-wrapper
+      .datetimepicker-selection-wrapper
         flex-direction: row
         display: flex
         min-height: 2.5rem
         flex: 1 1 2rem
-      .bulma-datepicker-selection-day
+      .datetimepicker-selection-day
         flex: 0
         text-transform: capitalize
         font-size: 2rem
@@ -58,39 +60,39 @@ $calendar-date-padding: .1rem 0 !default
         margin-right: .5rem
         color: $primary
         font-weight: 100
-      .bulma-datepicker-selection-date
+      .datetimepicker-selection-date
         font-size: .85rem
         line-height: .85rem
         justify-content: center
         display: flex
         flex-direction: column
         font-weight: 300
-      .bulma-datepicker-selection-month
+      .datetimepicker-selection-month
         color: $text
         text-transform: capitalize
-      .bulma-datepicker-selection-weekday
+      .datetimepicker-selection-weekday
           font-size: .75em
           color: #b6b4b6
           text-transform: capitalize
           text-align: left
-      .bulma-datepicker-selection-hour
+      .datetimepicker-selection-hour
         font-size: 1.5rem
         font-weight: 100
         flex: 1
         justify-content: center
         align-items: center
         text-align: center
-    .bulma-datepicker-selection-start,
-    .bulma-datepicker-selection-end
+    .datetimepicker-selection-start,
+    .datetimepicker-selection-end
       align-items: center
       &.is-centered
-        .bulma-datepicker-selection-wrapper
+        .datetimepicker-selection-wrapper
           justify-content: center
           align-items: center
-    .bulma-datepicker-selection-time
+    .datetimepicker-selection-time
       flex: 1
       display: flex
-      .bulma-datepicker-selection-time-icon
+      .datetimepicker-selection-time-icon
         display: flex
         justify-content: center
         align-items: center
@@ -98,7 +100,7 @@ $calendar-date-padding: .1rem 0 !default
         color: $grey-light
       
 
-=bulma-datepicker-nav
+=datepicker-nav
   .datepicker-nav
     background: $calendar-selection-background-color
     color: findColorInvert($calendar-selection-background-color)
@@ -136,7 +138,7 @@ $calendar-date-padding: .1rem 0 !default
         width: 11.25px
         height: .75rem
 
-=bulma-datepicker-body
+=datepicker-body
   box-shadow: 0 2px 3px rgba(10,10,10,.1),0 0 0 1px rgba(10,10,10,.1)
   // .datepicker
   //   box-shadow: 0 .2rem .2rem -.2rem rgba(10,10,10,.1)
@@ -286,8 +288,8 @@ $calendar-date-padding: .1rem 0 !default
           border: $calendar-date-hover-border
           color: findColorInvert( $calendar-date-hover-background-color )
 
-=bulma-datepicker-footer
-  .bulma-datepicker-footer
+=datetimepicker-footer
+  .datetimepicker-footer
     display: flex
     flex: 1
     justify-content: space-evenly
@@ -295,17 +297,17 @@ $calendar-date-padding: .1rem 0 !default
     > *
       text-decoration: none !important
 
-=bulma-datepicker
+=datetimepicker
   background: $white
   border-radius: $calendar-border-radius
   max-width: 320px
   z-index: 1
-  +bulma-datepicker-header
-  +bulma-datepicker-nav
-  +bulma-datepicker-body
-  +bulma-datepicker-footer
+  +datetimepicker-header
+  +datepicker-nav
+  +datepicker-body
+  +datetimepicker-footer
   &.is-datetimepicker-default
-    .bulma-datepicker-container
+    .datetimepicker-container
       display: flex
       flex-direction: column
       
@@ -385,19 +387,20 @@ $calendar-date-padding: .1rem 0 !default
           background-color: $color
           color: $color-invert
 
-.bulma-datepicker
+.datetimepicker
   transition: width .8s cubic-bezier(1,-.55,.2,1.37),opacity .2s ease,visibility .2s ease,margin .2s ease
   display: none
   &.is-active
     display: block
-  +bulma-datepicker
+  +datetimepicker
+  +timepicker
 
   @each $name, $pair in $colors
     $color: nth($pair, 1)
     $color-invert: nth($pair, 2)
     &.is-#{$name}
-      .bulma-datepicker-header
-        .bulma-datepicker-selection-day
+      .datetimepicker-header
+        .datetimepicker-selection-day
           color: $color
       .datepicker-nav
         background: $color
@@ -436,8 +439,8 @@ $calendar-date-padding: .1rem 0 !default
     $color: $value
     $color-invert: findColorInvert($color)
     &.is-#{$name}
-      .bulma-datepicker-header
-        .bulma-datepicker-selection-day
+      .datetimepicker-header
+        .datetimepicker-selection-day
           color: $color
       .datepicker-nav
         background: $color
@@ -473,8 +476,85 @@ $calendar-date-padding: .1rem 0 !default
                     border-color: $color
                     color: $color
 
+.datetimepicker-dummy
+  position: relative
+  display: flex
+  width: 100%
+  height: 2.5rem
+  &:before,
+  &::before
+    content: ''
+    mask: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGZpbGw9ImN1cnJlbnRjb2xvciIgZD0iTTU3LDRoLTdWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIMTlWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIM0MyLjQ0Nyw0LDIsNC40NDcsMiw1djExdjQzYzAsMC41NTMsMC40NDcsMSwxLDFoNTRjMC41NTMsMCwxLTAuNDQ3LDEtMVYxNlY1QzU4LDQuNDQ3LDU3LjU1Myw0LDU3LDR6IE00MywyaDV2M3YzaC01VjVWMnogTTEyLDJoNXYzdjNoLTVWNVYyeiBNNCw2aDZ2M2MwLDAuNTUzLDAuNDQ3LDEsMSwxaDdjMC41NTMsMCwxLTAuNDQ3LDEtMVY2aDIydjNjMCwwLjU1MywwLjQ0NywxLDEsMWg3YzAuNTUzLDAsMS0wLjQ0NywxLTFWNmg2djlINFY2ek00LDU4VjE3aDUydjQxSDR6Ii8+PHBhdGggZmlsbD0iY3VycmVudGNvbG9yIiBkPSJNMzgsMjNoLTdoLTJoLTdoLTJoLTl2OXYydjd2MnY5aDloMmg3aDJoN2gyaDl2LTl2LTJ2LTd2LTJ2LTloLTlIMzh6TTMxLDI1aDd2N2gtN1YyNXpNMzgsNDFoLTd2LTdoN1Y0MXpNMjIsMzRoN3Y3aC03VjM0ek0yMiwyNWg3djdoLTdWMjV6TTEzLDI1aDd2N2gtN1YyNXpNMTMsMzRoN3Y3aC03VjM0ek0yMCw1MGgtN3YtN2g3VjUwek0yOSw1MGgtN3YtN2g3VjUweiBNMzgsNTBoLTd2LTdoN1Y1MHogTTQ3LDUwaC03di03aDdWNTB6IE00Nyw0MWgtN3YtN2g3VjQxek00NywyNXY3aC03di03SDQ3eiIvPjwvZz48L3N2Zz4=)
+    position: absolute
+    top: .65rem
+    left: .75rem
+    width: 1.25rem
+    height: 1.25rem
+    background-color: $primary
+  .datetimepicker-clear-button
+    background: transparent
+    border: 0
+    color: $primary
+    cursor: pointer
+    font-weight: $weight-normal
+    outline: 0
+    transform: rotate(45deg)
+    font-size: 1.5rem
+    height: 1.75rem
+    margin: .4rem .2rem 0 0
+    padding: 0
+    position: absolute
+    right: 0
+    top: 0
+    width: 1.75rem
+  .datetimepicker-dummy-wrapper
+    border: 1px solid $grey-light
+    cursor: pointer
+    display: flex
+    flex: 1 100%
+    flex-wrap: nowrap
+    height: 100%
+    max-width: 100%
+    .datetimepicker-dummy-input
+      color: $text
+      font-size: 1rem
+      text-align: left
+      text-indent: 1rem
+      flex: 1
+      height: 100%
+      max-width: 50%
+      &:first-child
+        text-indent: 2.5rem
+      &.is-datetimepicker-range
+        background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjE4IiB2aWV3Qm94PSIwIDAgOCAxOCI+CiAgICA8cGF0aCBmaWxsPSIjOTU5OUFBIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0uMTE5LjcxOGw3LjE1OCA3LjQwNy0uMDMzLS41NTEtNi43MzcgOC44ODlhLjQyNS40MjUgMCAwIDAgLjA4LjU5My40Mi40MiAwIDAgMCAuNTktLjA4bDYuNzM3LTguODg5YS40MjUuNDI1IDAgMCAwLS4wMzMtLjU1MUwuNzIzLjEyOEEuNDIuNDIgMCAwIDAgLjEyOC4xMmEuNDI1LjQyNSAwIDAgMC0uMDA5LjU5OHoiLz4KPC9zdmc+Cg==) no-repeat 100%/8px
+    input
+      background: transparent
+      outline: none
+      word-spacing: .5rem
+      border: 0
+
+.datetimepicker-dummy
+  @each $name, $pair in $colors
+    $color: nth($pair, 1)
+    $color-invert: findColorInvert($color)
+    &.is-#{$name}
+      &:before,
+      &::before
+        background-color: $color
+      .datetimepicker-clear-button
+        color: $color
+  @each $name, $value in $shades
+    $color: $value
+    $color-invert: findColorInvert($color)
+    &.is-#{$name}
+      &:before,
+      &::before
+        background-color: $color
+      .datetimepicker-clear-button
+        color: $color
+
 .modal
-  .bulma-datepicker
+  .datetimepicker
     display: block
     max-height: 95vh
     width: 22rem

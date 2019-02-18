@@ -1,9 +1,9 @@
 {
   "name": "bulma-calendar",
-  "description": "Display a calendar for date selection or for planning management, in different colors and sizes",
+  "description": "Display a calendar for date/time selection, in different colors and sizes",
   "main": "./dist/js/bulma-calendar.min.js",
   "style": "./dist/css/bulma-calendar.min.css",
-  "version": "5.1.4",
+  "version": "6.0.0",
   "scripts": {
     "commit": "git-cz",
     "travis-deploy-once": "travis-deploy-once",
@@ -32,24 +32,23 @@
   },
   "homepage": "https://creativebulma.net/components/calendar",
   "dependencies": {
-    "date-and-time": "^0.6.2",
-    "date-fns": "^1.29"
+    "bulma": "latest",
+    "date-fns": "^1.29.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^3.0.0",
     "ansi-colors": "^2.0.1",
     "autoprefixer": "^8.6.2",
     "babel-core": "^6.26.3",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.26.3",
-    "bulma": "^0.7.2",
+    "browser-sync": "^2.23.6",
+    "bulma": "^0.7.1",
     "camelcase": "^5.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "del": "^3.0.0",
-    "event-stream": "^3.3.5",
+    "event-stream": "^3.3.4",
     "fancy-log": "^1.3.2",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
@@ -58,13 +57,13 @@
     "gulp-nop": "0.0.3",
     "gulp-postcss": "^7.0.1",
     "gulp-run": "^1.7.1",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^4.0.1",
     "gulp-uglify": "^3.0.0",
     "jekyll": "^3.0.0-beta1",
-    "jest": "^23.6.0",
+    "jest": "^23.1.0",
     "regenerator-runtime": "^0.11.1",
-    "semantic-release": "^15.9.17",
-    "webpack": "^4.20.2",
+    "semantic-release": "^15.9.14",
+    "webpack": "^4.12.0",
     "webpack-stream": "^4.0.3"
   },
   "config": {
@@ -82,8 +81,8 @@
     ]
   },
   "files": [
-    "dist",
-    "src",
+    "dist/**",
+    "src/**",
     "LICENSE",
     "README.md"
   ]

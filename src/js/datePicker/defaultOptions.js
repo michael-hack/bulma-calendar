@@ -11,7 +11,6 @@ const defaultOptions = {
   disabledWeekDays: undefined,
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
-  weekDaysFormat: 'ddd',
   enableMonthSwitch: true,
   enableYearSwitch: true
 };

@@ -1,5 +1,11 @@
-- name: Demonstration
-  link: 'demonstration'
+- name: Demonstrations
+  submenus:
+    - name: Date Picker
+      link: 'demonstration/date'
+    - name: Time Picker
+      link: 'demonstration/time'
+    - name: DateTime Picker
+      link: 'demonstration/datetime'
 - name: Quick Start
   submenus:
     - name: Features
@@ -16,6 +22,10 @@
       link: '#options'
     - name: Methods
       link: '#methods'
+    - name: Getters
+      link: '#getters'
+    - name: Setters
+      link: '#setters'
     - name: Events
       link: '#events'
 - name: Customization

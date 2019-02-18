@@ -1,5 +1,5 @@
 <ul>
-{% for item in include.tree %}
+{% for item in site.data.tree %}
   {% if item.subtree %}
   <li class="is-folder {% if item.open %}is-open{% endif %}">
     <span>

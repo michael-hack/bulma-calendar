@@ -1,8 +1,8 @@
 # Variables
 title:         "Calendar"
-description:   "Responsive - Interactive Calendar Picker"
-version:       5.0.6
-# url:           https://demo.creativebulma.net/components/calendar/
+description:   "Responsive - Interactive Date/Time Picker"
+version:       6.0.0
+url:           https://demo.creativebulma.net/components/calendar/v6/
 
 # Build
 markdown:      kramdown

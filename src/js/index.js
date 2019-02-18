@@ -4,6 +4,7 @@ import * as dateFns from 'date-fns';
 import EventEmitter from './utils/events';
 
 import datePicker from './datePicker';
+import timePicker from './timePicker';
 
 import defaultOptions from './defaultOptions';
 import template from './templates';
@@ -38,16 +39,27 @@ export default class bulmaCalendar extends EventEmitter {
       ...elementConfig
     };
 
-    this._id = utils.uuid('bulmaDatePicker');
+    switch (this.element.getAttribute('type')) {
+      case 'date':
+        this.options.type = 'date';
+        break;
+      case 'time':
+        this.options.type = 'time';
+        break;
+      default:
+        this.options.type = 'datetime';
+        break;
+    }
+    this._id = utils.uuid('datetimePicker');
 
-    this._onToggle = this._onToggle.bind(this);
-    this._onClose = this._onClose.bind(this);
-    this._onDocumentClick = this._onDocumentClick.bind(this);
-    this._onValidateClick = this._onValidateClick.bind(this);
-    this._onTodayClick = this._onTodayClick.bind(this);
-    this._onClearClick = this._onClearClick.bind(this);
-    this._onCancelClick = this._onCancelClick.bind(this);
-    this._onSelectDate = this._onSelectDate.bind(this);
+    this.onToggleDateTimePicker = this.onToggleDateTimePicker.bind(this);
+    this.onCloseDateTimePicker = this.onCloseDateTimePicker.bind(this);
+    this.onDocumentClickDateTimePicker = this.onDocumentClickDateTimePicker.bind(this);
+    this.onValidateClickDateTimePicker = this.onValidateClickDateTimePicker.bind(this);
+    this.onTodayClickDateTimePicker = this.onTodayClickDateTimePicker.bind(this);
+    this.onClearClickDateTimePicker = this.onClearClickDateTimePicker.bind(this);
+    this.onCancelClickDateTimePicker = this.onCancelClickDateTimePicker.bind(this);
+    this.onSelectDateTimePicker = this.onSelectDateTimePicker.bind(this);
 
     // Initiate plugin
     this._init();
@@ -58,18 +70,15 @@ export default class bulmaCalendar extends EventEmitter {
    * @method
    * @return {Array} Array of all datePicker instances
    */
-  static attach(selector = '.bulma-datepicker', options = {}) {
-    let instances = [];
+  static attach(selector = 'input[type="date"]', options = {}) {
+    let instances = new Array();
 
-    const elements = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-    if (elements.length > 1) {
-      [].forEach.call(elements, ement => {
-        instances.push(new bulmaCalendar(ement, options));
-      });
-      return instances;
-    } else if (elements.length === 1) {
-      return new bulmaCalendar(elements[0], options);
-    }
+    const datetimepickers = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+    [].forEach.call(datetimepickers, datetimepicker => {
+      instances.push(new bulmaCalendar(datetimepicker, options));
+    });
+
+    return instances;
   }
 
   /****************************************************
@@ -95,6 +104,7 @@ export default class bulmaCalendar extends EventEmitter {
     } finally {
       this._lang = lang;
       this.datePicker.lang = lang;
+      this.timePicker.lang = lang;
       return this;
     }
   }
@@ -176,26 +186,81 @@ export default class bulmaCalendar extends EventEmitter {
     return this.datePicker.dateFormat;
   }
 
+  /**
+   * * Time setter and getter
+   */
+  set time(time = null) {
+    this.timePicker.time = time;
+    return this;
+  }
+  // Get time object
+  get time() {
+    return this.timePicker.time;
+  }
+
+  set startTime(time = undefined) {
+    this.timePicker.start = time;
+    return this;
+  }
+  get startTime() {
+    return this.timePicker.start;
+  }
+
+  set endTime(time = undefined) {
+    this.timePicker.end = time;
+    return this;
+  }
+  get endTime() {
+    return this.timePicker.end;
+  }
+
+  /**
+   * minTime getter and setters
+   */
+  set minTime(time = undefined) {
+    this.timePicker.minTime = time;
+    return this;
+  }
+  // Get minTime
+  get minTime() {
+    return this.timePicker.minTime;
+  }
+
+  // Set maxTime
+  set maxTime(time = undefined) {
+    this.timePicker.maxTime = time;
+    return this;
+  }
+  // Get maxTime
+  get maxTime() {
+    return this.timePicker.maxTime;
+  }
+
+  // Set timeFormat (set to HH:MM:SS by default)
+  set timeFormat(timeFormat) {
+    this.timePicker.dateFormat = timeFormat;
+    return this;
+  }
+  // Get timeFormat
+  get timeFormat() {
+    return this.timePicker.timeFormat;
+  }
+
   /****************************************************
    *                                                  *
    * EVENTS FUNCTIONS                                 *
    *                                                  *
    ****************************************************/
-  _onSelectDate(e) {
+  onSelectDateTimePicker(e) {
     this.refresh();
     this.save();
     if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
       this.hide();
     }
-
-    this.emit(e.type, e.data);
+    this.emit(e.type, this);
   }
 
-  _onDocumentClick(e) {
-    if (!this._open) {
-      return;
-    }
-    
+  onDocumentClickDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -203,12 +268,12 @@ export default class bulmaCalendar extends EventEmitter {
 
     // Check is e.target not within datepicker element
     const target = e.target || e.srcElement;
-    if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline') {
-      this._onClose(e);
+    if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
+      this.onCloseDateTimePicker(e);
     }
   }
 
-  _onToggle(e) {
+  onToggleDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -221,20 +286,21 @@ export default class bulmaCalendar extends EventEmitter {
     }
   }
 
-  _onValidateClick(e) {
+  onValidateClickDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
     e.stopPropagation();
 
     this.save();
+    this.emit('select', this);
 
     if (this.options.displayMode !== 'inline') {
-      this._onClose(e);
+      this.onCloseDateTimePicker(e);
     }
   }
 
-  _onTodayClick(e) {
+  onTodayClickDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -243,11 +309,14 @@ export default class bulmaCalendar extends EventEmitter {
     this.datePicker.value(new Date());
     this.datePicker.refresh();
 
+    this.timePicker.value(new Date());
+    this.timePicker.refresh();
+
     // TODO: check if closeOnSelect
     this.save();
   }
 
-  _onClearClick(e) {
+  onClearClickDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -256,7 +325,7 @@ export default class bulmaCalendar extends EventEmitter {
     this.clear();
   }
 
-  _onCancelClick(e) {
+  onCancelClickDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -264,14 +333,15 @@ export default class bulmaCalendar extends EventEmitter {
 
     if (this._snapshots.length) {
       this.datePicker = this._snapshots[0].datePicker;
+      this.timePicker = this._snapshots[0].timePicker;
     }
     this.save();
     if (this.options.displayMode !== 'inline') {
-      this._onClose(e);
+      this.onCloseDateTimePicker(e);
     }
   }
 
-  _onClose(e) {
+  onCloseDateTimePicker(e) {
     if (!this._supportsPassive) {
       e.preventDefault();
     }
@@ -299,15 +369,39 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   /**
-   * Get / Set ement value
+   * Get / Set datetimePicker value
    * @param {*} date 
    */
   value(value = null) {
     if (value) {
       this.datePicker.value(value);
-      this.refresh();
+      this.timePicker.value(value);
     } else {
-      return this.datePicker.value();
+      let string = '';
+      switch (this.options.type) {
+        case 'date':
+          string = this.datePicker.value();
+          break;
+        case 'time':
+          string = this.timePicker.value();
+          break;
+        case 'datetime':
+          let start = this.datePicker.start ? dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.start, dateFns.getHours(this.timePicker.start)), dateFns.getMinutes(this.timePicker.start))) : undefined;
+          let end = this.datePicker.end ? dateFns.getTime(this.datePicker.end) : undefined;
+
+          if (end && this.options.isRange) {
+            end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
+          }
+
+          string = start ? dateFns.format(new Date(start), this.format, {
+            locale: this.locale
+          }) : '';
+          if (end) {
+            string += ` - ${end ? dateFns.format(new Date(end), this.format, { locale: this.locale }) : ''}`;
+          }
+          break;
+      }
+      return string;
     }
   }
 
@@ -327,6 +421,12 @@ export default class bulmaCalendar extends EventEmitter {
       this._ui.header.start.weekday.classList.add('is-hidden');
     }
 
+    if (this._ui.header.start.hour) {
+      this._ui.header.start.hour.innerHTML = this.timePicker.start ? dateFns.format(this.timePicker.start, 'HH:mm', {
+        locale: this.locale
+      }) : '--:--';
+    }
+
     if (this._ui.header.end) {
       this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, 'DD', {
         locale: this.locale
@@ -342,16 +442,26 @@ export default class bulmaCalendar extends EventEmitter {
       } else {
         this._ui.header.end.weekday.classList.add('is-hidden');
       }
+
+      if (this._ui.header.end && this._ui.header.end.hour) {
+        this._ui.header.end.hour.innerHTML = this.timePicker.end ? dateFns.format(this.timePicker.end, 'HH:mm', {
+          locale: this.locale
+        }) : '--:--';
+      }
     }
-    this.datePicker.refresh();
     this.emit('refresh', this);
   }
 
   clear() {
     this.datePicker.clear();
+    this.timePicker.clear();
 
     this.refresh();
     this.element.value = '';
+    this._ui.dummy.dummy_1.value = '';
+    if (this._ui.dummy.dummy_2) {
+      this._ui.dummy.dummy_2.value = '';
+    }
     this.emit('clear', this);
   }
 
@@ -366,10 +476,11 @@ export default class bulmaCalendar extends EventEmitter {
 
     if (this.element.value) {
       this.datePicker.value(this.element.value);
-      this.refresh();
+      this.timePicker.value(this.element.value);
     }
 
     this.datePicker.show();
+    this.timePicker.hide();
 
     if (this._ui.modal) {
       this._ui.modal.classList.add('is-active');
@@ -397,7 +508,12 @@ export default class bulmaCalendar extends EventEmitter {
   // Set element value to datetime selected based on format
   save() {
     const date = this.value();
+    const [start, end] = date.split(' - ');
     this.element.value = date;
+    this._ui.dummy.dummy_1.value = start ? start : '';
+    if (this._ui.dummy.dummy_2) {
+      this._ui.dummy.dummy_2.value = end ? end : '';
+    }
   }
 
   snapshot() {
@@ -427,26 +543,29 @@ export default class bulmaCalendar extends EventEmitter {
    * @return {datePicker} Current plugin instance
    */
   _init() {
-    if (types.isFunction(this.options.onReady)) {
-      this.on('ready', this.options.onReady);
-    }
-
     this._open = false;
     this._snapshots = []; // Use to revert selection
+    // Set component type (date / time / datetime)
+    this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
+    this._type = (['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1) ? this.options.type.toLowerCase() : 'date';
     // Change element type to prevent browser default type="date" behavior
     this.element.setAttribute('type', 'text');
     this.datePicker = new datePicker({
       ...this.options,
       lang: this.lang
     });
-
+    this.timePicker = new timePicker({
+      ...this.options,
+      lang: this.lang
+    });
     if (this.element.value) {
       this.datePicker.value(this.element.value);
+      this.timePicker.value(this.element.value);
     }
 
     this.lang = this.options.lang;
     // Set export format based on component type
-    this.format = this._type === 'date' ? this.options.dateFormat : `${this.options.dateFormat}`;
+    this.format = this._type === 'date' ? this.options.dateFormat : (this._type === 'time' ? this.options.timeFormat : `${this.options.dateFormat} ${this.options.timeFormat}`);
 
     // Force dialog display mode on mobile devices
     if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
@@ -463,11 +582,14 @@ export default class bulmaCalendar extends EventEmitter {
     this._bindEvents();
     this.save();
 
+    if (types.isFunction(this.options.onReady)) {
+      this.on('ready', this.options.onReady);
+    }
     this.emit('ready', this);
   }
 
   /**
-   * Build datePicker HTML component and bulmaCalendarend it to the DOM
+   * Build datePicker HTML component and append it to the DOM
    * @method _build
    * @return {datePicker} Current plugin instance
    */
@@ -475,53 +597,60 @@ export default class bulmaCalendar extends EventEmitter {
     const headerNode = document.createRange().createContextualFragment(templateselection({
       ...this.options,
       type: this._type,
-      datePicker: this.options.type !== 'time'
+      datePicker: this.options.type !== 'time',
+      timePicker: this.options.type !== 'date'
     }));
     const footerNode = document.createRange().createContextualFragment(templateFooter(this.options));
-    const elementNode = document.createRange().createContextualFragment(template({
+    const datetimePickerNode = document.createRange().createContextualFragment(template({
       ...this.options,
       id: this.id
     }));
 
     // Save pointer to each datePicker element for later use
     this._ui = {
-      modal: elementNode.querySelector('.modal'),
-      wrapper: elementNode.querySelector('.bulma-datepicker'),
-      container: elementNode.querySelector('.bulma-datepicker-container'),
-      calendar: elementNode.querySelector('.ement'),
+      modal: datetimePickerNode.querySelector('.modal'),
+      wrapper: datetimePickerNode.querySelector('.datetimepicker'),
+      container: datetimePickerNode.querySelector('.datetimepicker-container'),
+      dummy: {
+        container: datetimePickerNode.querySelector('.datetimepicker-dummy'),
+        wrapper: datetimePickerNode.querySelector('.datetimepicker-dummy-wrapper'),
+        dummy_1: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)'),
+        dummy_2: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)'),
+        clear: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-clear-button')
+      },
+      calendar: datetimePickerNode.querySelector('.datetimepicker'),
       overlay: this.options.displayMode === 'dialog' ? {
-        background: elementNode.querySelector('.modal-background'),
-        close: elementNode.querySelector('.modal-close')
+        background: datetimePickerNode.querySelector('.modal-background'),
+        close: datetimePickerNode.querySelector('.modal-close')
       } : undefined,
       header: {
-        container: headerNode.querySelector('.bulma-datepicker-header'),
+        container: headerNode.querySelector('.datetimepicker-header'),
         start: {
-          container: headerNode.querySelector('.bulma-datepicker-selection-start'),
-          day: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-day'),
-          month: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-month'),
-          weekday: headerNode.querySelector('.bulma-datepicker-selection-start .bulma-datepicker-selection-weekday'),
-          empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
+          container: headerNode.querySelector('.datetimepicker-selection-start'),
+          day: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-day'),
+          month: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-month'),
+          weekday: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-weekday'),
+          hour: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour'),
+          empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
         },
         end: this.options.isRange ? {
-          container: headerNode.querySelector('.bulma-datepicker-selection-end'),
-          day: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-day'),
-          month: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-month'),
-          weekday: headerNode.querySelector('.bulma-datepicker-selection-end .bulma-datepicker-selection-weekday'),
-          empty: headerNode.querySelector('.bulma-datepicker-selection-start .empty')
+          container: headerNode.querySelector('.datetimepicker-selection-end'),
+          day: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-day'),
+          month: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-month'),
+          weekday: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-weekday'),
+          hour: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour'),
+          empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
         } : undefined
       },
       footer: {
-        container: footerNode.querySelector('.bulma-datepicker-footer'),
-        validate: footerNode.querySelector('.bulma-datepicker-footer-validate'),
-        today: footerNode.querySelector('.bulma-datepicker-footer-today'),
-        clear: footerNode.querySelector('.bulma-datepicker-footer-clear'),
-        cancel: footerNode.querySelector('.bulma-datepicker-footer-cancel'),
+        container: footerNode.querySelector('.datetimepicker-footer'),
+        validate: footerNode.querySelector('.datetimepicker-footer-validate'),
+        today: footerNode.querySelector('.datetimepicker-footer-today'),
+        clear: footerNode.querySelector('.datetimepicker-footer-clear'),
+        cancel: footerNode.querySelector('.datetimepicker-footer-cancel'),
       }
     };
 
-    if (!this.options.showHeader) {
-      this._ui.header.container.classList.add('is-hidden');
-    }
     if (!this.options.showFooter) {
       this._ui.footer.container.classList.add('is-hidden');
     }
@@ -537,22 +666,43 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     this._ui.container.appendChild(headerNode);
-    this._ui.container.appendChild(this.datePicker.render());
+    switch (this._type) {
+      case 'date':
+        this._ui.container.appendChild(this.datePicker.render());
+        break;
+      case 'time':
+        this._ui.container.appendChild(this.timePicker.render());
+        if (this._ui.footer.validate) {
+          this._ui.footer.validate.classList.remove('is-hidden');
+        }
+        if (this._ui.footer.today) {
+          this._ui.footer.today.classList.add('is-hidden');
+        }
+        break;
+      case 'datetime':
+        this.options.closeOnSelect = false;
+        if (this._ui.footer.validate) {
+          this._ui.footer.validate.classList.remove('is-hidden');
+        }
+        this._ui.container.appendChild(this.datePicker.render());
+        this._ui.container.appendChild(this.timePicker.render());
+        break;
+    }
 
     this._ui.wrapper.appendChild(footerNode);
     this._ui.wrapper.classList.add(`is-${this.options.color}`);
+    this._ui.dummy.container.classList.add(`is-${this.options.color}`);
     // Add datepicker HTML element to Document Body
-    this.element.parentNode.insertBefore(elementNode, this.element.nextSibling);
-    // this.element.classList.add('is-hidden');
-
-    if (this.element.getAttribute('type') === 'date') {
-      this.element.setAttributes('type', 'text');
-    }
+    this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
+    this._ui.dummy.wrapper.appendChild(this.element);
+    this.element.classList.add('is-hidden');
+    // this.element.style.visibility = 'hidden';
+    // this.element.style.position = 'absolute';
 
     if (this.options.displayMode === 'inline') {
       this._ui.wrapper.classList.add('is-active');
-      this.element.classList.add('is-hidden');
     } else {
+      this._ui.dummy.container.classList.remove('is-hidden');
       this._ui.wrapper.style.position = 'absolute';
       this._ui.wrapper.classList.add('is-datetimepicker-default');
     }
@@ -566,17 +716,21 @@ export default class bulmaCalendar extends EventEmitter {
    */
   _bindEvents() {
     this._clickEvents.forEach(clickEvent => {
-      document.body.addEventListener(clickEvent, this._onDocumentClick);
+      document.body.addEventListener(clickEvent, this.onDocumentClickDateTimePicker);
     });
 
-    this.datePicker.on('select', this._onSelectDate);
-    this.datePicker.on('select:start', this._onSelectDate);
-    this.datePicker.on('select:end', this._onSelectDate);
+    this.datePicker.on('select', this.onSelectDateTimePicker);
+    this.datePicker.on('select:start', this.onSelectDateTimePicker);
+    this.datePicker.on('select:end', this.onSelectDateTimePicker);
+    this.timePicker.on('select', this.onSelectDateTimePicker);
+    this.timePicker.on('select:start', this.onSelectDateTimePicker);
+    this.timePicker.on('select:end', this.onSelectDateTimePicker);
 
     // Bind event to element in order to display/hide datePicker on click
     if (this.options.toggleOnInputClick === true) {
       this._clickEvents.forEach(clickEvent => {
-        this.element.addEventListener(clickEvent, this._onToggle);
+        this._ui.dummy.wrapper.addEventListener(clickEvent, this.onToggleDateTimePicker);
+        this.element.addEventListener(clickEvent, this.onToggleDateTimePicker);
       });
     }
 
@@ -584,38 +738,38 @@ export default class bulmaCalendar extends EventEmitter {
       // Bind close event on Close button
       if (this._ui.overlay.close) {
         this._clickEvents.forEach(clickEvent => {
-          this.this._ui.overlay.close.addEventListener(clickEvent, this._onClose);
+          this.this._ui.overlay.close.addEventListener(clickEvent, this.onCloseDateTimePicker);
         });
       }
       // Bind close event on overlay based on options
       if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
         this._clickEvents.forEach(clickEvent => {
-          this._ui.overlay.background.addEventListener(clickEvent, this._onClose);
+          this._ui.overlay.background.addEventListener(clickEvent, this.onCloseDateTimePicker);
         });
       }
     }
 
     if (this._ui.footer.validate) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.validate.addEventListener(clickEvent, this._onValidateClick);
+        this._ui.footer.validate.addEventListener(clickEvent, this.onValidateClickDateTimePicker);
       });
     }
     if (this._ui.footer.today) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.today.addEventListener(clickEvent, this._onTodayClick);
+        this._ui.footer.today.addEventListener(clickEvent, this.onTodayClickDateTimePicker);
       });
     }
     if (this._ui.footer.clear) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.clear.addEventListener(clickEvent, this._onClearClick);
+        this._ui.footer.clear.addEventListener(clickEvent, this.onClearClickDateTimePicker);
       });
     }
     this._clickEvents.forEach(clickEvent => {
-      // this._ui.dummy.clear.addEventListener(clickEvent, this._onClearClick);
+      this._ui.dummy.clear.addEventListener(clickEvent, this.onClearClickDateTimePicker);
     });
     if (this._ui.footer.cancel) {
       this._clickEvents.forEach(clickEvent => {
-        this._ui.footer.cancel.addEventListener(clickEvent, this._onCancelClick);
+        this._ui.footer.cancel.addEventListener(clickEvent, this.onCancelClickDateTimePicker);
       });
     }
   }

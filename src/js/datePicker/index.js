@@ -10,14 +10,6 @@ import templateMonths from './templates/months';
 import templateYears from './templates/years';
 import defaultOptions from './defaultOptions';
 
-const onPreviousDatePicker = Symbol('onPreviousDatePicker');
-const onNextDatePicker = Symbol('onNextDatePicker');
-const onSelectMonthDatePicker = Symbol('onSelectMonthDatePicker');
-const onMonthClickDatePicker = Symbol('onMonthClickDatePicker');
-const onSelectYearDatePicker = Symbol('onSelectYearDatePicker');
-const onYearClickDatePicker = Symbol('onYearClickDatePicker');
-const onDateClickDatePicker = Symbol('onDateClickDatePicker');
-
 export default class datePicker extends EventEmitter {
 	constructor(options = {}) {
 		super();
@@ -32,13 +24,13 @@ export default class datePicker extends EventEmitter {
 		this._id = utils.uuid('datePicker');
 		this.node = null;
 
-		this[onPreviousDatePicker] = this[onPreviousDatePicker].bind(this);
-		this[onNextDatePicker] = this[onNextDatePicker].bind(this);
-		this[onSelectMonthDatePicker] = this[onSelectMonthDatePicker].bind(this);
-		this[onMonthClickDatePicker] = this[onMonthClickDatePicker].bind(this);
-		this[onSelectYearDatePicker] = this[onSelectYearDatePicker].bind(this);
-		this[onYearClickDatePicker] = this[onYearClickDatePicker].bind(this);
-		this[onDateClickDatePicker] = this[onDateClickDatePicker].bind(this);
+		this.onPreviousDatePicker = this.onPreviousDatePicker.bind(this);
+		this.onNextDatePicker = this.onNextDatePicker.bind(this);
+		this.onSelectMonthDatePicker = this.onSelectMonthDatePicker.bind(this);
+		this.onMonthClickDatePicker = this.onMonthClickDatePicker.bind(this);
+		this.onSelectYearDatePicker = this.onSelectYearDatePicker.bind(this);
+		this.onYearClickDatePicker = this.onYearClickDatePicker.bind(this);
+		this.onDateClickDatePicker = this.onDateClickDatePicker.bind(this);
 
 		this._init();
 	}
@@ -134,7 +126,7 @@ export default class datePicker extends EventEmitter {
 	 * EVENTS FUNCTIONS                                 *
 	 *                                                  *
 	 ****************************************************/
-	[onPreviousDatePicker](e) {
+	onPreviousDatePicker(e) {
 		if (!this._supportsPassive) {
 			e.preventDefault();
 		}
@@ -147,7 +139,7 @@ export default class datePicker extends EventEmitter {
 		this.refresh();
 	}
 
-	[onNextDatePicker](e) {
+	onNextDatePicker(e) {
 		if (!this._supportsPassive) {
 			e.preventDefault();
 		}
@@ -160,7 +152,7 @@ export default class datePicker extends EventEmitter {
 		this.refresh();
 	}
 
-	[onSelectMonthDatePicker](e) {
+	onSelectMonthDatePicker(e) {
 		e.stopPropagation();
 
 		if (this.options.enableMonthSwitch) {
@@ -172,7 +164,7 @@ export default class datePicker extends EventEmitter {
 		}
 	}
 
-	[onSelectYearDatePicker](e) {
+	onSelectYearDatePicker(e) {
 		e.stopPropagation();
 
 		if (this.options.enableYearSwitch) {
@@ -189,7 +181,7 @@ export default class datePicker extends EventEmitter {
 		}
 	}
 
-	[onMonthClickDatePicker](e) {
+	onMonthClickDatePicker(e) {
 		if (!this._supportsPassive) {
 			e.preventDefault();
 		}
@@ -202,7 +194,7 @@ export default class datePicker extends EventEmitter {
 		this.refresh();
 	}
 
-	[onYearClickDatePicker](e) {
+	onYearClickDatePicker(e) {
 		if (!this._supportsPassive) {
 			e.preventDefault();
 		}
@@ -215,7 +207,7 @@ export default class datePicker extends EventEmitter {
 		this.refresh();
 	}
 
-	[onDateClickDatePicker](e) {
+	onDateClickDatePicker(e) {
 		if (!this._supportsPassive) {
 			e.preventDefault();
 		}
@@ -225,15 +217,7 @@ export default class datePicker extends EventEmitter {
 			this._select(e.currentTarget.dataset.date);
 
 			this.refresh();
-
-			// if ((!this.options.isRange || (this.start && this._isValidDate(this.start) && this.end && this._isValidDate(this.end))) && this.options.closeOnSelect) {
-			// 	this.hide();
-			// }
 		}
-		// this.emit('select', {
-		// 	date: this.date,
-		// 	instance: this
-		// });
 	}
 
 	/****************************************************
@@ -324,10 +308,10 @@ export default class datePicker extends EventEmitter {
 					}
 				}
 				if (type.isObject(value) || type.isDate(value)) {
-					this._select(value, false);
+					this._select(value);
 				}
 			} else {
-				this._select(value, false);
+				this._select(value);
 			}
 		} else {
 			let string = (this.start && this._isValidDate(this.start)) ? dateFns.format(this.start, this.format, {
@@ -362,7 +346,7 @@ export default class datePicker extends EventEmitter {
 		const months = this._ui.body.months.querySelectorAll('.datepicker-month') || [];
 		months.forEach(month => {
 			this._clickEvents.forEach(clickEvent => {
-				month.addEventListener(clickEvent, this[onMonthClickDatePicker]);
+				month.addEventListener(clickEvent, this.onMonthClickDatePicker);
 			});
 			month.classList.remove('is-active');
 			if (month.dataset.month === dateFns.format(this._visibleDate, 'MM', {
@@ -383,7 +367,7 @@ export default class datePicker extends EventEmitter {
 		const years = this._ui.body.years.querySelectorAll('.datepicker-year') || [];
 		years.forEach(year => {
 			this._clickEvents.forEach(clickEvent => {
-				year.addEventListener(clickEvent, this[onYearClickDatePicker]);
+				year.addEventListener(clickEvent, this.onYearClickDatePicker);
 			});
 			year.classList.remove('is-active');
 			if (year.dataset.year === dateFns.format(this._visibleDate, 'YYYY', {
@@ -394,7 +378,7 @@ export default class datePicker extends EventEmitter {
 		});
 
 		// the 7 days of the week (Sun-Sat)
-		const weekdayLabels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addDays(d, i + this.options.weekStart), this.options.weekDaysFormat, {
+		const weekdayLabels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addDays(d, i + this.options.weekStart), 'ddd', {
 			locale: this.locale
 		}));
 		this._ui.body.dates.appendChild(document.createRange().createContextualFragment(templateWeekdays({
@@ -472,8 +456,8 @@ export default class datePicker extends EventEmitter {
 			});
 		}
 		this.disabledWeekDays = type.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : (Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : []);
-		this.min = this.options.minDate;
-		this.max = this.options.maxDate;
+		this.min = this.options.min;
+		this.max = this.options.max;
 		this._date = {
 			start: this.options.startDate,
 			end: this.options.isRange ? this.options.endDate : undefined
@@ -517,10 +501,10 @@ export default class datePicker extends EventEmitter {
 			if (this._focus) {
 				switch (e.keyCode || e.which) {
 					case 37:
-						this[onPreviousDatePicker](e);
+						this.onPreviousDatePicker(e);
 						break;
 					case 39:
-						this[onNextDatePicker](e);
+						this.onNextDatePicker(e);
 						break;
 				}
 			}
@@ -529,37 +513,37 @@ export default class datePicker extends EventEmitter {
 		// Bind year navigation events
 		if (this._ui.navigation.previous) {
 			this._clickEvents.forEach(clickEvent => {
-				this._ui.navigation.previous.addEventListener(clickEvent, this[onPreviousDatePicker]);
+				this._ui.navigation.previous.addEventListener(clickEvent, this.onPreviousDatePicker);
 			});
 		}
 		if (this._ui.navigation.next) {
 			this._clickEvents.forEach(clickEvent => {
-				this._ui.navigation.next.addEventListener(clickEvent, this[onNextDatePicker]);
+				this._ui.navigation.next.addEventListener(clickEvent, this.onNextDatePicker);
 			});
 		}
 
 		if (this._ui.navigation.month) {
 			this._clickEvents.forEach(clickEvent => {
-				this._ui.navigation.month.addEventListener(clickEvent, this[onSelectMonthDatePicker]);
+				this._ui.navigation.month.addEventListener(clickEvent, this.onSelectMonthDatePicker);
 			});
 		}
 		if (this._ui.navigation.year) {
 			this._clickEvents.forEach(clickEvent => {
-				this._ui.navigation.year.addEventListener(clickEvent, this[onSelectYearDatePicker]);
+				this._ui.navigation.year.addEventListener(clickEvent, this.onSelectYearDatePicker);
 			});
 		}
 
 		const months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
 		months.forEach(month => {
 			this._clickEvents.forEach(clickEvent => {
-				month.addEventListener(clickEvent, this[onMonthClickDatePicker]);
+				month.addEventListener(clickEvent, this.onMonthClickDatePicker);
 			});
 		});
 
 		const years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
 		years.forEach(year => {
 			this._clickEvents.forEach(clickEvent => {
-				year.addEventListener(clickEvent, this[onYearClickDatePicker]);
+				year.addEventListener(clickEvent, this.onYearClickDatePicker);
 			});
 		});
 	}
@@ -575,7 +559,7 @@ export default class datePicker extends EventEmitter {
 				// if not in range, no click action
 				// if in this month, select the date
 				// if out of this month, jump to the date
-				const onClick = !this._isValidDate(new Date(day.dataset.date), this.min, this.max) ? null : this[onDateClickDatePicker];
+				const onClick = !this._isValidDate(new Date(day.dataset.date), this.min, this.max) ? null : this.onDateClickDatePicker;
 				day.addEventListener(clickEvent, onClick);
 			});
 
@@ -641,42 +625,33 @@ export default class datePicker extends EventEmitter {
 		this._bindDaysEvents();
 	}
 
-	_select(date = undefined, withEvents = true) {
+	_select(date = undefined) {
 		this.snapshot();
 		date = type.isDate(date) ? date : new Date(date);
 		if (this.options.isRange && (!this._isValidDate(this.start) || (this._isValidDate(this.start) && this._isValidDate(this.end)))) {
 			this.start = date;
 			this.end = undefined;
-			if (withEvents)
-				this.emit('select:start', this);
+			this.emit('select:start', this);
 		} else if (this.options.isRange && !this._isValidDate(this.end)) {
 			if (dateFns.isBefore(date, this.start)) {
 				this.end = this.start;
 				this.start = date;
-				if (withEvents) {
-					this.emit('select', this);
-				}
+				this.emit('select', this);
 			} else if (dateFns.isAfter(date, this.start)) {
 				this.end = date;
-				if (withEvents) {
-					this.emit('select', this);
-				}
+				this.emit('select', this);
 			} else if (this.options.allowSameDayRange) {
 				this.end = date;
-				if (withEvents) {
-					this.emit('select', this);
-				}
+				this.emit('select', this);
 			} else {
 				this.start = date;
 				this.end = undefined;
-				if (withEvents)
-					this.emit('select:start', this);
+				this.emit('select:start', this);
 			}
 		} else {
 			this.start = date;
 			this.end = undefined;
-			if (withEvents)
-				this.emit('select', this);
+			this.emit('select', this);
 		}
 		this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
 
@@ -703,9 +678,6 @@ export default class datePicker extends EventEmitter {
 		try {
 			if (!date) {
 				return false;
-			}
-			if (!dateFns.isDate(date)) {
-				date = dateFns.parse(date);
 			}
 			if (dateFns.isValid(date)) {
 				if (!min && !max) {
