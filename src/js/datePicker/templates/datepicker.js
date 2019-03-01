@@ -1,13 +1,13 @@
 export default (data) => {
   return `<div class="datepicker">
     <div class="datepicker-nav">
-        <button class="datepicker-nav-previous button is-small is-text">${data.icons.previous}</button>
+        <button type="button" class="datepicker-nav-previous button is-small is-text">${data.icons.previous}</button>
         <div class="datepicker-nav-month-year">
           <div class="datepicker-nav-month"></div>
           &nbsp;
           <div class="datepicker-nav-year"></div>
         </div>
-        <button class="datepicker-nav-next button is-small is-text">${data.icons.next}</button>
+        <button type="button" class="datepicker-nav-next button is-small is-text">${data.icons.next}</button>
       </div>
       <div class="datepicker-body">
         <div class="datepicker-dates is-active"></div>
