@@ -1,6 +1,7 @@
 import * as utils from './utils/index';
 import * as types from './utils/type';
 import * as dateFns from 'date-fns';
+import dateUtils from 'date-and-time';
 import EventEmitter from './utils/events';
 
 import datePicker from './datePicker';
@@ -146,7 +147,7 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   set startDate(date = undefined) {
-    this.datePicker.start = date;
+    this.datePicker.start = dateUtils.parse(date, this.dateFormat);
     return this;
   }
   get startDate() {
@@ -154,7 +155,7 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   set endDate(date = undefined) {
-    this.datePicker.end = date;
+    this.datePicker.end = dateUtils.parse(date, this.dateFormat);
     return this;
   }
   get endDate() {
@@ -165,7 +166,7 @@ export default class bulmaCalendar extends EventEmitter {
    * minDate getter and setters
    */
   set minDate(date = undefined) {
-    this.datePicker.minDate = date;
+    this.datePicker.minDate = dateUtils.parse(date, this.dateFormat);
     return this;
   }
   // Get minDate
@@ -175,7 +176,7 @@ export default class bulmaCalendar extends EventEmitter {
 
   // Set maxDate
   set maxDate(date = undefined) {
-    this.datePicker.maxDate = date;
+    this.datePicker.maxDate = dateUtils.parse(date, this.dateFormat);
     return this;
   }
   // Get maxDate

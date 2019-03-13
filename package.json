@@ -33,7 +33,8 @@
   "homepage": "https://creativebulma.net/components/calendar",
   "dependencies": {
     "bulma": "latest",
-    "date-fns": "^1.29.0"
+    "date-fns": "^1.29.0",
+    "date-and-time": "^0.6.3"
   },
   "devDependencies": {
     "ansi-colors": "^2.0.1",

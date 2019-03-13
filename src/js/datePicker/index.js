@@ -78,7 +78,7 @@ export default class datePicker extends EventEmitter {
 	set start(date = undefined) {
 		if (date) {
 			if (type.isDate(date)) {
-				this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
+				this._date.start = this._isValidDate(date, this.min, this.max) ? dateFns.startOfDay(date) : this._date.start;
 			}
 			if (type.isString(date)) {
 				this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
@@ -94,7 +94,7 @@ export default class datePicker extends EventEmitter {
 	set end(date = undefined) {
 		if (date) {
 			if (type.isDate(date)) {
-				this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.end;
+				this._date.end = this._isValidDate(date, this.min, this.max) ? dateFns.startOfDay(date) : this._date.end;
 			}
 			if (type.isString(date)) {
 				this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.end;
