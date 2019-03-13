@@ -11646,7 +11646,6 @@ var bulmaCalendar = function (_EventEmitter) {
       return _extends({}, obj, _defineProperty({}, key, _this.element.dataset[key]));
     }, {}) : {};
 
-    console.log(elementConfig);
     // Set default options - dataset attributes are master
     _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_6__defaultOptions__["a" /* default */], options, elementConfig);
 

@@ -32,6 +32,7 @@ export default class bulmaCalendar extends EventEmitter {
           [key]: this.element.dataset[key]
         };
       }, {}) : {};
+    
     // Set default options - dataset attributes are master
     this.options = {
       ...defaultOptions,
@@ -652,16 +653,16 @@ export default class bulmaCalendar extends EventEmitter {
       }
     };
 
-    if (!this.options.showHeader) {
+    if (!types.BooleanParse(this.options.showHeader)) {
       this._ui.header.container.classList.add('is-hidden');
     }
-    if (!this.options.showFooter) {
+    if (!types.BooleanParse(this.options.showFooter)) {
       this._ui.footer.container.classList.add('is-hidden');
     }
-    if (!this.options.showTodayButton) {
+    if (!types.BooleanParse(this.options.showTodayButton)) {
       this._ui.footer.today.classList.add('is-hidden');
     }
-    if (!this.options.showClearButton) {
+    if (!types.BooleanParse(this.options.showClearButton)) {
       this._ui.footer.clear.classList.add('is-hidden');
     }
 
