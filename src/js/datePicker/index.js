@@ -75,16 +75,32 @@ export default class datePicker extends EventEmitter {
 		return this._locale;
 	}
 
-	set start(date) {
-		this._date.start = date ? (this._isValidDate(date, this.min, this.max) ? dateFns.startOfDay(date) : this._date.start) : undefined;
+	set start(date = undefined) {
+		if (date) {
+			if (type.isDate(date)) {
+				this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
+			}
+			if (type.isString(date)) {
+				this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
+			}
+		}
+
 		return this;
 	}
 	get start() {
 		return this._date.start;
 	}
 
-	set end(date) {
-		this._date.end = date ? (this._isValidDate(date, this.min, this.max) ? dateFns.startOfDay(date) : this._date.end) : undefined;
+	set end(date = undefined) {
+		if (date) {
+			if (type.isDate(date)) {
+				this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.end;
+			}
+			if (type.isString(date)) {
+				this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.end;
+			}
+		}
+
 		return this;
 	}
 	get end() {
@@ -93,7 +109,15 @@ export default class datePicker extends EventEmitter {
 
 	// Set min
 	set min(date = undefined) {
-		this._min = date ? (this._isValidDate(date) ? dateFns.startOfDay(date) : this._min) : undefined;
+		if (date) {
+			if (type.isDate(date)) {
+				this._min = this._isValidDate(date) ? dateFns.startOfDay(date) : this._min;
+			}
+			if (type.isString(date)) {
+				this._min = this._isValidDate(dateFns.parse(date)) ? dateFns.startOfDay(date) : this._min;
+			}
+		}
+		
 		return this;
 	}
 	// Get min
@@ -103,7 +127,15 @@ export default class datePicker extends EventEmitter {
 
 	// Set max
 	set max(date = null) {
-		this._max = date ? (this._isValidDate(date) ? dateFns.startOfDay(date) : this._max) : undefined;
+		if (date) {
+			if (type.isDate(date)) {
+				this._max = this._isValidDate(date) ? dateFns.startOfDay(date) : this._max;
+			}
+			if (type.isString(date)) {
+				this._max = this._isValidDate(dateFns.parse(date)) ? dateFns.startOfDay(date) : this._max;
+			}
+		}
+		
 		return this;
 	}
 	// Get max

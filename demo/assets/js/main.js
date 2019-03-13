@@ -25,9 +25,9 @@ if (element) {
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
-    startDate: new Date('02/11/2018'),
-    minDate: '01/01/2018',
-    maxDate: '12/31/2018',
+    startDate: new Date('03/11/2019'),
+    minDate: '03/01/2019',
+    maxDate: '03/31/2019',
     lang: 'fr'
   });
 

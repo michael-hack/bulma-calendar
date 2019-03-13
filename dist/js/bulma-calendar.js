@@ -9402,23 +9402,29 @@ var detectSupportsPassive = function detectSupportsPassive() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isFunction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return isDate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFunction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BooleanParse; });
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var isFunction = function isFunction(unknown) {
-  return typeof unknown === 'function';
+	return typeof unknown === 'function';
 };
 var isString = function isString(unknown) {
-  return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
+	return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
 };
 var isDate = function isDate(unknown) {
-  return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
+	return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
 };
 var isObject = function isObject(unknown) {
-  return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
+	return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
+};
+
+var falsy = /^(?:f(?:alse)?|no?|0+)$/i;
+var BooleanParse = function BooleanParse(val) {
+	return !falsy.test(val) && !!val;
 };
 
 /***/ }),
@@ -11625,7 +11631,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
     var _this = _possibleConstructorReturn(this, (bulmaCalendar.__proto__ || Object.getPrototypeOf(bulmaCalendar)).call(this));
 
-    _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelector(selector) : selector;
+    _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelector(selector) : selector;
     // An invalid selector or non-DOM node has been provided.
     if (!_this.element) {
       throw new Error('An invalid selector or non-DOM node has been provided.');
@@ -11639,6 +11645,8 @@ var bulmaCalendar = function (_EventEmitter) {
     }).reduce(function (obj, key) {
       return _extends({}, obj, _defineProperty({}, key, _this.element.dataset[key]));
     }, {}) : {};
+
+    console.log(elementConfig);
     // Set default options - dataset attributes are master
     _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_6__defaultOptions__["a" /* default */], options, elementConfig);
 
@@ -12050,7 +12058,7 @@ var bulmaCalendar = function (_EventEmitter) {
       this._bindEvents();
       this.save();
 
-      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](this.options.onReady)) {
+      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.onReady)) {
         this.on('ready', this.options.onReady);
       }
       this.emit('ready', this);
@@ -12120,16 +12128,16 @@ var bulmaCalendar = function (_EventEmitter) {
         }
       };
 
-      if (!this.options.showHeader) {
+      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showHeader)) {
         this._ui.header.container.classList.add('is-hidden');
       }
-      if (!this.options.showFooter) {
+      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showFooter)) {
         this._ui.footer.container.classList.add('is-hidden');
       }
-      if (!this.options.showTodayButton) {
+      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showTodayButton)) {
         this._ui.footer.today.classList.add('is-hidden');
       }
-      if (!this.options.showClearButton) {
+      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showClearButton)) {
         this._ui.footer.clear.classList.add('is-hidden');
       }
 
@@ -12496,7 +12504,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
       var instances = new Array();
 
-      var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+      var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
       [].forEach.call(elements, function (element) {
         if (typeof element[_this3.constructor.name] === 'undefined') {
           var instance = new bulmaCalendar(element, options);
@@ -16626,7 +16634,7 @@ var datePicker = function (_EventEmitter) {
 
 			if (_value) {
 				if (this.options.isRange) {
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](_value)) {
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
 						var dates = _value.split(' - ');
 						if (dates.length) {
 							this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(dates[0]), this.format, {
@@ -16639,7 +16647,7 @@ var datePicker = function (_EventEmitter) {
 							});
 						}
 					}
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](_value)) {
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](_value)) {
 						this._select(_value);
 					}
 				} else {
@@ -16801,7 +16809,7 @@ var datePicker = function (_EventEmitter) {
 					locale: this.locale
 				});
 			}
-			this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
+			this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
 			this.min = this.options.minDate;
 			this.max = this.options.maxDate;
 			this._date = {
@@ -16944,7 +16952,7 @@ var datePicker = function (_EventEmitter) {
 				if (_this5.disabledDates) {
 					for (var j = 0; j < _this5.disabledDates.length; j++) {
 						var day = _this5.disabledDates[j];
-						if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](day)) {
+						if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
 							day = day(_this5);
 						}
 						if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](day)) {
@@ -16955,7 +16963,7 @@ var datePicker = function (_EventEmitter) {
 
 				if (_this5.disabledWeekDays) {
 					_this5.disabledWeekDays.forEach(function (day) {
-						if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isFunction */](day)) {
+						if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
 							day = day(_this5);
 						}
 						if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDay"](theDate) == day) {
@@ -16988,7 +16996,7 @@ var datePicker = function (_EventEmitter) {
 			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
 			this.snapshot();
-			date = __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](date) ? date : new Date(date);
+			date = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date) ? date : new Date(date);
 			if (this.options.isRange && (!this._isValidDate(this.start) || this._isValidDate(this.start) && this._isValidDate(this.end))) {
 				this.start = date;
 				this.end = undefined;
@@ -17087,7 +17095,7 @@ var datePicker = function (_EventEmitter) {
 	}, {
 		key: 'date',
 		set: function set(date) {
-			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](date) && date.start && date.end) {
+			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](date) && date.start && date.end) {
 				this._date = date;
 			}
 			return this;
@@ -17122,8 +17130,18 @@ var datePicker = function (_EventEmitter) {
 		}
 	}, {
 		key: 'start',
-		set: function set(date) {
-			this._date.start = date ? this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.start : undefined;
+		set: function set() {
+			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			if (date) {
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+					this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.start;
+				}
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+					this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.start;
+				}
+			}
+
 			return this;
 		},
 		get: function get() {
@@ -17131,8 +17149,18 @@ var datePicker = function (_EventEmitter) {
 		}
 	}, {
 		key: 'end',
-		set: function set(date) {
-			this._date.end = date ? this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.end : undefined;
+		set: function set() {
+			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			if (date) {
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+					this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
+				}
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+					this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
+				}
+			}
+
 			return this;
 		},
 		get: function get() {
@@ -17146,7 +17174,15 @@ var datePicker = function (_EventEmitter) {
 		set: function set() {
 			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-			this._min = date ? this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min : undefined;
+			if (date) {
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+					this._min = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
+				}
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+					this._min = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
+				}
+			}
+
 			return this;
 		}
 		// Get min
@@ -17162,7 +17198,15 @@ var datePicker = function (_EventEmitter) {
 		set: function set() {
 			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-			this._max = date ? this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._max : undefined;
+			if (date) {
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+					this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._max;
+				}
+				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+					this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._max;
+				}
+			}
+
 			return this;
 		}
 		// Get max
@@ -17442,7 +17486,7 @@ var timePicker = function (_EventEmitter) {
 			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
 			this.snapshot();
-			time = __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](time) ? time : new Date(time);
+			time = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](time) ? time : new Date(time);
 			if (this.options.isRange && (!this._isValidTime(this.start) || this._isValidTime(this.start) && this._isValidTime(this.end))) {
 				this.start = time;
 				this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
@@ -17841,7 +17885,7 @@ var timePicker = function (_EventEmitter) {
 
 			if (_value) {
 				if (this.options.isRange) {
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](_value)) {
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
 						var times = _value.split(' - ');
 						if (times.length) {
 							this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(times[0]), this.format, {
@@ -17854,7 +17898,7 @@ var timePicker = function (_EventEmitter) {
 							});
 						}
 					}
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* isDate */](_value)) {
+					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](_value)) {
 						this._select(_value);
 					}
 				} else {
@@ -17925,7 +17969,7 @@ var timePicker = function (_EventEmitter) {
 	}, {
 		key: 'time',
 		set: function set(time) {
-			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isObject */](time) && time.start && time.end) {
+			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](time) && time.start && time.end) {
 				this._time = time;
 			}
 			return this;
