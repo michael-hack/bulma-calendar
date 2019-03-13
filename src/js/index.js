@@ -267,11 +267,6 @@ export default class bulmaCalendar extends EventEmitter {
   }
 
   onDocumentClickDateTimePicker(e) {
-    if (!this._supportsPassive) {
-      e.preventDefault();
-    }
-    e.stopPropagation();
-
     // Check is e.target not within datepicker element
     const target = e.target || e.srcElement;
     if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
