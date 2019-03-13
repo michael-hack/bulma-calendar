@@ -11696,11 +11696,6 @@ var bulmaCalendar = function (_EventEmitter) {
   }, {
     key: 'onDocumentClickDateTimePicker',
     value: function onDocumentClickDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
       // Check is e.target not within datepicker element
       var target = e.target || e.srcElement;
       if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
@@ -12125,6 +12120,9 @@ var bulmaCalendar = function (_EventEmitter) {
         }
       };
 
+      if (!this.options.showHeader) {
+        this._ui.header.container.classList.add('is-hidden');
+      }
       if (!this.options.showFooter) {
         this._ui.footer.container.classList.add('is-hidden');
       }
@@ -16804,8 +16802,8 @@ var datePicker = function (_EventEmitter) {
 				});
 			}
 			this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
-			this.min = this.options.min;
-			this.max = this.options.max;
+			this.min = this.options.minDate;
+			this.max = this.options.maxDate;
 			this._date = {
 				start: this.options.startDate,
 				end: this.options.isRange ? this.options.endDate : undefined
@@ -17201,7 +17199,7 @@ var datePicker = function (_EventEmitter) {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-  return "<div class=\"datepicker\">\n    <div class=\"datepicker-nav\">\n        <button class=\"datepicker-nav-previous button is-small is-text\">" + data.icons.previous + "</button>\n        <div class=\"datepicker-nav-month-year\">\n          <div class=\"datepicker-nav-month\"></div>\n          &nbsp;\n          <div class=\"datepicker-nav-year\"></div>\n        </div>\n        <button class=\"datepicker-nav-next button is-small is-text\">" + data.icons.next + "</button>\n      </div>\n      <div class=\"datepicker-body\">\n        <div class=\"datepicker-dates is-active\"></div>\n        <div class=\"datepicker-months\"></div>\n        <div class=\"datepicker-years\"></div>\n      </div>\n    </div>";
+  return "<div class=\"datepicker\">\n    <div class=\"datepicker-nav\">\n        <button type=\"button\" class=\"datepicker-nav-previous button is-small is-text\">" + data.icons.previous + "</button>\n        <div class=\"datepicker-nav-month-year\">\n          <div class=\"datepicker-nav-month\"></div>\n          &nbsp;\n          <div class=\"datepicker-nav-year\"></div>\n        </div>\n        <button type=\"button\" class=\"datepicker-nav-next button is-small is-text\">" + data.icons.next + "</button>\n      </div>\n      <div class=\"datepicker-body\">\n        <div class=\"datepicker-dates is-active\"></div>\n        <div class=\"datepicker-months\"></div>\n        <div class=\"datepicker-years\"></div>\n      </div>\n    </div>";
 });
 
 /***/ }),
@@ -18139,7 +18137,7 @@ var defaultOptions = {
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-	return '<div class="datetimepicker-footer">\n\t\t<button class = "datetimepicker-footer-validate has-text-success button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.validate ? data.icons.validate : '') + data.validateLabel + ' </button>\n\t\t<button class = "datetimepicker-footer-today has-text-warning button is-small is-text">' + (data.icons.today ? data.icons.today : '') + data.todayLabel + '</button>\n\t\t<button class = "datetimepicker-footer-clear has-text-danger button is-small is-text">' + (data.icons.clear ? data.icons.clear : '') + data.clearLabel + '</button>\n\t\t<button class = "datetimepicker-footer-cancel button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.cancel ? data.icons.cancel : '') + data.cancelLabel + '</button>\n\t</div>';
+	return '<div class="datetimepicker-footer">\n\t\t<button type="button" class="datetimepicker-footer-validate has-text-success button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.validate ? data.icons.validate : '') + data.validateLabel + ' </button>\n\t\t<button type="button" class="datetimepicker-footer-today has-text-warning button is-small is-text">' + (data.icons.today ? data.icons.today : '') + data.todayLabel + '</button>\n\t\t<button type="button" class="datetimepicker-footer-clear has-text-danger button is-small is-text">' + (data.icons.clear ? data.icons.clear : '') + data.clearLabel + '</button>\n\t\t<button type="button" class="datetimepicker-footer-cancel button is-small is-text ' + (data.displayMode === 'inline' ? 'is-hidden' : '') + '">' + (data.icons.cancel ? data.icons.cancel : '') + data.cancelLabel + '</button>\n\t</div>';
 });
 
 /***/ })

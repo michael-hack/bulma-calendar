@@ -15,7 +15,7 @@ ready(function () {
 
   var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
   // To access to bulmaCalendar instance of an element
-var element = document.querySelector('#datepickerDemoDefault');
+const element = document.querySelector('#datepickerDemoDefault');
 if (element) {
 	// bulmaCalendar instance is available as element.bulmaCalendar
 	element.bulmaCalendar.on('select', function(datepicker) {
