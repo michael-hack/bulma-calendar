@@ -7,7 +7,7 @@ export default (data) => {
       </div>
       <button class="datetimepicker-clear-button">＋</button>
     </div>
-    <div class="dateimepicker-wrapper${data.displayMode === 'dialog' ? ' modal' : ''}">
+    <div class="datetimepicker-wrapper${data.displayMode === 'dialog' ? ' modal' : ''}">
         <div class="modal-background${data.displayMode === 'dialog' ? '' : ' is-hidden'}"></div>
         <div class="datetimepicker">
           <div class="datetimepicker-container${data.headerPosition === 'top' ? '' : ' has-header-bottom'}"></div>
