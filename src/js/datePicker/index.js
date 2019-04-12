@@ -83,6 +83,8 @@ export default class datePicker extends EventEmitter {
 			if (type.isString(date)) {
 				this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
 			}
+		} else {
+			this._date.start = undefined
 		}
 
 		return this;
@@ -99,6 +101,8 @@ export default class datePicker extends EventEmitter {
 			if (type.isString(date)) {
 				this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.end;
 			}
+		} else {
+			this._date.end = undefined
 		}
 
 		return this;
@@ -117,7 +121,7 @@ export default class datePicker extends EventEmitter {
 				this._min = this._isValidDate(dateFns.parse(date)) ? dateFns.startOfDay(date) : this._min;
 			}
 		}
-		
+
 		return this;
 	}
 	// Get min
@@ -135,7 +139,7 @@ export default class datePicker extends EventEmitter {
 				this._max = this._isValidDate(dateFns.parse(date)) ? dateFns.startOfDay(date) : this._max;
 			}
 		}
-		
+
 		return this;
 	}
 	// Get max
