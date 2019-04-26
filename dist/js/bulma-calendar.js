@@ -13668,6 +13668,8 @@ var bulmaCalendar = function (_EventEmitter) {
       e.stopPropagation();
 
       this.clear();
+
+      this.emit('clear', this);
     }
   }, {
     key: 'onCancelClickDateTimePicker',
