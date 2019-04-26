@@ -116,23 +116,23 @@
 			font-size: 1.5rem
 			color: $primary
 
-@each $name, $pair in $colors
-	$color: nth($pair, 1)
-	$color-invert: nth($pair, 2)
-	&.is-#{$name}
-		.timepicker-input,
-		.timepicker-input-number,
-		.timepicker-time-divider
-			color: $color !important
+		@each $name, $pair in $colors
+			$color: nth($pair, 1)
+			$color-invert: nth($pair, 2)
+			&.is-#{$name}
+				.timepicker-input,
+				.timepicker-input-number,
+				.timepicker-time-divider
+					color: $color !important
 
-@each $name, $value in $shades
-	$color: $value
-	$color-invert: findColorInvert($color)
-	&.is-#{$name}
-		.timepicker-input,
-		.timepicker-input-number,
-		.timepicker-time-divider
-			color: $color !important
+		@each $name, $value in $shades
+			$color: $value
+			$color-invert: findColorInvert($color)
+			&.is-#{$name}
+				.timepicker-input,
+				.timepicker-input-number,
+				.timepicker-time-divider
+					color: $color !important
 
 @keyframes decrement-prev
 	from
