@@ -93,13 +93,13 @@ gulp.task('build:styles', function () {
 
 // Copy original sass file to dist
 gulp.task('build:styles:copy', function () {
-  if (fs.existsSync(config.sass.source + config.sass.input)) {
-    return gulp.src(config.sass.source + config.sass.input)
-      .pipe(concat(config.sass.output.filename + '.sass'))
-      .pipe(gulp.dest(config.sass.destination));
-  } else {
+//   if (fs.existsSync(config.sass.source + config.sass.input)) {
+//     return gulp.src(config.sass.source + config.sass.input)
+//       .pipe(concat(config.sass.output.filename + '.sass'))
+//       .pipe(gulp.dest(config.sass.destination));
+//   } else {
     return gulp.src('.').pipe(nop());
-  }
+//   }
 });
 
 gulp.task('clean:styles', function () {
@@ -143,7 +143,10 @@ gulp.task('build:scripts', function () {
       .pipe(concat(config.javascript.output.filename + '.js'))
       .pipe(gulp.dest(config.javascript.destination))
       .pipe(concat(config.javascript.output.filename + '.min.js'))
-      .pipe(uglify().on('error', function (err) {
+      .pipe(uglify({
+            keep_fnames: true,
+            ie8: false,
+          }).on('error', function (err) {
         log(colors.red('[Error]'), err.toString());
       }))
       .pipe(gulp.dest(config.javascript.destination)

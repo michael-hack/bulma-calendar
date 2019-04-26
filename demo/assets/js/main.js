@@ -24,11 +24,10 @@ if (element) {
 }
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
-	  displayMode: 'dialog',
-	  dateFormat: 'DD.MM.YYYY',
-    startDate: '02.11.2018',
-    minDate: '01.01.2018',
-    maxDate: '12.31.2018',
+    displayMode: 'dialog',
+    startDate: new Date('02/11/2018'),
+    minDate: '01/01/2018',
+    maxDate: '12/31/2018',
     lang: 'fr'
   });
 
