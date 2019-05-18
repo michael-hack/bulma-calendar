@@ -41,16 +41,18 @@ export default class bulmaCalendar extends EventEmitter {
       ...elementConfig
     };
 
-    switch (this.element.getAttribute('type')) {
-      case 'date':
-        this.options.type = 'date';
-        break;
-      case 'time':
-        this.options.type = 'time';
-        break;
-      default:
-        this.options.type = 'datetime';
-        break;
+    if (this.options.type === undefined) {
+      switch (this.element.getAttribute('type')) {
+        case 'date':
+          this.options.type = 'date';
+          break;
+        case 'time':
+          this.options.type = 'time';
+          break;
+        default:
+          this.options.type = 'datetime';
+          break;
+      }
     }
     this._id = utils.uuid('datetimePicker');
 
@@ -551,7 +553,7 @@ export default class bulmaCalendar extends EventEmitter {
     this._open = false;
     this._snapshots = []; // Use to revert selection
     // Set component type (date / time / datetime)
-    this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
+    // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
     this._type = (['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1) ? this.options.type.toLowerCase() : 'date';
     // Change element type to prevent browser default type="date" behavior
     this.element.setAttribute('type', 'text');

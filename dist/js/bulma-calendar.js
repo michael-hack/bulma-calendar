@@ -13553,16 +13553,18 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set default options - dataset attributes are master
     _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */], options, elementConfig);
 
-    switch (_this.element.getAttribute('type')) {
-      case 'date':
-        _this.options.type = 'date';
-        break;
-      case 'time':
-        _this.options.type = 'time';
-        break;
-      default:
-        _this.options.type = 'datetime';
-        break;
+    if (_this.options.type === undefined) {
+      switch (_this.element.getAttribute('type')) {
+        case 'date':
+          _this.options.type = 'date';
+          break;
+        case 'time':
+          _this.options.type = 'time';
+          break;
+        default:
+          _this.options.type = 'datetime';
+          break;
+      }
     }
     _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('datetimePicker');
 
@@ -13929,7 +13931,7 @@ var bulmaCalendar = function (_EventEmitter) {
       this._open = false;
       this._snapshots = []; // Use to revert selection
       // Set component type (date / time / datetime)
-      this.options.type = ['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1 ? this.element.getAttribute('type').toLowerCase() : this.options.type;
+      // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
       this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
       // Change element type to prevent browser default type="date" behavior
       this.element.setAttribute('type', 'text');
@@ -20102,7 +20104,7 @@ var defaultOptions = {
 
 "use strict";
 var defaultOptions = {
-  type: 'datetime',
+  type: undefined,
   color: 'primary',
   isRange: false,
   allowSameDayRange: true,

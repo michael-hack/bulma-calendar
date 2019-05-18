@@ -1,5 +1,5 @@
 const defaultOptions = {
-  type: 'datetime',
+  type: undefined,
   color: 'primary',
   isRange: false,
   allowSameDayRange: true,

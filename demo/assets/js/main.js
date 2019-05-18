@@ -1,4 +1,6 @@
 ready(function () {
+  bulmaCalendar.attach('.bulmaCalendar');
+
   bulmaCalendar.attach('#datepickerDemoRange');
   bulmaCalendar.attach('#datepickerDemoInline');
   bulmaCalendar.attach('#datepickerDemoInlineInfo');
