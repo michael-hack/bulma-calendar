@@ -12,6 +12,7 @@ const defaultOptions = {
   headerPosition: 'top',
   showFooter: true,
   showButtons: true,
+  showValidateButton: true,
   showTodayButton: true,
   showClearButton: true,
   cancelLabel: 'Cancel',

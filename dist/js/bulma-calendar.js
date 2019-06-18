@@ -14543,6 +14543,9 @@ var bulmaCalendar = function (_EventEmitter) {
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showFooter)) {
         this._ui.footer.container.classList.add('is-hidden');
       }
+      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showValidateButton)) {
+        this._ui.footer.validate.classList.add('is-hidden');
+      }
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showTodayButton)) {
         this._ui.footer.today.classList.add('is-hidden');
       }
@@ -20870,6 +20873,7 @@ var defaultOptions = {
   headerPosition: 'top',
   showFooter: true,
   showButtons: true,
+  showValidateButton: true,
   showTodayButton: true,
   showClearButton: true,
   cancelLabel: 'Cancel',

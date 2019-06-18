@@ -50,6 +50,10 @@
   type: Boolean
   description: 'Show/Hide buttons'
   value: 'true'
+- name: 'showValidateButton'
+  type: Boolean
+  description: 'Show/Hide Validate Button'
+  value: 'true'
 - name: 'showTodayButton'
   type: Boolean
   description: 'Show/Hide Today Button'
