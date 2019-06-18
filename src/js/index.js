@@ -40,6 +40,7 @@ export default class bulmaCalendar extends EventEmitter {
       ...options,
       ...elementConfig
     };
+	console.log("options: ", this.options);
 
     if (this.options.type === undefined) {
       switch (this.element.getAttribute('type')) {
