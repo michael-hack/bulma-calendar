@@ -70,14 +70,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 232);
+/******/ 	return __webpack_require__(__webpack_require__.s = 240);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(120)
+var getTimezoneOffsetInMilliseconds = __webpack_require__(241)
+var isDate = __webpack_require__(126)
 
 var MILLISECONDS_IN_HOUR = 3600000
 var MILLISECONDS_IN_MINUTE = 60000
@@ -186,14 +187,25 @@ function parse (argument, dirtyOptions) {
     }
 
     if (dateStrings.timezone) {
-      offset = parseTimezone(dateStrings.timezone)
+      offset = parseTimezone(dateStrings.timezone) * MILLISECONDS_IN_MINUTE
     } else {
-      // get offset accurate to hour in timezones that change offset
-      offset = new Date(timestamp + time).getTimezoneOffset()
-      offset = new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE).getTimezoneOffset()
+      var fullTime = timestamp + time
+      var fullTimeDate = new Date(fullTime)
+
+      offset = getTimezoneOffsetInMilliseconds(fullTimeDate)
+
+      // Adjust time when it's coming from DST
+      var fullTimeDateNextDay = new Date(fullTime)
+      fullTimeDateNextDay.setDate(fullTimeDate.getDate() + 1)
+      var offsetDiff =
+        getTimezoneOffsetInMilliseconds(fullTimeDateNextDay) -
+        getTimezoneOffsetInMilliseconds(fullTimeDate)
+      if (offsetDiff > 0) {
+        offset += offsetDiff
+      }
     }
 
-    return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
+    return new Date(timestamp + time + offset)
   } else {
     return new Date(argument)
   }
@@ -692,7 +704,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
     date.locale = function (code) {
         if (code) {
             if (!locales[code] && "function" === 'function' && global) {
-                __webpack_require__(331)("./" + code);
+                __webpack_require__(340)("./" + code);
             }
             lang = code;
         }
@@ -842,7 +854,7 @@ module.exports = getISOYear
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(80)
+var startOfWeek = __webpack_require__(84)
 
 /**
  * @category ISO Week Helpers
@@ -923,159 +935,159 @@ module.exports = {
 
 module.exports = {
   addDays: __webpack_require__(8),
-  addHours: __webpack_require__(130),
-  addISOYears: __webpack_require__(131),
+  addHours: __webpack_require__(136),
+  addISOYears: __webpack_require__(137),
   addMilliseconds: __webpack_require__(9),
-  addMinutes: __webpack_require__(133),
-  addMonths: __webpack_require__(82),
-  addQuarters: __webpack_require__(134),
-  addSeconds: __webpack_require__(135),
-  addWeeks: __webpack_require__(122),
-  addYears: __webpack_require__(136),
-  areRangesOverlapping: __webpack_require__(233),
-  closestIndexTo: __webpack_require__(234),
-  closestTo: __webpack_require__(235),
+  addMinutes: __webpack_require__(139),
+  addMonths: __webpack_require__(86),
+  addQuarters: __webpack_require__(140),
+  addSeconds: __webpack_require__(141),
+  addWeeks: __webpack_require__(128),
+  addYears: __webpack_require__(142),
+  areRangesOverlapping: __webpack_require__(242),
+  closestIndexTo: __webpack_require__(243),
+  closestTo: __webpack_require__(244),
   compareAsc: __webpack_require__(11),
-  compareDesc: __webpack_require__(123),
-  differenceInCalendarDays: __webpack_require__(81),
-  differenceInCalendarISOWeeks: __webpack_require__(236),
-  differenceInCalendarISOYears: __webpack_require__(137),
-  differenceInCalendarMonths: __webpack_require__(138),
-  differenceInCalendarQuarters: __webpack_require__(237),
-  differenceInCalendarWeeks: __webpack_require__(238),
-  differenceInCalendarYears: __webpack_require__(140),
-  differenceInDays: __webpack_require__(141),
-  differenceInHours: __webpack_require__(239),
-  differenceInISOYears: __webpack_require__(240),
-  differenceInMilliseconds: __webpack_require__(83),
-  differenceInMinutes: __webpack_require__(241),
-  differenceInMonths: __webpack_require__(124),
-  differenceInQuarters: __webpack_require__(242),
-  differenceInSeconds: __webpack_require__(125),
-  differenceInWeeks: __webpack_require__(243),
-  differenceInYears: __webpack_require__(244),
-  distanceInWords: __webpack_require__(143),
-  distanceInWordsStrict: __webpack_require__(245),
-  distanceInWordsToNow: __webpack_require__(246),
-  eachDay: __webpack_require__(247),
-  endOfDay: __webpack_require__(126),
-  endOfHour: __webpack_require__(248),
-  endOfISOWeek: __webpack_require__(249),
-  endOfISOYear: __webpack_require__(250),
-  endOfMinute: __webpack_require__(251),
-  endOfMonth: __webpack_require__(145),
-  endOfQuarter: __webpack_require__(252),
-  endOfSecond: __webpack_require__(253),
-  endOfToday: __webpack_require__(254),
-  endOfTomorrow: __webpack_require__(255),
-  endOfWeek: __webpack_require__(144),
-  endOfYear: __webpack_require__(256),
-  endOfYesterday: __webpack_require__(257),
-  format: __webpack_require__(258),
-  getDate: __webpack_require__(259),
-  getDay: __webpack_require__(260),
-  getDayOfYear: __webpack_require__(146),
-  getDaysInMonth: __webpack_require__(121),
-  getDaysInYear: __webpack_require__(261),
-  getHours: __webpack_require__(262),
-  getISODay: __webpack_require__(150),
-  getISOWeek: __webpack_require__(127),
-  getISOWeeksInYear: __webpack_require__(263),
+  compareDesc: __webpack_require__(129),
+  differenceInCalendarDays: __webpack_require__(85),
+  differenceInCalendarISOWeeks: __webpack_require__(245),
+  differenceInCalendarISOYears: __webpack_require__(143),
+  differenceInCalendarMonths: __webpack_require__(144),
+  differenceInCalendarQuarters: __webpack_require__(246),
+  differenceInCalendarWeeks: __webpack_require__(247),
+  differenceInCalendarYears: __webpack_require__(146),
+  differenceInDays: __webpack_require__(147),
+  differenceInHours: __webpack_require__(248),
+  differenceInISOYears: __webpack_require__(249),
+  differenceInMilliseconds: __webpack_require__(87),
+  differenceInMinutes: __webpack_require__(250),
+  differenceInMonths: __webpack_require__(130),
+  differenceInQuarters: __webpack_require__(251),
+  differenceInSeconds: __webpack_require__(131),
+  differenceInWeeks: __webpack_require__(252),
+  differenceInYears: __webpack_require__(253),
+  distanceInWords: __webpack_require__(149),
+  distanceInWordsStrict: __webpack_require__(254),
+  distanceInWordsToNow: __webpack_require__(255),
+  eachDay: __webpack_require__(256),
+  endOfDay: __webpack_require__(132),
+  endOfHour: __webpack_require__(257),
+  endOfISOWeek: __webpack_require__(258),
+  endOfISOYear: __webpack_require__(259),
+  endOfMinute: __webpack_require__(260),
+  endOfMonth: __webpack_require__(151),
+  endOfQuarter: __webpack_require__(261),
+  endOfSecond: __webpack_require__(262),
+  endOfToday: __webpack_require__(263),
+  endOfTomorrow: __webpack_require__(264),
+  endOfWeek: __webpack_require__(150),
+  endOfYear: __webpack_require__(265),
+  endOfYesterday: __webpack_require__(266),
+  format: __webpack_require__(267),
+  getDate: __webpack_require__(268),
+  getDay: __webpack_require__(269),
+  getDayOfYear: __webpack_require__(152),
+  getDaysInMonth: __webpack_require__(127),
+  getDaysInYear: __webpack_require__(270),
+  getHours: __webpack_require__(271),
+  getISODay: __webpack_require__(156),
+  getISOWeek: __webpack_require__(133),
+  getISOWeeksInYear: __webpack_require__(272),
   getISOYear: __webpack_require__(3),
-  getMilliseconds: __webpack_require__(264),
-  getMinutes: __webpack_require__(265),
-  getMonth: __webpack_require__(266),
-  getOverlappingDaysInRanges: __webpack_require__(267),
-  getQuarter: __webpack_require__(139),
-  getSeconds: __webpack_require__(268),
-  getTime: __webpack_require__(269),
-  getYear: __webpack_require__(270),
-  isAfter: __webpack_require__(271),
-  isBefore: __webpack_require__(272),
-  isDate: __webpack_require__(120),
-  isEqual: __webpack_require__(273),
-  isFirstDayOfMonth: __webpack_require__(274),
-  isFriday: __webpack_require__(275),
-  isFuture: __webpack_require__(276),
-  isLastDayOfMonth: __webpack_require__(277),
-  isLeapYear: __webpack_require__(149),
-  isMonday: __webpack_require__(278),
-  isPast: __webpack_require__(279),
-  isSameDay: __webpack_require__(280),
-  isSameHour: __webpack_require__(151),
-  isSameISOWeek: __webpack_require__(153),
-  isSameISOYear: __webpack_require__(154),
-  isSameMinute: __webpack_require__(155),
-  isSameMonth: __webpack_require__(157),
-  isSameQuarter: __webpack_require__(158),
-  isSameSecond: __webpack_require__(160),
-  isSameWeek: __webpack_require__(128),
-  isSameYear: __webpack_require__(162),
-  isSaturday: __webpack_require__(281),
-  isSunday: __webpack_require__(282),
-  isThisHour: __webpack_require__(283),
-  isThisISOWeek: __webpack_require__(284),
-  isThisISOYear: __webpack_require__(285),
-  isThisMinute: __webpack_require__(286),
-  isThisMonth: __webpack_require__(287),
-  isThisQuarter: __webpack_require__(288),
-  isThisSecond: __webpack_require__(289),
-  isThisWeek: __webpack_require__(290),
-  isThisYear: __webpack_require__(291),
-  isThursday: __webpack_require__(292),
-  isToday: __webpack_require__(293),
-  isTomorrow: __webpack_require__(294),
-  isTuesday: __webpack_require__(295),
-  isValid: __webpack_require__(148),
-  isWednesday: __webpack_require__(296),
-  isWeekend: __webpack_require__(297),
-  isWithinRange: __webpack_require__(298),
-  isYesterday: __webpack_require__(299),
-  lastDayOfISOWeek: __webpack_require__(300),
-  lastDayOfISOYear: __webpack_require__(301),
-  lastDayOfMonth: __webpack_require__(302),
-  lastDayOfQuarter: __webpack_require__(303),
-  lastDayOfWeek: __webpack_require__(163),
-  lastDayOfYear: __webpack_require__(304),
-  max: __webpack_require__(305),
-  min: __webpack_require__(306),
+  getMilliseconds: __webpack_require__(273),
+  getMinutes: __webpack_require__(274),
+  getMonth: __webpack_require__(275),
+  getOverlappingDaysInRanges: __webpack_require__(276),
+  getQuarter: __webpack_require__(145),
+  getSeconds: __webpack_require__(277),
+  getTime: __webpack_require__(278),
+  getYear: __webpack_require__(279),
+  isAfter: __webpack_require__(280),
+  isBefore: __webpack_require__(281),
+  isDate: __webpack_require__(126),
+  isEqual: __webpack_require__(282),
+  isFirstDayOfMonth: __webpack_require__(283),
+  isFriday: __webpack_require__(284),
+  isFuture: __webpack_require__(285),
+  isLastDayOfMonth: __webpack_require__(286),
+  isLeapYear: __webpack_require__(155),
+  isMonday: __webpack_require__(287),
+  isPast: __webpack_require__(288),
+  isSameDay: __webpack_require__(289),
+  isSameHour: __webpack_require__(157),
+  isSameISOWeek: __webpack_require__(159),
+  isSameISOYear: __webpack_require__(160),
+  isSameMinute: __webpack_require__(161),
+  isSameMonth: __webpack_require__(163),
+  isSameQuarter: __webpack_require__(164),
+  isSameSecond: __webpack_require__(166),
+  isSameWeek: __webpack_require__(134),
+  isSameYear: __webpack_require__(168),
+  isSaturday: __webpack_require__(290),
+  isSunday: __webpack_require__(291),
+  isThisHour: __webpack_require__(292),
+  isThisISOWeek: __webpack_require__(293),
+  isThisISOYear: __webpack_require__(294),
+  isThisMinute: __webpack_require__(295),
+  isThisMonth: __webpack_require__(296),
+  isThisQuarter: __webpack_require__(297),
+  isThisSecond: __webpack_require__(298),
+  isThisWeek: __webpack_require__(299),
+  isThisYear: __webpack_require__(300),
+  isThursday: __webpack_require__(301),
+  isToday: __webpack_require__(302),
+  isTomorrow: __webpack_require__(303),
+  isTuesday: __webpack_require__(304),
+  isValid: __webpack_require__(154),
+  isWednesday: __webpack_require__(305),
+  isWeekend: __webpack_require__(306),
+  isWithinRange: __webpack_require__(307),
+  isYesterday: __webpack_require__(308),
+  lastDayOfISOWeek: __webpack_require__(309),
+  lastDayOfISOYear: __webpack_require__(310),
+  lastDayOfMonth: __webpack_require__(311),
+  lastDayOfQuarter: __webpack_require__(312),
+  lastDayOfWeek: __webpack_require__(169),
+  lastDayOfYear: __webpack_require__(313),
+  max: __webpack_require__(314),
+  min: __webpack_require__(315),
   parse: __webpack_require__(0),
-  setDate: __webpack_require__(307),
-  setDay: __webpack_require__(308),
-  setDayOfYear: __webpack_require__(309),
-  setHours: __webpack_require__(310),
-  setISODay: __webpack_require__(311),
-  setISOWeek: __webpack_require__(312),
-  setISOYear: __webpack_require__(132),
-  setMilliseconds: __webpack_require__(313),
-  setMinutes: __webpack_require__(314),
-  setMonth: __webpack_require__(164),
-  setQuarter: __webpack_require__(315),
-  setSeconds: __webpack_require__(316),
-  setYear: __webpack_require__(317),
+  setDate: __webpack_require__(316),
+  setDay: __webpack_require__(317),
+  setDayOfYear: __webpack_require__(318),
+  setHours: __webpack_require__(319),
+  setISODay: __webpack_require__(320),
+  setISOWeek: __webpack_require__(321),
+  setISOYear: __webpack_require__(138),
+  setMilliseconds: __webpack_require__(322),
+  setMinutes: __webpack_require__(323),
+  setMonth: __webpack_require__(170),
+  setQuarter: __webpack_require__(324),
+  setSeconds: __webpack_require__(325),
+  setYear: __webpack_require__(326),
   startOfDay: __webpack_require__(5),
-  startOfHour: __webpack_require__(152),
+  startOfHour: __webpack_require__(158),
   startOfISOWeek: __webpack_require__(4),
   startOfISOYear: __webpack_require__(10),
-  startOfMinute: __webpack_require__(156),
-  startOfMonth: __webpack_require__(318),
-  startOfQuarter: __webpack_require__(159),
-  startOfSecond: __webpack_require__(161),
-  startOfToday: __webpack_require__(319),
-  startOfTomorrow: __webpack_require__(320),
-  startOfWeek: __webpack_require__(80),
-  startOfYear: __webpack_require__(147),
-  startOfYesterday: __webpack_require__(321),
-  subDays: __webpack_require__(322),
-  subHours: __webpack_require__(323),
-  subISOYears: __webpack_require__(142),
-  subMilliseconds: __webpack_require__(324),
-  subMinutes: __webpack_require__(325),
-  subMonths: __webpack_require__(326),
-  subQuarters: __webpack_require__(327),
-  subSeconds: __webpack_require__(328),
-  subWeeks: __webpack_require__(329),
-  subYears: __webpack_require__(330)
+  startOfMinute: __webpack_require__(162),
+  startOfMonth: __webpack_require__(327),
+  startOfQuarter: __webpack_require__(165),
+  startOfSecond: __webpack_require__(167),
+  startOfToday: __webpack_require__(328),
+  startOfTomorrow: __webpack_require__(329),
+  startOfWeek: __webpack_require__(84),
+  startOfYear: __webpack_require__(153),
+  startOfYesterday: __webpack_require__(330),
+  subDays: __webpack_require__(331),
+  subHours: __webpack_require__(332),
+  subISOYears: __webpack_require__(148),
+  subMilliseconds: __webpack_require__(333),
+  subMinutes: __webpack_require__(334),
+  subMonths: __webpack_require__(335),
+  subQuarters: __webpack_require__(336),
+  subSeconds: __webpack_require__(337),
+  subWeeks: __webpack_require__(338),
+  subYears: __webpack_require__(339)
 }
 
 
@@ -1627,6 +1639,190 @@ module.exports = buildFormatLocale
 function buildDistanceInWordsLocale () {
   var distanceInWordsLocale = {
     lessThanXSeconds: {
+      one: 'менш секунды',
+      other: 'менш {{count}} секунд'
+    },
+
+    xSeconds: {
+      one: '1 секунда',
+      other: '{{count}} секунд(-ы)'
+    },
+
+    halfAMinute: 'паўхвіліны',
+
+    lessThanXMinutes: {
+      one: 'менш хвіліны',
+      other: 'менш {{count}} хвілін'
+    },
+
+    xMinutes: {
+      one: '1 хвіліна',
+      other: '{{count}} хвілін(-ы)'
+    },
+
+    aboutXHours: {
+      one: 'каля 1 гадзіны',
+      other: 'каля {{count}} гадзін'
+    },
+
+    xHours: {
+      one: '1 гадзіна',
+      other: '{{count}} гадзін(-ы)'
+    },
+
+    xDays: {
+      one: '1 дзень',
+      other: '{{count}} дні (дзён)'
+    },
+
+    aboutXMonths: {
+      one: 'каля 1 месяца',
+      other: 'каля {{count}} месяцаў'
+    },
+
+    xMonths: {
+      one: '1 месяц',
+      other: '{{count}} месяцы(-аў)'
+    },
+
+    aboutXYears: {
+      one: 'каля 1 года',
+      other: 'каля {{count}} гадоў'
+    },
+
+    xYears: {
+      one: '1 год',
+      other: '{{count}} гады(гадоў)'
+    },
+
+    overXYears: {
+      one: 'больш 1 года',
+      other: 'больш {{count}} гадоў'
+    },
+
+    almostXYears: {
+      one: 'амаль 1 год',
+      other: 'амаль {{count}} гады(-оў)'
+    }
+  }
+
+  function localize (token, count, options) {
+    options = options || {}
+
+    var result
+    if (typeof distanceInWordsLocale[token] === 'string') {
+      result = distanceInWordsLocale[token]
+    } else if (count === 1) {
+      result = distanceInWordsLocale[token].one
+    } else {
+      result = distanceInWordsLocale[token].other.replace('{{count}}', count)
+    }
+
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'у/праз ' + result
+      } else {
+        return result + ' таму'
+      }
+    }
+
+    return result
+  }
+
+  return {
+    localize: localize
+  }
+}
+
+module.exports = buildDistanceInWordsLocale
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var buildFormattingTokensRegExp = __webpack_require__(2)
+
+function buildFormatLocale () {
+  var months3char = ['студз', 'лют', 'сак', 'крас', 'май', 'чэрв', 'ліп', 'жн', 'вер', 'кастр', 'ліст', 'снеж']
+  var monthsFull = ['студзень', 'люты', 'сакавік', 'красавік', 'май', 'чэрвень', 'ліпень', 'жнівень', 'верасень', 'кастрычнік', 'лістапад', 'снежань']
+  var weekdays2char = ['нд', 'пн', 'аў', 'ср', 'чц', 'пт', 'сб']
+  var weekdays3char = ['нядз', 'пан', 'аўт', 'сер', 'чац', 'пят', 'суб']
+  var weekdaysFull = ['нядзеля', 'панядзелак', 'аўторак', 'серада', 'чацвер', 'пятніца', 'субота']
+  var meridiemUppercase = ['AM', 'PM']
+  var meridiemLowercase = ['am', 'pm']
+  var meridiemFull = ['a.m.', 'p.m.']
+
+  var formatters = {
+    // Month: Jan, Feb, ..., Dec
+    'MMM': function (date) {
+      return months3char[date.getMonth()]
+    },
+
+    // Month: January, February, ..., December
+    'MMMM': function (date) {
+      return monthsFull[date.getMonth()]
+    },
+
+    // Day of week: Su, Mo, ..., Sa
+    'dd': function (date) {
+      return weekdays2char[date.getDay()]
+    },
+
+    // Day of week: Sun, Mon, ..., Sat
+    'ddd': function (date) {
+      return weekdays3char[date.getDay()]
+    },
+
+    // Day of week: Sunday, Monday, ..., Saturday
+    'dddd': function (date) {
+      return weekdaysFull[date.getDay()]
+    },
+
+    // AM, PM
+    'A': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
+    },
+
+    // am, pm
+    'a': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
+    },
+
+    // a.m., p.m.
+    'aa': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemFull[1] : meridiemFull[0]
+    }
+  }
+
+  // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
+  var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W']
+  ordinalFormatters.forEach(function (formatterToken) {
+    formatters[formatterToken + 'o'] = function (date, formatters) {
+      return ordinal(formatters[formatterToken](date))
+    }
+  })
+
+  return {
+    formatters: formatters,
+    formattingTokensRegExp: buildFormattingTokensRegExp(formatters)
+  }
+}
+
+function ordinal (number) {
+  return number + '.'
+}
+
+module.exports = buildFormatLocale
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+function buildDistanceInWordsLocale () {
+  var distanceInWordsLocale = {
+    lessThanXSeconds: {
       one: 'по-малко от секунда',
       other: 'по-малко от {{count}} секунди'
     },
@@ -1726,7 +1922,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -1819,7 +2015,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -1924,7 +2120,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -2014,7 +2210,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -2222,7 +2418,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -2301,7 +2497,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2406,7 +2602,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -2485,7 +2681,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2676,7 +2872,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -2759,7 +2955,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -2864,7 +3060,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -2957,7 +3153,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3062,7 +3258,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -3137,7 +3333,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3242,7 +3438,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -3321,7 +3517,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3463,7 +3659,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -3535,7 +3731,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3640,7 +3836,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -3752,7 +3948,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -3857,7 +4053,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -3985,7 +4181,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4169,7 +4365,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -4258,7 +4454,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4363,7 +4559,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -4457,7 +4653,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4562,7 +4758,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -4654,7 +4850,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4759,7 +4955,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -4838,7 +5034,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -4943,7 +5139,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5022,7 +5218,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5091,7 +5287,9 @@ function buildDistanceInWordsLocale () {
 
     almostXYears: {
       one: '1年以下',
-      other: '{{count}}年以下'
+      other: '{{count}}年以下',
+      oneWithSuffix: '1年ぐらい',
+      otherWithSuffix: '{{count}}年ぐらい'
     }
   }
 
@@ -5102,9 +5300,17 @@ function buildDistanceInWordsLocale () {
     if (typeof distanceInWordsLocale[token] === 'string') {
       result = distanceInWordsLocale[token]
     } else if (count === 1) {
-      result = distanceInWordsLocale[token].one
+      if (options.addSuffix && distanceInWordsLocale[token].oneWithSuffix) {
+        result = distanceInWordsLocale[token].oneWithSuffix
+      } else {
+        result = distanceInWordsLocale[token].one
+      }
     } else {
-      result = distanceInWordsLocale[token].other.replace('{{count}}', count)
+      if (options.addSuffix && distanceInWordsLocale[token].otherWithSuffix) {
+        result = distanceInWordsLocale[token].otherWithSuffix.replace('{{count}}', count)
+      } else {
+        result = distanceInWordsLocale[token].other.replace('{{count}}', count)
+      }
     }
 
     if (options.addSuffix) {
@@ -5127,7 +5333,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5206,7 +5412,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5311,7 +5517,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5390,7 +5596,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5495,7 +5701,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5584,7 +5790,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5689,7 +5895,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5768,7 +5974,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -5873,7 +6079,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -5952,7 +6158,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -6123,7 +6329,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -6199,7 +6405,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -6304,7 +6510,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -6383,7 +6589,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -6488,7 +6694,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -6568,7 +6774,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 function declension (scheme, count) {
@@ -6808,7 +7014,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -6903,7 +7109,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports) {
 
 function declensionGroup (scheme, count) {
@@ -7111,7 +7317,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -7190,7 +7396,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7329,7 +7535,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -7408,7 +7614,191 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 70 */
+/* 72 */
+/***/ (function(module, exports) {
+
+function buildDistanceInWordsLocale () {
+  var distanceInWordsLocale = {
+    lessThanXSeconds: {
+      one: 'manje od sekunde',
+      other: 'manje od {{count}} sekundi'
+    },
+
+    xSeconds: {
+      one: '1 sekund',
+      other: '{{count}} sekunde'
+    },
+
+    halfAMinute: 'pola minuta',
+
+    lessThanXMinutes: {
+      one: 'manje od minute',
+      other: 'manje od {{count}} minuta'
+    },
+
+    xMinutes: {
+      one: '1 minut',
+      other: '{{count}} minute'
+    },
+
+    aboutXHours: {
+      one: 'oko 1 sat',
+      other: 'oko {{count}} sata'
+    },
+
+    xHours: {
+      one: '1 sat',
+      other: '{{count}} sati'
+    },
+
+    xDays: {
+      one: '1 dan',
+      other: '{{count}} dani'
+    },
+
+    aboutXMonths: {
+      one: 'oko 1 mesec',
+      other: 'oko {{count}} meseca'
+    },
+
+    xMonths: {
+      one: '1 mesec',
+      other: '{{count}} meseci'
+    },
+
+    aboutXYears: {
+      one: 'oko 1 godine',
+      other: 'oko {{count}} godina'
+    },
+
+    xYears: {
+      one: '1 godina',
+      other: '{{count}} godine'
+    },
+
+    overXYears: {
+      one: 'više od 1 godine',
+      other: 'više od {{count}} godina'
+    },
+
+    almostXYears: {
+      one: 'skoro 1 godinu',
+      other: 'skoro {{count}} godina'
+    }
+  }
+
+  function localize (token, count, options) {
+    options = options || {}
+
+    var result
+    if (typeof distanceInWordsLocale[token] === 'string') {
+      result = distanceInWordsLocale[token]
+    } else if (count === 1) {
+      result = distanceInWordsLocale[token].one
+    } else {
+      result = distanceInWordsLocale[token].other.replace('{{count}}', count)
+    }
+
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        return 'za ' + result
+      } else {
+        return result + ' pre'
+      }
+    }
+
+    return result
+  }
+
+  return {
+    localize: localize
+  }
+}
+
+module.exports = buildDistanceInWordsLocale
+
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var buildFormattingTokensRegExp = __webpack_require__(2)
+
+function buildFormatLocale () {
+  var months3char = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec']
+  var monthsFull = ['januar', 'februar', 'mart', 'april', 'maj', 'jun', 'jul', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar']
+  var weekdays2char = ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su']
+  var weekdays3char = ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub']
+  var weekdaysFull = ['nedelja', 'ponedeljak', 'utorak', 'sreda', 'četvrtak', 'petak', 'subota']
+  var meridiemUppercase = ['AM', 'PM']
+  var meridiemLowercase = ['am', 'pm']
+  var meridiemFull = ['a.m.', 'p.m.']
+
+  var formatters = {
+    // Month: Jan, Feb, ..., Dec
+    'MMM': function (date) {
+      return months3char[date.getMonth()]
+    },
+
+    // Month: January, February, ..., December
+    'MMMM': function (date) {
+      return monthsFull[date.getMonth()]
+    },
+
+    // Day of week: Su, Mo, ..., Sa
+    'dd': function (date) {
+      return weekdays2char[date.getDay()]
+    },
+
+    // Day of week: Sun, Mon, ..., Sat
+    'ddd': function (date) {
+      return weekdays3char[date.getDay()]
+    },
+
+    // Day of week: Sunday, Monday, ..., Saturday
+    'dddd': function (date) {
+      return weekdaysFull[date.getDay()]
+    },
+
+    // AM, PM
+    'A': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemUppercase[1] : meridiemUppercase[0]
+    },
+
+    // am, pm
+    'a': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemLowercase[1] : meridiemLowercase[0]
+    },
+
+    // a.m., p.m.
+    'aa': function (date) {
+      return (date.getHours() / 12) >= 1 ? meridiemFull[1] : meridiemFull[0]
+    }
+  }
+
+  // Generate ordinal version of formatters: M -> Mo, D -> Do, etc.
+  var ordinalFormatters = ['M', 'D', 'DDD', 'd', 'Q', 'W']
+  ordinalFormatters.forEach(function (formatterToken) {
+    formatters[formatterToken + 'o'] = function (date, formatters) {
+      return ordinal(formatters[formatterToken](date))
+    }
+  })
+
+  return {
+    formatters: formatters,
+    formattingTokensRegExp: buildFormattingTokensRegExp(formatters)
+  }
+}
+
+function ordinal (number) {
+  return number + '.'
+}
+
+module.exports = buildFormatLocale
+
+
+/***/ }),
+/* 74 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7530,7 +7920,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 71 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -7608,7 +7998,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 72 */
+/* 76 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7717,14 +8107,14 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 73 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
 
 function buildFormatLocale () {
   var months3char = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
-  var monthsFull = ['มกราคาม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+  var monthsFull = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
   var weekdays2char = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.']
   var weekdays3char = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.']
   var weekdaysFull = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์']
@@ -7784,7 +8174,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 74 */
+/* 78 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -7900,7 +8290,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 75 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -8012,7 +8402,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 76 */
+/* 80 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -8117,7 +8507,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 77 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -8184,7 +8574,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 78 */
+/* 82 */
 /***/ (function(module, exports) {
 
 function buildDistanceInWordsLocale () {
@@ -8289,7 +8679,7 @@ module.exports = buildDistanceInWordsLocale
 
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildFormattingTokensRegExp = __webpack_require__(2)
@@ -8368,7 +8758,7 @@ module.exports = buildFormatLocale
 
 
 /***/ }),
-/* 80 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8412,7 +8802,7 @@ module.exports = startOfWeek
 
 
 /***/ }),
-/* 81 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -8459,11 +8849,11 @@ module.exports = differenceInCalendarDays
 
 
 /***/ }),
-/* 82 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(121)
+var getDaysInMonth = __webpack_require__(127)
 
 /**
  * @category Month Helpers
@@ -8499,7 +8889,7 @@ module.exports = addMonths
 
 
 /***/ }),
-/* 83 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -8534,7 +8924,7 @@ module.exports = differenceInMilliseconds
 
 
 /***/ }),
-/* 84 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -8542,10 +8932,10 @@ var map = {
 	"./_lib/build_formatting_tokens_reg_exp/": 2,
 	"./_lib/build_formatting_tokens_reg_exp/index": 2,
 	"./_lib/build_formatting_tokens_reg_exp/index.js": 2,
-	"./_lib/package": 196,
-	"./_lib/package.json": 196,
-	"./ar": 85,
-	"./ar/": 85,
+	"./_lib/package": 202,
+	"./_lib/package.json": 202,
+	"./ar": 89,
+	"./ar/": 89,
 	"./ar/build_distance_in_words_locale": 14,
 	"./ar/build_distance_in_words_locale/": 14,
 	"./ar/build_distance_in_words_locale/index": 14,
@@ -8554,94 +8944,116 @@ var map = {
 	"./ar/build_format_locale/": 15,
 	"./ar/build_format_locale/index": 15,
 	"./ar/build_format_locale/index.js": 15,
-	"./ar/index": 85,
-	"./ar/index.js": 85,
-	"./ar/package": 197,
-	"./ar/package.json": 197,
-	"./bg": 86,
-	"./bg/": 86,
-	"./bg/build_distance_in_words_locale": 16,
-	"./bg/build_distance_in_words_locale/": 16,
-	"./bg/build_distance_in_words_locale/index": 16,
-	"./bg/build_distance_in_words_locale/index.js": 16,
-	"./bg/build_format_locale": 17,
-	"./bg/build_format_locale/": 17,
-	"./bg/build_format_locale/index": 17,
-	"./bg/build_format_locale/index.js": 17,
-	"./bg/index": 86,
-	"./bg/index.js": 86,
-	"./bg/package": 198,
-	"./bg/package.json": 198,
-	"./ca": 87,
-	"./ca/": 87,
-	"./ca/build_distance_in_words_locale": 18,
-	"./ca/build_distance_in_words_locale/": 18,
-	"./ca/build_distance_in_words_locale/index": 18,
-	"./ca/build_distance_in_words_locale/index.js": 18,
-	"./ca/build_format_locale": 19,
-	"./ca/build_format_locale/": 19,
-	"./ca/build_format_locale/index": 19,
-	"./ca/build_format_locale/index.js": 19,
-	"./ca/index": 87,
-	"./ca/index.js": 87,
-	"./ca/package": 199,
-	"./ca/package.json": 199,
-	"./cs": 88,
-	"./cs/": 88,
-	"./cs/build_distance_in_words_locale": 20,
-	"./cs/build_distance_in_words_locale/": 20,
-	"./cs/build_distance_in_words_locale/index": 20,
-	"./cs/build_distance_in_words_locale/index.js": 20,
-	"./cs/build_format_locale": 21,
-	"./cs/build_format_locale/": 21,
-	"./cs/build_format_locale/index": 21,
-	"./cs/build_format_locale/index.js": 21,
-	"./cs/index": 88,
-	"./cs/index.js": 88,
-	"./cs/package": 200,
-	"./cs/package.json": 200,
-	"./da": 89,
-	"./da/": 89,
-	"./da/build_distance_in_words_locale": 22,
-	"./da/build_distance_in_words_locale/": 22,
-	"./da/build_distance_in_words_locale/index": 22,
-	"./da/build_distance_in_words_locale/index.js": 22,
-	"./da/build_format_locale": 23,
-	"./da/build_format_locale/": 23,
-	"./da/build_format_locale/index": 23,
-	"./da/build_format_locale/index.js": 23,
-	"./da/index": 89,
-	"./da/index.js": 89,
-	"./da/package": 201,
-	"./da/package.json": 201,
-	"./de": 90,
-	"./de/": 90,
-	"./de/build_distance_in_words_locale": 24,
-	"./de/build_distance_in_words_locale/": 24,
-	"./de/build_distance_in_words_locale/index": 24,
-	"./de/build_distance_in_words_locale/index.js": 24,
-	"./de/build_format_locale": 25,
-	"./de/build_format_locale/": 25,
-	"./de/build_format_locale/index": 25,
-	"./de/build_format_locale/index.js": 25,
-	"./de/index": 90,
-	"./de/index.js": 90,
-	"./de/package": 202,
-	"./de/package.json": 202,
-	"./el": 91,
-	"./el/": 91,
-	"./el/build_distance_in_words_locale": 26,
-	"./el/build_distance_in_words_locale/": 26,
-	"./el/build_distance_in_words_locale/index": 26,
-	"./el/build_distance_in_words_locale/index.js": 26,
-	"./el/build_format_locale": 27,
-	"./el/build_format_locale/": 27,
-	"./el/build_format_locale/index": 27,
-	"./el/build_format_locale/index.js": 27,
-	"./el/index": 91,
-	"./el/index.js": 91,
-	"./el/package": 203,
-	"./el/package.json": 203,
+	"./ar/index": 89,
+	"./ar/index.d.ts": 348,
+	"./ar/index.js": 89,
+	"./ar/package": 203,
+	"./ar/package.json": 203,
+	"./be": 90,
+	"./be/": 90,
+	"./be/build_distance_in_words_locale": 16,
+	"./be/build_distance_in_words_locale/": 16,
+	"./be/build_distance_in_words_locale/index": 16,
+	"./be/build_distance_in_words_locale/index.js": 16,
+	"./be/build_format_locale": 17,
+	"./be/build_format_locale/": 17,
+	"./be/build_format_locale/index": 17,
+	"./be/build_format_locale/index.js": 17,
+	"./be/index": 90,
+	"./be/index.d.ts": 349,
+	"./be/index.js": 90,
+	"./be/package": 204,
+	"./be/package.json": 204,
+	"./bg": 91,
+	"./bg/": 91,
+	"./bg/build_distance_in_words_locale": 18,
+	"./bg/build_distance_in_words_locale/": 18,
+	"./bg/build_distance_in_words_locale/index": 18,
+	"./bg/build_distance_in_words_locale/index.js": 18,
+	"./bg/build_format_locale": 19,
+	"./bg/build_format_locale/": 19,
+	"./bg/build_format_locale/index": 19,
+	"./bg/build_format_locale/index.js": 19,
+	"./bg/index": 91,
+	"./bg/index.d.ts": 350,
+	"./bg/index.js": 91,
+	"./bg/package": 205,
+	"./bg/package.json": 205,
+	"./ca": 92,
+	"./ca/": 92,
+	"./ca/build_distance_in_words_locale": 20,
+	"./ca/build_distance_in_words_locale/": 20,
+	"./ca/build_distance_in_words_locale/index": 20,
+	"./ca/build_distance_in_words_locale/index.js": 20,
+	"./ca/build_format_locale": 21,
+	"./ca/build_format_locale/": 21,
+	"./ca/build_format_locale/index": 21,
+	"./ca/build_format_locale/index.js": 21,
+	"./ca/index": 92,
+	"./ca/index.d.ts": 351,
+	"./ca/index.js": 92,
+	"./ca/package": 206,
+	"./ca/package.json": 206,
+	"./cs": 93,
+	"./cs/": 93,
+	"./cs/build_distance_in_words_locale": 22,
+	"./cs/build_distance_in_words_locale/": 22,
+	"./cs/build_distance_in_words_locale/index": 22,
+	"./cs/build_distance_in_words_locale/index.js": 22,
+	"./cs/build_format_locale": 23,
+	"./cs/build_format_locale/": 23,
+	"./cs/build_format_locale/index": 23,
+	"./cs/build_format_locale/index.js": 23,
+	"./cs/index": 93,
+	"./cs/index.d.ts": 352,
+	"./cs/index.js": 93,
+	"./cs/package": 207,
+	"./cs/package.json": 207,
+	"./da": 94,
+	"./da/": 94,
+	"./da/build_distance_in_words_locale": 24,
+	"./da/build_distance_in_words_locale/": 24,
+	"./da/build_distance_in_words_locale/index": 24,
+	"./da/build_distance_in_words_locale/index.js": 24,
+	"./da/build_format_locale": 25,
+	"./da/build_format_locale/": 25,
+	"./da/build_format_locale/index": 25,
+	"./da/build_format_locale/index.js": 25,
+	"./da/index": 94,
+	"./da/index.d.ts": 353,
+	"./da/index.js": 94,
+	"./da/package": 208,
+	"./da/package.json": 208,
+	"./de": 95,
+	"./de/": 95,
+	"./de/build_distance_in_words_locale": 26,
+	"./de/build_distance_in_words_locale/": 26,
+	"./de/build_distance_in_words_locale/index": 26,
+	"./de/build_distance_in_words_locale/index.js": 26,
+	"./de/build_format_locale": 27,
+	"./de/build_format_locale/": 27,
+	"./de/build_format_locale/index": 27,
+	"./de/build_format_locale/index.js": 27,
+	"./de/index": 95,
+	"./de/index.d.ts": 354,
+	"./de/index.js": 95,
+	"./de/package": 209,
+	"./de/package.json": 209,
+	"./el": 96,
+	"./el/": 96,
+	"./el/build_distance_in_words_locale": 28,
+	"./el/build_distance_in_words_locale/": 28,
+	"./el/build_distance_in_words_locale/index": 28,
+	"./el/build_distance_in_words_locale/index.js": 28,
+	"./el/build_format_locale": 29,
+	"./el/build_format_locale/": 29,
+	"./el/build_format_locale/index": 29,
+	"./el/build_format_locale/index.js": 29,
+	"./el/index": 96,
+	"./el/index.d.ts": 355,
+	"./el/index.js": 96,
+	"./el/package": 210,
+	"./el/package.json": 210,
 	"./en": 6,
 	"./en/": 6,
 	"./en/build_distance_in_words_locale": 12,
@@ -8653,375 +9065,417 @@ var map = {
 	"./en/build_format_locale/index": 13,
 	"./en/build_format_locale/index.js": 13,
 	"./en/index": 6,
+	"./en/index.d.ts": 356,
 	"./en/index.js": 6,
-	"./en/package": 204,
-	"./en/package.json": 204,
-	"./eo": 92,
-	"./eo/": 92,
-	"./eo/build_distance_in_words_locale": 28,
-	"./eo/build_distance_in_words_locale/": 28,
-	"./eo/build_distance_in_words_locale/index": 28,
-	"./eo/build_distance_in_words_locale/index.js": 28,
-	"./eo/build_format_locale": 29,
-	"./eo/build_format_locale/": 29,
-	"./eo/build_format_locale/index": 29,
-	"./eo/build_format_locale/index.js": 29,
-	"./eo/index": 92,
-	"./eo/index.js": 92,
-	"./eo/package": 205,
-	"./eo/package.json": 205,
-	"./es": 93,
-	"./es/": 93,
-	"./es/build_distance_in_words_locale": 30,
-	"./es/build_distance_in_words_locale/": 30,
-	"./es/build_distance_in_words_locale/index": 30,
-	"./es/build_distance_in_words_locale/index.js": 30,
-	"./es/build_format_locale": 31,
-	"./es/build_format_locale/": 31,
-	"./es/build_format_locale/index": 31,
-	"./es/build_format_locale/index.js": 31,
-	"./es/index": 93,
-	"./es/index.js": 93,
-	"./es/package": 206,
-	"./es/package.json": 206,
-	"./fi": 94,
-	"./fi/": 94,
-	"./fi/build_distance_in_words_locale": 32,
-	"./fi/build_distance_in_words_locale/": 32,
-	"./fi/build_distance_in_words_locale/index": 32,
-	"./fi/build_distance_in_words_locale/index.js": 32,
-	"./fi/build_format_locale": 33,
-	"./fi/build_format_locale/": 33,
-	"./fi/build_format_locale/index": 33,
-	"./fi/build_format_locale/index.js": 33,
-	"./fi/index": 94,
-	"./fi/index.js": 94,
-	"./fi/package": 207,
-	"./fi/package.json": 207,
-	"./fil": 95,
-	"./fil/": 95,
-	"./fil/build_distance_in_words_locale": 34,
-	"./fil/build_distance_in_words_locale/": 34,
-	"./fil/build_distance_in_words_locale/index": 34,
-	"./fil/build_distance_in_words_locale/index.js": 34,
-	"./fil/build_format_locale": 35,
-	"./fil/build_format_locale/": 35,
-	"./fil/build_format_locale/index": 35,
-	"./fil/build_format_locale/index.js": 35,
-	"./fil/index": 95,
-	"./fil/index.js": 95,
-	"./fil/package": 208,
-	"./fil/package.json": 208,
-	"./fr": 96,
-	"./fr/": 96,
-	"./fr/build_distance_in_words_locale": 36,
-	"./fr/build_distance_in_words_locale/": 36,
-	"./fr/build_distance_in_words_locale/index": 36,
-	"./fr/build_distance_in_words_locale/index.js": 36,
-	"./fr/build_format_locale": 37,
-	"./fr/build_format_locale/": 37,
-	"./fr/build_format_locale/index": 37,
-	"./fr/build_format_locale/index.js": 37,
-	"./fr/index": 96,
-	"./fr/index.js": 96,
-	"./fr/package": 209,
-	"./fr/package.json": 209,
-	"./hr": 97,
-	"./hr/": 97,
-	"./hr/build_distance_in_words_locale": 38,
-	"./hr/build_distance_in_words_locale/": 38,
-	"./hr/build_distance_in_words_locale/index": 38,
-	"./hr/build_distance_in_words_locale/index.js": 38,
-	"./hr/build_format_locale": 39,
-	"./hr/build_format_locale/": 39,
-	"./hr/build_format_locale/index": 39,
-	"./hr/build_format_locale/index.js": 39,
-	"./hr/index": 97,
-	"./hr/index.js": 97,
-	"./hr/package": 210,
-	"./hr/package.json": 210,
-	"./hu": 98,
-	"./hu/": 98,
-	"./hu/build_distance_in_words_locale": 40,
-	"./hu/build_distance_in_words_locale/": 40,
-	"./hu/build_distance_in_words_locale/index": 40,
-	"./hu/build_distance_in_words_locale/index.js": 40,
-	"./hu/build_format_locale": 41,
-	"./hu/build_format_locale/": 41,
-	"./hu/build_format_locale/index": 41,
-	"./hu/build_format_locale/index.js": 41,
-	"./hu/index": 98,
-	"./hu/index.js": 98,
-	"./hu/package": 211,
-	"./hu/package.json": 211,
-	"./id": 99,
-	"./id/": 99,
-	"./id/build_distance_in_words_locale": 42,
-	"./id/build_distance_in_words_locale/": 42,
-	"./id/build_distance_in_words_locale/index": 42,
-	"./id/build_distance_in_words_locale/index.js": 42,
-	"./id/build_format_locale": 43,
-	"./id/build_format_locale/": 43,
-	"./id/build_format_locale/index": 43,
-	"./id/build_format_locale/index.js": 43,
-	"./id/index": 99,
-	"./id/index.js": 99,
-	"./id/package": 212,
-	"./id/package.json": 212,
-	"./is": 100,
-	"./is/": 100,
-	"./is/build_distance_in_words_locale": 44,
-	"./is/build_distance_in_words_locale/": 44,
-	"./is/build_distance_in_words_locale/index": 44,
-	"./is/build_distance_in_words_locale/index.js": 44,
-	"./is/build_format_locale": 45,
-	"./is/build_format_locale/": 45,
-	"./is/build_format_locale/index": 45,
-	"./is/build_format_locale/index.js": 45,
-	"./is/index": 100,
-	"./is/index.js": 100,
-	"./is/package": 213,
-	"./is/package.json": 213,
-	"./it": 101,
-	"./it/": 101,
-	"./it/build_distance_in_words_locale": 46,
-	"./it/build_distance_in_words_locale/": 46,
-	"./it/build_distance_in_words_locale/index": 46,
-	"./it/build_distance_in_words_locale/index.js": 46,
-	"./it/build_format_locale": 47,
-	"./it/build_format_locale/": 47,
-	"./it/build_format_locale/index": 47,
-	"./it/build_format_locale/index.js": 47,
-	"./it/index": 101,
-	"./it/index.js": 101,
-	"./it/package": 214,
-	"./it/package.json": 214,
-	"./ja": 102,
-	"./ja/": 102,
-	"./ja/build_distance_in_words_locale": 48,
-	"./ja/build_distance_in_words_locale/": 48,
-	"./ja/build_distance_in_words_locale/index": 48,
-	"./ja/build_distance_in_words_locale/index.js": 48,
-	"./ja/build_format_locale": 49,
-	"./ja/build_format_locale/": 49,
-	"./ja/build_format_locale/index": 49,
-	"./ja/build_format_locale/index.js": 49,
-	"./ja/index": 102,
-	"./ja/index.js": 102,
-	"./ja/package": 215,
-	"./ja/package.json": 215,
-	"./ko": 103,
-	"./ko/": 103,
-	"./ko/build_distance_in_words_locale": 50,
-	"./ko/build_distance_in_words_locale/": 50,
-	"./ko/build_distance_in_words_locale/index": 50,
-	"./ko/build_distance_in_words_locale/index.js": 50,
-	"./ko/build_format_locale": 51,
-	"./ko/build_format_locale/": 51,
-	"./ko/build_format_locale/index": 51,
-	"./ko/build_format_locale/index.js": 51,
-	"./ko/index": 103,
-	"./ko/index.js": 103,
-	"./ko/package": 216,
-	"./ko/package.json": 216,
-	"./mk": 104,
-	"./mk/": 104,
-	"./mk/build_distance_in_words_locale": 52,
-	"./mk/build_distance_in_words_locale/": 52,
-	"./mk/build_distance_in_words_locale/index": 52,
-	"./mk/build_distance_in_words_locale/index.js": 52,
-	"./mk/build_format_locale": 53,
-	"./mk/build_format_locale/": 53,
-	"./mk/build_format_locale/index": 53,
-	"./mk/build_format_locale/index.js": 53,
-	"./mk/index": 104,
-	"./mk/index.js": 104,
-	"./mk/package": 217,
-	"./mk/package.json": 217,
-	"./nb": 105,
-	"./nb/": 105,
-	"./nb/build_distance_in_words_locale": 54,
-	"./nb/build_distance_in_words_locale/": 54,
-	"./nb/build_distance_in_words_locale/index": 54,
-	"./nb/build_distance_in_words_locale/index.js": 54,
-	"./nb/build_format_locale": 55,
-	"./nb/build_format_locale/": 55,
-	"./nb/build_format_locale/index": 55,
-	"./nb/build_format_locale/index.js": 55,
-	"./nb/index": 105,
-	"./nb/index.js": 105,
-	"./nb/package": 218,
-	"./nb/package.json": 218,
-	"./nl": 106,
-	"./nl/": 106,
-	"./nl/build_distance_in_words_locale": 56,
-	"./nl/build_distance_in_words_locale/": 56,
-	"./nl/build_distance_in_words_locale/index": 56,
-	"./nl/build_distance_in_words_locale/index.js": 56,
-	"./nl/build_format_locale": 57,
-	"./nl/build_format_locale/": 57,
-	"./nl/build_format_locale/index": 57,
-	"./nl/build_format_locale/index.js": 57,
-	"./nl/index": 106,
-	"./nl/index.js": 106,
-	"./nl/package": 219,
-	"./nl/package.json": 219,
-	"./package": 220,
-	"./package.json": 220,
-	"./pl": 107,
-	"./pl/": 107,
-	"./pl/build_distance_in_words_locale": 58,
-	"./pl/build_distance_in_words_locale/": 58,
-	"./pl/build_distance_in_words_locale/index": 58,
-	"./pl/build_distance_in_words_locale/index.js": 58,
-	"./pl/build_format_locale": 59,
-	"./pl/build_format_locale/": 59,
-	"./pl/build_format_locale/index": 59,
-	"./pl/build_format_locale/index.js": 59,
-	"./pl/index": 107,
-	"./pl/index.js": 107,
-	"./pl/package": 221,
-	"./pl/package.json": 221,
-	"./pt": 108,
-	"./pt/": 108,
-	"./pt/build_distance_in_words_locale": 60,
-	"./pt/build_distance_in_words_locale/": 60,
-	"./pt/build_distance_in_words_locale/index": 60,
-	"./pt/build_distance_in_words_locale/index.js": 60,
-	"./pt/build_format_locale": 61,
-	"./pt/build_format_locale/": 61,
-	"./pt/build_format_locale/index": 61,
-	"./pt/build_format_locale/index.js": 61,
-	"./pt/index": 108,
-	"./pt/index.js": 108,
-	"./pt/package": 222,
-	"./pt/package.json": 222,
-	"./ro": 109,
-	"./ro/": 109,
-	"./ro/build_distance_in_words_locale": 62,
-	"./ro/build_distance_in_words_locale/": 62,
-	"./ro/build_distance_in_words_locale/index": 62,
-	"./ro/build_distance_in_words_locale/index.js": 62,
-	"./ro/build_format_locale": 63,
-	"./ro/build_format_locale/": 63,
-	"./ro/build_format_locale/index": 63,
-	"./ro/build_format_locale/index.js": 63,
-	"./ro/index": 109,
-	"./ro/index.js": 109,
-	"./ro/package": 223,
-	"./ro/package.json": 223,
-	"./ru": 110,
-	"./ru/": 110,
-	"./ru/build_distance_in_words_locale": 64,
-	"./ru/build_distance_in_words_locale/": 64,
-	"./ru/build_distance_in_words_locale/index": 64,
-	"./ru/build_distance_in_words_locale/index.js": 64,
-	"./ru/build_format_locale": 65,
-	"./ru/build_format_locale/": 65,
-	"./ru/build_format_locale/index": 65,
-	"./ru/build_format_locale/index.js": 65,
-	"./ru/index": 110,
-	"./ru/index.js": 110,
-	"./ru/package": 224,
-	"./ru/package.json": 224,
-	"./sk": 111,
-	"./sk/": 111,
-	"./sk/build_distance_in_words_locale": 66,
-	"./sk/build_distance_in_words_locale/": 66,
-	"./sk/build_distance_in_words_locale/index": 66,
-	"./sk/build_distance_in_words_locale/index.js": 66,
-	"./sk/build_format_locale": 67,
-	"./sk/build_format_locale/": 67,
-	"./sk/build_format_locale/index": 67,
-	"./sk/build_format_locale/index.js": 67,
-	"./sk/index": 111,
-	"./sk/index.js": 111,
-	"./sk/package": 225,
-	"./sk/package.json": 225,
-	"./sl": 112,
-	"./sl/": 112,
-	"./sl/build_distance_in_words_locale": 68,
-	"./sl/build_distance_in_words_locale/": 68,
-	"./sl/build_distance_in_words_locale/index": 68,
-	"./sl/build_distance_in_words_locale/index.js": 68,
-	"./sl/build_format_locale": 69,
-	"./sl/build_format_locale/": 69,
-	"./sl/build_format_locale/index": 69,
-	"./sl/build_format_locale/index.js": 69,
-	"./sl/index": 112,
-	"./sl/index.js": 112,
-	"./sl/package": 226,
-	"./sl/package.json": 226,
-	"./sv": 113,
-	"./sv/": 113,
-	"./sv/build_distance_in_words_locale": 70,
-	"./sv/build_distance_in_words_locale/": 70,
-	"./sv/build_distance_in_words_locale/index": 70,
-	"./sv/build_distance_in_words_locale/index.js": 70,
-	"./sv/build_format_locale": 71,
-	"./sv/build_format_locale/": 71,
-	"./sv/build_format_locale/index": 71,
-	"./sv/build_format_locale/index.js": 71,
-	"./sv/index": 113,
-	"./sv/index.js": 113,
-	"./sv/package": 227,
-	"./sv/package.json": 227,
-	"./th": 114,
-	"./th/": 114,
-	"./th/build_distance_in_words_locale": 72,
-	"./th/build_distance_in_words_locale/": 72,
-	"./th/build_distance_in_words_locale/index": 72,
-	"./th/build_distance_in_words_locale/index.js": 72,
-	"./th/build_format_locale": 73,
-	"./th/build_format_locale/": 73,
-	"./th/build_format_locale/index": 73,
-	"./th/build_format_locale/index.js": 73,
-	"./th/index": 114,
-	"./th/index.js": 114,
-	"./th/package": 228,
-	"./th/package.json": 228,
-	"./tr": 115,
-	"./tr/": 115,
-	"./tr/build_distance_in_words_locale": 74,
-	"./tr/build_distance_in_words_locale/": 74,
-	"./tr/build_distance_in_words_locale/index": 74,
-	"./tr/build_distance_in_words_locale/index.js": 74,
-	"./tr/build_format_locale": 75,
-	"./tr/build_format_locale/": 75,
-	"./tr/build_format_locale/index": 75,
-	"./tr/build_format_locale/index.js": 75,
-	"./tr/index": 115,
-	"./tr/index.js": 115,
-	"./tr/package": 229,
-	"./tr/package.json": 229,
-	"./zh_cn": 116,
-	"./zh_cn/": 116,
-	"./zh_cn/build_distance_in_words_locale": 76,
-	"./zh_cn/build_distance_in_words_locale/": 76,
-	"./zh_cn/build_distance_in_words_locale/index": 76,
-	"./zh_cn/build_distance_in_words_locale/index.js": 76,
-	"./zh_cn/build_format_locale": 77,
-	"./zh_cn/build_format_locale/": 77,
-	"./zh_cn/build_format_locale/index": 77,
-	"./zh_cn/build_format_locale/index.js": 77,
-	"./zh_cn/index": 116,
-	"./zh_cn/index.js": 116,
-	"./zh_cn/package": 230,
-	"./zh_cn/package.json": 230,
-	"./zh_tw": 117,
-	"./zh_tw/": 117,
-	"./zh_tw/build_distance_in_words_locale": 78,
-	"./zh_tw/build_distance_in_words_locale/": 78,
-	"./zh_tw/build_distance_in_words_locale/index": 78,
-	"./zh_tw/build_distance_in_words_locale/index.js": 78,
-	"./zh_tw/build_format_locale": 79,
-	"./zh_tw/build_format_locale/": 79,
-	"./zh_tw/build_format_locale/index": 79,
-	"./zh_tw/build_format_locale/index.js": 79,
-	"./zh_tw/index": 117,
-	"./zh_tw/index.js": 117,
-	"./zh_tw/package": 231,
-	"./zh_tw/package.json": 231
+	"./en/package": 211,
+	"./en/package.json": 211,
+	"./eo": 97,
+	"./eo/": 97,
+	"./eo/build_distance_in_words_locale": 30,
+	"./eo/build_distance_in_words_locale/": 30,
+	"./eo/build_distance_in_words_locale/index": 30,
+	"./eo/build_distance_in_words_locale/index.js": 30,
+	"./eo/build_format_locale": 31,
+	"./eo/build_format_locale/": 31,
+	"./eo/build_format_locale/index": 31,
+	"./eo/build_format_locale/index.js": 31,
+	"./eo/index": 97,
+	"./eo/index.d.ts": 357,
+	"./eo/index.js": 97,
+	"./eo/package": 212,
+	"./eo/package.json": 212,
+	"./es": 98,
+	"./es/": 98,
+	"./es/build_distance_in_words_locale": 32,
+	"./es/build_distance_in_words_locale/": 32,
+	"./es/build_distance_in_words_locale/index": 32,
+	"./es/build_distance_in_words_locale/index.js": 32,
+	"./es/build_format_locale": 33,
+	"./es/build_format_locale/": 33,
+	"./es/build_format_locale/index": 33,
+	"./es/build_format_locale/index.js": 33,
+	"./es/index": 98,
+	"./es/index.d.ts": 358,
+	"./es/index.js": 98,
+	"./es/package": 213,
+	"./es/package.json": 213,
+	"./fi": 99,
+	"./fi/": 99,
+	"./fi/build_distance_in_words_locale": 34,
+	"./fi/build_distance_in_words_locale/": 34,
+	"./fi/build_distance_in_words_locale/index": 34,
+	"./fi/build_distance_in_words_locale/index.js": 34,
+	"./fi/build_format_locale": 35,
+	"./fi/build_format_locale/": 35,
+	"./fi/build_format_locale/index": 35,
+	"./fi/build_format_locale/index.js": 35,
+	"./fi/index": 99,
+	"./fi/index.d.ts": 359,
+	"./fi/index.js": 99,
+	"./fi/package": 214,
+	"./fi/package.json": 214,
+	"./fil": 100,
+	"./fil/": 100,
+	"./fil/build_distance_in_words_locale": 36,
+	"./fil/build_distance_in_words_locale/": 36,
+	"./fil/build_distance_in_words_locale/index": 36,
+	"./fil/build_distance_in_words_locale/index.js": 36,
+	"./fil/build_format_locale": 37,
+	"./fil/build_format_locale/": 37,
+	"./fil/build_format_locale/index": 37,
+	"./fil/build_format_locale/index.js": 37,
+	"./fil/index": 100,
+	"./fil/index.d.ts": 360,
+	"./fil/index.js": 100,
+	"./fil/package": 215,
+	"./fil/package.json": 215,
+	"./fr": 101,
+	"./fr/": 101,
+	"./fr/build_distance_in_words_locale": 38,
+	"./fr/build_distance_in_words_locale/": 38,
+	"./fr/build_distance_in_words_locale/index": 38,
+	"./fr/build_distance_in_words_locale/index.js": 38,
+	"./fr/build_format_locale": 39,
+	"./fr/build_format_locale/": 39,
+	"./fr/build_format_locale/index": 39,
+	"./fr/build_format_locale/index.js": 39,
+	"./fr/index": 101,
+	"./fr/index.d.ts": 361,
+	"./fr/index.js": 101,
+	"./fr/package": 216,
+	"./fr/package.json": 216,
+	"./hr": 102,
+	"./hr/": 102,
+	"./hr/build_distance_in_words_locale": 40,
+	"./hr/build_distance_in_words_locale/": 40,
+	"./hr/build_distance_in_words_locale/index": 40,
+	"./hr/build_distance_in_words_locale/index.js": 40,
+	"./hr/build_format_locale": 41,
+	"./hr/build_format_locale/": 41,
+	"./hr/build_format_locale/index": 41,
+	"./hr/build_format_locale/index.js": 41,
+	"./hr/index": 102,
+	"./hr/index.d.ts": 362,
+	"./hr/index.js": 102,
+	"./hr/package": 217,
+	"./hr/package.json": 217,
+	"./hu": 103,
+	"./hu/": 103,
+	"./hu/build_distance_in_words_locale": 42,
+	"./hu/build_distance_in_words_locale/": 42,
+	"./hu/build_distance_in_words_locale/index": 42,
+	"./hu/build_distance_in_words_locale/index.js": 42,
+	"./hu/build_format_locale": 43,
+	"./hu/build_format_locale/": 43,
+	"./hu/build_format_locale/index": 43,
+	"./hu/build_format_locale/index.js": 43,
+	"./hu/index": 103,
+	"./hu/index.d.ts": 363,
+	"./hu/index.js": 103,
+	"./hu/package": 218,
+	"./hu/package.json": 218,
+	"./id": 104,
+	"./id/": 104,
+	"./id/build_distance_in_words_locale": 44,
+	"./id/build_distance_in_words_locale/": 44,
+	"./id/build_distance_in_words_locale/index": 44,
+	"./id/build_distance_in_words_locale/index.js": 44,
+	"./id/build_format_locale": 45,
+	"./id/build_format_locale/": 45,
+	"./id/build_format_locale/index": 45,
+	"./id/build_format_locale/index.js": 45,
+	"./id/index": 104,
+	"./id/index.d.ts": 364,
+	"./id/index.js": 104,
+	"./id/package": 219,
+	"./id/package.json": 219,
+	"./is": 105,
+	"./is/": 105,
+	"./is/build_distance_in_words_locale": 46,
+	"./is/build_distance_in_words_locale/": 46,
+	"./is/build_distance_in_words_locale/index": 46,
+	"./is/build_distance_in_words_locale/index.js": 46,
+	"./is/build_format_locale": 47,
+	"./is/build_format_locale/": 47,
+	"./is/build_format_locale/index": 47,
+	"./is/build_format_locale/index.js": 47,
+	"./is/index": 105,
+	"./is/index.d.ts": 365,
+	"./is/index.js": 105,
+	"./is/package": 220,
+	"./is/package.json": 220,
+	"./it": 106,
+	"./it/": 106,
+	"./it/build_distance_in_words_locale": 48,
+	"./it/build_distance_in_words_locale/": 48,
+	"./it/build_distance_in_words_locale/index": 48,
+	"./it/build_distance_in_words_locale/index.js": 48,
+	"./it/build_format_locale": 49,
+	"./it/build_format_locale/": 49,
+	"./it/build_format_locale/index": 49,
+	"./it/build_format_locale/index.js": 49,
+	"./it/index": 106,
+	"./it/index.d.ts": 366,
+	"./it/index.js": 106,
+	"./it/package": 221,
+	"./it/package.json": 221,
+	"./ja": 107,
+	"./ja/": 107,
+	"./ja/build_distance_in_words_locale": 50,
+	"./ja/build_distance_in_words_locale/": 50,
+	"./ja/build_distance_in_words_locale/index": 50,
+	"./ja/build_distance_in_words_locale/index.js": 50,
+	"./ja/build_format_locale": 51,
+	"./ja/build_format_locale/": 51,
+	"./ja/build_format_locale/index": 51,
+	"./ja/build_format_locale/index.js": 51,
+	"./ja/index": 107,
+	"./ja/index.d.ts": 367,
+	"./ja/index.js": 107,
+	"./ja/package": 222,
+	"./ja/package.json": 222,
+	"./ko": 108,
+	"./ko/": 108,
+	"./ko/build_distance_in_words_locale": 52,
+	"./ko/build_distance_in_words_locale/": 52,
+	"./ko/build_distance_in_words_locale/index": 52,
+	"./ko/build_distance_in_words_locale/index.js": 52,
+	"./ko/build_format_locale": 53,
+	"./ko/build_format_locale/": 53,
+	"./ko/build_format_locale/index": 53,
+	"./ko/build_format_locale/index.js": 53,
+	"./ko/index": 108,
+	"./ko/index.d.ts": 368,
+	"./ko/index.js": 108,
+	"./ko/package": 223,
+	"./ko/package.json": 223,
+	"./mk": 109,
+	"./mk/": 109,
+	"./mk/build_distance_in_words_locale": 54,
+	"./mk/build_distance_in_words_locale/": 54,
+	"./mk/build_distance_in_words_locale/index": 54,
+	"./mk/build_distance_in_words_locale/index.js": 54,
+	"./mk/build_format_locale": 55,
+	"./mk/build_format_locale/": 55,
+	"./mk/build_format_locale/index": 55,
+	"./mk/build_format_locale/index.js": 55,
+	"./mk/index": 109,
+	"./mk/index.d.ts": 369,
+	"./mk/index.js": 109,
+	"./mk/package": 224,
+	"./mk/package.json": 224,
+	"./nb": 110,
+	"./nb/": 110,
+	"./nb/build_distance_in_words_locale": 56,
+	"./nb/build_distance_in_words_locale/": 56,
+	"./nb/build_distance_in_words_locale/index": 56,
+	"./nb/build_distance_in_words_locale/index.js": 56,
+	"./nb/build_format_locale": 57,
+	"./nb/build_format_locale/": 57,
+	"./nb/build_format_locale/index": 57,
+	"./nb/build_format_locale/index.js": 57,
+	"./nb/index": 110,
+	"./nb/index.d.ts": 370,
+	"./nb/index.js": 110,
+	"./nb/package": 225,
+	"./nb/package.json": 225,
+	"./nl": 111,
+	"./nl/": 111,
+	"./nl/build_distance_in_words_locale": 58,
+	"./nl/build_distance_in_words_locale/": 58,
+	"./nl/build_distance_in_words_locale/index": 58,
+	"./nl/build_distance_in_words_locale/index.js": 58,
+	"./nl/build_format_locale": 59,
+	"./nl/build_format_locale/": 59,
+	"./nl/build_format_locale/index": 59,
+	"./nl/build_format_locale/index.js": 59,
+	"./nl/index": 111,
+	"./nl/index.d.ts": 371,
+	"./nl/index.js": 111,
+	"./nl/package": 226,
+	"./nl/package.json": 226,
+	"./package": 227,
+	"./package.json": 227,
+	"./pl": 112,
+	"./pl/": 112,
+	"./pl/build_distance_in_words_locale": 60,
+	"./pl/build_distance_in_words_locale/": 60,
+	"./pl/build_distance_in_words_locale/index": 60,
+	"./pl/build_distance_in_words_locale/index.js": 60,
+	"./pl/build_format_locale": 61,
+	"./pl/build_format_locale/": 61,
+	"./pl/build_format_locale/index": 61,
+	"./pl/build_format_locale/index.js": 61,
+	"./pl/index": 112,
+	"./pl/index.d.ts": 372,
+	"./pl/index.js": 112,
+	"./pl/package": 228,
+	"./pl/package.json": 228,
+	"./pt": 113,
+	"./pt/": 113,
+	"./pt/build_distance_in_words_locale": 62,
+	"./pt/build_distance_in_words_locale/": 62,
+	"./pt/build_distance_in_words_locale/index": 62,
+	"./pt/build_distance_in_words_locale/index.js": 62,
+	"./pt/build_format_locale": 63,
+	"./pt/build_format_locale/": 63,
+	"./pt/build_format_locale/index": 63,
+	"./pt/build_format_locale/index.js": 63,
+	"./pt/index": 113,
+	"./pt/index.d.ts": 373,
+	"./pt/index.js": 113,
+	"./pt/package": 229,
+	"./pt/package.json": 229,
+	"./ro": 114,
+	"./ro/": 114,
+	"./ro/build_distance_in_words_locale": 64,
+	"./ro/build_distance_in_words_locale/": 64,
+	"./ro/build_distance_in_words_locale/index": 64,
+	"./ro/build_distance_in_words_locale/index.js": 64,
+	"./ro/build_format_locale": 65,
+	"./ro/build_format_locale/": 65,
+	"./ro/build_format_locale/index": 65,
+	"./ro/build_format_locale/index.js": 65,
+	"./ro/index": 114,
+	"./ro/index.d.ts": 374,
+	"./ro/index.js": 114,
+	"./ro/package": 230,
+	"./ro/package.json": 230,
+	"./ru": 115,
+	"./ru/": 115,
+	"./ru/build_distance_in_words_locale": 66,
+	"./ru/build_distance_in_words_locale/": 66,
+	"./ru/build_distance_in_words_locale/index": 66,
+	"./ru/build_distance_in_words_locale/index.js": 66,
+	"./ru/build_format_locale": 67,
+	"./ru/build_format_locale/": 67,
+	"./ru/build_format_locale/index": 67,
+	"./ru/build_format_locale/index.js": 67,
+	"./ru/index": 115,
+	"./ru/index.d.ts": 375,
+	"./ru/index.js": 115,
+	"./ru/package": 231,
+	"./ru/package.json": 231,
+	"./sk": 116,
+	"./sk/": 116,
+	"./sk/build_distance_in_words_locale": 68,
+	"./sk/build_distance_in_words_locale/": 68,
+	"./sk/build_distance_in_words_locale/index": 68,
+	"./sk/build_distance_in_words_locale/index.js": 68,
+	"./sk/build_format_locale": 69,
+	"./sk/build_format_locale/": 69,
+	"./sk/build_format_locale/index": 69,
+	"./sk/build_format_locale/index.js": 69,
+	"./sk/index": 116,
+	"./sk/index.d.ts": 376,
+	"./sk/index.js": 116,
+	"./sk/package": 232,
+	"./sk/package.json": 232,
+	"./sl": 117,
+	"./sl/": 117,
+	"./sl/build_distance_in_words_locale": 70,
+	"./sl/build_distance_in_words_locale/": 70,
+	"./sl/build_distance_in_words_locale/index": 70,
+	"./sl/build_distance_in_words_locale/index.js": 70,
+	"./sl/build_format_locale": 71,
+	"./sl/build_format_locale/": 71,
+	"./sl/build_format_locale/index": 71,
+	"./sl/build_format_locale/index.js": 71,
+	"./sl/index": 117,
+	"./sl/index.d.ts": 377,
+	"./sl/index.js": 117,
+	"./sl/package": 233,
+	"./sl/package.json": 233,
+	"./sr": 118,
+	"./sr/": 118,
+	"./sr/build_distance_in_words_locale": 72,
+	"./sr/build_distance_in_words_locale/": 72,
+	"./sr/build_distance_in_words_locale/index": 72,
+	"./sr/build_distance_in_words_locale/index.js": 72,
+	"./sr/build_format_locale": 73,
+	"./sr/build_format_locale/": 73,
+	"./sr/build_format_locale/index": 73,
+	"./sr/build_format_locale/index.js": 73,
+	"./sr/index": 118,
+	"./sr/index.d.ts": 378,
+	"./sr/index.js": 118,
+	"./sr/package": 234,
+	"./sr/package.json": 234,
+	"./sv": 119,
+	"./sv/": 119,
+	"./sv/build_distance_in_words_locale": 74,
+	"./sv/build_distance_in_words_locale/": 74,
+	"./sv/build_distance_in_words_locale/index": 74,
+	"./sv/build_distance_in_words_locale/index.js": 74,
+	"./sv/build_format_locale": 75,
+	"./sv/build_format_locale/": 75,
+	"./sv/build_format_locale/index": 75,
+	"./sv/build_format_locale/index.js": 75,
+	"./sv/index": 119,
+	"./sv/index.d.ts": 379,
+	"./sv/index.js": 119,
+	"./sv/package": 235,
+	"./sv/package.json": 235,
+	"./th": 120,
+	"./th/": 120,
+	"./th/build_distance_in_words_locale": 76,
+	"./th/build_distance_in_words_locale/": 76,
+	"./th/build_distance_in_words_locale/index": 76,
+	"./th/build_distance_in_words_locale/index.js": 76,
+	"./th/build_format_locale": 77,
+	"./th/build_format_locale/": 77,
+	"./th/build_format_locale/index": 77,
+	"./th/build_format_locale/index.js": 77,
+	"./th/index": 120,
+	"./th/index.d.ts": 380,
+	"./th/index.js": 120,
+	"./th/package": 236,
+	"./th/package.json": 236,
+	"./tr": 121,
+	"./tr/": 121,
+	"./tr/build_distance_in_words_locale": 78,
+	"./tr/build_distance_in_words_locale/": 78,
+	"./tr/build_distance_in_words_locale/index": 78,
+	"./tr/build_distance_in_words_locale/index.js": 78,
+	"./tr/build_format_locale": 79,
+	"./tr/build_format_locale/": 79,
+	"./tr/build_format_locale/index": 79,
+	"./tr/build_format_locale/index.js": 79,
+	"./tr/index": 121,
+	"./tr/index.d.ts": 381,
+	"./tr/index.js": 121,
+	"./tr/package": 237,
+	"./tr/package.json": 237,
+	"./zh_cn": 122,
+	"./zh_cn/": 122,
+	"./zh_cn/build_distance_in_words_locale": 80,
+	"./zh_cn/build_distance_in_words_locale/": 80,
+	"./zh_cn/build_distance_in_words_locale/index": 80,
+	"./zh_cn/build_distance_in_words_locale/index.js": 80,
+	"./zh_cn/build_format_locale": 81,
+	"./zh_cn/build_format_locale/": 81,
+	"./zh_cn/build_format_locale/index": 81,
+	"./zh_cn/build_format_locale/index.js": 81,
+	"./zh_cn/index": 122,
+	"./zh_cn/index.d.ts": 382,
+	"./zh_cn/index.js": 122,
+	"./zh_cn/package": 238,
+	"./zh_cn/package.json": 238,
+	"./zh_tw": 123,
+	"./zh_tw/": 123,
+	"./zh_tw/build_distance_in_words_locale": 82,
+	"./zh_tw/build_distance_in_words_locale/": 82,
+	"./zh_tw/build_distance_in_words_locale/index": 82,
+	"./zh_tw/build_distance_in_words_locale/index.js": 82,
+	"./zh_tw/build_format_locale": 83,
+	"./zh_tw/build_format_locale/": 83,
+	"./zh_tw/build_format_locale/index": 83,
+	"./zh_tw/build_format_locale/index.js": 83,
+	"./zh_tw/index": 123,
+	"./zh_tw/index.d.ts": 383,
+	"./zh_tw/index.js": 123,
+	"./zh_tw/package": 239,
+	"./zh_tw/package.json": 239
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -9037,10 +9491,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 84;
+webpackContext.id = 88;
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildDistanceInWordsLocale = __webpack_require__(14)
@@ -9058,11 +9512,29 @@ module.exports = {
 
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var buildDistanceInWordsLocale = __webpack_require__(16)
 var buildFormatLocale = __webpack_require__(17)
+
+/**
+ * @category Locales
+ * @summary Belarusian locale.
+ * @author Martin Wind [@arvigeus]{@link https://github.com/mawi12345}
+ */
+module.exports = {
+  distanceInWords: buildDistanceInWordsLocale(),
+  format: buildFormatLocale()
+}
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var buildDistanceInWordsLocale = __webpack_require__(18)
+var buildFormatLocale = __webpack_require__(19)
 
 /**
  * @category Locales
@@ -9076,11 +9548,11 @@ module.exports = {
 
 
 /***/ }),
-/* 87 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(18)
-var buildFormatLocale = __webpack_require__(19)
+var buildDistanceInWordsLocale = __webpack_require__(20)
+var buildFormatLocale = __webpack_require__(21)
 
 /**
  * @category Locales
@@ -9094,11 +9566,11 @@ module.exports = {
 
 
 /***/ }),
-/* 88 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(20)
-var buildFormatLocale = __webpack_require__(21)
+var buildDistanceInWordsLocale = __webpack_require__(22)
+var buildFormatLocale = __webpack_require__(23)
 
 /**
  * @category Locales
@@ -9112,11 +9584,11 @@ module.exports = {
 
 
 /***/ }),
-/* 89 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(22)
-var buildFormatLocale = __webpack_require__(23)
+var buildDistanceInWordsLocale = __webpack_require__(24)
+var buildFormatLocale = __webpack_require__(25)
 
 /**
  * @category Locales
@@ -9131,11 +9603,11 @@ module.exports = {
 
 
 /***/ }),
-/* 90 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(24)
-var buildFormatLocale = __webpack_require__(25)
+var buildDistanceInWordsLocale = __webpack_require__(26)
+var buildFormatLocale = __webpack_require__(27)
 
 /**
  * @category Locales
@@ -9150,11 +9622,11 @@ module.exports = {
 
 
 /***/ }),
-/* 91 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(26)
-var buildFormatLocale = __webpack_require__(27)
+var buildDistanceInWordsLocale = __webpack_require__(28)
+var buildFormatLocale = __webpack_require__(29)
 
 /**
  * @category Locales
@@ -9168,11 +9640,11 @@ module.exports = {
 
 
 /***/ }),
-/* 92 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(28)
-var buildFormatLocale = __webpack_require__(29)
+var buildDistanceInWordsLocale = __webpack_require__(30)
+var buildFormatLocale = __webpack_require__(31)
 
 /**
  * @category Locales
@@ -9185,11 +9657,11 @@ module.exports = {
 
 
 /***/ }),
-/* 93 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(30)
-var buildFormatLocale = __webpack_require__(31)
+var buildDistanceInWordsLocale = __webpack_require__(32)
+var buildFormatLocale = __webpack_require__(33)
 
 /**
  * @category Locales
@@ -9205,11 +9677,11 @@ module.exports = {
 
 
 /***/ }),
-/* 94 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(32)
-var buildFormatLocale = __webpack_require__(33)
+var buildDistanceInWordsLocale = __webpack_require__(34)
+var buildFormatLocale = __webpack_require__(35)
 
 /**
  * @category Locales
@@ -9223,11 +9695,11 @@ module.exports = {
 
 
 /***/ }),
-/* 95 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(34)
-var buildFormatLocale = __webpack_require__(35)
+var buildDistanceInWordsLocale = __webpack_require__(36)
+var buildFormatLocale = __webpack_require__(37)
 
 /**
  * @category Locales
@@ -9241,11 +9713,11 @@ module.exports = {
 
 
 /***/ }),
-/* 96 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(36)
-var buildFormatLocale = __webpack_require__(37)
+var buildDistanceInWordsLocale = __webpack_require__(38)
+var buildFormatLocale = __webpack_require__(39)
 
 /**
  * @category Locales
@@ -9260,11 +9732,11 @@ module.exports = {
 
 
 /***/ }),
-/* 97 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(38)
-var buildFormatLocale = __webpack_require__(39)
+var buildDistanceInWordsLocale = __webpack_require__(40)
+var buildFormatLocale = __webpack_require__(41)
 
 /**
  * @category Locales
@@ -9278,11 +9750,11 @@ module.exports = {
 
 
 /***/ }),
-/* 98 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(40)
-var buildFormatLocale = __webpack_require__(41)
+var buildDistanceInWordsLocale = __webpack_require__(42)
+var buildFormatLocale = __webpack_require__(43)
 
 /**
  * @category Locales
@@ -9295,11 +9767,11 @@ module.exports = {
 
 
 /***/ }),
-/* 99 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(42)
-var buildFormatLocale = __webpack_require__(43)
+var buildDistanceInWordsLocale = __webpack_require__(44)
+var buildFormatLocale = __webpack_require__(45)
 
 /**
  * @category Locales
@@ -9314,11 +9786,11 @@ module.exports = {
 
 
 /***/ }),
-/* 100 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(44)
-var buildFormatLocale = __webpack_require__(45)
+var buildDistanceInWordsLocale = __webpack_require__(46)
+var buildFormatLocale = __webpack_require__(47)
 
 /**
  * @category Locales
@@ -9332,11 +9804,11 @@ module.exports = {
 
 
 /***/ }),
-/* 101 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(46)
-var buildFormatLocale = __webpack_require__(47)
+var buildDistanceInWordsLocale = __webpack_require__(48)
+var buildFormatLocale = __webpack_require__(49)
 
 /**
  * @category Locales
@@ -9350,11 +9822,11 @@ module.exports = {
 
 
 /***/ }),
-/* 102 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(48)
-var buildFormatLocale = __webpack_require__(49)
+var buildDistanceInWordsLocale = __webpack_require__(50)
+var buildFormatLocale = __webpack_require__(51)
 
 /**
  * @category Locales
@@ -9369,11 +9841,11 @@ module.exports = {
 
 
 /***/ }),
-/* 103 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(50)
-var buildFormatLocale = __webpack_require__(51)
+var buildDistanceInWordsLocale = __webpack_require__(52)
+var buildFormatLocale = __webpack_require__(53)
 
 /**
  * @category Locales
@@ -9387,11 +9859,11 @@ module.exports = {
 
 
 /***/ }),
-/* 104 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(52)
-var buildFormatLocale = __webpack_require__(53)
+var buildDistanceInWordsLocale = __webpack_require__(54)
+var buildFormatLocale = __webpack_require__(55)
 
 /**
  * @category Locales
@@ -9405,11 +9877,11 @@ module.exports = {
 
 
 /***/ }),
-/* 105 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(54)
-var buildFormatLocale = __webpack_require__(55)
+var buildDistanceInWordsLocale = __webpack_require__(56)
+var buildFormatLocale = __webpack_require__(57)
 
 /**
  * @category Locales
@@ -9423,11 +9895,11 @@ module.exports = {
 
 
 /***/ }),
-/* 106 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(56)
-var buildFormatLocale = __webpack_require__(57)
+var buildDistanceInWordsLocale = __webpack_require__(58)
+var buildFormatLocale = __webpack_require__(59)
 
 /**
  * @category Locales
@@ -9442,11 +9914,11 @@ module.exports = {
 
 
 /***/ }),
-/* 107 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(58)
-var buildFormatLocale = __webpack_require__(59)
+var buildDistanceInWordsLocale = __webpack_require__(60)
+var buildFormatLocale = __webpack_require__(61)
 
 /**
  * @category Locales
@@ -9461,11 +9933,11 @@ module.exports = {
 
 
 /***/ }),
-/* 108 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(60)
-var buildFormatLocale = __webpack_require__(61)
+var buildDistanceInWordsLocale = __webpack_require__(62)
+var buildFormatLocale = __webpack_require__(63)
 
 /**
  * @category Locales
@@ -9479,11 +9951,11 @@ module.exports = {
 
 
 /***/ }),
-/* 109 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(62)
-var buildFormatLocale = __webpack_require__(63)
+var buildDistanceInWordsLocale = __webpack_require__(64)
+var buildFormatLocale = __webpack_require__(65)
 
 /**
  * @category Locales
@@ -9497,11 +9969,11 @@ module.exports = {
 
 
 /***/ }),
-/* 110 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(64)
-var buildFormatLocale = __webpack_require__(65)
+var buildDistanceInWordsLocale = __webpack_require__(66)
+var buildFormatLocale = __webpack_require__(67)
 
 /**
  * @category Locales
@@ -9514,11 +9986,11 @@ module.exports = {
 
 
 /***/ }),
-/* 111 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(66)
-var buildFormatLocale = __webpack_require__(67)
+var buildDistanceInWordsLocale = __webpack_require__(68)
+var buildFormatLocale = __webpack_require__(69)
 
 /**
  * @category Locales
@@ -9532,11 +10004,11 @@ module.exports = {
 
 
 /***/ }),
-/* 112 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(68)
-var buildFormatLocale = __webpack_require__(69)
+var buildDistanceInWordsLocale = __webpack_require__(70)
+var buildFormatLocale = __webpack_require__(71)
 
 /**
  * @category Locales
@@ -9550,11 +10022,29 @@ module.exports = {
 
 
 /***/ }),
-/* 113 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(70)
-var buildFormatLocale = __webpack_require__(71)
+var buildDistanceInWordsLocale = __webpack_require__(72)
+var buildFormatLocale = __webpack_require__(73)
+
+/**
+ * @category Locales
+ * @summary Serbian locale.
+ * @author Martin Wind [@mawi]{@link https://github.com/mawi12345}
+ */
+module.exports = {
+  distanceInWords: buildDistanceInWordsLocale(),
+  format: buildFormatLocale()
+}
+
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var buildDistanceInWordsLocale = __webpack_require__(74)
+var buildFormatLocale = __webpack_require__(75)
 
 /**
  * @category Locales
@@ -9568,11 +10058,11 @@ module.exports = {
 
 
 /***/ }),
-/* 114 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(72)
-var buildFormatLocale = __webpack_require__(73)
+var buildDistanceInWordsLocale = __webpack_require__(76)
+var buildFormatLocale = __webpack_require__(77)
 
 /**
  * @category Locales
@@ -9586,11 +10076,11 @@ module.exports = {
 
 
 /***/ }),
-/* 115 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(74)
-var buildFormatLocale = __webpack_require__(75)
+var buildDistanceInWordsLocale = __webpack_require__(78)
+var buildFormatLocale = __webpack_require__(79)
 
 /**
  * @category Locales
@@ -9604,11 +10094,11 @@ module.exports = {
 
 
 /***/ }),
-/* 116 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(76)
-var buildFormatLocale = __webpack_require__(77)
+var buildDistanceInWordsLocale = __webpack_require__(80)
+var buildFormatLocale = __webpack_require__(81)
 
 /**
  * @category Locales
@@ -9623,11 +10113,11 @@ module.exports = {
 
 
 /***/ }),
-/* 117 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var buildDistanceInWordsLocale = __webpack_require__(78)
-var buildFormatLocale = __webpack_require__(79)
+var buildDistanceInWordsLocale = __webpack_require__(82)
+var buildFormatLocale = __webpack_require__(83)
 
 /**
  * @category Locales
@@ -9641,7 +10131,7 @@ module.exports = {
 
 
 /***/ }),
-/* 118 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9752,7 +10242,7 @@ var detectSupportsPassive = function detectSupportsPassive() {
 };
 
 /***/ }),
-/* 119 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9782,7 +10272,7 @@ var BooleanParse = function BooleanParse(val) {
 };
 
 /***/ }),
-/* 120 */
+/* 126 */
 /***/ (function(module, exports) {
 
 /**
@@ -9808,7 +10298,7 @@ module.exports = isDate
 
 
 /***/ }),
-/* 121 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9842,7 +10332,7 @@ module.exports = getDaysInMonth
 
 
 /***/ }),
-/* 122 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addDays = __webpack_require__(8)
@@ -9873,7 +10363,7 @@ module.exports = addWeeks
 
 
 /***/ }),
-/* 123 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -9930,11 +10420,11 @@ module.exports = compareDesc
 
 
 /***/ }),
-/* 124 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarMonths = __webpack_require__(138)
+var differenceInCalendarMonths = __webpack_require__(144)
 var compareAsc = __webpack_require__(11)
 
 /**
@@ -9974,10 +10464,10 @@ module.exports = differenceInMonths
 
 
 /***/ }),
-/* 125 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(83)
+var differenceInMilliseconds = __webpack_require__(87)
 
 /**
  * @category Second Helpers
@@ -10008,7 +10498,7 @@ module.exports = differenceInSeconds
 
 
 /***/ }),
-/* 126 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10039,7 +10529,7 @@ module.exports = endOfDay
 
 
 /***/ }),
-/* 127 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10079,10 +10569,10 @@ module.exports = getISOWeek
 
 
 /***/ }),
-/* 128 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(80)
+var startOfWeek = __webpack_require__(84)
 
 /**
  * @category Week Helpers
@@ -10126,7 +10616,7 @@ module.exports = isSameWeek
 
 
 /***/ }),
-/* 129 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10316,7 +10806,7 @@ var EventEmitter = function () {
 /* harmony default export */ __webpack_exports__["a"] = (EventEmitter);
 
 /***/ }),
-/* 130 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMilliseconds = __webpack_require__(9)
@@ -10348,11 +10838,11 @@ module.exports = addHours
 
 
 /***/ }),
-/* 131 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(3)
-var setISOYear = __webpack_require__(132)
+var setISOYear = __webpack_require__(138)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10381,12 +10871,12 @@ module.exports = addISOYears
 
 
 /***/ }),
-/* 132 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
 var startOfISOYear = __webpack_require__(10)
-var differenceInCalendarDays = __webpack_require__(81)
+var differenceInCalendarDays = __webpack_require__(85)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10423,7 +10913,7 @@ module.exports = setISOYear
 
 
 /***/ }),
-/* 133 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMilliseconds = __webpack_require__(9)
@@ -10455,10 +10945,10 @@ module.exports = addMinutes
 
 
 /***/ }),
-/* 134 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(82)
+var addMonths = __webpack_require__(86)
 
 /**
  * @category Quarter Helpers
@@ -10486,7 +10976,7 @@ module.exports = addQuarters
 
 
 /***/ }),
-/* 135 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMilliseconds = __webpack_require__(9)
@@ -10516,10 +11006,10 @@ module.exports = addSeconds
 
 
 /***/ }),
-/* 136 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(82)
+var addMonths = __webpack_require__(86)
 
 /**
  * @category Year Helpers
@@ -10546,7 +11036,7 @@ module.exports = addYears
 
 
 /***/ }),
-/* 137 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(3)
@@ -10580,7 +11070,7 @@ module.exports = differenceInCalendarISOYears
 
 
 /***/ }),
-/* 138 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10618,7 +11108,7 @@ module.exports = differenceInCalendarMonths
 
 
 /***/ }),
-/* 139 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10648,7 +11138,7 @@ module.exports = getQuarter
 
 
 /***/ }),
-/* 140 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -10683,11 +11173,11 @@ module.exports = differenceInCalendarYears
 
 
 /***/ }),
-/* 141 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarDays = __webpack_require__(81)
+var differenceInCalendarDays = __webpack_require__(85)
 var compareAsc = __webpack_require__(11)
 
 /**
@@ -10728,10 +11218,10 @@ module.exports = differenceInDays
 
 
 /***/ }),
-/* 142 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addISOYears = __webpack_require__(131)
+var addISOYears = __webpack_require__(137)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -10760,13 +11250,13 @@ module.exports = subISOYears
 
 
 /***/ }),
-/* 143 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(123)
+var compareDesc = __webpack_require__(129)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(125)
-var differenceInMonths = __webpack_require__(124)
+var differenceInSeconds = __webpack_require__(131)
+var differenceInMonths = __webpack_require__(130)
 var enLocale = __webpack_require__(6)
 
 var MINUTES_IN_DAY = 1440
@@ -10969,7 +11459,7 @@ module.exports = distanceInWords
 
 
 /***/ }),
-/* 144 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11013,7 +11503,7 @@ module.exports = endOfWeek
 
 
 /***/ }),
-/* 145 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11046,12 +11536,12 @@ module.exports = endOfMonth
 
 
 /***/ }),
-/* 146 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var startOfYear = __webpack_require__(147)
-var differenceInCalendarDays = __webpack_require__(81)
+var startOfYear = __webpack_require__(153)
+var differenceInCalendarDays = __webpack_require__(85)
 
 /**
  * @category Day Helpers
@@ -11079,7 +11569,7 @@ module.exports = getDayOfYear
 
 
 /***/ }),
-/* 147 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11112,10 +11602,10 @@ module.exports = startOfYear
 
 
 /***/ }),
-/* 148 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(120)
+var isDate = __webpack_require__(126)
 
 /**
  * @category Common Helpers
@@ -11153,7 +11643,7 @@ module.exports = isValid
 
 
 /***/ }),
-/* 149 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11183,7 +11673,7 @@ module.exports = isLeapYear
 
 
 /***/ }),
-/* 150 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11221,10 +11711,10 @@ module.exports = getISODay
 
 
 /***/ }),
-/* 151 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfHour = __webpack_require__(152)
+var startOfHour = __webpack_require__(158)
 
 /**
  * @category Hour Helpers
@@ -11256,7 +11746,7 @@ module.exports = isSameHour
 
 
 /***/ }),
-/* 152 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11287,10 +11777,10 @@ module.exports = startOfHour
 
 
 /***/ }),
-/* 153 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(128)
+var isSameWeek = __webpack_require__(134)
 
 /**
  * @category ISO Week Helpers
@@ -11321,7 +11811,7 @@ module.exports = isSameISOWeek
 
 
 /***/ }),
-/* 154 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfISOYear = __webpack_require__(10)
@@ -11358,10 +11848,10 @@ module.exports = isSameISOYear
 
 
 /***/ }),
-/* 155 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfMinute = __webpack_require__(156)
+var startOfMinute = __webpack_require__(162)
 
 /**
  * @category Minute Helpers
@@ -11394,7 +11884,7 @@ module.exports = isSameMinute
 
 
 /***/ }),
-/* 156 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11425,7 +11915,7 @@ module.exports = startOfMinute
 
 
 /***/ }),
-/* 157 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11460,10 +11950,10 @@ module.exports = isSameMonth
 
 
 /***/ }),
-/* 158 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfQuarter = __webpack_require__(159)
+var startOfQuarter = __webpack_require__(165)
 
 /**
  * @category Quarter Helpers
@@ -11495,7 +11985,7 @@ module.exports = isSameQuarter
 
 
 /***/ }),
-/* 159 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11529,10 +12019,10 @@ module.exports = startOfQuarter
 
 
 /***/ }),
-/* 160 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfSecond = __webpack_require__(161)
+var startOfSecond = __webpack_require__(167)
 
 /**
  * @category Second Helpers
@@ -11565,7 +12055,7 @@ module.exports = isSameSecond
 
 
 /***/ }),
-/* 161 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11596,7 +12086,7 @@ module.exports = startOfSecond
 
 
 /***/ }),
-/* 162 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11630,7 +12120,7 @@ module.exports = isSameYear
 
 
 /***/ }),
-/* 163 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -11674,11 +12164,11 @@ module.exports = lastDayOfWeek
 
 
 /***/ }),
-/* 164 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getDaysInMonth = __webpack_require__(121)
+var getDaysInMonth = __webpack_require__(127)
 
 /**
  * @category Month Helpers
@@ -11716,7 +12206,7 @@ module.exports = setMonth
 
 
 /***/ }),
-/* 165 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -11770,7 +12260,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 166 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -11828,7 +12318,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 167 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -11892,7 +12382,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 168 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -11928,7 +12418,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 169 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -11965,7 +12455,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 170 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12021,7 +12511,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 171 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12077,7 +12567,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 172 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12131,7 +12621,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 173 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12168,7 +12658,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 174 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12232,7 +12722,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 175 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12269,7 +12759,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 176 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12329,7 +12819,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 177 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12366,7 +12856,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 178 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12411,7 +12901,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 179 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12471,7 +12961,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 180 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12508,7 +12998,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 181 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12561,7 +13051,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 182 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12610,7 +13100,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 183 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12687,7 +13177,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 184 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12736,7 +13226,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 185 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12794,7 +13284,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 186 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12830,7 +13320,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 187 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12888,7 +13378,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 188 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12924,7 +13414,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 189 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12961,7 +13451,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 190 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -12997,7 +13487,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 191 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13068,7 +13558,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 192 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13104,7 +13594,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 193 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13141,7 +13631,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 194 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13203,7 +13693,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 195 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -13261,42 +13751,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 }(this));
 
-
-/***/ }),
-/* 196 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
-/* 197 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
-/* 198 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
-/* 200 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports) {
-
-module.exports = {"typings":"../../typings.d.ts"}
 
 /***/ }),
 /* 202 */
@@ -13410,7 +13864,7 @@ module.exports = {"typings":"../../typings.d.ts"}
 /* 220 */
 /***/ (function(module, exports) {
 
-module.exports = {"typings":"../typings.d.ts"}
+module.exports = {"typings":"../../typings.d.ts"}
 
 /***/ }),
 /* 221 */
@@ -13452,7 +13906,7 @@ module.exports = {"typings":"../../typings.d.ts"}
 /* 227 */
 /***/ (function(module, exports) {
 
-module.exports = {"typings":"../../typings.d.ts"}
+module.exports = {"typings":"../typings.d.ts"}
 
 /***/ }),
 /* 228 */
@@ -13480,23 +13934,71 @@ module.exports = {"typings":"../../typings.d.ts"}
 
 /***/ }),
 /* 232 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports) {
+
+module.exports = {"typings":"../../typings.d.ts"}
+
+/***/ }),
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_date_and_time__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_events__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datePicker__ = __webpack_require__(332);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__timePicker__ = __webpack_require__(339);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__defaultOptions__ = __webpack_require__(342);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__(343);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__templates_header__ = __webpack_require__(344);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__templates_footer__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_events__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datePicker__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__timePicker__ = __webpack_require__(384);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__defaultOptions__ = __webpack_require__(387);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates__ = __webpack_require__(388);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__templates_header__ = __webpack_require__(389);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__templates_footer__ = __webpack_require__(390);
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -13638,7 +14140,7 @@ var bulmaCalendar = function (_EventEmitter) {
       e.stopPropagation();
 
       this.save();
-      this.emit('select', this);
+      this.emit('validate', this);
 
       if (this.options.displayMode !== 'inline') {
         this.onCloseDateTimePicker(e);
@@ -14190,10 +14692,10 @@ var bulmaCalendar = function (_EventEmitter) {
       var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
       try {
-        this._locale = __webpack_require__(84)("./" + lang);
+        this._locale = __webpack_require__(88)("./" + lang);
       } catch (e) {
         lang = 'en';
-        this._locale = __webpack_require__(84)("./" + lang);
+        this._locale = __webpack_require__(88)("./" + lang);
       } finally {
         this._lang = lang;
         this.datePicker.lang = lang;
@@ -14432,7 +14934,34 @@ var bulmaCalendar = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["default"] = (bulmaCalendar);
 
 /***/ }),
-/* 233 */
+/* 241 */
+/***/ (function(module, exports) {
+
+var MILLISECONDS_IN_MINUTE = 60000
+
+/**
+ * Google Chrome as of 67.0.3396.87 introduced timezones with offset that includes seconds.
+ * They usually appear for dates that denote time before the timezones were introduced
+ * (e.g. for 'Europe/Prague' timezone the offset is GMT+00:57:44 before 1 October 1891
+ * and GMT+01:00:00 after that date)
+ *
+ * Date#getTimezoneOffset returns the offset in minutes and would return 57 for the example above,
+ * which would lead to incorrect calculations.
+ *
+ * This function returns the timezone offset in milliseconds that takes seconds in account.
+ */
+module.exports = function getTimezoneOffsetInMilliseconds (dirtyDate) {
+  var date = new Date(dirtyDate.getTime())
+  var baseTimezoneOffset = date.getTimezoneOffset()
+  date.setSeconds(0, 0)
+  var millisecondsPartOfTimezoneOffset = date.getTime() % MILLISECONDS_IN_MINUTE
+
+  return baseTimezoneOffset * MILLISECONDS_IN_MINUTE + millisecondsPartOfTimezoneOffset
+}
+
+
+/***/ }),
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14482,7 +15011,7 @@ module.exports = areRangesOverlapping
 
 
 /***/ }),
-/* 234 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14537,7 +15066,7 @@ module.exports = closestIndexTo
 
 
 /***/ }),
-/* 235 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -14590,7 +15119,7 @@ module.exports = closestTo
 
 
 /***/ }),
-/* 236 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfISOWeek = __webpack_require__(4)
@@ -14638,10 +15167,10 @@ module.exports = differenceInCalendarISOWeeks
 
 
 /***/ }),
-/* 237 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getQuarter = __webpack_require__(139)
+var getQuarter = __webpack_require__(145)
 var parse = __webpack_require__(0)
 
 /**
@@ -14677,10 +15206,10 @@ module.exports = differenceInCalendarQuarters
 
 
 /***/ }),
-/* 238 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var startOfWeek = __webpack_require__(80)
+var startOfWeek = __webpack_require__(84)
 
 var MILLISECONDS_IN_MINUTE = 60000
 var MILLISECONDS_IN_WEEK = 604800000
@@ -14735,10 +15264,10 @@ module.exports = differenceInCalendarWeeks
 
 
 /***/ }),
-/* 239 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(83)
+var differenceInMilliseconds = __webpack_require__(87)
 
 var MILLISECONDS_IN_HOUR = 3600000
 
@@ -14770,13 +15299,13 @@ module.exports = differenceInHours
 
 
 /***/ }),
-/* 240 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarISOYears = __webpack_require__(137)
+var differenceInCalendarISOYears = __webpack_require__(143)
 var compareAsc = __webpack_require__(11)
-var subISOYears = __webpack_require__(142)
+var subISOYears = __webpack_require__(148)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -14818,10 +15347,10 @@ module.exports = differenceInISOYears
 
 
 /***/ }),
-/* 241 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMilliseconds = __webpack_require__(83)
+var differenceInMilliseconds = __webpack_require__(87)
 
 var MILLISECONDS_IN_MINUTE = 60000
 
@@ -14853,10 +15382,10 @@ module.exports = differenceInMinutes
 
 
 /***/ }),
-/* 242 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInMonths = __webpack_require__(124)
+var differenceInMonths = __webpack_require__(130)
 
 /**
  * @category Quarter Helpers
@@ -14886,10 +15415,10 @@ module.exports = differenceInQuarters
 
 
 /***/ }),
-/* 243 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var differenceInDays = __webpack_require__(141)
+var differenceInDays = __webpack_require__(147)
 
 /**
  * @category Week Helpers
@@ -14919,11 +15448,11 @@ module.exports = differenceInWeeks
 
 
 /***/ }),
-/* 244 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var differenceInCalendarYears = __webpack_require__(140)
+var differenceInCalendarYears = __webpack_require__(146)
 var compareAsc = __webpack_require__(11)
 
 /**
@@ -14963,12 +15492,12 @@ module.exports = differenceInYears
 
 
 /***/ }),
-/* 245 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var compareDesc = __webpack_require__(123)
+var compareDesc = __webpack_require__(129)
 var parse = __webpack_require__(0)
-var differenceInSeconds = __webpack_require__(125)
+var differenceInSeconds = __webpack_require__(131)
 var enLocale = __webpack_require__(6)
 
 var MINUTES_IN_DAY = 1440
@@ -15145,10 +15674,10 @@ module.exports = distanceInWordsStrict
 
 
 /***/ }),
-/* 246 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var distanceInWords = __webpack_require__(143)
+var distanceInWords = __webpack_require__(149)
 
 /**
  * @category Common Helpers
@@ -15236,7 +15765,7 @@ module.exports = distanceInWordsToNow
 
 
 /***/ }),
-/* 247 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15296,7 +15825,7 @@ module.exports = eachDay
 
 
 /***/ }),
-/* 248 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15327,10 +15856,10 @@ module.exports = endOfHour
 
 
 /***/ }),
-/* 249 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfWeek = __webpack_require__(144)
+var endOfWeek = __webpack_require__(150)
 
 /**
  * @category ISO Week Helpers
@@ -15358,7 +15887,7 @@ module.exports = endOfISOWeek
 
 
 /***/ }),
-/* 250 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(3)
@@ -15397,7 +15926,7 @@ module.exports = endOfISOYear
 
 
 /***/ }),
-/* 251 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15428,7 +15957,7 @@ module.exports = endOfMinute
 
 
 /***/ }),
-/* 252 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15462,7 +15991,7 @@ module.exports = endOfQuarter
 
 
 /***/ }),
-/* 253 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15493,10 +16022,10 @@ module.exports = endOfSecond
 
 
 /***/ }),
-/* 254 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var endOfDay = __webpack_require__(126)
+var endOfDay = __webpack_require__(132)
 
 /**
  * @category Day Helpers
@@ -15520,7 +16049,7 @@ module.exports = endOfToday
 
 
 /***/ }),
-/* 255 */
+/* 264 */
 /***/ (function(module, exports) {
 
 /**
@@ -15553,7 +16082,7 @@ module.exports = endOfTomorrow
 
 
 /***/ }),
-/* 256 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15586,7 +16115,7 @@ module.exports = endOfYear
 
 
 /***/ }),
-/* 257 */
+/* 266 */
 /***/ (function(module, exports) {
 
 /**
@@ -15619,14 +16148,14 @@ module.exports = endOfYesterday
 
 
 /***/ }),
-/* 258 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getDayOfYear = __webpack_require__(146)
-var getISOWeek = __webpack_require__(127)
+var getDayOfYear = __webpack_require__(152)
+var getISOWeek = __webpack_require__(133)
 var getISOYear = __webpack_require__(3)
 var parse = __webpack_require__(0)
-var isValid = __webpack_require__(148)
+var isValid = __webpack_require__(154)
 var enLocale = __webpack_require__(6)
 
 /**
@@ -15953,7 +16482,7 @@ module.exports = format
 
 
 /***/ }),
-/* 259 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -15983,7 +16512,7 @@ module.exports = getDate
 
 
 /***/ }),
-/* 260 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16013,10 +16542,10 @@ module.exports = getDay
 
 
 /***/ }),
-/* 261 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isLeapYear = __webpack_require__(149)
+var isLeapYear = __webpack_require__(155)
 
 /**
  * @category Year Helpers
@@ -16041,7 +16570,7 @@ module.exports = getDaysInYear
 
 
 /***/ }),
-/* 262 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16071,11 +16600,11 @@ module.exports = getHours
 
 
 /***/ }),
-/* 263 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfISOYear = __webpack_require__(10)
-var addWeeks = __webpack_require__(122)
+var addWeeks = __webpack_require__(128)
 
 var MILLISECONDS_IN_WEEK = 604800000
 
@@ -16110,7 +16639,7 @@ module.exports = getISOWeeksInYear
 
 
 /***/ }),
-/* 264 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16140,7 +16669,7 @@ module.exports = getMilliseconds
 
 
 /***/ }),
-/* 265 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16170,7 +16699,7 @@ module.exports = getMinutes
 
 
 /***/ }),
-/* 266 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16200,7 +16729,7 @@ module.exports = getMonth
 
 
 /***/ }),
-/* 267 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16268,7 +16797,7 @@ module.exports = getOverlappingDaysInRanges
 
 
 /***/ }),
-/* 268 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16298,7 +16827,7 @@ module.exports = getSeconds
 
 
 /***/ }),
-/* 269 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16328,7 +16857,7 @@ module.exports = getTime
 
 
 /***/ }),
-/* 270 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16358,7 +16887,7 @@ module.exports = getYear
 
 
 /***/ }),
-/* 271 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16389,7 +16918,7 @@ module.exports = isAfter
 
 
 /***/ }),
-/* 272 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16420,7 +16949,7 @@ module.exports = isBefore
 
 
 /***/ }),
-/* 273 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16454,7 +16983,7 @@ module.exports = isEqual
 
 
 /***/ }),
-/* 274 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16482,7 +17011,7 @@ module.exports = isFirstDayOfMonth
 
 
 /***/ }),
-/* 275 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16510,7 +17039,7 @@ module.exports = isFriday
 
 
 /***/ }),
-/* 276 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16538,12 +17067,12 @@ module.exports = isFuture
 
 
 /***/ }),
-/* 277 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var endOfDay = __webpack_require__(126)
-var endOfMonth = __webpack_require__(145)
+var endOfDay = __webpack_require__(132)
+var endOfMonth = __webpack_require__(151)
 
 /**
  * @category Month Helpers
@@ -16569,7 +17098,7 @@ module.exports = isLastDayOfMonth
 
 
 /***/ }),
-/* 278 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16597,7 +17126,7 @@ module.exports = isMonday
 
 
 /***/ }),
-/* 279 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16625,7 +17154,7 @@ module.exports = isPast
 
 
 /***/ }),
-/* 280 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -16660,7 +17189,7 @@ module.exports = isSameDay
 
 
 /***/ }),
-/* 281 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16688,7 +17217,7 @@ module.exports = isSaturday
 
 
 /***/ }),
-/* 282 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -16716,10 +17245,10 @@ module.exports = isSunday
 
 
 /***/ }),
-/* 283 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameHour = __webpack_require__(151)
+var isSameHour = __webpack_require__(157)
 
 /**
  * @category Hour Helpers
@@ -16745,10 +17274,10 @@ module.exports = isThisHour
 
 
 /***/ }),
-/* 284 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOWeek = __webpack_require__(153)
+var isSameISOWeek = __webpack_require__(159)
 
 /**
  * @category ISO Week Helpers
@@ -16775,10 +17304,10 @@ module.exports = isThisISOWeek
 
 
 /***/ }),
-/* 285 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameISOYear = __webpack_require__(154)
+var isSameISOYear = __webpack_require__(160)
 
 /**
  * @category ISO Week-Numbering Year Helpers
@@ -16806,10 +17335,10 @@ module.exports = isThisISOYear
 
 
 /***/ }),
-/* 286 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMinute = __webpack_require__(155)
+var isSameMinute = __webpack_require__(161)
 
 /**
  * @category Minute Helpers
@@ -16835,10 +17364,10 @@ module.exports = isThisMinute
 
 
 /***/ }),
-/* 287 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameMonth = __webpack_require__(157)
+var isSameMonth = __webpack_require__(163)
 
 /**
  * @category Month Helpers
@@ -16863,10 +17392,10 @@ module.exports = isThisMonth
 
 
 /***/ }),
-/* 288 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameQuarter = __webpack_require__(158)
+var isSameQuarter = __webpack_require__(164)
 
 /**
  * @category Quarter Helpers
@@ -16891,10 +17420,10 @@ module.exports = isThisQuarter
 
 
 /***/ }),
-/* 289 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameSecond = __webpack_require__(160)
+var isSameSecond = __webpack_require__(166)
 
 /**
  * @category Second Helpers
@@ -16920,10 +17449,10 @@ module.exports = isThisSecond
 
 
 /***/ }),
-/* 290 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameWeek = __webpack_require__(128)
+var isSameWeek = __webpack_require__(134)
 
 /**
  * @category Week Helpers
@@ -16956,10 +17485,10 @@ module.exports = isThisWeek
 
 
 /***/ }),
-/* 291 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSameYear = __webpack_require__(162)
+var isSameYear = __webpack_require__(168)
 
 /**
  * @category Year Helpers
@@ -16984,7 +17513,7 @@ module.exports = isThisYear
 
 
 /***/ }),
-/* 292 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17012,7 +17541,7 @@ module.exports = isThursday
 
 
 /***/ }),
-/* 293 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -17040,7 +17569,7 @@ module.exports = isToday
 
 
 /***/ }),
-/* 294 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -17070,7 +17599,7 @@ module.exports = isTomorrow
 
 
 /***/ }),
-/* 295 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17098,7 +17627,7 @@ module.exports = isTuesday
 
 
 /***/ }),
-/* 296 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17126,7 +17655,7 @@ module.exports = isWednesday
 
 
 /***/ }),
-/* 297 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17156,7 +17685,7 @@ module.exports = isWeekend
 
 
 /***/ }),
-/* 298 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17204,7 +17733,7 @@ module.exports = isWithinRange
 
 
 /***/ }),
-/* 299 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -17234,10 +17763,10 @@ module.exports = isYesterday
 
 
 /***/ }),
-/* 300 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var lastDayOfWeek = __webpack_require__(163)
+var lastDayOfWeek = __webpack_require__(169)
 
 /**
  * @category ISO Week Helpers
@@ -17265,7 +17794,7 @@ module.exports = lastDayOfISOWeek
 
 
 /***/ }),
-/* 301 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getISOYear = __webpack_require__(3)
@@ -17304,7 +17833,7 @@ module.exports = lastDayOfISOYear
 
 
 /***/ }),
-/* 302 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17337,7 +17866,7 @@ module.exports = lastDayOfMonth
 
 
 /***/ }),
-/* 303 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17371,7 +17900,7 @@ module.exports = lastDayOfQuarter
 
 
 /***/ }),
-/* 304 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17404,7 +17933,7 @@ module.exports = lastDayOfYear
 
 
 /***/ }),
-/* 305 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17442,7 +17971,7 @@ module.exports = max
 
 
 /***/ }),
-/* 306 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17480,7 +18009,7 @@ module.exports = min
 
 
 /***/ }),
-/* 307 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17512,7 +18041,7 @@ module.exports = setDate
 
 
 /***/ }),
-/* 308 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17558,7 +18087,7 @@ module.exports = setDay
 
 
 /***/ }),
-/* 309 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17591,7 +18120,7 @@ module.exports = setDayOfYear
 
 
 /***/ }),
-/* 310 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17623,12 +18152,12 @@ module.exports = setHours
 
 
 /***/ }),
-/* 311 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
 var addDays = __webpack_require__(8)
-var getISODay = __webpack_require__(150)
+var getISODay = __webpack_require__(156)
 
 /**
  * @category Weekday Helpers
@@ -17660,11 +18189,11 @@ module.exports = setISODay
 
 
 /***/ }),
-/* 312 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var getISOWeek = __webpack_require__(127)
+var getISOWeek = __webpack_require__(133)
 
 /**
  * @category ISO Week Helpers
@@ -17696,7 +18225,7 @@ module.exports = setISOWeek
 
 
 /***/ }),
-/* 313 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17728,7 +18257,7 @@ module.exports = setMilliseconds
 
 
 /***/ }),
-/* 314 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17760,11 +18289,11 @@ module.exports = setMinutes
 
 
 /***/ }),
-/* 315 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
-var setMonth = __webpack_require__(164)
+var setMonth = __webpack_require__(170)
 
 /**
  * @category Quarter Helpers
@@ -17794,7 +18323,7 @@ module.exports = setQuarter
 
 
 /***/ }),
-/* 316 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17826,7 +18355,7 @@ module.exports = setSeconds
 
 
 /***/ }),
-/* 317 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17858,7 +18387,7 @@ module.exports = setYear
 
 
 /***/ }),
-/* 318 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(0)
@@ -17890,7 +18419,7 @@ module.exports = startOfMonth
 
 
 /***/ }),
-/* 319 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var startOfDay = __webpack_require__(5)
@@ -17917,7 +18446,7 @@ module.exports = startOfToday
 
 
 /***/ }),
-/* 320 */
+/* 329 */
 /***/ (function(module, exports) {
 
 /**
@@ -17950,7 +18479,7 @@ module.exports = startOfTomorrow
 
 
 /***/ }),
-/* 321 */
+/* 330 */
 /***/ (function(module, exports) {
 
 /**
@@ -17983,7 +18512,7 @@ module.exports = startOfYesterday
 
 
 /***/ }),
-/* 322 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addDays = __webpack_require__(8)
@@ -18013,10 +18542,10 @@ module.exports = subDays
 
 
 /***/ }),
-/* 323 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addHours = __webpack_require__(130)
+var addHours = __webpack_require__(136)
 
 /**
  * @category Hour Helpers
@@ -18043,7 +18572,7 @@ module.exports = subHours
 
 
 /***/ }),
-/* 324 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var addMilliseconds = __webpack_require__(9)
@@ -18073,10 +18602,10 @@ module.exports = subMilliseconds
 
 
 /***/ }),
-/* 325 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMinutes = __webpack_require__(133)
+var addMinutes = __webpack_require__(139)
 
 /**
  * @category Minute Helpers
@@ -18103,10 +18632,10 @@ module.exports = subMinutes
 
 
 /***/ }),
-/* 326 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addMonths = __webpack_require__(82)
+var addMonths = __webpack_require__(86)
 
 /**
  * @category Month Helpers
@@ -18133,10 +18662,10 @@ module.exports = subMonths
 
 
 /***/ }),
-/* 327 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addQuarters = __webpack_require__(134)
+var addQuarters = __webpack_require__(140)
 
 /**
  * @category Quarter Helpers
@@ -18163,10 +18692,10 @@ module.exports = subQuarters
 
 
 /***/ }),
-/* 328 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addSeconds = __webpack_require__(135)
+var addSeconds = __webpack_require__(141)
 
 /**
  * @category Second Helpers
@@ -18193,10 +18722,10 @@ module.exports = subSeconds
 
 
 /***/ }),
-/* 329 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addWeeks = __webpack_require__(122)
+var addWeeks = __webpack_require__(128)
 
 /**
  * @category Week Helpers
@@ -18223,10 +18752,10 @@ module.exports = subWeeks
 
 
 /***/ }),
-/* 330 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var addYears = __webpack_require__(136)
+var addYears = __webpack_require__(142)
 
 /**
  * @category Year Helpers
@@ -18253,72 +18782,72 @@ module.exports = subYears
 
 
 /***/ }),
-/* 331 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./ar": 165,
-	"./ar.js": 165,
-	"./az": 166,
-	"./az.js": 166,
-	"./bn": 167,
-	"./bn.js": 167,
-	"./cs": 168,
-	"./cs.js": 168,
-	"./de": 169,
-	"./de.js": 169,
-	"./el": 170,
-	"./el.js": 170,
-	"./es": 171,
-	"./es.js": 171,
-	"./fa": 172,
-	"./fa.js": 172,
-	"./fr": 173,
-	"./fr.js": 173,
-	"./hi": 174,
-	"./hi.js": 174,
-	"./hu": 175,
-	"./hu.js": 175,
-	"./id": 176,
-	"./id.js": 176,
-	"./it": 177,
-	"./it.js": 177,
-	"./ja": 178,
-	"./ja.js": 178,
-	"./jv": 179,
-	"./jv.js": 179,
-	"./ko": 180,
-	"./ko.js": 180,
-	"./my": 181,
-	"./my.js": 181,
-	"./nl": 182,
-	"./nl.js": 182,
-	"./pa-in": 183,
-	"./pa-in.js": 183,
-	"./pl": 184,
-	"./pl.js": 184,
-	"./pt": 185,
-	"./pt.js": 185,
-	"./ro": 186,
-	"./ro.js": 186,
-	"./ru": 187,
-	"./ru.js": 187,
-	"./sr": 188,
-	"./sr.js": 188,
-	"./th": 189,
-	"./th.js": 189,
-	"./tr": 190,
-	"./tr.js": 190,
-	"./uk": 191,
-	"./uk.js": 191,
-	"./uz": 192,
-	"./uz.js": 192,
-	"./vi": 193,
-	"./vi.js": 193,
-	"./zh-cn": 194,
-	"./zh-cn.js": 194,
-	"./zh-tw": 195,
-	"./zh-tw.js": 195
+	"./ar": 171,
+	"./ar.js": 171,
+	"./az": 172,
+	"./az.js": 172,
+	"./bn": 173,
+	"./bn.js": 173,
+	"./cs": 174,
+	"./cs.js": 174,
+	"./de": 175,
+	"./de.js": 175,
+	"./el": 176,
+	"./el.js": 176,
+	"./es": 177,
+	"./es.js": 177,
+	"./fa": 178,
+	"./fa.js": 178,
+	"./fr": 179,
+	"./fr.js": 179,
+	"./hi": 180,
+	"./hi.js": 180,
+	"./hu": 181,
+	"./hu.js": 181,
+	"./id": 182,
+	"./id.js": 182,
+	"./it": 183,
+	"./it.js": 183,
+	"./ja": 184,
+	"./ja.js": 184,
+	"./jv": 185,
+	"./jv.js": 185,
+	"./ko": 186,
+	"./ko.js": 186,
+	"./my": 187,
+	"./my.js": 187,
+	"./nl": 188,
+	"./nl.js": 188,
+	"./pa-in": 189,
+	"./pa-in.js": 189,
+	"./pl": 190,
+	"./pl.js": 190,
+	"./pt": 191,
+	"./pt.js": 191,
+	"./ro": 192,
+	"./ro.js": 192,
+	"./ru": 193,
+	"./ru.js": 193,
+	"./sr": 194,
+	"./sr.js": 194,
+	"./th": 195,
+	"./th.js": 195,
+	"./tr": 196,
+	"./tr.js": 196,
+	"./uk": 197,
+	"./uk.js": 197,
+	"./uz": 198,
+	"./uz.js": 198,
+	"./vi": 199,
+	"./vi.js": 199,
+	"./zh-cn": 200,
+	"./zh-cn.js": 200,
+	"./zh-tw": 201,
+	"./zh-tw.js": 201
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -18334,24 +18863,24 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 331;
+webpackContext.id = 340;
 
 /***/ }),
-/* 332 */
+/* 341 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_datepicker__ = __webpack_require__(333);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_days__ = __webpack_require__(334);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_weekdays__ = __webpack_require__(335);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_months__ = __webpack_require__(336);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_years__ = __webpack_require__(337);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__defaultOptions__ = __webpack_require__(338);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_datepicker__ = __webpack_require__(342);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_days__ = __webpack_require__(343);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_weekdays__ = __webpack_require__(344);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_months__ = __webpack_require__(345);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_years__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__defaultOptions__ = __webpack_require__(347);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19106,7 +19635,7 @@ var datePicker = function (_EventEmitter) {
 			var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
 			this._lang = lang;
-			this._locale = __webpack_require__(84)("./" + lang);
+			this._locale = __webpack_require__(88)("./" + lang);
 			return this;
 		}
 		// Get current datePicker language
@@ -19233,7 +19762,7 @@ var datePicker = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["a"] = (datePicker);
 
 /***/ }),
-/* 333 */
+/* 342 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19242,7 +19771,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 334 */
+/* 343 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19253,7 +19782,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 335 */
+/* 344 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19264,7 +19793,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 336 */
+/* 345 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19283,7 +19812,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 337 */
+/* 346 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19298,7 +19827,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 338 */
+/* 347 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19322,17 +19851,233 @@ var defaultOptions = {
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 339 */
+/* 348 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ar' { }\n| ");
+
+/***/ }),
+/* 349 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/be' { }\n| ");
+
+/***/ }),
+/* 350 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/bg' { }\n| ");
+
+/***/ }),
+/* 351 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ca' { }\n| ");
+
+/***/ }),
+/* 352 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/cs' { }\n| ");
+
+/***/ }),
+/* 353 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/da' { }\n| ");
+
+/***/ }),
+/* 354 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/de' { }\n| ");
+
+/***/ }),
+/* 355 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/el' { }\n| ");
+
+/***/ }),
+/* 356 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/en' { }\n| ");
+
+/***/ }),
+/* 357 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/eo' { }\n| ");
+
+/***/ }),
+/* 358 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/es' { }\n| ");
+
+/***/ }),
+/* 359 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/fi' { }\n| ");
+
+/***/ }),
+/* 360 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/fil' { }\n| ");
+
+/***/ }),
+/* 361 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/fr' { }\n| ");
+
+/***/ }),
+/* 362 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/hr' { }\n| ");
+
+/***/ }),
+/* 363 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/hu' { }\n| ");
+
+/***/ }),
+/* 364 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/id' { }\n| ");
+
+/***/ }),
+/* 365 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/is' { }\n| ");
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/it' { }\n| ");
+
+/***/ }),
+/* 367 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ja' { }\n| ");
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ko' { }\n| ");
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/mk' { }\n| ");
+
+/***/ }),
+/* 370 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/nb' { }\n| ");
+
+/***/ }),
+/* 371 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/nl' { }\n| ");
+
+/***/ }),
+/* 372 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/pl' { }\n| ");
+
+/***/ }),
+/* 373 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/pt' { }\n| ");
+
+/***/ }),
+/* 374 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ro' { }\n| ");
+
+/***/ }),
+/* 375 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/ru' { }\n| ");
+
+/***/ }),
+/* 376 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/sk' { }\n| ");
+
+/***/ }),
+/* 377 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/sl' { }\n| ");
+
+/***/ }),
+/* 378 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/sr' { }\n| ");
+
+/***/ }),
+/* 379 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/sv' { }\n| ");
+
+/***/ }),
+/* 380 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/th' { }\n| ");
+
+/***/ }),
+/* 381 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/tr' { }\n| ");
+
+/***/ }),
+/* 382 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/zh_cn' { }\n| ");
+
+/***/ }),
+/* 383 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (1:8)\nYou may need an appropriate loader to handle this file type.\n| declare module 'date-fns/locale/zh_tw' { }\n| ");
+
+/***/ }),
+/* 384 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_date_fns__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(340);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(341);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(385);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(386);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19573,6 +20318,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit(this.options.isRange ? 'select:start' : 'select', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19606,6 +20352,7 @@ var timePicker = function (_EventEmitter) {
 
 			// this._selec(this.time);
 
+			this.emit('select', this);
 			// this.emit(this.options.isRange ? 'select:start' : 'select', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19646,6 +20393,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit(this.options.isRange ? 'select:start' : 'select', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19686,6 +20434,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit(this.options.isRange ? 'select:start' : 'select', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19717,6 +20466,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit('select:end', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19748,6 +20498,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit('select:end', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19785,6 +20536,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit('select:end', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19822,6 +20574,7 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
+			this.emit('select', this);
 			// this.emit('select:end', {
 			// 	time: this.time,
 			// 	instance: this
@@ -19984,7 +20737,7 @@ var timePicker = function (_EventEmitter) {
 			var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
 
 			this._lang = lang;
-			this._locale = __webpack_require__(84)("./" + lang);
+			this._locale = __webpack_require__(88)("./" + lang);
 			return this;
 		}
 		// Get current TimePicker language
@@ -20071,7 +20824,7 @@ var timePicker = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["a"] = (timePicker);
 
 /***/ }),
-/* 340 */
+/* 385 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20080,7 +20833,7 @@ var timePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 341 */
+/* 386 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20099,7 +20852,7 @@ var defaultOptions = {
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 342 */
+/* 387 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20153,7 +20906,7 @@ var defaultOptions = {
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 343 */
+/* 388 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20162,7 +20915,7 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 344 */
+/* 389 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20171,7 +20924,7 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 345 */
+/* 390 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

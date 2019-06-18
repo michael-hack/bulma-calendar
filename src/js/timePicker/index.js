@@ -283,6 +283,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit(this.options.isRange ? 'select:start' : 'select', {
 		// 	time: this.time,
 		// 	instance: this
@@ -313,6 +314,7 @@ export default class timePicker extends EventEmitter {
 
 		// this._selec(this.time);
 
+		this.emit('select', this);
 		// this.emit(this.options.isRange ? 'select:start' : 'select', {
 		// 	time: this.time,
 		// 	instance: this
@@ -350,6 +352,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit(this.options.isRange ? 'select:start' : 'select', {
 		// 	time: this.time,
 		// 	instance: this
@@ -387,6 +390,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit(this.options.isRange ? 'select:start' : 'select', {
 		// 	time: this.time,
 		// 	instance: this
@@ -415,6 +419,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit('select:end', {
 		// 	time: this.time,
 		// 	instance: this
@@ -443,6 +448,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit('select:end', {
 		// 	time: this.time,
 		// 	instance: this
@@ -477,6 +483,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit('select:end', {
 		// 	time: this.time,
 		// 	instance: this
@@ -511,6 +518,7 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
+		this.emit('select', this);
 		// this.emit('select:end', {
 		// 	time: this.time,
 		// 	instance: this
