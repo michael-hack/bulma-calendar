@@ -13538,9 +13538,9 @@ var bulmaCalendar = function (_EventEmitter) {
     _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelector(selector) : selector;
     // An invalid selector or non-DOM node has been provided.
     if (!_this.element) {
-      throw new Error('An invalid selector or non-DOM node has been provided.');
+      throw new Error("An invalid selector or non-DOM node has been provided.");
     }
-    _this._clickEvents = ['click', 'touch'];
+    _this._clickEvents = ["click", "touch"];
     _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils_index__["a" /* detectSupportsPassive */]();
 
     // Use Element dataset values to override options
@@ -13554,19 +13554,19 @@ var bulmaCalendar = function (_EventEmitter) {
     _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */], options, elementConfig);
 
     if (_this.options.type === undefined) {
-      switch (_this.element.getAttribute('type')) {
-        case 'date':
-          _this.options.type = 'date';
+      switch (_this.element.getAttribute("type")) {
+        case "date":
+          _this.options.type = "date";
           break;
-        case 'time':
-          _this.options.type = 'time';
+        case "time":
+          _this.options.type = "time";
           break;
         default:
-          _this.options.type = 'datetime';
+          _this.options.type = "datetime";
           break;
       }
     }
-    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('datetimePicker');
+    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]("datetimePicker");
 
     _this.onToggleDateTimePicker = _this.onToggleDateTimePicker.bind(_this);
     _this.onCloseDateTimePicker = _this.onCloseDateTimePicker.bind(_this);
@@ -13590,7 +13590,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
 
   _createClass(bulmaCalendar, [{
-    key: 'onSelectDateTimePicker',
+    key: "onSelectDateTimePicker",
 
 
     /****************************************************
@@ -13601,22 +13601,24 @@ var bulmaCalendar = function (_EventEmitter) {
     value: function onSelectDateTimePicker(e) {
       this.refresh();
       this.save();
-      if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
+      if (e.type === "select" && this.options.closeOnSelect && this.options.displayMode !== "inline") {
         this.hide();
       }
-      this.emit(e.type, this);
+      if (this.options.closeOnSelect) {
+        this.emit(e.type, this);
+      }
     }
   }, {
-    key: 'onDocumentClickDateTimePicker',
+    key: "onDocumentClickDateTimePicker",
     value: function onDocumentClickDateTimePicker(e) {
       // Check is e.target not within datepicker element
       var target = e.target || e.srcElement;
-      if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
+      if (!this._ui.wrapper.contains(target) && this.options.displayMode !== "inline" && this._open) {
         this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: 'onToggleDateTimePicker',
+    key: "onToggleDateTimePicker",
     value: function onToggleDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13630,7 +13632,7 @@ var bulmaCalendar = function (_EventEmitter) {
       }
     }
   }, {
-    key: 'onValidateClickDateTimePicker',
+    key: "onValidateClickDateTimePicker",
     value: function onValidateClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13638,14 +13640,14 @@ var bulmaCalendar = function (_EventEmitter) {
       e.stopPropagation();
 
       this.save();
-      this.emit('select', this);
+      this.emit("select", this);
 
-      if (this.options.displayMode !== 'inline') {
+      if (this.options.displayMode !== "inline") {
         this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: 'onTodayClickDateTimePicker',
+    key: "onTodayClickDateTimePicker",
     value: function onTodayClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13662,7 +13664,7 @@ var bulmaCalendar = function (_EventEmitter) {
       this.save();
     }
   }, {
-    key: 'onClearClickDateTimePicker',
+    key: "onClearClickDateTimePicker",
     value: function onClearClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13671,10 +13673,10 @@ var bulmaCalendar = function (_EventEmitter) {
 
       this.clear();
 
-      this.emit('clear', this);
+      this.emit("clear", this);
     }
   }, {
-    key: 'onCancelClickDateTimePicker',
+    key: "onCancelClickDateTimePicker",
     value: function onCancelClickDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13686,12 +13688,12 @@ var bulmaCalendar = function (_EventEmitter) {
         this.timePicker = this._snapshots[0].timePicker;
       }
       this.save();
-      if (this.options.displayMode !== 'inline') {
+      if (this.options.displayMode !== "inline") {
         this.onCloseDateTimePicker(e);
       }
     }
   }, {
-    key: 'onCloseDateTimePicker',
+    key: "onCloseDateTimePicker",
     value: function onCloseDateTimePicker(e) {
       if (!this._supportsPassive) {
         e.preventDefault();
@@ -13708,7 +13710,7 @@ var bulmaCalendar = function (_EventEmitter) {
      ****************************************************/
 
   }, {
-    key: 'isRange',
+    key: "isRange",
     value: function isRange() {
       return this.options.isRange;
     }
@@ -13720,18 +13722,18 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'isOpen',
+    key: "isOpen",
     value: function isOpen() {
       return this._open;
     }
 
     /**
      * Get / Set datetimePicker value
-     * @param {*} date 
+     * @param {*} date
      */
 
   }, {
-    key: 'value',
+    key: "value",
     value: function value() {
       var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -13739,15 +13741,15 @@ var bulmaCalendar = function (_EventEmitter) {
         this.datePicker.value(_value);
         this.timePicker.value(_value);
       } else {
-        var string = '';
+        var string = "";
         switch (this.options.type) {
-          case 'date':
+          case "date":
             string = this.datePicker.value();
             break;
-          case 'time':
+          case "time":
             string = this.timePicker.value();
             break;
-          case 'datetime':
+          case "datetime":
             var start = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.start, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.start)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.start))) : undefined;
             var end = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](this.datePicker.end) : undefined;
 
@@ -13757,9 +13759,11 @@ var bulmaCalendar = function (_EventEmitter) {
 
             string = start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(start), this.format, {
               locale: this.locale
-            }) : '';
+            }) : "";
             if (end) {
-              string += ' - ' + (end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(end), this.format, { locale: this.locale }) : '');
+              string += " - " + (end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(end), this.format, {
+                locale: this.locale
+              }) : "");
             }
             break;
         }
@@ -13767,66 +13771,66 @@ var bulmaCalendar = function (_EventEmitter) {
       }
     }
   }, {
-    key: 'refresh',
+    key: "refresh",
     value: function refresh() {
-      this._ui.header.start.day.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'DD', {
+      this._ui.header.start.day.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, "DD", {
         locale: this.locale
-      }) : '--';
-      this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'MMMM YYYY', {
+      }) : "--";
+      this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, "MMMM YYYY", {
         locale: this.locale
-      }) : '';
+      }) : "";
       if (this.datePicker.start) {
-        this._ui.header.start.weekday.classList.remove('is-hidden');
-        this._ui.header.start.weekday.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'dddd', {
+        this._ui.header.start.weekday.classList.remove("is-hidden");
+        this._ui.header.start.weekday.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, "dddd", {
           locale: this.locale
-        }) : '';
+        }) : "";
       } else {
-        this._ui.header.start.weekday.classList.add('is-hidden');
+        this._ui.header.start.weekday.classList.add("is-hidden");
       }
 
       if (this._ui.header.start.hour) {
-        this._ui.header.start.hour.innerHTML = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH:mm', {
+        this._ui.header.start.hour.innerHTML = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, "HH:mm", {
           locale: this.locale
-        }) : '--:--';
+        }) : "--:--";
       }
 
       if (this._ui.header.end) {
-        this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'DD', {
+        this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, "DD", {
           locale: this.locale
-        }) : '--';
-        this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'MMMM YYYY', {
+        }) : "--";
+        this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, "MMMM YYYY", {
           locale: this.locale
-        }) : '';
+        }) : "";
         if (this.datePicker.end) {
-          this._ui.header.end.weekday.classList.remove('is-hidden');
-          this._ui.header.end.weekday.innerHTML = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'dddd', {
+          this._ui.header.end.weekday.classList.remove("is-hidden");
+          this._ui.header.end.weekday.innerHTML = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, "dddd", {
             locale: this.locale
-          }) : '';
+          }) : "";
         } else {
-          this._ui.header.end.weekday.classList.add('is-hidden');
+          this._ui.header.end.weekday.classList.add("is-hidden");
         }
 
         if (this._ui.header.end && this._ui.header.end.hour) {
-          this._ui.header.end.hour.innerHTML = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH:mm', {
+          this._ui.header.end.hour.innerHTML = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, "HH:mm", {
             locale: this.locale
-          }) : '--:--';
+          }) : "--:--";
         }
       }
-      this.emit('refresh', this);
+      this.emit("refresh", this);
     }
   }, {
-    key: 'clear',
+    key: "clear",
     value: function clear() {
       this.datePicker.clear();
       this.timePicker.clear();
 
       this.refresh();
-      this.element.value = '';
-      this._ui.dummy.dummy_1.value = '';
+      this.element.value = "";
+      this._ui.dummy.dummy_1.value = "";
       if (this._ui.dummy.dummy_2) {
-        this._ui.dummy.dummy_2.value = '';
+        this._ui.dummy.dummy_2.value = "";
       }
-      this.emit('clear', this);
+      this.emit("clear", this);
     }
 
     /**
@@ -13836,7 +13840,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'show',
+    key: "show",
     value: function show() {
       this._snapshots = [];
       this.snapshot();
@@ -13850,11 +13854,11 @@ var bulmaCalendar = function (_EventEmitter) {
       this.timePicker.hide();
 
       if (this._ui.modal) {
-        this._ui.modal.classList.add('is-active');
+        this._ui.modal.classList.add("is-active");
       }
-      this._ui.wrapper.classList.add('is-active');
+      this._ui.wrapper.classList.add("is-active");
       this._open = true;
-      this.emit('show', this);
+      this.emit("show", this);
     }
 
     /**
@@ -13864,37 +13868,37 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'hide',
+    key: "hide",
     value: function hide() {
       this._open = false;
       this._focus = false;
       if (this._ui.modal) {
-        this._ui.modal.classList.remove('is-active');
+        this._ui.modal.classList.remove("is-active");
       }
-      this._ui.wrapper.classList.remove('is-active');
-      this.emit('hide', this);
+      this._ui.wrapper.classList.remove("is-active");
+      this.emit("hide", this);
     }
 
     // Set element value to datetime selected based on format
 
   }, {
-    key: 'save',
+    key: "save",
     value: function save() {
       var date = this.value();
 
-      var _date$split = date.split(' - '),
+      var _date$split = date.split(" - "),
           _date$split2 = _slicedToArray(_date$split, 2),
           start = _date$split2[0],
           end = _date$split2[1];
 
       this.element.value = date;
-      this._ui.dummy.dummy_1.value = start ? start : '';
+      this._ui.dummy.dummy_1.value = start ? start : "";
       if (this._ui.dummy.dummy_2) {
-        this._ui.dummy.dummy_2.value = end ? end : '';
+        this._ui.dummy.dummy_2.value = end ? end : "";
       }
     }
   }, {
-    key: 'snapshot',
+    key: "snapshot",
     value: function snapshot() {}
     // this._snapshots.push([
     //   ...this.datePicker,
@@ -13909,7 +13913,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'destroy',
+    key: "destroy",
     value: function destroy() {
       this._ui.wrapper.remove();
     }
@@ -13926,15 +13930,15 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: '_init',
+    key: "_init",
     value: function _init() {
       this._open = false;
       this._snapshots = []; // Use to revert selection
       // Set component type (date / time / datetime)
       // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
-      this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
+      this._type = ["date", "time", "datetime"].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : "date";
       // Change element type to prevent browser default type="date" behavior
-      this.element.setAttribute('type', 'text');
+      this.element.setAttribute("type", "text");
       this.datePicker = new __WEBPACK_IMPORTED_MODULE_5__datePicker__["a" /* default */](_extends({}, this.options, {
         lang: this.lang
       }));
@@ -13948,15 +13952,15 @@ var bulmaCalendar = function (_EventEmitter) {
 
       this.lang = this.options.lang;
       // Set export format based on component type
-      this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : this.options.dateFormat + ' ' + this.options.timeFormat;
+      this.format = this._type === "date" ? this.options.dateFormat : this._type === "time" ? this.options.timeFormat : this.options.dateFormat + " " + this.options.timeFormat;
 
       // Force dialog display mode on mobile devices
-      if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
-        this.options.displayMode = 'dialog';
+      if (this.options.displayMode === "default" && window.matchMedia("screen and (max-width: 768px)").matches) {
+        this.options.displayMode = "dialog";
       }
-      if (window.matchMedia('screen and (max-width: 768px)').matches) {
-        if (this.options.displayMode === 'default') {
-          this.options.displayMode = 'dialog';
+      if (window.matchMedia("screen and (max-width: 768px)").matches) {
+        if (this.options.displayMode === "default") {
+          this.options.displayMode = "dialog";
         }
         this.options.displayDual = false;
       }
@@ -13966,9 +13970,9 @@ var bulmaCalendar = function (_EventEmitter) {
       this.save();
 
       if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.onReady)) {
-        this.on('ready', this.options.onReady);
+        this.on("ready", this.options.onReady);
       }
-      this.emit('ready', this);
+      this.emit("ready", this);
     }
 
     /**
@@ -13978,12 +13982,12 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: '_build',
+    key: "_build",
     value: function _build() {
       var headerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_9__templates_header__["a" /* default */])(_extends({}, this.options, {
         type: this._type,
-        datePicker: this.options.type !== 'time',
-        timePicker: this.options.type !== 'date'
+        datePicker: this.options.type !== "time",
+        timePicker: this.options.type !== "date"
       })));
       var footerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_10__templates_footer__["a" /* default */])(this.options));
       var datetimePickerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates__["a" /* default */])(_extends({}, this.options, {
@@ -13992,84 +13996,84 @@ var bulmaCalendar = function (_EventEmitter) {
 
       // Save pointer to each datePicker element for later use
       this._ui = {
-        modal: datetimePickerNode.querySelector('.modal'),
-        wrapper: datetimePickerNode.querySelector('.datetimepicker'),
-        container: datetimePickerNode.querySelector('.datetimepicker-container'),
+        modal: datetimePickerNode.querySelector(".modal"),
+        wrapper: datetimePickerNode.querySelector(".datetimepicker"),
+        container: datetimePickerNode.querySelector(".datetimepicker-container"),
         dummy: {
-          container: datetimePickerNode.querySelector('.datetimepicker-dummy'),
-          wrapper: datetimePickerNode.querySelector('.datetimepicker-dummy-wrapper'),
-          dummy_1: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)'),
-          dummy_2: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)'),
-          clear: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-clear-button')
+          container: datetimePickerNode.querySelector(".datetimepicker-dummy"),
+          wrapper: datetimePickerNode.querySelector(".datetimepicker-dummy-wrapper"),
+          dummy_1: datetimePickerNode.querySelector(".datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)"),
+          dummy_2: datetimePickerNode.querySelector(".datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)"),
+          clear: datetimePickerNode.querySelector(".datetimepicker-dummy .datetimepicker-clear-button")
         },
-        calendar: datetimePickerNode.querySelector('.datetimepicker'),
-        overlay: this.options.displayMode === 'dialog' ? {
-          background: datetimePickerNode.querySelector('.modal-background'),
-          close: datetimePickerNode.querySelector('.modal-close')
+        calendar: datetimePickerNode.querySelector(".datetimepicker"),
+        overlay: this.options.displayMode === "dialog" ? {
+          background: datetimePickerNode.querySelector(".modal-background"),
+          close: datetimePickerNode.querySelector(".modal-close")
         } : undefined,
         header: {
-          container: headerNode.querySelector('.datetimepicker-header'),
+          container: headerNode.querySelector(".datetimepicker-header"),
           start: {
-            container: headerNode.querySelector('.datetimepicker-selection-start'),
-            day: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-day'),
-            month: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-month'),
-            weekday: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-weekday'),
-            hour: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour'),
-            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
+            container: headerNode.querySelector(".datetimepicker-selection-start"),
+            day: headerNode.querySelector(".datetimepicker-selection-start .datetimepicker-selection-day"),
+            month: headerNode.querySelector(".datetimepicker-selection-start .datetimepicker-selection-month"),
+            weekday: headerNode.querySelector(".datetimepicker-selection-start .datetimepicker-selection-weekday"),
+            hour: headerNode.querySelector(".datetimepicker-selection-start .datetimepicker-selection-hour"),
+            empty: headerNode.querySelector(".datetimepicker-selection-start .empty")
           },
           end: this.options.isRange ? {
-            container: headerNode.querySelector('.datetimepicker-selection-end'),
-            day: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-day'),
-            month: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-month'),
-            weekday: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-weekday'),
-            hour: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour'),
-            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
+            container: headerNode.querySelector(".datetimepicker-selection-end"),
+            day: headerNode.querySelector(".datetimepicker-selection-end .datetimepicker-selection-day"),
+            month: headerNode.querySelector(".datetimepicker-selection-end .datetimepicker-selection-month"),
+            weekday: headerNode.querySelector(".datetimepicker-selection-end .datetimepicker-selection-weekday"),
+            hour: headerNode.querySelector(".datetimepicker-selection-end .datetimepicker-selection-hour"),
+            empty: headerNode.querySelector(".datetimepicker-selection-start .empty")
           } : undefined
         },
         footer: {
-          container: footerNode.querySelector('.datetimepicker-footer'),
-          validate: footerNode.querySelector('.datetimepicker-footer-validate'),
-          today: footerNode.querySelector('.datetimepicker-footer-today'),
-          clear: footerNode.querySelector('.datetimepicker-footer-clear'),
-          cancel: footerNode.querySelector('.datetimepicker-footer-cancel')
+          container: footerNode.querySelector(".datetimepicker-footer"),
+          validate: footerNode.querySelector(".datetimepicker-footer-validate"),
+          today: footerNode.querySelector(".datetimepicker-footer-today"),
+          clear: footerNode.querySelector(".datetimepicker-footer-clear"),
+          cancel: footerNode.querySelector(".datetimepicker-footer-cancel")
         }
       };
 
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showHeader)) {
-        this._ui.header.container.classList.add('is-hidden');
+        this._ui.header.container.classList.add("is-hidden");
       }
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showFooter)) {
-        this._ui.footer.container.classList.add('is-hidden');
+        this._ui.footer.container.classList.add("is-hidden");
       }
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showTodayButton)) {
-        this._ui.footer.today.classList.add('is-hidden');
+        this._ui.footer.today.classList.add("is-hidden");
       }
       if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showClearButton)) {
-        this._ui.footer.clear.classList.add('is-hidden');
+        this._ui.footer.clear.classList.add("is-hidden");
       }
 
       if (this.options.closeOnSelect && this._ui.footer.validate) {
-        this._ui.footer.validate.classList.add('is-hidden');
+        this._ui.footer.validate.classList.add("is-hidden");
       }
 
       this._ui.container.appendChild(headerNode);
       switch (this._type) {
-        case 'date':
+        case "date":
           this._ui.container.appendChild(this.datePicker.render());
           break;
-        case 'time':
+        case "time":
           this._ui.container.appendChild(this.timePicker.render());
           if (this._ui.footer.validate) {
-            this._ui.footer.validate.classList.remove('is-hidden');
+            this._ui.footer.validate.classList.remove("is-hidden");
           }
           if (this._ui.footer.today) {
-            this._ui.footer.today.classList.add('is-hidden');
+            this._ui.footer.today.classList.add("is-hidden");
           }
           break;
-        case 'datetime':
+        case "datetime":
           this.options.closeOnSelect = false;
           if (this._ui.footer.validate) {
-            this._ui.footer.validate.classList.remove('is-hidden');
+            this._ui.footer.validate.classList.remove("is-hidden");
           }
           this._ui.container.appendChild(this.datePicker.render());
           this._ui.container.appendChild(this.timePicker.render());
@@ -14077,21 +14081,21 @@ var bulmaCalendar = function (_EventEmitter) {
       }
 
       this._ui.wrapper.appendChild(footerNode);
-      this._ui.wrapper.classList.add('is-' + this.options.color);
-      this._ui.dummy.container.classList.add('is-' + this.options.color);
+      this._ui.wrapper.classList.add("is-" + this.options.color);
+      this._ui.dummy.container.classList.add("is-" + this.options.color);
       // Add datepicker HTML element to Document Body
       this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
       this._ui.dummy.wrapper.appendChild(this.element);
-      this.element.classList.add('is-hidden');
+      this.element.classList.add("is-hidden");
       // this.element.style.visibility = 'hidden';
       // this.element.style.position = 'absolute';
 
-      if (this.options.displayMode === 'inline') {
-        this._ui.wrapper.classList.add('is-active');
+      if (this.options.displayMode === "inline") {
+        this._ui.wrapper.classList.add("is-active");
       } else {
-        this._ui.dummy.container.classList.remove('is-hidden');
-        this._ui.wrapper.style.position = 'absolute';
-        this._ui.wrapper.classList.add('is-datetimepicker-default');
+        this._ui.dummy.container.classList.remove("is-hidden");
+        this._ui.wrapper.style.position = "absolute";
+        this._ui.wrapper.classList.add("is-datetimepicker-default");
       }
       this.refresh();
     }
@@ -14103,7 +14107,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: '_bindEvents',
+    key: "_bindEvents",
     value: function _bindEvents() {
       var _this2 = this;
 
@@ -14111,12 +14115,12 @@ var bulmaCalendar = function (_EventEmitter) {
         document.body.addEventListener(clickEvent, _this2.onDocumentClickDateTimePicker);
       });
 
-      this.datePicker.on('select', this.onSelectDateTimePicker);
-      this.datePicker.on('select:start', this.onSelectDateTimePicker);
-      this.datePicker.on('select:end', this.onSelectDateTimePicker);
-      this.timePicker.on('select', this.onSelectDateTimePicker);
-      this.timePicker.on('select:start', this.onSelectDateTimePicker);
-      this.timePicker.on('select:end', this.onSelectDateTimePicker);
+      this.datePicker.on("select", this.onSelectDateTimePicker);
+      this.datePicker.on("select:start", this.onSelectDateTimePicker);
+      this.datePicker.on("select:end", this.onSelectDateTimePicker);
+      this.timePicker.on("select", this.onSelectDateTimePicker);
+      this.timePicker.on("select:start", this.onSelectDateTimePicker);
+      this.timePicker.on("select:end", this.onSelectDateTimePicker);
 
       // Bind event to element in order to display/hide datePicker on click
       if (this.options.toggleOnInputClick === true) {
@@ -14126,7 +14130,7 @@ var bulmaCalendar = function (_EventEmitter) {
         });
       }
 
-      if (this.options.displayMode === 'dialog' && this._ui.overlay) {
+      if (this.options.displayMode === "dialog" && this._ui.overlay) {
         // Bind close event on Close button
         if (this._ui.overlay.close) {
           this._clickEvents.forEach(function (clickEvent) {
@@ -14166,7 +14170,7 @@ var bulmaCalendar = function (_EventEmitter) {
       }
     }
   }, {
-    key: 'id',
+    key: "id",
 
 
     /****************************************************
@@ -14185,14 +14189,14 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set language
 
   }, {
-    key: 'lang',
+    key: "lang",
     set: function set() {
-      var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+      var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "en";
 
       try {
         this._locale = __webpack_require__(84)("./" + lang);
       } catch (e) {
-        lang = 'en';
+        lang = "en";
         this._locale = __webpack_require__(84)("./" + lang);
       } finally {
         this._lang = lang;
@@ -14207,7 +14211,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this._lang;
     }
   }, {
-    key: 'locale',
+    key: "locale",
     get: function get() {
       return this._locale;
     }
@@ -14215,7 +14219,7 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set format (set to yyyy-mm-dd HH:mm:ss by default)
 
   }, {
-    key: 'format',
+    key: "format",
     set: function set(format) {
       this._format = format;
       return this;
@@ -14231,7 +14235,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'date',
+    key: "date",
     set: function set() {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -14244,7 +14248,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this.datePicker.date;
     }
   }, {
-    key: 'startDate',
+    key: "startDate",
     set: function set() {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14255,7 +14259,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this.datePicker.start;
     }
   }, {
-    key: 'endDate',
+    key: "endDate",
     set: function set() {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14271,7 +14275,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'minDate',
+    key: "minDate",
     set: function set() {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14287,7 +14291,7 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set maxDate
 
   }, {
-    key: 'maxDate',
+    key: "maxDate",
     set: function set() {
       var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14303,7 +14307,7 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set dateFormat (set to yyyy-mm-dd by default)
 
   }, {
-    key: 'dateFormat',
+    key: "dateFormat",
     set: function set(dateFormat) {
       this.datePicker.dateFormat = dateFormat;
       return this;
@@ -14319,7 +14323,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'time',
+    key: "time",
     set: function set() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -14332,7 +14336,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this.timePicker.time;
     }
   }, {
-    key: 'startTime',
+    key: "startTime",
     set: function set() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14343,7 +14347,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this.timePicker.start;
     }
   }, {
-    key: 'endTime',
+    key: "endTime",
     set: function set() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14359,7 +14363,7 @@ var bulmaCalendar = function (_EventEmitter) {
      */
 
   }, {
-    key: 'minTime',
+    key: "minTime",
     set: function set() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14375,7 +14379,7 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set maxTime
 
   }, {
-    key: 'maxTime',
+    key: "maxTime",
     set: function set() {
       var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
@@ -14391,7 +14395,7 @@ var bulmaCalendar = function (_EventEmitter) {
     // Set timeFormat (set to HH:MM:SS by default)
 
   }, {
-    key: 'timeFormat',
+    key: "timeFormat",
     set: function set(timeFormat) {
       this.timePicker.dateFormat = timeFormat;
       return this;
@@ -14402,7 +14406,7 @@ var bulmaCalendar = function (_EventEmitter) {
       return this.timePicker.timeFormat;
     }
   }], [{
-    key: 'attach',
+    key: "attach",
     value: function attach() {
       var _this3 = this;
 
@@ -14413,7 +14417,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
       var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
       [].forEach.call(elements, function (element) {
-        if (typeof element[_this3.constructor.name] === 'undefined') {
+        if (typeof element[_this3.constructor.name] === "undefined") {
           var instance = new bulmaCalendar(element, options);
           element.bulmaCalendar = instance;
           instances.push(instance);
