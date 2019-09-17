@@ -33,7 +33,7 @@ export default class bulmaCalendar extends EventEmitter {
           [key]: this.element.dataset[key]
         };
       }, {}) : {};
-    
+
     // Set default options - dataset attributes are master
     this.options = {
       ...defaultOptions,
@@ -328,7 +328,7 @@ export default class bulmaCalendar extends EventEmitter {
     e.stopPropagation();
 
 	this.clear();
-	
+
 	this.emit('clear', this);
   }
 
@@ -377,7 +377,7 @@ export default class bulmaCalendar extends EventEmitter {
 
   /**
    * Get / Set datetimePicker value
-   * @param {*} date 
+   * @param {*} date
    */
   value(value = null) {
     if (value) {
@@ -397,7 +397,8 @@ export default class bulmaCalendar extends EventEmitter {
           let end = this.datePicker.end ? dateFns.getTime(this.datePicker.end) : undefined;
 
           if (end && this.options.isRange) {
-            end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
+            // This options is not required - in other place i set eod on date
+            //end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
           }
 
           string = start ? dateFns.format(new Date(start), this.format, {
