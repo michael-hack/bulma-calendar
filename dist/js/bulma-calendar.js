@@ -19147,10 +19147,10 @@ var datePicker = function (_EventEmitter) {
 
 			if (date) {
 				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-					this._date.end = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.end;
+					this._date.end = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._date.end;
 				}
 				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-					this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
+					this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
 				}
 			} else {
 				this._date.end = undefined;
@@ -19195,10 +19195,10 @@ var datePicker = function (_EventEmitter) {
 
 			if (date) {
 				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-					this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._max;
+					this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
 				}
 				if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-					this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._max;
+					this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
 				}
 			}
 
