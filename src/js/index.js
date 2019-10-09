@@ -298,7 +298,7 @@ export default class bulmaCalendar extends EventEmitter {
     e.stopPropagation();
 
     this.save();
-    this.emit('select', this);
+    this.emit('validate', this);
 
     if (this.options.displayMode !== 'inline') {
       this.onCloseDateTimePicker(e);
