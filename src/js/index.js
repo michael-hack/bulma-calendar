@@ -262,14 +262,14 @@ export default class bulmaCalendar extends EventEmitter {
    *                                                  *
    ****************************************************/
   onSelectDateTimePicker(e) {
-    this.refresh();
-    this.save();
-    if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
+    this.refresh(); 
+    if (e.type === 'select' && this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+      this.save();
       this.hide();
+      this.emit(e.type, this);
     }
-    this.emit(e.type, this);
   }
-
+  
   onDocumentClickDateTimePicker(e) {
     // Check is e.target not within datepicker element
     const target = e.target || e.srcElement;
@@ -317,8 +317,9 @@ export default class bulmaCalendar extends EventEmitter {
     this.timePicker.value(new Date());
     this.timePicker.refresh();
 
-    // TODO: check if closeOnSelect
-    this.save();
+    if (this.options.closeOnSelect && this.options.displayMode !== 'inline') {
+      this.save();
+    }
   }
 
   onClearClickDateTimePicker(e) {
