@@ -13600,11 +13600,11 @@ var bulmaCalendar = function (_EventEmitter) {
      ****************************************************/
     value: function onSelectDateTimePicker(e) {
       this.refresh();
-      this.save();
-      if (e.type === 'select' && this.options.closeOnSelect && this.options.displayMode !== 'inline') {
+      if (e.type === 'select' && this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+        this.save();
         this.hide();
+        this.emit(e.type, this);
       }
-      this.emit(e.type, this);
     }
   }, {
     key: 'onDocumentClickDateTimePicker',
@@ -19573,10 +19573,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit(this.options.isRange ? 'select:start' : 'select', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onNextHourStartTimePicker',
@@ -19604,12 +19610,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this._selec(this.time);
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
 
-			// this.emit(this.options.isRange ? 'select:start' : 'select', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onPreviousMinuteStartTimePicker',
@@ -19646,10 +19656,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit(this.options.isRange ? 'select:start' : 'select', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onNextMinuteStartTimePicker',
@@ -19686,10 +19702,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit(this.options.isRange ? 'select:start' : 'select', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onPreviousHourEndTimePicker',
@@ -19717,10 +19739,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit('select:end', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onNextHourEndTimePicker',
@@ -19748,10 +19776,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit('select:end', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onPreviousMinuteEndTimePicker',
@@ -19785,10 +19819,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit('select:end', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 	}, {
 		key: 'onNextMinuteEndTimePicker',
@@ -19822,10 +19862,16 @@ var timePicker = function (_EventEmitter) {
 				}, 1100);
 			}, 100);
 
-			// this.emit('select:end', {
-			// 	time: this.time,
-			// 	instance: this
-			// });
+			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+				this._select(this.time);
+			}
+
+			if (this.options.type === 'datetime') {
+				this.emit(this.options.isRange ? 'select:start' : 'select', {
+					time: this.time,
+					instance: this
+				});
+			}
 		}
 
 		/****************************************************
@@ -19923,6 +19969,7 @@ var timePicker = function (_EventEmitter) {
 	}, {
 		key: 'refresh',
 		value: function refresh() {
+
 			this._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
 			this._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
 			this._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
