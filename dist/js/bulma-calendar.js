@@ -13727,7 +13727,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
     /**
      * Get / Set datetimePicker value
-     * @param {*} date 
+     * @param {*} date
      */
 
   }, {
@@ -13752,7 +13752,8 @@ var bulmaCalendar = function (_EventEmitter) {
             var end = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](this.datePicker.end) : undefined;
 
             if (end && this.options.isRange) {
-              end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.end, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.end)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.end)));
+              // This options is not required - in other place i set eod on date
+              //end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
             }
 
             string = start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(start), this.format, {
