@@ -347,7 +347,16 @@ export default class datePicker extends EventEmitter {
 					this._select(value);
 				}
 			} else {
-				this._select(value);
+				if (type.isString(value)) {
+					this.start = dateFns.format(new Date(value), this.format, {
+						locale: this.locale
+					});
+					this.end = undefined;
+				}
+
+				if (type.isObject(value) || type.isDate(value)) {
+					this._select(value);
+				}
 			}
 		} else {
 			let string = (this.start && this._isValidDate(this.start)) ? dateFns.format(this.start, this.format, {
