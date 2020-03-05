@@ -18695,7 +18695,7 @@ var datePicker = function (_EventEmitter) {
 				}
 			});
 
-			var yearLabels = new Array(100).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["subYears"](this._visibleDate, 50)).map(function (d, i) {
+			var yearLabels = new Array(this.options.displayYearsCount * 2).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["subYears"](this._visibleDate, this.options.displayYearsCount)).map(function (d, i) {
 				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addYears"](d, i), 'YYYY', {
 					locale: _this2.locale
 				});
@@ -19317,7 +19317,8 @@ var defaultOptions = {
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
   enableMonthSwitch: true,
-  enableYearSwitch: true
+  enableYearSwitch: true,
+  displayYearsCount: 50
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);

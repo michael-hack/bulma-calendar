@@ -392,7 +392,7 @@ export default class datePicker extends EventEmitter {
 			}
 		});
 
-		const yearLabels = new Array(100).fill(dateFns.subYears(this._visibleDate, 50)).map((d, i) => dateFns.format(dateFns.addYears(d, i), 'YYYY', {
+		const yearLabels = new Array(this.options.displayYearsCount * 2).fill(dateFns.subYears(this._visibleDate, this.options.displayYearsCount)).map((d, i) => dateFns.format(dateFns.addYears(d, i), 'YYYY', {
 			locale: this.locale
 		}));
 		this._ui.body.years.innerHTML = '';
