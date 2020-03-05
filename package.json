@@ -59,7 +59,7 @@
     "gulp-nop": "0.0.3",
     "gulp-postcss": "^7.0.1",
     "gulp-run": "^1.7.1",
-    "gulp-sass": "^4.0.1",
+    "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.0",
     "jekyll": "^3.0.0-beta1",
     "jest": "^23.1.0",
