@@ -18680,7 +18680,8 @@ var datePicker = function (_EventEmitter) {
 			});
 			this._ui.body.months.innerHTML = '';
 			this._ui.body.months.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_months__["a" /* default */])({
-				months: monthLabels
+				months: monthLabels,
+				locale: this.locale
 			})));
 			var months = this._ui.body.months.querySelectorAll('.datepicker-month') || [];
 			months.forEach(function (month) {
