@@ -278,6 +278,19 @@ export default class datePicker extends EventEmitter {
 		}
 	}
 
+	highlightDate(date = undefined) {
+		const index = this.highlightedDates.findIndex(highlightDate => dateFns.isEqual(highlightDate, date));
+		if (index > -1) {
+			unset(this.highlightedDates[index]);
+		}
+	}
+	unhighlightDate(date = undefined) {
+		const index = this.highlightedDates.findIndex(highlightDate => dateFns.isEqual(highlightDate, date));
+		if (index > -1) {
+			this.highlightedDates.push(date);
+		}
+	}
+
 	enableWeekDay(day) {
 		const index = this.disabledWeekDays.findIndex(disabledWeekDay => dateFns.isEqual(disabledWeekDay, day));
 		if (index > -1) {
@@ -491,6 +504,12 @@ export default class datePicker extends EventEmitter {
 				locale: this.locale
 			});
 		}
+		this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
+		for (var i = 0; i < this.highlightedDates.length; i++) {
+			this.highlightedDates[i] = dateFns.format(this.highlightedDates[i], this.format, {
+				locale: this.locale
+			});
+		}
 		this.disabledWeekDays = type.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : (Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : []);
 		this.min = this.options.minDate;
 		this.max = this.options.maxDate;
@@ -620,6 +639,7 @@ export default class datePicker extends EventEmitter {
 				const isInRange = this.options.isRange && dateFns.isWithinRange(theDate, dateFns.startOfDay(this.start), dateFns.endOfDay(this.end));
 				let isDisabled = this.max ? dateFns.isAfter(dateFns.startOfDay(theDate), dateFns.endOfDay(this.max)) : false;
 				isDisabled = !isDisabled && this.min ? dateFns.isBefore(dateFns.startOfDay(theDate), dateFns.startOfDay(this.min)) : isDisabled;
+				let isHighlighted = false;
 
 				if (this.disabledDates) {
 					for (let j = 0; j < this.disabledDates.length; j++) {
@@ -629,6 +649,18 @@ export default class datePicker extends EventEmitter {
 						}
 						if (dateFns.getTime(theDate) == dateFns.getTime(day)) {
 							isDisabled = true;
+						}
+					}
+				}
+
+				if (this.highlightedDates) {
+					for (let j = 0; j < this.highlightedDates.length; j++) {
+						let day = this.highlightedDates[j];
+						if (type.isFunction(day)) {
+							day = day(this);
+						}
+						if (dateFns.getTime(theDate) == dateFns.getTime(day)) {
+							isHighlighted = true;
 						}
 					}
 				}
@@ -651,6 +683,7 @@ export default class datePicker extends EventEmitter {
 					isStartDate: dateFns.isEqual(dateFns.startOfDay(this.start), theDate),
 					isEndDate: dateFns.isEqual(dateFns.startOfDay(this.end), theDate),
 					isDisabled: isDisabled,
+					isHighlighted: isHighlighted,
 					isThisMonth,
 					isInRange
 				};

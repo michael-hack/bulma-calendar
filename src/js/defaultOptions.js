@@ -27,6 +27,7 @@ const defaultOptions = {
   maxDate: null,
   disabledDates: [],
   disabledWeekDays: undefined,
+  highlightedDates: [],
   weekStart: 0,
   startTime: undefined,
   endTime: undefined,
