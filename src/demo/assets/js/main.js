@@ -46,6 +46,14 @@ if (element) {
     disabledWeekDays: '0,6'
   });
 
+  bulmaCalendar.attach('#datepickerDemoHighlithedDates', {
+    displayMode: 'dialog',
+    highlightedDates: [
+      new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+      new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    ]
+  });
+
   bulmaCalendar.attach('#datepickerDemoWeekStart', {
     displayMode: 'dialog',
     weekStart: 1
