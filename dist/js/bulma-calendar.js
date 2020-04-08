@@ -18558,6 +18558,30 @@ var datePicker = function (_EventEmitter) {
 			}
 		}
 	}, {
+		key: 'highlightDate',
+		value: function highlightDate() {
+			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			var index = this.highlightedDates.findIndex(function (highlightDate) {
+				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
+			});
+			if (index > -1) {
+				unset(this.highlightedDates[index]);
+			}
+		}
+	}, {
+		key: 'unhighlightDate',
+		value: function unhighlightDate() {
+			var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+			var index = this.highlightedDates.findIndex(function (highlightDate) {
+				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
+			});
+			if (index > -1) {
+				this.highlightedDates.push(date);
+			}
+		}
+	}, {
 		key: 'enableWeekDay',
 		value: function enableWeekDay(day) {
 			var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
@@ -18800,6 +18824,12 @@ var datePicker = function (_EventEmitter) {
 					locale: this.locale
 				});
 			}
+			this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
+			for (var i = 0; i < this.highlightedDates.length; i++) {
+				this.highlightedDates[i] = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.highlightedDates[i], this.format, {
+					locale: this.locale
+				});
+			}
 			this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
 			this.min = this.options.minDate;
 			this.max = this.options.maxDate;
@@ -18939,6 +18969,7 @@ var datePicker = function (_EventEmitter) {
 				var isInRange = _this5.options.isRange && __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](theDate, __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.end));
 				var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.max)) : false;
 				isDisabled = !isDisabled && _this5.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.min)) : isDisabled;
+				var isHighlighted = false;
 
 				if (_this5.disabledDates) {
 					for (var j = 0; j < _this5.disabledDates.length; j++) {
@@ -18948,6 +18979,18 @@ var datePicker = function (_EventEmitter) {
 						}
 						if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](day)) {
 							isDisabled = true;
+						}
+					}
+				}
+
+				if (_this5.highlightedDates) {
+					for (var _j = 0; _j < _this5.highlightedDates.length; _j++) {
+						var _day = _this5.highlightedDates[_j];
+						if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_day)) {
+							_day = _day(_this5);
+						}
+						if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](_day)) {
+							isHighlighted = true;
 						}
 					}
 				}
@@ -18970,6 +19013,7 @@ var datePicker = function (_EventEmitter) {
 					isStartDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), theDate),
 					isEndDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.end), theDate),
 					isDisabled: isDisabled,
+					isHighlighted: isHighlighted,
 					isThisMonth: isThisMonth,
 					isInRange: isInRange
 				};
@@ -19248,7 +19292,7 @@ var datePicker = function (_EventEmitter) {
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
   return '<div class="datepicker-days">' + data.map(function (theDate) {
-    return '<div data-date="' + theDate.date.toString() + '" class="datepicker-date' + (theDate.isThisMonth ? ' is-current-month' : '') + (theDate.isDisabled ? ' is-disabled' : '') + (theDate.isRange && theDate.isInRange ? ' datepicker-range' : '') + (theDate.isStartDate ? ' datepicker-range-start' : '') + (theDate.isEndDate ? ' datepicker-range-end' : '') + '">\n      <button class="date-item' + (theDate.isToday ? ' is-today' : '') + (theDate.isStartDate ? ' is-active' : '') + '" type="button">' + theDate.date.getDate() + '</button>\n  </div>';
+    return '<div data-date="' + theDate.date.toString() + '" class="datepicker-date' + (theDate.isThisMonth ? ' is-current-month' : '') + (theDate.isDisabled ? ' is-disabled' : '') + (theDate.isRange && theDate.isInRange ? ' datepicker-range' : '') + (theDate.isStartDate ? ' datepicker-range-start' : '') + (theDate.isEndDate ? ' datepicker-range-end' : '') + '">\n      <button class="date-item' + (theDate.isToday ? ' is-today' : '') + (theDate.isHighlighted ? ' is-highlighted' : '') + (theDate.isStartDate ? ' is-active' : '') + '" type="button">' + theDate.date.getDate() + '</button>\n  </div>';
   }).join('') + '</div>';
 });
 
@@ -19313,6 +19357,7 @@ var defaultOptions = {
   maxDate: null,
   disabledDates: [],
   disabledWeekDays: undefined,
+  highlightedDates: [],
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
   enableMonthSwitch: true,
@@ -20132,6 +20177,7 @@ var defaultOptions = {
   maxDate: null,
   disabledDates: [],
   disabledWeekDays: undefined,
+  highlightedDates: [],
   weekStart: 0,
   startTime: undefined,
   endTime: undefined,

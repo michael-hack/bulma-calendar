@@ -17,13 +17,13 @@ ready(function () {
 
   var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
   // To access to bulmaCalendar instance of an element
-const element = document.querySelector('#datepickerDemoDefault');
-if (element) {
-	// bulmaCalendar instance is available as element.bulmaCalendar
-	element.bulmaCalendar.on('select', function(datepicker) {
-		console.log(datepicker.data.value());
-	});
-}
+  const element = document.querySelector('#datepickerDemoDefault');
+  if (element) {
+    // bulmaCalendar instance is available as element.bulmaCalendar
+    element.bulmaCalendar.on('select', function (datepicker) {
+      console.log(datepicker.data.value());
+    });
+  }
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
@@ -44,6 +44,14 @@ if (element) {
   bulmaCalendar.attach('#datepickerDemoDisabledWeekDays', {
     displayMode: 'dialog',
     disabledWeekDays: '0,6'
+  });
+
+  bulmaCalendar.attach('#datepickerDemoHighlithedDates', {
+    displayMode: 'dialog',
+    highlightedDates: [
+      new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+      new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    ]
   });
 
   bulmaCalendar.attach('#datepickerDemoWeekStart', {
