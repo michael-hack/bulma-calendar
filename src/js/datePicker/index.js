@@ -10,6 +10,7 @@ import templateMonths from './templates/months';
 import templateYears from './templates/years';
 import defaultOptions from './defaultOptions';
 
+
 export default class datePicker extends EventEmitter {
 	constructor(options = {}) {
 		super();
@@ -627,7 +628,7 @@ export default class datePicker extends EventEmitter {
 						if (type.isFunction(day)) {
 							day = day(this);
 						}
-						if (dateFns.getTime(theDate) == dateFns.getTime(day)) {
+						if (dateFns.getTime(theDate) == dateFns.getTime(dateFns.format(day, this.options.dateFormat))) {
 							isDisabled = true;
 						}
 					}
