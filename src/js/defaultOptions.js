@@ -7,6 +7,7 @@ const defaultOptions = {
   dateFormat: 'MM/DD/YYYY',
   timeFormat: 'HH:mm',
   displayMode: 'default',
+  editTimeManually: false,
   position: 'auto',
   showHeader: true,
   headerPosition: 'top',

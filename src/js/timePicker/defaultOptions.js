@@ -1,5 +1,6 @@
 const defaultOptions = {
   timeFormat: 'HH:mm',
+  editTimeManually: false,
   color: 'primary',
   isRange: false,
   lang: 'en', // internationalization

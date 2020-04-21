@@ -16,7 +16,12 @@ export default (data) => {
 							${data.icons ? data.icons.time : ''}
 						</figure>
 					</div>
-					<div class="datetimepicker-selection-hour"></div>
+					<div class="datetimepicker-selection-hour${data.editTimeManually ? ' editable ' : ''}">
+						${data.editTimeManually ? `
+							<input type="text" class="datetimepicker-selection-input-hours" maxlength="2">:
+							<input type="text" class="datetimepicker-selection-input-minutes" maxlength="2">
+						` : ''}
+					</div>
 				</div>` : ''}
 			</div>
 		</div>
@@ -37,7 +42,12 @@ export default (data) => {
 							${data.icons ? data.icons.time : ''}
 						</figure>
 					</div>
-					<div class="datetimepicker-selection-hour"></div>
+					<div class="datetimepicker-selection-hour${data.editTimeManually ? ' editable ' : ''}">
+						${data.editTimeManually ? `
+							<input type="text" class="datetimepicker-selection-input-hours" maxlength="2">:
+							<input type="text" class="datetimepicker-selection-input-minutes" maxlength="2">
+						` : ''}
+					</div>
 				</div>` : ''}
 			</div>
 		</div>` : ''}

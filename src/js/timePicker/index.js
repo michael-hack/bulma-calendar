@@ -61,6 +61,7 @@ export default class timePicker extends EventEmitter {
 		this.node = document.createRange().createContextualFragment(template({
 			locale: this.locale,
 			isRange: this.options.isRange,
+			editTimeManually: this.options.editTimeManually,
 			icons: this.options.icons
 		}));
 
@@ -333,7 +334,7 @@ export default class timePicker extends EventEmitter {
 				this._ui.start.minutes.number.innerText = dateFns.format(this.start, 'mm');
 				this._ui.start.minutes.input.value = dateFns.format(this.start, 'mm');
 				this._ui.start.minutes.number.classList.add('is-decrement-visible');
-				
+
 				if (dateFns.format(this.start, 'HH') !== this._ui.start.hours.input.value) {
 					this._ui.start.hours.number.innerText = dateFns.format(this.start, 'HH');
 					this._ui.start.hours.input.value = dateFns.format(this.start, 'HH');
@@ -344,7 +345,7 @@ export default class timePicker extends EventEmitter {
 			setTimeout(() => {
 				this._ui.start.minutes.number.classList.remove('is-decrement-hide');
 				this._ui.start.minutes.number.classList.remove('is-decrement-visible');
-				
+
 				this._ui.start.hours.number.classList.remove('is-decrement-hide');
 				this._ui.start.hours.number.classList.remove('is-decrement-visible');
 			}, 1100);
