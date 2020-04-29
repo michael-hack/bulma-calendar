@@ -10,6 +10,7 @@ import templateMonths from './templates/months';
 import templateYears from './templates/years';
 import defaultOptions from './defaultOptions';
 
+
 export default class datePicker extends EventEmitter {
 	constructor(options = {}) {
 		super();
@@ -487,9 +488,15 @@ export default class datePicker extends EventEmitter {
 		this.format = this.options.dateFormat || 'MM/DD/YYYY';
 		this.disabledDates = Array.isArray(this.options.disabledDates) ? this.options.disabledDates : [];
 		for (var i = 0; i < this.disabledDates.length; i++) {
-			this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
-				locale: this.locale
-			});
+			// this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
+			// 	locale: this.locale
+			// });
+
+			this.disabledDates[i] = new Date(
+				this.disabledDates[i].getFullYear(),
+				this.disabledDates[i].getMonth(),
+				this.disabledDates[i].getDate()
+			)
 		}
 		this.disabledWeekDays = type.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : (Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : []);
 		this.min = this.options.minDate;
