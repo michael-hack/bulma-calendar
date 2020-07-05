@@ -198,7 +198,7 @@ export default class timePicker extends EventEmitter {
 	// Set TimePicker language
 	set lang(lang = 'en') {
 		this._lang = lang;
-		this._locale = require('date-fns/locale/' + lang);
+		this._locale = require(`date-fns/locale/${lang}/index.js`);
 		return this;
 	}
 	// Get current TimePicker language

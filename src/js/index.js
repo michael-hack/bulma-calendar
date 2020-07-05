@@ -107,10 +107,10 @@ export default class bulmaCalendar extends EventEmitter {
   // Set language
   set lang(lang = 'en') {
     try {
-      this._locale = require('date-fns/locale/' + lang);
+      this._locale = require(`date-fns/locale/${lang}/index.js`);
     } catch (e) {
       lang = 'en';
-      this._locale = require('date-fns/locale/' + lang);
+      this._locale = require(`date-fns/locale/${lang}/index.js`);
     } finally {
       this._lang = lang;
       this.datePicker.lang = lang;
