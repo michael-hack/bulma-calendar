@@ -63,7 +63,7 @@ export default class datePicker extends EventEmitter {
 	// Set datePicker language
 	set lang(lang = 'en') {
 		this._lang = lang;
-		this._locale = require('date-fns/locale/' + lang);
+		this._locale = require(`date-fns/locale/${lang}/index.js`);
 		return this;
 	}
 	// Get current datePicker language
