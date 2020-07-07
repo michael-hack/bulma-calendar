@@ -9,10 +9,12 @@ const defaultOptions = {
   maxDate: null,
   disabledDates: [],
   disabledWeekDays: undefined,
+  highlightedDates: [],
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
   enableMonthSwitch: true,
-  enableYearSwitch: true
+  enableYearSwitch: true,
+  displayYearsCount: 50
 };
 
 export default defaultOptions;

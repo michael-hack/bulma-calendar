@@ -61,6 +61,7 @@ export default class timePicker extends EventEmitter {
 		this.node = document.createRange().createContextualFragment(template({
 			locale: this.locale,
 			isRange: this.options.isRange,
+			editTimeManually: this.options.editTimeManually,
 			icons: this.options.icons
 		}));
 
@@ -283,10 +284,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit(this.options.isRange ? 'select:start' : 'select', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onNextHourStartTimePicker(e) {
@@ -311,12 +318,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this._selec(this.time);
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
 
-		// this.emit(this.options.isRange ? 'select:start' : 'select', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onPreviousMinuteStartTimePicker(e) {
@@ -350,10 +361,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit(this.options.isRange ? 'select:start' : 'select', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onNextMinuteStartTimePicker(e) {
@@ -387,10 +404,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit(this.options.isRange ? 'select:start' : 'select', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onPreviousHourEndTimePicker(e) {
@@ -415,10 +438,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit('select:end', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onNextHourEndTimePicker(e) {
@@ -443,10 +472,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit('select:end', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onPreviousMinuteEndTimePicker(e) {
@@ -477,10 +512,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit('select:end', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	onNextMinuteEndTimePicker(e) {
@@ -511,10 +552,16 @@ export default class timePicker extends EventEmitter {
 			}, 1100);
 		}, 100);
 
-		// this.emit('select:end', {
-		// 	time: this.time,
-		// 	instance: this
-		// });
+		if(this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
+			this._select(this.time);
+		}
+
+		if(this.options.type === 'datetime'){
+			this.emit(this.options.isRange ? 'select:start' : 'select', {
+				time: this.time,
+				instance: this
+			});
+		}
 	}
 
 	/****************************************************

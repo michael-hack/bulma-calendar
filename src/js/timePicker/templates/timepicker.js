@@ -1,5 +1,5 @@
 export default (data) => {
-  return `<div class="timepicker">
+  return `<div class="timepicker${data.editTimeManually ? ' is-hidden' : ''}">
     <div class="timepicker-start">
       <div class="timepicker-hours">
         <span class="timepicker-next">+</span>

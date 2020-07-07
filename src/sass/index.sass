@@ -7,6 +7,7 @@ $calendar-date-color: $text !default
 $calendar-date-hover-background-color: $white !default
 $calendar-date-hover-border: .1rem solid $primary !default
 $calendar-date-hover-border: $primary !default
+$calendar-date-highlighted-border: .1rem solid $primary !default
 $calendar-today-background: transparent !default
 $calendar-today-border: .1rem dotted $primary !default
 $calendar-today-color: $primary !default
@@ -82,6 +83,22 @@ $calendar-date-padding: .1rem 0 !default
 				justify-content: center
 				align-items: center
 				text-align: center
+			&.editable
+				border: 1px solid #dcdcdc
+				.datetimepicker-selection-input-hours
+					width: 31px
+					font-size: 1.5rem
+					font-weight: 100
+					color: #4a4a4a
+					border: 0;
+					text-align: right
+				.datetimepicker-selection-input-minutes
+					width: 31px
+					font-size: 1.5rem
+					font-weight: 100
+					color: #4a4a4a
+					border: 0;
+					margin-left: -5px
 		.datetimepicker-selection-start,
 		.datetimepicker-selection-end
 			align-items: center
@@ -219,6 +236,8 @@ $calendar-date-padding: .1rem 0 !default
 								&.is-today
 									border-color: findColorInvert($primary) !important
 									color: findColorInvert($primary) !important
+							&.is-highlighted
+								border: $calendar-date-highlighted-border
 							&:hover
 								background: $calendar-date-hover-background-color
 								border: $calendar-date-hover-border
@@ -258,6 +277,11 @@ $calendar-date-padding: .1rem 0 !default
 								&.is-today
 									border-color: findColorInvert($primary) !important
 									color: findColorInvert($primary) !important
+
+						&.datepicker-range-start.datepicker-range-end
+							.date-item
+								&.is-today
+									color: $primary !important
 		.datepicker-months,
 		.datepicker-years
 			display: none

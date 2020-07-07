@@ -4,7 +4,7 @@
   "main": "dist/js/bulma-calendar.js",
   "style": "dist/css/bulma-calendar.min.css",
   "sass": "src/sass/index.sass",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "scripts": {
     "commit": "git-cz",
     "travis-deploy-once": "travis-deploy-once",
@@ -61,7 +61,7 @@
     "gulp-nop": "0.0.3",
     "gulp-postcss": "^7.0.1",
     "gulp-run": "^1.7.1",
-    "gulp-sass": "^4.0.1",
+    "gulp-sass": "^4.1.0",
     "gulp-uglify": "^3.0.0",
     "jekyll": "^3.0.0-beta1",
     "jest": "^23.1.0",
