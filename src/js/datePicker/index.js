@@ -394,7 +394,7 @@ export default class datePicker extends EventEmitter {
 		this._ui.body.dates.innerHTML = '';
 
 		// the 12 months of the year (Jan-SDecat)
-		const monthLabels = new Array(12).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addMonths(d, i), 'MM', {
+		const monthLabels = new Array(12).fill(dateFns.startOfWeek(this._visibleDate, {weekStartsOn: this.options.weekStart})).map((d, i) => dateFns.format(dateFns.addMonths(d, i), 'MM', {
 			locale: this.locale
 		}));
 		this._ui.body.months.innerHTML = '';
@@ -437,7 +437,7 @@ export default class datePicker extends EventEmitter {
 		});
 
 		// the 7 days of the week (Sun-Sat)
-		const weekdayLabels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addDays(d, i + this.options.weekStart), 'ddd', {
+		const weekdayLabels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate, {weekStartsOn: this.options.weekStart})).map((d, i) => dateFns.format(dateFns.addDays(d, i), 'ddd', {
 			locale: this.locale
 		}));
 		this._ui.body.dates.appendChild(document.createRange().createContextualFragment(templateWeekdays({
@@ -644,7 +644,7 @@ export default class datePicker extends EventEmitter {
 
 	_renderDays() {
 		// first day of current month view
-		const start = dateFns.startOfWeek(dateFns.startOfMonth(this._visibleDate));
+		const start = dateFns.startOfWeek(dateFns.startOfMonth(this._visibleDate), {weekStartsOn: this.options.weekStart});
 		// last day of current month view
 		const end = dateFns.endOfWeek(dateFns.endOfMonth(this._visibleDate));
 
@@ -652,7 +652,7 @@ export default class datePicker extends EventEmitter {
 		const days = new Array(dateFns.differenceInDays(end, start) + 1)
 			.fill(start)
 			.map((s, i) => {
-				const theDate = dateFns.startOfDay(dateFns.addDays(s, i + this.options.weekStart));
+				const theDate = dateFns.startOfDay(dateFns.addDays(s, i));
 				const isThisMonth = dateFns.isSameMonth(this._visibleDate, theDate);
 				const isInRange = this.options.isRange && dateFns.isWithinRange(theDate, dateFns.startOfDay(this.start), dateFns.endOfDay(this.end));
 				let isDisabled = this.max ? dateFns.isAfter(dateFns.startOfDay(theDate), dateFns.endOfDay(this.max)) : false;
