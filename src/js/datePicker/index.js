@@ -394,7 +394,7 @@ export default class datePicker extends EventEmitter {
 		this._ui.body.dates.innerHTML = '';
 
 		// the 12 months of the year (Jan-SDecat)
-		const monthLabels = new Array(12).fill(dateFns.startOfWeek(this._visibleDate, {weekStartsOn: this.options.weekStart})).map((d, i) => dateFns.format(dateFns.addMonths(d, i), 'MM', {
+		const monthLabels = new Array(12).fill(dateFns.startOfYear(this._visibleDate)).map((d, i) => dateFns.format(dateFns.addMonths(d, i), 'MM', {
 			locale: this.locale
 		}));
 		this._ui.body.months.innerHTML = '';

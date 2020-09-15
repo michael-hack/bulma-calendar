@@ -17601,7 +17601,7 @@ var datePicker = function (_EventEmitter) {
 			this._ui.body.dates.innerHTML = '';
 
 			// the 12 months of the year (Jan-SDecat)
-			var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
+			var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfYear"](this._visibleDate)).map(function (d, i) {
 				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](d, i), 'MM', {
 					locale: _this2.locale
 				});
