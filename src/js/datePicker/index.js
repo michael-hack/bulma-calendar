@@ -646,7 +646,7 @@ export default class datePicker extends EventEmitter {
 		// first day of current month view
 		const start = dateFns.startOfWeek(dateFns.startOfMonth(this._visibleDate), {weekStartsOn: this.options.weekStart});
 		// last day of current month view
-		const end = dateFns.endOfWeek(dateFns.endOfMonth(this._visibleDate));
+		const end = dateFns.endOfWeek(dateFns.endOfMonth(this._visibleDate), {weekStartsOn: this.options.weekStart});
 
 		// get all days and whether they are within the current month and range
 		const days = new Array(dateFns.differenceInDays(end, start) + 1)
