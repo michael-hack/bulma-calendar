@@ -17601,7 +17601,7 @@ var datePicker = function (_EventEmitter) {
 			this._ui.body.dates.innerHTML = '';
 
 			// the 12 months of the year (Jan-SDecat)
-			var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate)).map(function (d, i) {
+			var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfYear"](this._visibleDate)).map(function (d, i) {
 				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](d, i), 'MM', {
 					locale: _this2.locale
 				});
@@ -17648,8 +17648,8 @@ var datePicker = function (_EventEmitter) {
 			});
 
 			// the 7 days of the week (Sun-Sat)
-			var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate)).map(function (d, i) {
-				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i + _this2.options.weekStart), 'ddd', {
+			var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
+				return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i), 'ddd', {
 					locale: _this2.locale
 				});
 			});
@@ -17868,13 +17868,13 @@ var datePicker = function (_EventEmitter) {
 			var _this5 = this;
 
 			// first day of current month view
-			var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfMonth"](this._visibleDate));
+			var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
 			// last day of current month view
-			var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfMonth"](this._visibleDate));
+			var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
 
 			// get all days and whether they are within the current month and range
 			var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInDays"](end, start) + 1).fill(start).map(function (s, i) {
-				var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i + _this5.options.weekStart));
+				var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i));
 				var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["isSameMonth"](_this5._visibleDate, theDate);
 				var isInRange = _this5.options.isRange && __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](theDate, __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.end));
 				var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.max)) : false;
