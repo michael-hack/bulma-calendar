@@ -1,8 +1,9 @@
 // Type definitions for bulma-calendar 6.0
 // Project: https://creativebulma.net/product/calendar/demo
 // Definitions by: Remco Haszing <https://github.com/remcohaszing>
+//                 Aaron Ross <https://github.com/superhawk610>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// Minimum TypeScript Version: 3.6
+// Minimum TypeScript Version: 3.9
 
 declare namespace bulmaCalendar {
     interface Options {
@@ -169,6 +170,11 @@ declare namespace bulmaCalendar {
         endDate?: Date;
 
         /**
+         * List of highlighted dates
+         */
+        highlightedDates?: string | any[];
+
+        /**
          * Minimum date allowed
          */
         minDate?: Date;
@@ -314,6 +320,22 @@ declare class bulmaCalendar {
     hide(): void;
 
     /**
+     * Show the date picker if it's hidden, otherwise hide it.
+     */
+    toggle(): void;
+
+    /**
+     * Take a snapshot of the date picker's current state.
+     */
+    snapshot(): void;
+
+    /**
+     * Update the displayed widget to match any changes that have
+     * been made to the date picker.
+     */
+    render(): void;
+
+    /**
      * Check if date picker is open or not
      *
      * @returns True if date picker is open else False
@@ -326,6 +348,36 @@ declare class bulmaCalendar {
      * @returns True if the instance is a range date picker
      */
     isRange(): boolean;
+
+    /**
+     * Enable a date. Make sure the time is set to `00:00:00`.
+     */
+    enableDate(d: Date): void;
+
+    /**
+     * Disable a date. Make sure the time is set to `00:00:00`.
+     */
+    disableDate(d: Date): void;
+
+    /**
+     * Highlight a date. Make sure the time is set to `00:00:00`.
+     */
+    highlightDate(d: Date): void;
+
+    /**
+     * Unhighlight a date. Make sure the time is set to `00:00:00`.
+     */
+    unhighlightDate(d: Date): void;
+
+    /**
+     * Enable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
+     */
+    enableWeekDay(weekDay: string): void;
+
+    /**
+     * Disable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
+     */
+    disableWeekDay(weekDay: string): void;
 
     /**
      * Get the date picker value as formatted string if no parameter else set the passed value
