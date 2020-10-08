@@ -43,7 +43,7 @@ var calendars = bulmaCalendar.attach('[type="date"]', options);
 
 // Loop on each calendar initialized
 for(var i = 0; i < calendars.length; i++) {
-	// Add listener to date:selected event
+	// Add listener to select event
 	calendars[i].on('select', date => {
 		console.log(date);
 	});
@@ -65,8 +65,8 @@ const calendars = bulmaCalendar.attach('[type="date"]', options);
 
 // Loop on each calendar initialized
 calendars.forEach(calendar => {
-	// Add listener to date:selected event
-	calendar.on('date:selected', date => {
+	// Add listener to select event
+	calendar.on('select', date => {
 		console.log(date);
 	});
 });
@@ -94,7 +94,7 @@ new Vue({
     const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
       startDate: this.date,
     })[0]
-    calendar.on('date:selected', e => (this.date = e.start || null))
+    calendar.on('select', e => (this.date = e.start || null))
   },
   computed: {
     niceDate() {
