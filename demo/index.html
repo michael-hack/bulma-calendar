@@ -369,7 +369,7 @@
 
 <span class="c1">// Loop on each calendar initialized</span>
 <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">calendars</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-	<span class="c1">// Add listener to date:selected event</span>
+	<span class="c1">// Add listener to select event</span>
 	<span class="nx">calendars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=&gt;</span> <span class="p">{</span>
 		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">date</span><span class="p">);</span>
 	<span class="p">});</span>
@@ -390,8 +390,8 @@
 
 <span class="c1">// Loop on each calendar initialized</span>
 <span class="nx">calendars</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">calendar</span> <span class="o">=&gt;</span> <span class="p">{</span>
-	<span class="c1">// Add listener to date:selected event</span>
-	<span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'date:selected'</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="c1">// Add listener to select event</span>
+	<span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=&gt;</span> <span class="p">{</span>
 		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">date</span><span class="p">);</span>
 	<span class="p">});</span>
 <span class="p">});</span>
@@ -418,7 +418,7 @@
     <span class="kd">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">calendarTrigger</span><span class="p">,</span> <span class="p">{</span>
       <span class="na">startDate</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">date</span><span class="p">,</span>
     <span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'date:selected'</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">start</span> <span class="o">||</span> <span class="kc">null</span><span class="p">))</span>
+    <span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">start</span> <span class="o">||</span> <span class="kc">null</span><span class="p">))</span>
   <span class="p">},</span>
   <span class="na">computed</span><span class="p">:</span> <span class="p">{</span>
     <span class="nx">niceDate</span><span class="p">()</span> <span class="p">{</span>
