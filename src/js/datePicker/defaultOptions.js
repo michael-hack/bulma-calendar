@@ -12,9 +12,11 @@ const defaultOptions = {
   highlightedDates: [],
   weekStart: 0,
   dateFormat: 'MM/DD/YYYY',
+  navigationMonthFormat: 'MMMM',
+  navigationYearFormat: 'YYYY',
   enableMonthSwitch: true,
   enableYearSwitch: true,
-  displayYearsCount: 50
+  displayYearsCount: 50,
 };
 
 export default defaultOptions;

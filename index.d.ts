@@ -6,523 +6,544 @@
 // Minimum TypeScript Version: 3.9
 
 declare namespace bulmaCalendar {
-    interface Options {
-        /**
-         * Component type
-         *
-         * @default 'datetime'
-         */
-        type?: 'date' | 'time' | 'datetime';
+  interface Options {
+    /**
+     * Component type
+     *
+     * @default 'datetime'
+     */
+    type?: 'date' | 'time' | 'datetime';
 
-        /**
-         * Picker dominant color
-         *
-         * @default 'primary'
-         */
-        color?: string;
+    /**
+     * Picker dominant color
+     *
+     * @default 'primary'
+     */
+    color?: string;
 
-        /**
-         * Range capability (start and end date/time selection
-         *
-         * @default false
-         */
-        isRange?: boolean;
+    /**
+     * Range capability (start and end date/time selection
+     *
+     * @default false
+     */
+    isRange?: boolean;
 
-        /**
-         * Possibility to select same date as start and end date in range mode
-         *
-         * @default true
-         */
-        allowSameDayRange?: boolean;
+    /**
+     * Possibility to select same date as start and end date in range mode
+     *
+     * @default true
+     */
+    allowSameDayRange?: boolean;
 
-        /**
-         * Display lang (from language supported by date-fns)
-         *
-         * @default navigator.language.substring(0, 2) || "en"
-         */
-        lang?: string;
+    /**
+     * Display lang (from language supported by date-fns)
+     *
+     * @default navigator.language.substring(0, 2) || "en"
+     */
+    lang?: string;
 
-        /**
-         * Date format pattern
-         *
-         * @default 'MM/DD/YYYY'
-         */
-        dateFormat?: string;
+    /**
+     * Date format pattern
+     *
+     * @default 'MM/DD/YYYY'
+     */
+    dateFormat?: string;
 
-        /**
-         * Time format pattern
-         *
-         * @default 'HH:mm'
-         */
-        timeFormat?: string;
+    /**
+     * Time format pattern
+     *
+     * @default 'HH:mm'
+     */
+    timeFormat?: string;
 
-        /**
-         * Display mode
-         *
-         * @default 'default'
-         */
-        displayMode?: 'default' | 'dialog' | 'inline';
+    /**
+     * Navigation month format pattern
+     *
+     * @default 'MMMM'
+     */
+    navigationMonthFormat?: string;
 
-        /**
-         * @default 'auto'
-         */
-        position?: string;
+    /**
+     * Navigation year format pattern
+     *
+     * @default 'YYYY'
+     */
+    navigationYearFormat?: string;
 
-        /**
-         * Show/Hide header block (with current selection)
-         *
-         * @default true
-         */
-        showHeader?: boolean;
+    /**
+     * Header month year format pattern
+     *
+     * @default 'MMMM YYYY'
+     */
+    headerMonthYearFromat?: string;
 
-        /**
-         * Header block position
-         *
-         * @default 'top'
-         */
-        headerPosition?: 'top' | 'bottom';
+    /**
+     * Display mode
+     *
+     * @default 'default'
+     */
+    displayMode?: 'default' | 'dialog' | 'inline';
 
-        /**
-         * Show/Hide footer block
-         *
-         * @default true
-         */
-        showFooter?: boolean;
+    /**
+     * @default 'auto'
+     */
+    position?: string;
 
-        /**
-         * Show/Hide buttons
-         *
-         * @default true
-         */
-        showButtons?: boolean;
+    /**
+     * Show/Hide header block (with current selection)
+     *
+     * @default true
+     */
+    showHeader?: boolean;
 
-        /**
-         * Show/Hide Today Button
-         *
-         * @default true
-         */
-        showTodayButton?: boolean;
+    /**
+     * Header block position
+     *
+     * @default 'top'
+     */
+    headerPosition?: 'top' | 'bottom';
 
-        /**
-         * Show/Hide Clear Button
-         *
-         * @default true
-         */
-        showClearButton?: boolean;
+    /**
+     * Show/Hide footer block
+     *
+     * @default true
+     */
+    showFooter?: boolean;
 
-        /**
-         * Cancel button label
-         *
-         * @default 'Cancel'
-         */
-        cancelLabel?: string;
+    /**
+     * Show/Hide buttons
+     *
+     * @default true
+     */
+    showButtons?: boolean;
 
-        /**
-         * Clear button label
-         *
-         * @default 'Clear'
-         */
-        clearLabel?: string;
+    /**
+     * Show/Hide Today Button
+     *
+     * @default true
+     */
+    showTodayButton?: boolean;
 
-        /**
-         * Today button label
-         *
-         * @default 'Today'
-         */
-        todayLabel?: string;
+    /**
+     * Show/Hide Clear Button
+     *
+     * @default true
+     */
+    showClearButton?: boolean;
 
-        /**
-         * Now button label
-         *
-         * @default 'Now'
-         */
-        nowLabel?: string;
+    /**
+     * Cancel button label
+     *
+     * @default 'Cancel'
+     */
+    cancelLabel?: string;
 
-        /**
-         * Validate button label
-         *
-         * @default 'Validate'
-         */
-        validateLabel?: string;
+    /**
+     * Clear button label
+     *
+     * @default 'Clear'
+     */
+    clearLabel?: string;
 
-        /**
-         * Enable/disable month switch
-         *
-         * @default true
-         */
-        enableMonthSwitch?: boolean;
+    /**
+     * Today button label
+     *
+     * @default 'Today'
+     */
+    todayLabel?: string;
 
-        /**
-         * Enable/disable year switch
-         *
-         * @default true
-         */
-        enableYearSwitch?: boolean;
+    /**
+     * Now button label
+     *
+     * @default 'Now'
+     */
+    nowLabel?: string;
 
-        /**
-         * Pre-selected start date
-         */
-        startDate?: Date;
+    /**
+     * Validate button label
+     *
+     * @default 'Validate'
+     */
+    validateLabel?: string;
 
-        /**
-         * Pre-selected end date
-         */
-        endDate?: Date;
+    /**
+     * Enable/disable month switch
+     *
+     * @default true
+     */
+    enableMonthSwitch?: boolean;
 
-        /**
-         * List of highlighted dates
-         */
-        highlightedDates?: string | any[];
+    /**
+     * Enable/disable year switch
+     *
+     * @default true
+     */
+    enableYearSwitch?: boolean;
 
-        /**
-         * Minimum date allowed
-         */
-        minDate?: Date;
+    /**
+     * Pre-selected start date
+     */
+    startDate?: Date;
 
-        /**
-         * Maximum date allowed
-         */
-        maxDate?: Date;
+    /**
+     * Pre-selected end date
+     */
+    endDate?: Date;
 
-        /**
-         * List of disabled dates
-         */
-        disabledDates?: any[];
+    /**
+     * List of highlighted dates
+     */
+    highlightedDates?: string | any[];
 
-        /**
-         * List of disabled week days
-         */
-        disabledWeekDays?: string | any[];
+    /**
+     * Minimum date allowed
+     */
+    minDate?: Date;
 
-        /**
-         * Default weekstart day number
-         *
-         * @default 0 // sunday
-         */
-        weekStart?: number;
+    /**
+     * Maximum date allowed
+     */
+    maxDate?: Date;
 
-        /**
-         * Pre-selected start time
-         */
-        startTime?: Date;
+    /**
+     * List of disabled dates
+     */
+    disabledDates?: any[];
 
-        /**
-         * Pre-selected end time
-         */
-        endTime?: Date;
+    /**
+     * List of disabled week days
+     */
+    disabledWeekDays?: string | any[];
 
-        /**
-         * Steps for minutes selector
-         *
-         * @default 5
-         */
-        minuteSteps?: number;
+    /**
+     * Default weekstart day number
+     *
+     * @default 0 // sunday
+     */
+    weekStart?: number;
 
-        /**
-         * From label
-         */
-        labelFrom?: string;
+    /**
+     * Pre-selected start time
+     */
+    startTime?: Date;
 
-        /**
-         * To label
-         */
-        labelTo?: string;
+    /**
+     * Pre-selected end time
+     */
+    endTime?: Date;
 
-        /**
-         * Close picker on overlay click (only for dialog display style)
-         *
-         * @default true
-         */
-        closeOnOverlayClick?: boolean;
+    /**
+     * Steps for minutes selector
+     *
+     * @default 5
+     */
+    minuteSteps?: number;
 
-        /**
-         * Automatically close the datePicker when date selected (or range date selected) - not available
-         * for inline display style. If set to False then a validate button will be displayed into the
-         * footer section.
-         *
-         * @default true
-         */
-        closeOnSelect?: boolean;
+    /**
+     * From label
+     */
+    labelFrom?: string;
 
-        /**
-         * Automatically open datepicker when click into input element
-         *
-         * @default true
-         */
-        toggleOnInputClick?: boolean;
+    /**
+     * To label
+     */
+    labelTo?: string;
 
-        /**
-         * Callback to trigger once picker initiated
-         */
-        onReady?: () => void;
-        icons?: {
-            /**
-             * Previous button icon
-             */
-            previous?: string;
+    /**
+     * Close picker on overlay click (only for dialog display style)
+     *
+     * @default true
+     */
+    closeOnOverlayClick?: boolean;
 
-            /**
-             * Next button icon
-             */
-            next?: string;
+    /**
+     * Automatically close the datePicker when date selected (or range date selected) - not available
+     * for inline display style. If set to False then a validate button will be displayed into the
+     * footer section.
+     *
+     * @default true
+     */
+    closeOnSelect?: boolean;
 
-            /**
-             * Time icon
-             */
-            time?: string;
+    /**
+     * Automatically open datepicker when click into input element
+     *
+     * @default true
+     */
+    toggleOnInputClick?: boolean;
 
-            /**
-             * Date icon
-             */
-            date?: string;
-        };
-    }
+    /**
+     * Callback to trigger once picker initiated
+     */
+    onReady?: () => void;
+    icons?: {
+      /**
+       * Previous button icon
+       */
+      previous?: string;
 
-    type EventType = 'show' | 'hide' | 'select' | 'select:start';
+      /**
+       * Next button icon
+       */
+      next?: string;
 
-    interface Event<T extends EventType = EventType> {
-        type: T;
-        timeStamp: number;
-        data: bulmaCalendar;
-    }
+      /**
+       * Time icon
+       */
+      time?: string;
+
+      /**
+       * Date icon
+       */
+      date?: string;
+    };
+  }
+
+  type EventType = 'show' | 'hide' | 'select' | 'select:start';
+
+  interface Event<T extends EventType = EventType> {
+    type: T;
+    timeStamp: number;
+    data: bulmaCalendar;
+  }
 }
 
 declare class bulmaCalendar {
-    // Custom EventEmitter implementation
-    listenerCount(eventName: bulmaCalendar.EventType): void;
+  // Custom EventEmitter implementation
+  listenerCount(eventName: bulmaCalendar.EventType): void;
 
-    removeListeners(eventName: bulmaCalendar.EventType, middleware?: boolean): void;
+  removeListeners(eventName: bulmaCalendar.EventType, middleware?: boolean): void;
 
-    middleware<T extends bulmaCalendar.EventType>(eventName: T, fn: (event: bulmaCalendar.Event<T>) => void): void;
+  middleware<T extends bulmaCalendar.EventType>(eventName: T, fn: (event: bulmaCalendar.Event<T>) => void): void;
 
-    removeMiddleware(eventName: bulmaCalendar.EventType): void;
+  removeMiddleware(eventName: bulmaCalendar.EventType): void;
 
-    on<T extends bulmaCalendar.EventType>(name: T, callback: (event: bulmaCalendar.Event<T>) => void, once?: boolean): void;
+  on<T extends bulmaCalendar.EventType>(name: T, callback: (event: bulmaCalendar.Event<T>) => void, once?: boolean): void;
 
-    once<T extends bulmaCalendar.EventType>(name: T, callback: (event: bulmaCalendar.Event<T>) => void): void;
+  once<T extends bulmaCalendar.EventType>(name: T, callback: (event: bulmaCalendar.Event<T>) => void): void;
 
-    emit(name: bulmaCalendar.EventType, data: bulmaCalendar, silent?: boolean): void;
+  emit(name: bulmaCalendar.EventType, data: bulmaCalendar, silent?: boolean): void;
 
-    // Constructors
-    constructor(selector: string | HTMLElement, options?: bulmaCalendar.Options);
+  // Constructors
+  constructor(selector: string | HTMLElement, options?: bulmaCalendar.Options);
 
-    static attach(selector?: string | HTMLElement, options?: bulmaCalendar.Options): bulmaCalendar[];
+  static attach(selector?: string | HTMLElement, options?: bulmaCalendar.Options): bulmaCalendar[];
 
-    // Methods
-    /**
-     * Open date picker (not available with "inline" display style)
-     */
-    show(): void;
+  // Methods
+  /**
+   * Open date picker (not available with "inline" display style)
+   */
+  show(): void;
 
-    /**
-     * Close date picker (not available with "inline" display style)
-     */
-    hide(): void;
+  /**
+   * Close date picker (not available with "inline" display style)
+   */
+  hide(): void;
 
-    /**
-     * Show the date picker if it's hidden, otherwise hide it.
-     */
-    toggle(): void;
+  /**
+   * Show the date picker if it's hidden, otherwise hide it.
+   */
+  toggle(): void;
 
-    /**
-     * Take a snapshot of the date picker's current state.
-     */
-    snapshot(): void;
+  /**
+   * Take a snapshot of the date picker's current state.
+   */
+  snapshot(): void;
 
-    /**
-     * Update the displayed widget to match any changes that have
-     * been made to the date picker.
-     */
-    render(): void;
+  /**
+   * Update the displayed widget to match any changes that have
+   * been made to the date picker.
+   */
+  render(): void;
 
-    /**
-     * Check if date picker is open or not
-     *
-     * @returns True if date picker is open else False
-     */
-    isOpen(): boolean;
+  /**
+   * Check if date picker is open or not
+   *
+   * @returns True if date picker is open else False
+   */
+  isOpen(): boolean;
 
-    /**
-     * Check if current instance is a range date picker
-     *
-     * @returns True if the instance is a range date picker
-     */
-    isRange(): boolean;
+  /**
+   * Check if current instance is a range date picker
+   *
+   * @returns True if the instance is a range date picker
+   */
+  isRange(): boolean;
 
-    /**
-     * Enable a date. Make sure the time is set to `00:00:00`.
-     */
-    enableDate(d: Date): void;
+  /**
+   * Enable a date. Make sure the time is set to `00:00:00`.
+   */
+  enableDate(d: Date): void;
 
-    /**
-     * Disable a date. Make sure the time is set to `00:00:00`.
-     */
-    disableDate(d: Date): void;
+  /**
+   * Disable a date. Make sure the time is set to `00:00:00`.
+   */
+  disableDate(d: Date): void;
 
-    /**
-     * Highlight a date. Make sure the time is set to `00:00:00`.
-     */
-    highlightDate(d: Date): void;
+  /**
+   * Highlight a date. Make sure the time is set to `00:00:00`.
+   */
+  highlightDate(d: Date): void;
 
-    /**
-     * Unhighlight a date. Make sure the time is set to `00:00:00`.
-     */
-    unhighlightDate(d: Date): void;
+  /**
+   * Unhighlight a date. Make sure the time is set to `00:00:00`.
+   */
+  unhighlightDate(d: Date): void;
 
-    /**
-     * Enable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
-     */
-    enableWeekDay(weekDay: string): void;
+  /**
+   * Enable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
+   */
+  enableWeekDay(weekDay: string): void;
 
-    /**
-     * Disable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
-     */
-    disableWeekDay(weekDay: string): void;
+  /**
+   * Disable a weekday (`0 - 6`, where `0` is `Sunday` and `6` is `Saturday`).
+   */
+  disableWeekDay(weekDay: string): void;
 
-    /**
-     * Get the date picker value as formatted string if no parameter else set the passed value
-     *
-     * @param value Formatted date value if no parameter passed else null
-     *
-     * @returns Date picker selected date (if not range calendar then endDate is undefined)
-     */
-    value(
-        value?: string,
-    ): {
-        startDate: Date;
-        endDate?: Date;
-    };
+  /**
+   * Get the date picker value as formatted string if no parameter else set the passed value
+   *
+   * @param value Formatted date value if no parameter passed else null
+   *
+   * @returns Date picker selected date (if not range calendar then endDate is undefined)
+   */
+  value(
+    value?: string
+  ): {
+    startDate: Date;
+    endDate?: Date;
+  };
 
-    /**
-     * Force calendar refresh
-     */
-    refresh(): void;
+  /**
+   * Force calendar refresh
+   */
+  refresh(): void;
 
-    /**
-     * Force to set calendar data into UI inputs
-     */
-    save(): void;
+  /**
+   * Force to set calendar data into UI inputs
+   */
+  save(): void;
 
-    /**
-     * Clear date selection (startDate and endDate are set to undefined)
-     */
-    clear(): void;
+  /**
+   * Clear date selection (startDate and endDate are set to undefined)
+   */
+  clear(): void;
 
-    // Getters
-    /**
-     * Get component instance ID
-     */
-    get id(): any;
+  // Getters
+  /**
+   * Get component instance ID
+   */
+  get id(): any;
 
-    /**
-     * Get active lang
-     */
-    get lang(): string;
+  /**
+   * Get active lang
+   */
+  get lang(): string;
 
-    /**
-     * Set component lang
-     */
-    set lang(lang: string);
+  /**
+   * Set component lang
+   */
+  set lang(lang: string);
 
-    /**
-     * Get selected date
-     */
-    get date(): { start?: Date; end?: Date };
+  /**
+   * Get selected date
+   */
+  get date(): { start?: Date; end?: Date };
 
-    /**
-     * Set date
-     */
-    set date(date: { start?: Date; end?: Date });
+  /**
+   * Set date
+   */
+  set date(date: { start?: Date; end?: Date });
 
-    /**
-     * Get selected start date
-     */
-    get startDate(): Date;
+  /**
+   * Get selected start date
+   */
+  get startDate(): Date;
 
-    /**
-     * Se start date
-     */
-    set startDate(startDate: Date);
+  /**
+   * Se start date
+   */
+  set startDate(startDate: Date);
 
-    /**
-     * Get selected end date
-     */
-    get endDate(): Date;
+  /**
+   * Get selected end date
+   */
+  get endDate(): Date;
 
-    /**
-     * Set end date
-     */
-    set endDate(endDate: Date);
+  /**
+   * Set end date
+   */
+  set endDate(endDate: Date);
 
-    /**
-     * Get min possible date
-     */
-    get minDate(): Date;
+  /**
+   * Get min possible date
+   */
+  get minDate(): Date;
 
-    /**
-     * Set min possible date
-     */
-    set minDate(minDate: Date);
+  /**
+   * Set min possible date
+   */
+  set minDate(minDate: Date);
 
-    /**
-     * Get max possible date
-     */
-    get maxDate(): Date;
+  /**
+   * Get max possible date
+   */
+  get maxDate(): Date;
 
-    /**
-     * Set max possible date
-     */
-    set maxDate(maxDate: Date);
+  /**
+   * Set max possible date
+   */
+  set maxDate(maxDate: Date);
 
-    /**
-     * Get date format pattern
-     */
-    get dateFormat(): string;
+  /**
+   * Get date format pattern
+   */
+  get dateFormat(): string;
 
-    /**
-     * Set date format pattern
-     */
-    set dateFormat(dateFormat: string);
+  /**
+   * Set date format pattern
+   */
+  set dateFormat(dateFormat: string);
 
-    /**
-     * Get selected time
-     */
-    get time(): Date;
+  /**
+   * Get selected time
+   */
+  get time(): Date;
 
-    /**
-     * Set time
-     */
-    set time(time: Date);
+  /**
+   * Set time
+   */
+  set time(time: Date);
 
-    /**
-     * Get selected start time
-     */
-    get startTime(): Date;
+  /**
+   * Get selected start time
+   */
+  get startTime(): Date;
 
-    /**
-     * Set start time
-     */
-    set startTime(startTime: Date);
+  /**
+   * Set start time
+   */
+  set startTime(startTime: Date);
 
-    /**
-     * Get selected end time
-     */
-    get endTime(): Date;
+  /**
+   * Get selected end time
+   */
+  get endTime(): Date;
 
-    /**
-     * Set end time
-     */
-    set endTime(endTime: Date);
+  /**
+   * Set end time
+   */
+  set endTime(endTime: Date);
 
-    /**
-     * Get time format pattern
-     */
-    get timeFormat(): string;
+  /**
+   * Get time format pattern
+   */
+  get timeFormat(): string;
 
-    /**
-     * Set time format pattern
-     */
-    set timeFormat(timeFormat: string);
+  /**
+   * Set time format pattern
+   */
+  set timeFormat(timeFormat: string);
 }
 
 export = bulmaCalendar;
