@@ -1,6 +1,5 @@
 # bulma-calendar
 Bulma's extension to display a calendar. It can be used on page as large calendar with apointments or in modal/popup for datepicker.
-(find all my bulma's extensions [here](https://wikiki.github.io/))
 
 [![npm](https://img.shields.io/npm/v/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
 [![npm](https://img.shields.io/npm/dm/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
@@ -64,4 +63,4 @@ var defaultOptions = {
 
 Documentation & Demo
 ---
-You can find the Documentation and a demo [here](https://wikiki.github.io/components/calendar/)
+You can find the Documentation and a demo [here](https://bulma-calendar.onrender.com/customization)
