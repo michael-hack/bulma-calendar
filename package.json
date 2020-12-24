@@ -34,7 +34,7 @@
   "homepage": "https://creativebulma.net/components/calendar",
   "dependencies": {
     "date-fns": "^1.29.0",
-    "date-and-time": "^0.6.3"
+    "date-and-time": "^0.14.2"
   },
   "peerDependencies": {
     "bulma": "*"
