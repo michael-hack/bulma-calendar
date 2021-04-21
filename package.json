@@ -31,7 +31,7 @@
   "bugs": {
     "url": "https://github.com/Wikiki/bulma-calendar/issues"
   },
-  "homepage": "https://creativebulma.net/components/calendar",
+  "homepage": "https://bulma-calendar.onrender.com",
   "dependencies": {
     "date-and-time": "^0.14.2",
     "date-fns": "^1.29.0"
