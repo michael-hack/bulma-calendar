@@ -1,5 +1,12 @@
 # bulma-calendar
-Bulma's extension to display a calendar
+Bulma's extension to display a calendar. It can be used on page as large calendar with apointments or in modal/popup for datepicker.
 
-# :exclamation::exclamation::exclamation: Looking for new Maintainer :exclamation::exclamation::exclamation:
-As you may have noticed, this package has not been updated for some time. I'm sorry, but unfortunately I'm not able to continue to maintain it, so I'm looking for someone who would like to take it over and maintain it. If you are interested, please contact me at wikiki@protonmail.com to discuss how to proceed.
+[![npm](https://img.shields.io/npm/v/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
+[![npm](https://img.shields.io/npm/dm/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
+[![Build Status](https://travis-ci.org/Wikiki/bulma-calendar.svg?branch=master)](https://travis-ci.org/Wikiki/bulma-calendar)
+
+<img src="https://img4.hostingpics.net/pics/812322ScreenShot20170810at125834.png" width="50%">
+
+Documentation & Demo
+---
+You can find the Documentation and a demo [here](https://bulma-calendar.onrender.com)
