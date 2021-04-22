@@ -1,0 +1,39 @@
+export const uuid = (prefix = '') => prefix + ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (window.crypto || window.msCrypto).getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+export const deepMerge = (...sources) => {
+	let acc = {}
+	for (const source of sources) {
+		if (source instanceof Array) {
+			if (!(acc instanceof Array)) {
+				acc = []
+			}
+			acc = [...acc, ...source]
+		} else if (source instanceof Object) {
+			for (let [key, value] of Object.entries(source)) {
+				if (value instanceof Object && key in acc) {
+					value = deepMerge(acc[key], value)
+				}
+				acc = { ...acc,
+					[key]: value
+				}
+			}
+		}
+	}
+	return acc;
+};
+
+export const detectSupportsPassive = () => {
+	let supportsPassive = false;
+
+	try {
+		let opts = Object.defineProperty({}, 'passive', {
+			get() {
+				supportsPassive = true;
+			}
+		});
+
+		window.addEventListener('testPassive', null, opts);
+		window.removeEventListener('testPassive', null, opts);
+	} catch (e) {}
+
+	return supportsPassive;
+}

@@ -1,0 +1,14 @@
+# Variables
+title:         "Calendar"
+description:   "Responsive - Interactive Date/Time Picker"
+version:       6.0.4
+# url:           https://demo.creativebulma.net/components/calendar/v6/
+
+# Build
+markdown:      kramdown
+permalink:     pretty
+includes:      ['assets/css', 'assets/js']
+exclude:       ['package.json']
+sass:
+  sass_dir:    _sass
+  style:       compressed

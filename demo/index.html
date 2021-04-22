@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en" class="route-index">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Responsive - Interactive Date/Time Picker">
+
+  <title>Documentation</title>
+
+  <link rel="canonical" href="/">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">
+  <link href="/assets/css/highlight.css" rel="stylesheet">
+  <link href="/assets/css/documentation.min.css" rel="stylesheet">
+  <link href="/assets/css/bulma-calendar.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
+  <!-- Load Font Awesome 5 -->
+  <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js"></script>
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+</head>
+
+<body>
+  <div class="mobile-burger burger is-hidden-desktop" data-target="#doc-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="columns is-gapless">
+    <div id="doc-menu" class="column is-2 has-background-grey-lighter menu is-mobile">
+      <section class="section">
+        <h1 class="title is-4 has-text-weight-semibold has-text-centered">Calendar <span class="is-size-5 has-text-primary has-text-weight-light">documentation</span></h1>
+        <div class="has-text-centered">
+          <span>
+            <img src="https://badgen.net/badge/Version/6.1.0/green" alt="v6.1.0">
+          </span>
+        </div>
+      </section>
+
+<ul class="menu-list">
+
+
+  <li class="menu-item has-dropdown">
+    <a class="menu-title">
+      Demonstrations
+      <span class="menu-caret"></span>
+    </a>
+    <ul class="menu-dropdown">
+
+        <li><a class="menu-item" href="/demonstration/date">Date Picker</a></li>
+
+        <li><a class="menu-item" href="/demonstration/time">Time Picker</a></li>
+
+        <li><a class="menu-item" href="/demonstration/datetime">DateTime Picker</a></li>
+
+    </ul>
+  </li>
+
+
+
+  <li class="menu-item has-dropdown">
+    <a class="menu-title">
+      Quick Start
+      <span class="menu-caret"></span>
+    </a>
+    <ul class="menu-dropdown">
+
+        <li><a class="menu-item" href="/#features">Features</a></li>
+
+        <li><a class="menu-item" href="/#installation">Installation</a></li>
+
+        <li><a class="menu-item" href="/#content">Content</a></li>
+
+        <li><a class="menu-item" href="/#html-structure">HTML Structure</a></li>
+
+        <li><a class="menu-item" href="/#integration">Integration</a></li>
+
+        <li><a class="menu-item" href="/#options">Options</a></li>
+
+        <li><a class="menu-item" href="/#methods">Methods</a></li>
+
+        <li><a class="menu-item" href="/#getters">Getters</a></li>
+
+        <li><a class="menu-item" href="/#setters">Setters</a></li>
+
+        <li><a class="menu-item" href="/#events">Events</a></li>
+
+    </ul>
+  </li>
+
+
+
+  <li>
+    <a class="menu-item" href="/customization">Customization</a>
+  </li>
+
+
+
+  <li>
+    <a class="menu-item" href="/changelog">Changelog</a>
+  </li>
+
+
+</ul>
+
+    </div>
+    <div class="column">
+      <div class="hero is-light">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <h1 class="title is-2 is-spaced has-text-weight-semibold">Quick-Start</h1>
+
+            <h2 class="subtitle is-6 has-text-weight-light">bulma.io Calendar component with range selection capability</h1>
+
+          </div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="container is-fluid">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="#features" id="features" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Features</span>
+</a>
+
+<div class="columns is-multiline is-variable is-6">
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-calendar"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Date Picker</h1>
+					<p></p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-clock"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Time Picker</h1>
+					<p></p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-calendar-week"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Date & Time Picker</h1>
+					<p></p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-desktop"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Responsive</h1>
+					<p>Calendar works fine on any device: desktop, tablet or mobile.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fas fa-2x fa-paint-brush"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Customization</h1>
+					<p>Many options to customize behavior. Use of sass variables to easily customize design.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+	<div class="column is-one-third">
+		<article class="media">
+			<figure class="media-left">
+				<span class="icon has-text-info">
+					<i class="fab fa-2x fa-js"></i>
+				</span>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<h1 class="title is-6 heading has-text-grey-dark">Javascript</h1>
+					<p>Pure JavaScript to manage user interaction.</p>
+				</div>
+			</div>
+		</article>
+	</div>
+</div>
+
+<a href="#installation" id="installation" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Installation</span>
+</a>
+
+<article class="message is-warning">
+	<div class="message-body">
+	This component requires bulma.io to work. See <a href="https://bulma.io/documentation/overview/start/" target="_blank">bulma.io documentation</a> first to know how to include it into your project.
+	</div>
+</article>
+<p>There are several ways to get started with Bulma-extensions. You can either:</p>
+
+<section class="section is-paddingless">
+	<div class="tabs">
+		<ul>
+			<li class="is-active"><a href="#install-npm">Npm</a></li>
+			<li><a href="#install-github">Github</a> </li>
+		</ul>
+	</div>
+
+	<div class="tab-contents">
+		<div id="install-npm" class="tab-content is-active">
+			<p>Use npm to install and stay up to date in the future</p>
+			<figure class="highlight"><pre><code class="language-shell" data-lang="shell">npm install bulma-calendar</code></pre></figure>
+		</div>
+
+		<div id="install-github" class="tab-content">
+			<p>Use the GitHub repository to get the latest development version</p>
+			<p class="help">This method requires git installed on your computer.</p>
+			<figure class="highlight"><pre><code class="language-shell" data-lang="shell">git clone git://github.com/Wikiki/bulma-calendar.git</code></pre></figure>
+		</div>
+	</div>
+</section>
+
+<a href="#content" id="content" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Content</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>The component comes with various files:</p>
+	<div class="file-tree">
+
+	</div>
+	<p>Depending on your need your can use either pre-compiled files from <code>dist</code> directory or sources from <code>src</code> directory.</p>
+</section>
+
+<a href="#html-structure" id="html-structure" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">HTML Structure</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>The best way to start with calendar is to use a simple HTML5 date input:</p>
+	<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"date"</span><span class="nt">&gt;</span></code></pre></figure>
+</section>
+
+<a href="#integration" id="integration" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Integration</span>
+</a>
+
+<section class="section is-paddingless">
+	<article class="message is-warning">
+		<div class="message-body">
+			This component requires bulma.io to work. See <a href="https://bulma.io/documentation" target="_blank">bulma.io documentation</a> first to know how to install it.
+		</div>
+	</article>
+	<p>You are only at 3 simple steps to work with bulmaCalendar.</p>
+	<ul class="step-text">
+		<li>
+			<h6 class="title is-6">Include Stylesheet</h6>
+			<p>The first step is to include the stylesheet into your project. You can use either the minified CSS version or the Sass source to integrate it into a more global project.</p>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#include-css">Css</a></li>
+					<li><a href="#include-sass">Sass</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-contents">
+				<div id="include-css" class="tab-content is-active">
+					<p><figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"~bulma-calendar/dist/css/bulma-calendar.min.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">&gt;</span></code></pre></figure></p>
+				</div>
+				<div id="include-sass" class="tab-content">
+					<p><figure class="highlight"><pre><code class="language-html" data-lang="html">@charset "utf-8"
+
+// Import Bulma core
+@import 'bulma.sass'
+
+// Import component
+@import "bulmaCalendar.sass"</code></pre></figure></p>
+				</div>
+			</div>
+		</li>
+		<li>
+			<h6 class="title is-6">Include JavaScript</h6>
+			<p>Second step is to include the JavaScript part of the component.</p>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#import-es5">ES5</a></li>
+					<li><a href="#import-es6">ES6</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-contents">
+				<div id="import-es5" class="tab-content is-active">
+					<p><figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"~bulma-calendar/dist/js/bulma-calendar.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></figure></p>
+				</div>
+				<div id="import-es6" class="tab-content">
+					<p><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">import</span> <span class="nx">bulmaCalendar</span> <span class="k">from</span> <span class="s1">'~bulma-calendar/dist/js/bulma-calendar.min.js'</span><span class="p">;</span></code></pre></figure></p>
+				</div>
+			</div>
+		</li>
+		<li>
+			<h6 class="title is-6">Initiate component</h6>
+			<p>Now all that remains is to intiate the component to all elements you want to transform into a Calendar / DatePicker</p>
+			<article class="message is-warning">
+				<div class="message-body">
+					The <code>attach()</code> method <strong>always</strong> return an array of datepicker instances (even if it targets only one element).
+				</div>
+			</article>
+			<div class="tabs">
+				<ul>
+					<li class="is-active"><a href="#init-es5">ES5</a></li>
+					<li><a href="#init-es6">ES6</a></li>
+					<li><a href="#init-vuejs">VueJS</a></li>
+				</ul>
+			</div>
+
+			<div class="tab-contents">
+				<div id="init-es5" class="tab-content is-active">
+					<p><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Initialize all input of type date</span>
+<span class="kd">var</span> <span class="nx">calendars</span> <span class="o">=</span> <span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="s1">'[type="date"]'</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+
+<span class="c1">// Loop on each calendar initialized</span>
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">calendars</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// Add listener to select event</span>
+	<span class="nx">calendars</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=&gt;</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">date</span><span class="p">);</span>
+	<span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// To access to bulmaCalendar instance of an element</span>
+<span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#my-element'</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// bulmaCalendar instance is available as element.bulmaCalendar</span>
+	<span class="nx">element</span><span class="p">.</span><span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">datepicker</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">datepicker</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">value</span><span class="p">());</span>
+	<span class="p">});</span>
+<span class="p">}</span></code></pre></figure></p>
+				</div>
+				<div id="init-es6" class="tab-content">
+					<p><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Initialize all input of date type.</span>
+<span class="kd">const</span> <span class="nx">calendars</span> <span class="o">=</span> <span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="s1">'[type="date"]'</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+
+<span class="c1">// Loop on each calendar initialized</span>
+<span class="nx">calendars</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">calendar</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="c1">// Add listener to select event</span>
+	<span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">date</span> <span class="o">=&gt;</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">date</span><span class="p">);</span>
+	<span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// To access to bulmaCalendar instance of an element</span>
+<span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#my-element'</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">// bulmaCalendar instance is available as element.bulmaCalendar</span>
+	<span class="nx">element</span><span class="p">.</span><span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">datepicker</span> <span class="o">=&gt;</span> <span class="p">{</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">datepicker</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">value</span><span class="p">());</span>
+	<span class="p">});</span>
+<span class="p">}</span></code></pre></figure></p>
+				</div>
+				<div id="init-vuejs" class="tab-content">
+					<p><figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Thanks to @megapctr</span>
+<span class="k">new</span> <span class="nx">Vue</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s1">'#app'</span><span class="p">,</span>
+  <span class="nx">data</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">date</span><span class="p">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">mounted</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">calendar</span> <span class="o">=</span> <span class="nx">bulmaCalendar</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">$refs</span><span class="p">.</span><span class="nx">calendarTrigger</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">startDate</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">date</span><span class="p">,</span>
+    <span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nx">calendar</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'select'</span><span class="p">,</span> <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">start</span> <span class="o">||</span> <span class="kc">null</span><span class="p">))</span>
+  <span class="p">},</span>
+  <span class="na">computed</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nx">niceDate</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">date</span><span class="p">.</span><span class="nx">toLocaleDateString</span><span class="p">()</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+
+<span class="c1">// The view is like:</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">id</span><span class="o">=</span><span class="s1">'app'</span><span class="o">&gt;</span>
+	<span class="nx">Selected</span> <span class="na">date</span><span class="p">:</span> <span class="p">{</span> <span class="p">{</span> <span class="nx">niceDate</span> <span class="p">}</span> <span class="p">}</span>
+	<span class="o">&lt;</span><span class="nx">button</span> <span class="nx">ref</span><span class="o">=</span><span class="s1">'calendarTrigger'</span> <span class="nx">type</span><span class="o">=</span><span class="s1">'button'</span><span class="o">&gt;</span><span class="nx">Change</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="sr">/div&gt;</span></code></pre></figure></p>
+				</div>
+			</div>
+		</li>
+	</ul>
+</section>
+
+<a href="#options" id="options" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Options</span>
+</a>
+
+<div class="table-container">
+  <table class="table is-bordered ">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default value</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Default value</th>
+      </tr>
+    </tfoot>
+    <tbody>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">type</code>
+          </td>
+          <td >
+            Component type: date|time|datetime
+          </td>
+          <td>
+            <code>datetime</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">color</code>
+          </td>
+          <td >
+            Picker dominant color
+          </td>
+          <td>
+            <code>primary</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">isRange</code>
+          </td>
+          <td >
+            Range capability (start and end date/time selection
+          </td>
+          <td>
+            <code>false</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">allowSameDayRange</code>
+          </td>
+          <td >
+            Possibility to select same date as start and end date in range mode
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">lang</code>
+          </td>
+          <td >
+            Display lang (from language supported by <a href="https://date-fns.org/v1.29.0/docs/format" targer="_blank">date-fns</a>)
+          </td>
+          <td>
+            <code>navigator.language.substring(0, 2) || "en"</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">dateFormat</code>
+          </td>
+          <td >
+            Date format pattern
+          </td>
+          <td>
+            <code>MM/DD/YYYY</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">timeFormat</code>
+          </td>
+          <td >
+            Time format pattern
+          </td>
+          <td>
+            <code>HH:mm</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">displayMode</code>
+          </td>
+          <td >
+            Display mode: default|dialog|inline
+          </td>
+          <td>
+            <code>default</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">position</code>
+          </td>
+          <td >
+
+          </td>
+          <td>
+            <code>auto</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">showHeader</code>
+          </td>
+          <td >
+            Show/Hide header block (with current selection)
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">headerPosition</code>
+          </td>
+          <td >
+            Header block position: top|bottom
+          </td>
+          <td>
+            <code>top</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">showFooter</code>
+          </td>
+          <td >
+            Show/Hide footer block
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">showButtons</code>
+          </td>
+          <td >
+            Show/Hide buttons
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">showTodayButton</code>
+          </td>
+          <td >
+            Show/Hide Today Button
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">showClearButton</code>
+          </td>
+          <td >
+            Show/Hide Clear Button
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">cancelLabel</code>
+          </td>
+          <td >
+            Cancel button label
+          </td>
+          <td>
+            <code>Cancel</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">clearLabel</code>
+          </td>
+          <td >
+            Clear button label
+          </td>
+          <td>
+            <code>Clear</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">todayLabel</code>
+          </td>
+          <td >
+            Today button label
+          </td>
+          <td>
+            <code>Today</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">nowLabel</code>
+          </td>
+          <td >
+            Now button label
+          </td>
+          <td>
+            <code>Now</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">validateLabel</code>
+          </td>
+          <td >
+            Validate button label
+          </td>
+          <td>
+            <code>Validate</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">enableMonthSwitch</code>
+          </td>
+          <td >
+            Enable/disable month switch
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">enableYearSwitch</code>
+          </td>
+          <td >
+            Enable/disable year switch
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">startDate</code>
+          </td>
+          <td >
+            Pre-selected start date
+          </td>
+          <td>
+            <code>undefined</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">endDate</code>
+          </td>
+          <td >
+            Pre-selected end date
+          </td>
+          <td>
+            <code>undefined</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">minDate</code>
+          </td>
+          <td >
+            Minimum date allowed
+          </td>
+          <td>
+            <code>null</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">maxDate</code>
+          </td>
+          <td >
+            Maximum date allowed
+          </td>
+          <td>
+            <code>null</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">disabledDates</code>
+          </td>
+          <td >
+            List of disabled dates
+          </td>
+          <td>
+            <code></code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">disabledWeekDays</code>
+          </td>
+          <td >
+            List of disabled week days
+          </td>
+          <td>
+            <code>undefined</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">weekStart</code>
+          </td>
+          <td >
+            Default weekstart day number (sunday by default)
+          </td>
+          <td>
+            <code>0</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">startTime</code>
+          </td>
+          <td >
+            Pre-selected start time
+          </td>
+          <td>
+            <code>undefined</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">endTime</code>
+          </td>
+          <td >
+            Pre-selected end time
+          </td>
+          <td>
+            <code>undefined</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">minuteSteps</code>
+          </td>
+          <td >
+            Steps for minutes selector
+          </td>
+          <td>
+            <code>5</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">labelFrom</code>
+          </td>
+          <td >
+            From label
+          </td>
+          <td>
+            <code></code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">labelTo</code>
+          </td>
+          <td >
+            To label
+          </td>
+          <td>
+            <code></code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">closeOnOverlayClick</code>
+          </td>
+          <td >
+            Close picker on overlay click (only for dialog display style)
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">closeOnSelect</code>
+          </td>
+          <td >
+            Automatically close the datePicker when date selected (or range date selected) - not available for inline display style. If set to False then a validate button will be displayed into the footer section.
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">toggleOnInputClick</code>
+          </td>
+          <td >
+            Automatically open datepicker when click into input element
+          </td>
+          <td>
+            <code>true</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">onReady</code>
+          </td>
+          <td >
+            Callback to trigger once picker initiated
+          </td>
+          <td>
+            <code>null</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">icons.previous</code>
+          </td>
+          <td >
+            Previous button icon
+          </td>
+          <td>
+            <code>Svg content</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">icons.next</code>
+          </td>
+          <td >
+            Next button icon
+          </td>
+          <td>
+            <code>Svg content</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">icons.time</code>
+          </td>
+          <td >
+            Time icon
+          </td>
+          <td>
+            <code>Svg content</code>
+          </td>
+        </tr>
+
+        <tr>
+          <td >
+            <code style="white-space: nowrap;">icons.date</code>
+          </td>
+          <td >
+            Date icon
+          </td>
+          <td>
+            <code>Svg content</code>
+          </td>
+        </tr>
+
+    </tbody>
+  </table>
+</div>
+
+
+<article class="message is-info">
+	<div class="message-body">
+		Options can be set using input data attributes. Just convert option name to dashes.<br />
+		<i>For example if you want to init a deta picker using inline display style with range capability and a validate
+			button:</i>
+		<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"date"</span> <span class="na">data-display-mode=</span><span class="s">"inline"</span> <span class="na">data-is-range=</span><span class="s">"true"</span> <span class="na">data-close-on-select=</span><span class="s">"false"</span><span class="nt">&gt;</span></code></pre></figure>
+	</div>
+</article>
+
+<a href="#methods" id="methods" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Methods</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>Calendar component provides some public methods to manually work with it.</p>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">show()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Open date picker (not available with "inline" display style)</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td colspan="2">
+          <span></span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">hide()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Close date picker (not available with "inline" display style)</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td colspan="2">
+          <span></span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">isOpen()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Check if date picker is open or not</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">boolean</code>
+        </td>
+        <td colspan="2">
+          <span>True if date picker is open else False</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">isRange()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Check if current instance is a range date picker</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">boolean</code>
+        </td>
+        <td colspan="2">
+          <span>True if the instance is a range date picker</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">value()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Get the date picker value as formatted string if no parameter else set the passed value</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">value</code>
+        </td>
+        <td>
+          <span>String|null</span>
+        </td>
+        <td>
+          <span>Formatted date value if no parameter passed else null</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">Object{startDate, endDate}</code>
+        </td>
+        <td colspan="2">
+          <span>Date picker selected date (if not range calendar then endDate is undefined)</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">refresh()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Force calendar refresh</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td colspan="2">
+          <span></span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">save()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Force to set calendar data into UI inputs</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td colspan="2">
+          <span></span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<div class="table-container">
+  <table class="table is-bordered is-fullwidth ">
+    <thead>
+      <tr>
+        <th colspan="3">clear()</th>
+      </tr>
+      <tr>
+        <th colspan="3"><span class="has-text-weight-light">Clear date selection (startDate and endDate are set to undefined)</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Parameters</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td>
+          <span></span>
+        </td>
+        <td>
+          <span></span>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <span class="title is-7">Return values</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">none</code>
+        </td>
+        <td colspan="2">
+          <span></span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+</section>
+
+<a href="#getters" id="getters" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Getters</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>Calendar component provides some public Getters to manually access properties.</p>
+	<div class="table-container">
+  <table class="table is-bordered ">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </tfoot>
+    <tbody>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">id</code>
+        </td>
+        <td>
+          <span>Get component instance ID</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">lang</code>
+        </td>
+        <td>
+          <span>Get active lang</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">date</code>
+        </td>
+        <td>
+          <span>Get selected date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">startDate</code>
+        </td>
+        <td>
+          <span>Get selected start date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">endDate</code>
+        </td>
+        <td>
+          <span>Get selected end date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">minDate</code>
+        </td>
+        <td>
+          <span>Get min possible date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">maxDate</code>
+        </td>
+        <td>
+          <span>Get max possible date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">dateFormat</code>
+        </td>
+        <td>
+          <span>Get date format pattern</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">time</code>
+        </td>
+        <td>
+          <span>Get selected time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">startTime</code>
+        </td>
+        <td>
+          <span>Get selected start time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">endTime</code>
+        </td>
+        <td>
+          <span>Get selected end time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">timeFormat</code>
+        </td>
+        <td>
+          <span>Get time format pattern</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+</section>
+<a href="#setters" id="setters" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Setters</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>Calendar component provides some public Setters to manually set properties.</p>
+	<div class="table-container">
+  <table class="table is-bordered ">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </tfoot>
+    <tbody>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">lang</code>
+        </td>
+        <td>
+          <span>Set component lang</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">date</code>
+        </td>
+        <td>
+          <span>Set date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">startDate</code>
+        </td>
+        <td>
+          <span>Se start date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">endDate</code>
+        </td>
+        <td>
+          <span>Set end date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">minDate</code>
+        </td>
+        <td>
+          <span>Set min possible date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">maxDate</code>
+        </td>
+        <td>
+          <span>Set max possible date</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">dateFormat</code>
+        </td>
+        <td>
+          <span>Set date format pattern</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">time</code>
+        </td>
+        <td>
+          <span>Set time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">startTime</code>
+        </td>
+        <td>
+          <span>Set start time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">endTime</code>
+        </td>
+        <td>
+          <span>Set end time</span>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">timeFormat</code>
+        </td>
+        <td>
+          <span>Set time format pattern</span>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+</section>
+
+<a href="#events" id="events" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Events</span>
+</a>
+
+<section class="section is-paddingless">
+	<p>Calendar component comes with Events Management API so you can easily react to its behavior.</p>
+	<div class="table-container">
+  <table class="table is-bordered ">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Values</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Values</th>
+      </tr>
+    </tfoot>
+    <tbody>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">ready</code>
+        </td>
+        <td>
+          <span>Triggered when calendar is intialized (DO NOT USE IT but pass callback into the onReady option)</span>
+        </td>
+        <td>
+          <code>bulmaCalendar instance</code>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">show</code>
+        </td>
+        <td>
+          <span>Triggered when calendar is opened</span>
+        </td>
+        <td>
+          <code>bulmaCalendar instance</code>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">hide</code>
+        </td>
+        <td>
+          <span>Triggered when calendar is closed</span>
+        </td>
+        <td>
+          <code>bulmaCalendar instance</code>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">select</code>
+        </td>
+        <td>
+          <span>Triggered when a date/time is selected (for range = when both start and end dates/times have been selected)</span>
+        </td>
+        <td>
+          <code>bulmaCalendar instance</code>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">select:start</code>
+        </td>
+        <td>
+          <span>Triggered when the start date is selected</span>
+        </td>
+        <td>
+          <code>bulmaCalendar instance</code>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+</section>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/assets/js/doc.js"></script>
+  <script src="/assets/js/bulma-calendar.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

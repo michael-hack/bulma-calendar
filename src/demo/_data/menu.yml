@@ -1,0 +1,34 @@
+- name: Demonstrations
+  submenus:
+    - name: Date Picker
+      link: 'demonstration/date'
+    - name: Time Picker
+      link: 'demonstration/time'
+    - name: DateTime Picker
+      link: 'demonstration/datetime'
+- name: Quick Start
+  submenus:
+    - name: Features
+      link: '#features'
+    - name: Installation
+      link: '#installation'
+    - name: Content
+      link: '#content'
+    - name: HTML Structure
+      link: '#html-structure'
+    - name: Integration
+      link: '#integration'
+    - name: Options
+      link: '#options'
+    - name: Methods
+      link: '#methods'
+    - name: Getters
+      link: '#getters'
+    - name: Setters
+      link: '#setters'
+    - name: Events
+      link: '#events'
+- name: Customization
+  link: 'customization'
+- name: Changelog
+  link: 'changelog'

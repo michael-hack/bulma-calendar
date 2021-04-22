@@ -1,0 +1,112 @@
+---
+layout: default
+route: customization
+title: Customization
+variables:
+- name: $calendar-border
+  value: .1rem solid $white-ter
+- name: $calendar-border-radius
+  value: $radius-small
+- name: $calendar-header-background-color
+  value: $primary
+- name: $calendar-days-background-color
+  value: transparent
+- name: $calendar-header-days-color
+  value: $grey-light
+- name: $calendar-date-color
+  value: $text
+- name: $calendar-date-hover-background-color
+  value: $white
+- name: $calendar-date-hover-border
+  value: .1rem solid $primary
+- name: $calendar-today-background
+  value: transparent
+- name: $calendar-today-border
+  value: .1rem dotted $primary
+- name: $calendar-today-color
+  value: $primary
+- name: $calendar-range-background-color
+  value: $primary
+- name: $calendar-body-padding
+  value: 0
+- name: $calendar-header-padding
+  value: .3rem 0
+- name: $calendar-header-nav-padding
+  value: .5em
+- name: $calendar-date-padding
+  value: .1rem 0
+---
+
+<a href="#prerequisites" id="prerequisites" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Prerequisites</span>
+</a>
+
+<p> To customize the template you must have <strong>node, npm and Gulp</strong> installed in your computer.</p>
+<ul class="step-text">
+  <li>
+    <h6 class="title is-6">node and npm</h6>
+    <p>Installation guide of node can be found <a href="https://nodejs.org/en/" target="_blank">here</a>. As npm comes
+      bundled with node, separate installation of npm is not needed.<br />
+      If you have installed them, just checkout to the root folder and run the following command.</p>
+    <p>
+      <figure class="highlight">
+        <pre><code class="language-shell" data-lang="shell">npm install</code></pre>
+      </figure>
+    </p>
+    <p>You can see that a folder <code>node_modules</code> is generated in your root folder with all dependencies
+      files! </p>
+  </li>
+
+  <li>
+    <h6 class="title is-6">Gulp</h6>
+    <p>To start customization you will need to install Gulp for task automation.<br />
+      Getting started with Gulp is pretty simple. The Gulp site is a great place to get information on installing Gulp
+      if you need more information.</p>
+    <p>You need to first install Gulp-cli in your machine using the below command.</p>
+    <p>
+      <figure class="highlight">
+        <pre><code class="language-shell" data-lang="shell">npm install -g gulp-cli</code></pre>
+      </figure>
+    </p>
+  </li>
+</ul>
+<h6 class="title is-5 has-text-centered"><span class="icon has-text-success">
+    <i class="fas fa-thumbs-up"></i>
+  </span> You are now ready to customize the component.</h6>
+
+<a href="#compilation" id="compilation" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Compilation</span>
+</a>
+
+<p>We have created a Gulp configuration file <span class="helper">(guplfile.js)</span> which integrates many task to
+  automate the compilation.</p>
+<p>We have also developed a Gulp plugin to automatically copy used dependencies from <strong>node_modules</strong> into
+  the template and replace all include paths related to them.</p>
+<div class="content">
+  <ul>
+    <li>
+      <h6 class="title is-6">gulp build:styles</h6>
+      <p>Compile Sass sources and save them into the dist directory and the demo src directory.</p>
+    </li>
+    <li>
+      <h6 class="title is-6">gulp build:scripts</h6>
+      <p>Transpile ES6 Javscript sources and save them into the dist directory and the demo src directory.</p>
+    </li>
+    <li>
+      <h6 class="title is-6">gulp build</h6>
+      <p>Run both of previous commands</p>
+    </li>
+    <li>
+      <h6 class="title is-6">gulp demo</h6>
+      <p>Run a complete clean and build then compile demo sie with jekyll then launch a local server with watch
+        capability (demo site is now auto updated when you modify source code).</p>
+    </li>
+  </ul>
+</div>
+
+<a href="#sass" id="sass" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Sass customization</span>
+</a>
+<p>The component provides SASS file which can be imported into your SASS project. To ease the customization the component use following variables that can be override:</p>
+
+{% include variables.html %}

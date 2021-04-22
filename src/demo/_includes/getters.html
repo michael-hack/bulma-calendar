@@ -1,0 +1,28 @@
+<div class="table-container">
+  <table class="table is-bordered {{ table_class }}">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for getter in site.data.getters %}
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">{{ getter.name }}</code>
+        </td>
+        <td>
+          <span>{{ getter.description }}</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

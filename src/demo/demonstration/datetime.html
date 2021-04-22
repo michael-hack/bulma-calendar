@@ -1,0 +1,182 @@
+---
+layout: default
+route: demonstration
+title: Demonstration
+---
+{% capture calendar_datepicker_example_inline %}
+<input id="datepickerDemoInline" class="input" type="datetime" data-display-mode="inline" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_info %}
+<input id="datepickerDemoInlineInfo" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="info" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_success %}
+<input id="datepickerDemoInlineSuccess" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="success" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_warning %}
+<input id="datepickerDemoInlineWarning" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="warning" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_danger %}
+<input id="datepickerDemoInlineDanger" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="danger" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_grey %}
+<input id="datepickerDemoInlineSuccess" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="grey" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_dark %}
+<input id="datepickerDemoInlineWarning" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="dark" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_black %}
+<input id="datepickerDemoInlineDanger" class="input" type="datetime" data-display-mode="inline" data-is-range="true"
+  data-color="black" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_range %}
+<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="datetime">
+{% endcapture %}
+
+{% capture calendar_datepicker_example %}
+<input id="datepickerDemoDefault" class="input" type="datetime" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_range %}
+<input id="datepickerDemoRange" class="input" data-is-range="true" type="datetime">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_range_labels %}
+<input id="datepickerDemoRangeLabels" class="input" data-is-range="true" type="datetime">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_dialog %}
+<input id="datepickerDemoDialog" class="input" type="datetime" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_disabled_dates %}
+<input id="datepickerDemoDisabledDates" class="input" type="datetime" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_disabled_weekdays %}
+<input id="datepickerDemoDisabledWeekDays" class="input" type="datetime" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_weekstart %}
+<input id="datepickerDemoWeekStart" class="input" type="datetime" value="09/25/2018">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_labels %}
+<input id="datepickerDemoLabels" class="input" type="datetime">
+{% endcapture %}
+
+{% include anchor.html name="Display styles" %}
+<p>Calendar component comes with multiple display styles. The default style will show the datePicker as a popover
+  under the input element on desktop and as a dialog modaal on mobile.</p>
+<div class="tabs">
+  <ul>
+    <li class="is-active"><a href="#display-default">Default</a></li>
+    <li><a href="#display-dialog">Dialog</a></li>
+    <li><a href="#display-inline">Inline</a> </li>
+  </ul>
+</div>
+
+<div class="tab-contents">
+  <div id="display-default" class="tab-content is-active">
+    {{calendar_datepicker_example}}
+    <p class="help">To view a demo just click into the input above.</p>
+  </div>
+
+  <div id="display-dialog" class="tab-content">
+    <p>"Dialog" style displays the DatePicker as a dialog modal</p>
+    {{calendar_datepicker_example_dialog}}
+    <p class="help">To view a demo just click into the input above.</p>
+  </div>
+  <div id="display-inline" class="tab-content">
+    <p>"Inline" style visually replaces the input element by the datepicker</p>
+    {{calendar_datepicker_example_inline}}
+  </div>
+
+</div>
+
+{% include anchor.html name="Range selection" %}
+<p>Use the component to let user select a date range.</p>
+<div class="tabs">
+  <ul>
+    <li class="is-active"><a href="#range">Default</a></li>
+    <li><a href="#range-inline">Inline</a></li>
+    <li><a href="#range-labels">Custom labels</a></li>
+    <li><a href="#range-labels-inline">Custom labels - Inline</a></li>
+  </ul>
+</div>
+
+<div class="tab-contents">
+  <div id="range" class="tab-content is-active">
+    {{calendar_datepicker_example_range}}
+  </div>
+
+  <div id="range-inline" class="tab-content">
+    {{calendar_datepicker_example_inline_range}}
+  </div>
+
+  <div id="range-labels" class="tab-content">
+    <p>You can easily customize labels.</p>
+    {{calendar_datepicker_example_range_labels}}
+  </div>
+
+  <div id="range-labels-inline" class="tab-content">
+    <p>You can easily customize from and to selection labels.</p>
+    {{calendar_datepicker_example_labels}}
+  </div>
+</div>
+
+{% include anchor.html name="Design options" %}
+<h1 class="title is-5">Disabled dates</h1>
+<p>Yesterday and tomorrow are disbaled</p>
+{{calendar_datepicker_example_disabled_dates}}
+<br />
+<br />
+<h1 class="title is-5">Disabled week days</h1>
+<p>Saturdays and Sun days are disbaled</p>
+{{calendar_datepicker_example_disabled_weekdays}}
+<br />
+<br />
+<h1 class="title is-5">Change week start</h1>
+<p>Week starts on Monday</p>
+{{calendar_datepicker_example_weekstart}}
+
+{% include anchor.html name="Colors" %}
+<div class="columns is-multiline">
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_range}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_info}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_success}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_warning}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_danger}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_grey}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_dark}}
+  </div>
+  <div class="column is-half">
+    {{calendar_datepicker_example_inline_black}}
+  </div>
+</div>

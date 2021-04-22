@@ -1,0 +1,33 @@
+<div class="table-container">
+  <table class="table is-bordered {{ table_class }}">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Values</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Values</th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for event in site.data.events %}
+      <tr>
+        <td>
+          <code style="white-space: nowrap;">{{ event.name }}</code>
+        </td>
+        <td>
+          <span>{{ event.description }}</span>
+        </td>
+        <td>
+          <code>{{ event.parameters }}</code>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

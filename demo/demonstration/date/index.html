@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="route-demonstration">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Responsive - Interactive Date/Time Picker">
+
+  <title>Documentation</title>
+
+  <link rel="canonical" href="/demonstration/date/">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css" rel="stylesheet">
+  <link href="/assets/css/highlight.css" rel="stylesheet">
+  <link href="/assets/css/documentation.min.css" rel="stylesheet">
+  <link href="/assets/css/bulma-calendar.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
+  <!-- Load Font Awesome 5 -->
+  <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js"></script>
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+</head>
+
+<body>
+  <div class="mobile-burger burger is-hidden-desktop" data-target="#doc-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="columns is-gapless">
+    <div id="doc-menu" class="column is-2 has-background-grey-lighter menu is-mobile">
+      <section class="section">
+        <h1 class="title is-4 has-text-weight-semibold has-text-centered">Calendar <span class="is-size-5 has-text-primary has-text-weight-light">documentation</span></h1>
+        <div class="has-text-centered">
+          <span>
+            <img src="https://badgen.net/badge/Version/6.1.0/green" alt="v6.1.0">
+          </span>
+        </div>
+      </section>
+      
+<ul class="menu-list">
+
+  
+  <li class="menu-item has-dropdown">
+    <a class="menu-title">
+      Demonstrations
+      <span class="menu-caret"></span>
+    </a>
+    <ul class="menu-dropdown">
+      
+        <li><a class="menu-item" href="/demonstration/date">Date Picker</a></li>
+      
+        <li><a class="menu-item" href="/demonstration/time">Time Picker</a></li>
+      
+        <li><a class="menu-item" href="/demonstration/datetime">DateTime Picker</a></li>
+      
+    </ul>
+  </li>
+  
+
+  
+  <li class="menu-item has-dropdown">
+    <a class="menu-title">
+      Quick Start
+      <span class="menu-caret"></span>
+    </a>
+    <ul class="menu-dropdown">
+      
+        <li><a class="menu-item" href="/#features">Features</a></li>
+      
+        <li><a class="menu-item" href="/#installation">Installation</a></li>
+      
+        <li><a class="menu-item" href="/#content">Content</a></li>
+      
+        <li><a class="menu-item" href="/#html-structure">HTML Structure</a></li>
+      
+        <li><a class="menu-item" href="/#integration">Integration</a></li>
+      
+        <li><a class="menu-item" href="/#options">Options</a></li>
+      
+        <li><a class="menu-item" href="/#methods">Methods</a></li>
+      
+        <li><a class="menu-item" href="/#getters">Getters</a></li>
+      
+        <li><a class="menu-item" href="/#setters">Setters</a></li>
+      
+        <li><a class="menu-item" href="/#events">Events</a></li>
+      
+    </ul>
+  </li>
+  
+
+  
+  <li>
+    <a class="menu-item" href="/customization">Customization</a>
+  </li>
+  
+
+  
+  <li>
+    <a class="menu-item" href="/changelog">Changelog</a>
+  </li>
+  
+
+</ul>
+
+    </div>
+    <div class="column">
+      <div class="hero is-light">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <h1 class="title is-2 is-spaced has-text-weight-semibold">Demonstration</h1>
+            
+          </div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="container is-fluid">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="#display-styles" id="display-styles" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Display styles</span>
+</a>
+
+<p>Calendar component comes with multiple display styles. The default style will show the datePicker as a popover
+  under the input element on desktop and as a dialog modaal on mobile.</p>
+<div class="tabs">
+  <ul>
+    <li class="is-active"><a href="#display-default">Default</a></li>
+    <li><a href="#display-dialog">Dialog</a></li>
+    <li><a href="#display-inline">Inline</a> </li>
+  </ul>
+</div>
+
+<div class="tab-contents">
+  <div id="display-default" class="tab-content is-active">
+    
+<input id="datepickerDemoDefault" class="input" type="date" value="09/25/2018">
+
+    <p class="help">To view a demo just click into the input above.</p>
+  </div>
+
+  <div id="display-dialog" class="tab-content">
+    <p>"Dialog" style displays the DatePicker as a dialog modal</p>
+    
+<input id="datepickerDemoDialog" class="input" type="date" value="09/25/2018">
+
+    <p class="help">To view a demo just click into the input above.</p>
+  </div>
+  <div id="display-inline" class="tab-content">
+    <p>"Inline" style visually replaces the input element by the datepicker</p>
+    
+<input id="datepickerDemoInline" class="input" type="date" data-display-mode="inline" value="09/25/2018">
+
+  </div>
+
+</div>
+
+<a href="#range-selection" id="range-selection" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Range selection</span>
+</a>
+
+<p>Use the component to let user select a date range.</p>
+<div class="tabs">
+  <ul>
+    <li class="is-active"><a href="#range">Default</a></li>
+    <li><a href="#range-inline">Inline</a></li>
+    <li><a href="#range-labels">Custom labels</a></li>
+    <li><a href="#range-labels-inline">Custom labels - Inline</a></li>
+  </ul>
+</div>
+
+<div class="tab-contents">
+  <div id="range" class="tab-content is-active">
+    
+<input id="datepickerDemoRange" class="input" data-is-range="true" type="date">
+
+  </div>
+
+  <div id="range-inline" class="tab-content">
+    
+<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="date">
+
+  </div>
+
+  <div id="range-labels" class="tab-content">
+    <p>You can easily customize labels.</p>
+    
+<input id="datepickerDemoRangeLabels" class="input" data-is-range="true" type="date">
+
+  </div>
+
+  <div id="range-labels-inline" class="tab-content">
+    <p>You can easily customize from and to selection labels.</p>
+    
+<input id="datepickerDemoLabels" class="input" type="date">
+
+  </div>
+</div>
+
+<a href="#design-options" id="design-options" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Design options</span>
+</a>
+
+<h1 class="title is-5">Disabled dates</h1>
+<p>Yesterday and tomorrow are disbaled</p>
+
+<input id="datepickerDemoDisabledDates" class="input" type="date" value="09/25/2018">
+
+<br />
+<br />
+<h1 class="title is-5">Disabled week days</h1>
+<p>Saturdays and Sun days are disbaled</p>
+
+<input id="datepickerDemoDisabledWeekDays" class="input" type="date" value="09/25/2018">
+
+<br />
+<br />
+<h1 class="title is-5">Highlighted dates</h1>
+<p>Yesterday and tomorrow are highlighted</p>
+
+<input id="datepickerDemoHighlithedDates" class="input" type="date" value="09/25/2018">
+
+<br />
+<br />
+<h1 class="title is-5">Change week start</h1>
+<p>Week starts on Monday</p>
+
+<input id="datepickerDemoWeekStart" class="input" type="date" value="09/25/2018">
+
+
+<a href="#colors" id="colors" class="title is-4 has-text-weight-normal is-spaced anchor">
+  <span class="anchor-name">Colors</span>
+</a>
+
+<div class="columns is-multiline">
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="date">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineInfo" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="info" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineSuccess" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="success" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineWarning" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="warning" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineDanger" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="danger" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineSuccess" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="grey" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineWarning" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="dark" value="09/25/2018">
+
+  </div>
+  <div class="column is-half">
+    
+<input id="datepickerDemoInlineDanger" class="input" type="date" data-display-mode="inline" data-is-range="true"
+  data-color="black" value="09/25/2018">
+
+  </div>
+</div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/assets/js/doc.js"></script>
+  <script src="/assets/js/bulma-calendar.min.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

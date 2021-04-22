@@ -1,4 +1,4 @@
-/bulma
-.idea/
 /node_modules
-/dist/bulma-calendar.sass~HEAD
+.DS_Store
+.vs/
+.demo/

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" class="{% if page.route %}route-{{page.route}}{% endif %}">
+{% include head.html %}
+
+<body>
+  <div class="mobile-burger burger is-hidden-desktop" data-target="#doc-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="columns is-gapless">
+    <div id="doc-menu" class="column is-2 has-background-grey-lighter menu is-mobile">
+      <section class="section">
+        <h1 class="title is-4 has-text-weight-semibold has-text-centered">{{ site.title }} <span class="is-size-5 has-text-primary has-text-weight-light">documentation</span></h1>
+        <div class="has-text-centered">
+          <span>
+            <img src="https://badgen.net/badge/Version/6.0.0/green" alt="v6.0.0">
+          </span>
+        </div>
+      </section>
+      {% include menu.html %}
+    </div>
+    <div class="column">
+      <div class="hero is-light">
+        <div class="hero-body">
+          <div class="container has-text-centered">
+            <h1 class="title is-2 is-spaced has-text-weight-semibold">{{ page.title }}</h1>
+            {% if page.subtitle %}
+            <h2 class="subtitle is-6 has-text-weight-light">{{ page.subtitle }}</h1>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+      <section class="section">
+        <div class="container is-fluid">
+          {{ content }}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="{{site.url}}/assets/js/doc.js"></script>
+  <script src="{{site.url}}/assets/js/bulma-calendar.min.js"></script>
+  <script src="{{site.url}}/assets/js/main.js"></script>
+</body>
+
+</html>

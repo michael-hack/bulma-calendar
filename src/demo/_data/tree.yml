@@ -1,0 +1,30 @@
+- name: dist
+  open: true
+  subtree:
+  - name: css
+    open: true
+    subtree:
+    - name: bulma-calendar.min.css
+      details: Minified version of all required CSS in one file
+    - name: bulma-calendar.sass
+      details: Copy of Sass sources from src/
+  - name: js
+    open: true
+    subtree:
+      - name: bulma-calendar.js
+        details: JavaScript code
+      - name: bulma-calendar.min.js
+        details: Minified version of JavaScript code
+- name: src
+  open: true
+  subtree:
+  - name: js
+    open: true
+    subtree:
+    - name: index.js
+      details: Javascript ES6 source code
+  - name: sass
+    open: true
+    subtree:
+    - name: index.sass
+      details: SASS source code
