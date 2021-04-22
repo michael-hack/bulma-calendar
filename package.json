@@ -75,15 +75,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "release": {
-    "prepare": [
-      "@semantic-release/npm",
-      {
-        "path": "@semantic-release/changelog",
-        "changelogFile": "CHANGELOG.md"
-      }
-    ]
-  },
   "types": "./index.d.ts",
   "files": [
     "dist",
