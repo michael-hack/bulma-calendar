@@ -11,6 +11,7 @@ after_success:
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
+script: true
 deploy:
   provider: script
   skip_cleanup: true
