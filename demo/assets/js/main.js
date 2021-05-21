@@ -15,7 +15,8 @@ ready(function () {
     labelTo: 'Check-out'
   });
 
-  var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
+  var calendars = bulmaCalendar.attach('#datepickerDemoDefault2', {closeOnSelect: true});
+  var calendars = bulmaCalendar.attach('#datepickerDemoDefault', {closeOnSelect: false});
   // To access to bulmaCalendar instance of an element
 const element = document.querySelector('#datepickerDemoDefault');
 if (element) {

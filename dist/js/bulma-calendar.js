@@ -10427,1001 +10427,1009 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var bulmaCalendar = function (_EventEmitter) {
-  _inherits(bulmaCalendar, _EventEmitter);
+    _inherits(bulmaCalendar, _EventEmitter);
 
-  function bulmaCalendar(selector) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    function bulmaCalendar(selector) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    _classCallCheck(this, bulmaCalendar);
+        _classCallCheck(this, bulmaCalendar);
 
-    var _this = _possibleConstructorReturn(this, (bulmaCalendar.__proto__ || Object.getPrototypeOf(bulmaCalendar)).call(this));
+        var _this = _possibleConstructorReturn(this, (bulmaCalendar.__proto__ || Object.getPrototypeOf(bulmaCalendar)).call(this));
 
-    _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelector(selector) : selector;
-    // An invalid selector or non-DOM node has been provided.
-    if (!_this.element) {
-      throw new Error('An invalid selector or non-DOM node has been provided.');
-    }
-    _this._clickEvents = ['click', 'touch'];
-    _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils_index__["a" /* detectSupportsPassive */]();
+        _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelector(selector) : selector;
+        // An invalid selector or non-DOM node has been provided.
+        if (!_this.element) {
+            throw new Error('An invalid selector or non-DOM node has been provided.');
+        }
+        _this._clickEvents = ['click', 'touch'];
+        _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils_index__["a" /* detectSupportsPassive */]();
 
-    // Use Element dataset values to override options
-    var elementConfig = _this.element.dataset ? Object.keys(_this.element.dataset).filter(function (key) {
-      return Object.keys(__WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */]).includes(key);
-    }).reduce(function (obj, key) {
-      return _extends({}, obj, _defineProperty({}, key, _this.element.dataset[key]));
-    }, {}) : {};
+        // Use Element dataset values to override options
+        var elementConfig = _this.element.dataset ? Object.keys(_this.element.dataset).filter(function (key) {
+            return Object.keys(__WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */]).includes(key);
+        }).reduce(function (obj, key) {
+            return _extends({}, obj, _defineProperty({}, key, _this.element.dataset[key]));
+        }, {}) : {};
 
-    // Set default options - dataset attributes are master
-    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */], options, elementConfig);
+        // Set default options - dataset attributes are master
+        _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_7__defaultOptions__["a" /* default */], options, elementConfig);
 
-    if (_this.options.type === undefined) {
-      switch (_this.element.getAttribute('type')) {
-        case 'date':
-          _this.options.type = 'date';
-          break;
-        case 'time':
-          _this.options.type = 'time';
-          break;
-        default:
-          _this.options.type = 'datetime';
-          break;
-      }
-    }
-    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('datetimePicker');
+        if (_this.options.type === undefined) {
+            switch (_this.element.getAttribute('type')) {
+                case 'date':
+                    _this.options.type = 'date';
+                    break;
+                case 'time':
+                    _this.options.type = 'time';
+                    break;
+                default:
+                    _this.options.type = 'datetime';
+                    break;
+            }
+        }
+        _this._id = __WEBPACK_IMPORTED_MODULE_0__utils_index__["b" /* uuid */]('datetimePicker');
 
-    _this.onToggleDateTimePicker = _this.onToggleDateTimePicker.bind(_this);
-    _this.onCloseDateTimePicker = _this.onCloseDateTimePicker.bind(_this);
-    _this.onDocumentClickDateTimePicker = _this.onDocumentClickDateTimePicker.bind(_this);
-    _this.onValidateClickDateTimePicker = _this.onValidateClickDateTimePicker.bind(_this);
-    _this.onTodayClickDateTimePicker = _this.onTodayClickDateTimePicker.bind(_this);
-    _this.onClearClickDateTimePicker = _this.onClearClickDateTimePicker.bind(_this);
-    _this.onCancelClickDateTimePicker = _this.onCancelClickDateTimePicker.bind(_this);
-    _this.onSelectDateTimePicker = _this.onSelectDateTimePicker.bind(_this);
-    _this.onChangeStartHoursManually = _this.onChangeStartHoursManually.bind(_this);
-    _this.onChangeStartMinutesManually = _this.onChangeStartMinutesManually.bind(_this);
-    _this.onChangeEndHoursManually = _this.onChangeEndHoursManually.bind(_this);
-    _this.onChangeEndMinutesManually = _this.onChangeEndMinutesManually.bind(_this);
-    _this.changeTimeManually = _this.changeTimeManually.bind(_this);
+        _this.onToggleDateTimePicker = _this.onToggleDateTimePicker.bind(_this);
+        _this.onCloseDateTimePicker = _this.onCloseDateTimePicker.bind(_this);
+        _this.onDocumentClickDateTimePicker = _this.onDocumentClickDateTimePicker.bind(_this);
+        _this.onValidateClickDateTimePicker = _this.onValidateClickDateTimePicker.bind(_this);
+        _this.onTodayClickDateTimePicker = _this.onTodayClickDateTimePicker.bind(_this);
+        _this.onClearClickDateTimePicker = _this.onClearClickDateTimePicker.bind(_this);
+        _this.onCancelClickDateTimePicker = _this.onCancelClickDateTimePicker.bind(_this);
+        _this.onSelectDateTimePicker = _this.onSelectDateTimePicker.bind(_this);
+        _this.onChangeStartHoursManually = _this.onChangeStartHoursManually.bind(_this);
+        _this.onChangeStartMinutesManually = _this.onChangeStartMinutesManually.bind(_this);
+        _this.onChangeEndHoursManually = _this.onChangeEndHoursManually.bind(_this);
+        _this.onChangeEndMinutesManually = _this.onChangeEndMinutesManually.bind(_this);
+        _this.changeTimeManually = _this.changeTimeManually.bind(_this);
 
-    // Initiate plugin
-    _this._init();
-    return _this;
-  }
-
-  /**
-   * Initiate all DOM element containing datePicker class
-   * @method
-   * @return {Array} Array of all datePicker instances
-   */
-
-
-  _createClass(bulmaCalendar, [{
-    key: 'onSelectDateTimePicker',
-
-
-    /****************************************************
-     *                                                  *
-     * EVENTS FUNCTIONS                                 *
-     *                                                  *
-     ****************************************************/
-    value: function onSelectDateTimePicker(e) {
-      if (e.type === 'select' && this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-        this.refresh();
-        this.save();
-        this.hide();
-        this.emit(e.type, this);
-      }
-    }
-  }, {
-    key: 'onDocumentClickDateTimePicker',
-    value: function onDocumentClickDateTimePicker(e) {
-      // Check is e.target not within datepicker element
-      var target = e.target || e.srcElement;
-      if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline' && this._open) {
-        this.onCloseDateTimePicker(e);
-      }
-    }
-  }, {
-    key: 'onToggleDateTimePicker',
-    value: function onToggleDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      if (this._open) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    }
-  }, {
-    key: 'onValidateClickDateTimePicker',
-    value: function onValidateClickDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      this.save();
-      this.emit('validate', this);
-
-      if (this.options.displayMode !== 'inline') {
-        this.onCloseDateTimePicker(e);
-      }
-    }
-  }, {
-    key: 'onTodayClickDateTimePicker',
-    value: function onTodayClickDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      this.datePicker.value(new Date());
-      this.datePicker.refresh();
-
-      this.timePicker.value(new Date());
-      this.timePicker.refresh();
-
-      if (this.options.closeOnSelect && this.options.displayMode !== 'inline') {
-        this.save();
-      }
-    }
-  }, {
-    key: 'onClearClickDateTimePicker',
-    value: function onClearClickDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      this.clear();
-
-      //this.emit('clear', this);
-    }
-  }, {
-    key: 'onCancelClickDateTimePicker',
-    value: function onCancelClickDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      if (this._snapshots.length) {
-        this.datePicker = this._snapshots[0].datePicker;
-        this.timePicker = this._snapshots[0].timePicker;
-      }
-      this.save();
-      if (this.options.displayMode !== 'inline') {
-        this.onCloseDateTimePicker(e);
-      }
-    }
-  }, {
-    key: 'onCloseDateTimePicker',
-    value: function onCloseDateTimePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      this.hide();
-    }
-  }, {
-    key: 'onClickTimeManuallyInput',
-    value: function onClickTimeManuallyInput(e) {
-      e.currentTarget.select();
-    }
-  }, {
-    key: 'onChangeStartHoursManually',
-    value: function onChangeStartHoursManually(e) {
-      var start = this.timePicker._time.start;
-      start.setHours(e.currentTarget.value);
-      this.timePicker.start = start;
-
-      this.changeTimeManually();
-    }
-  }, {
-    key: 'onChangeStartMinutesManually',
-    value: function onChangeStartMinutesManually(e) {
-      var start = this.timePicker._time.start;
-      start.setMinutes(e.currentTarget.value);
-      this.timePicker.start = start;
-
-      this.changeTimeManually();
-    }
-  }, {
-    key: 'onChangeEndHoursManually',
-    value: function onChangeEndHoursManually(e) {
-      var end = this.timePicker._time.end;
-      end.setHours(e.currentTarget.value);
-      this.timePicker.end = end;
-
-      this.changeTimeManually();
-    }
-  }, {
-    key: 'onChangeEndMinutesManually',
-    value: function onChangeEndMinutesManually(e) {
-      var end = this.timePicker._time.end;
-      end.setMinutes(e.currentTarget.value);
-      this.timePicker.end = end;
-
-      this.changeTimeManually();
-    }
-  }, {
-    key: 'changeTimeManually',
-    value: function changeTimeManually() {
-      this.refresh();
-      this.save();
-    }
-
-    /****************************************************
-     *                                                  *
-     * PUBLIC FUNCTIONS                                 *
-     *                                                  *
-     ****************************************************/
-
-  }, {
-    key: 'isRange',
-    value: function isRange() {
-      return this.options.isRange;
+        // Initiate plugin
+        _this._init();
+        return _this;
     }
 
     /**
-     * Returns true if datetime picker is open, otherwise false.
-     * @method isOpen
-     * @return {boolean}
+     * Initiate all DOM element containing datePicker class
+     * @method
+     * @return {Array} Array of all datePicker instances
      */
 
-  }, {
-    key: 'isOpen',
-    value: function isOpen() {
-      return this._open;
-    }
 
-    /**
-     * Get / Set datetimePicker value
-     * @param {*} date
-     */
+    _createClass(bulmaCalendar, [{
+        key: 'onSelectDateTimePicker',
 
-  }, {
-    key: 'value',
-    value: function value() {
-      var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-      if (_value) {
-        this.datePicker.value(_value);
-        this.timePicker.value(_value);
-      } else {
-        var string = '';
-        switch (this.options.type) {
-          case 'date':
-            string = this.datePicker.value();
-            break;
-          case 'time':
-            string = this.timePicker.value();
-            break;
-          case 'datetime':
-            var start = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.start, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.start)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.start))) : undefined;
-            var end = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](this.datePicker.end) : undefined;
+        /****************************************************
+         *                                                  *
+         * EVENTS FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+        value: function onSelectDateTimePicker(e) {
 
-            if (end && this.options.isRange) {
-              // This options is not required - in other place i set eod on date
-              //end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
+            alert("select");
+
+            this.refresh();
+
+            if (this.options.closeOnSelect) {
+                this.save();
             }
 
-            string = start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(start), this.format, {
-              locale: this.locale
-            }) : '';
-            if (end) {
-              string += ' - ' + (end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(end), this.format, { locale: this.locale }) : '');
+            this.emit(e.type, this);
+        }
+    }, {
+        key: 'onDocumentClickDateTimePicker',
+        value: function onDocumentClickDateTimePicker(e) {
+
+            var target = e.target || e.srcElement;
+
+            // Check is e.target not within datepicker element
+            if (!this._ui.wrapper.contains(target) && this.options.displayMode !== 'inline') {
+                this.hide();
             }
-            break;
         }
-        return string;
-      }
-    }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this._ui.header.start.day.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'DD', {
-        locale: this.locale
-      }) : '--';
-      this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, this.options.headerMonthYearFromat, {
-        locale: this.locale
-      }) : '';
-      if (this.datePicker.start) {
-        this._ui.header.start.weekday.classList.remove('is-hidden');
-        this._ui.header.start.weekday.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'dddd', {
-          locale: this.locale
-        }) : '';
-      } else {
-        this._ui.header.start.weekday.classList.add('is-hidden');
-      }
+    }, {
+        key: 'onToggleDateTimePicker',
+        value: function onToggleDateTimePicker(e) {
 
-      if (this._ui.header.start.hour) {
-        if (this.options.editTimeManually) {
-          this._ui.header.start.inputHours.value = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH', {
-            locale: this.locale
-          }) : '--';
-          this._ui.header.start.inputMinutes.value = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'mm', {
-            locale: this.locale
-          }) : '--';
-        } else {
-          this._ui.header.start.hour.innerHTML = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH:mm', {
-            locale: this.locale
-          }) : '--:--';
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.toggle();
         }
-      }
+    }, {
+        key: 'onValidateClickDateTimePicker',
+        value: function onValidateClickDateTimePicker(e) {
 
-      if (this._ui.header.end) {
-        this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'DD', {
-          locale: this.locale
-        }) : '--';
-        this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, this.options.headerMonthYearFromat, {
-          locale: this.locale
-        }) : '';
-        if (this.datePicker.end) {
-          this._ui.header.end.weekday.classList.remove('is-hidden');
-          this._ui.header.end.weekday.innerHTML = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'dddd', {
-            locale: this.locale
-          }) : '';
-        } else {
-          this._ui.header.end.weekday.classList.add('is-hidden');
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.save();
+
+            this.emit('validate', this);
+        }
+    }, {
+        key: 'onTodayClickDateTimePicker',
+        value: function onTodayClickDateTimePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.datePicker.value(new Date());
+            this.timePicker.value(new Date());
+
+            this.refresh();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
+        }
+    }, {
+        key: 'onClearClickDateTimePicker',
+        value: function onClearClickDateTimePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.clear();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
+        }
+    }, {
+        key: 'onCancelClickDateTimePicker',
+        value: function onCancelClickDateTimePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            //this.save();
+            // TODO
+        }
+    }, {
+        key: 'onCloseDateTimePicker',
+        value: function onCloseDateTimePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.hide();
+        }
+    }, {
+        key: 'onClickTimeManuallyInput',
+        value: function onClickTimeManuallyInput(e) {
+            e.currentTarget.select();
+        }
+    }, {
+        key: 'onChangeStartHoursManually',
+        value: function onChangeStartHoursManually(e) {
+            var start = this.timePicker._time.start;
+            start.setHours(e.currentTarget.value);
+            this.timePicker.start = start;
+
+            this.changeTimeManually();
+        }
+    }, {
+        key: 'onChangeStartMinutesManually',
+        value: function onChangeStartMinutesManually(e) {
+            var start = this.timePicker._time.start;
+            start.setMinutes(e.currentTarget.value);
+            this.timePicker.start = start;
+
+            this.changeTimeManually();
+        }
+    }, {
+        key: 'onChangeEndHoursManually',
+        value: function onChangeEndHoursManually(e) {
+            var end = this.timePicker._time.end;
+            end.setHours(e.currentTarget.value);
+            this.timePicker.end = end;
+
+            this.changeTimeManually();
+        }
+    }, {
+        key: 'onChangeEndMinutesManually',
+        value: function onChangeEndMinutesManually(e) {
+            var end = this.timePicker._time.end;
+            end.setMinutes(e.currentTarget.value);
+            this.timePicker.end = end;
+
+            this.changeTimeManually();
+        }
+    }, {
+        key: 'changeTimeManually',
+        value: function changeTimeManually() {
+            this.refresh();
+            this.save();
         }
 
-        if (this._ui.header.end && this._ui.header.end.hour) {
-          if (this.options.editTimeManually) {
-            this._ui.header.end.inputHours.value = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH', {
-              locale: this.locale
-            }) : '--';
-            this._ui.header.end.inputMinutes.value = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'mm', {
-              locale: this.locale
-            }) : '--';
-          } else {
-            this._ui.header.end.hour.innerHTML = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH:mm', {
-              locale: this.locale
-            }) : '--:--';
-          }
+        /****************************************************
+         *                                                  *
+         * PUBLIC FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+
+    }, {
+        key: 'isRange',
+        value: function isRange() {
+            return this.options.isRange;
         }
-      }
-      this.emit('refresh', this);
-    }
-  }, {
-    key: 'clear',
-    value: function clear() {
-      this.datePicker.clear();
-      this.timePicker.clear();
 
-      this.refresh();
-      this.element.value = '';
-      this._ui.dummy.dummy_1.value = '';
-      if (this._ui.dummy.dummy_2) {
-        this._ui.dummy.dummy_2.value = '';
-      }
-      this.emit('clear', this);
-    }
+        /**
+         * Returns true if datetime picker is open, otherwise false.
+         * @method isOpen
+         * @return {boolean}
+         */
 
-    /**
-     * Show datePicker HTML Component
-     * @method show
-     * @return {void}
-     */
-
-  }, {
-    key: 'show',
-    value: function show() {
-      this._snapshots = [];
-      this.snapshot();
-
-      if (this.element.value) {
-        this.datePicker.value(this.element.value);
-        this.timePicker.value(this.element.value);
-      }
-
-      this.datePicker.show();
-      this.timePicker.hide();
-
-      if (this._ui.modal) {
-        this._ui.modal.classList.add('is-active');
-      }
-      this._ui.wrapper.classList.add('is-active');
-      this._open = true;
-      this.emit('show', this);
-    }
-
-    /**
-     * Hide datePicker HTML Component
-     * @method hide
-     * @return {void}
-     */
-
-  }, {
-    key: 'hide',
-    value: function hide() {
-      this._open = false;
-      this._focus = false;
-      if (this._ui.modal) {
-        this._ui.modal.classList.remove('is-active');
-      }
-      this._ui.wrapper.classList.remove('is-active');
-      this.emit('hide', this);
-    }
-
-    // Set element value to datetime selected based on format
-
-  }, {
-    key: 'save',
-    value: function save() {
-      var date = this.value();
-
-      var _date$split = date.split(' - '),
-          _date$split2 = _slicedToArray(_date$split, 2),
-          start = _date$split2[0],
-          end = _date$split2[1];
-
-      this.element.value = date;
-      this._ui.dummy.dummy_1.value = start ? start : '';
-      if (this._ui.dummy.dummy_2) {
-        this._ui.dummy.dummy_2.value = end ? end : '';
-      }
-    }
-  }, {
-    key: 'snapshot',
-    value: function snapshot() {}
-    // this._snapshots.push([
-    //   ...this.datePicker,
-    //   ...this.timePicker
-    // ]);
-
-
-    /**
-     * Destroy datePicker
-     * @method destroy
-     * @return {[type]} [description]
-     */
-
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      this._ui.wrapper.remove();
-    }
-
-    /****************************************************
-     *                                                  *
-     * PRIVATE FUNCTIONS                                *
-     *                                                  *
-     ****************************************************/
-    /**
-     * Initiate plugin instance
-     * @method _init
-     * @return {datePicker} Current plugin instance
-     */
-
-  }, {
-    key: '_init',
-    value: function _init() {
-      this._open = false;
-      this._snapshots = []; // Use to revert selection
-      // Set component type (date / time / datetime)
-      // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
-      this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
-      // Change element type to prevent browser default type="date" behavior
-      this.element.setAttribute('type', 'text');
-      this.datePicker = new __WEBPACK_IMPORTED_MODULE_5__datePicker__["a" /* default */](_extends({}, this.options, {
-        lang: this.lang
-      }));
-      this.timePicker = new __WEBPACK_IMPORTED_MODULE_6__timePicker__["a" /* default */](_extends({}, this.options, {
-        lang: this.lang
-      }));
-      if (this.element.value) {
-        this.datePicker.value(this.element.value);
-        this.timePicker.value(this.element.value);
-      }
-
-      this.lang = this.options.lang;
-      // Set export format based on component type
-      this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : this.options.dateFormat + ' ' + this.options.timeFormat;
-
-      // Force dialog display mode on mobile devices
-      if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
-        this.options.displayMode = 'dialog';
-      }
-      if (window.matchMedia('screen and (max-width: 768px)').matches) {
-        if (this.options.displayMode === 'default') {
-          this.options.displayMode = 'dialog';
+    }, {
+        key: 'isOpen',
+        value: function isOpen() {
+            return this._open;
         }
-        this.options.displayDual = false;
-      }
 
-      this._build();
-      this._bindEvents();
-      this.save();
+        /**
+         * Get / Set datetimePicker value
+         * @param {*} date
+         */
 
-      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.onReady)) {
-        this.on('ready', this.options.onReady);
-      }
-      this.emit('ready', this);
-    }
+    }, {
+        key: 'value',
+        value: function value() {
+            var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-    /**
-     * Build datePicker HTML component and append it to the DOM
-     * @method _build
-     * @return {datePicker} Current plugin instance
-     */
+            // Set
+            if (_value) {
 
-  }, {
-    key: '_build',
-    value: function _build() {
-      var headerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_9__templates_header__["a" /* default */])(_extends({}, this.options, {
-        type: this._type,
-        datePicker: this.options.type !== 'time',
-        timePicker: this.options.type !== 'date'
-      })));
-      var footerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_10__templates_footer__["a" /* default */])(this.options));
-      var datetimePickerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates__["a" /* default */])(_extends({}, this.options, {
-        id: this.id
-      })));
+                this.datePicker.value(_value);
+                this.timePicker.value(_value);
 
-      // Save pointer to each datePicker element for later use
-      this._ui = {
-        modal: datetimePickerNode.querySelector('.modal'),
-        wrapper: datetimePickerNode.querySelector('.datetimepicker'),
-        container: datetimePickerNode.querySelector('.datetimepicker-container'),
-        dummy: {
-          container: datetimePickerNode.querySelector('.datetimepicker-dummy'),
-          wrapper: datetimePickerNode.querySelector('.datetimepicker-dummy-wrapper'),
-          dummy_1: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)'),
-          dummy_2: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)'),
-          clear: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-clear-button')
+                return;
+            }
+
+            // Get
+            var string = '';
+
+            switch (this.options.type) {
+
+                case 'date':
+                    string = this.datePicker.value();
+                    break;
+
+                case 'time':
+                    string = this.timePicker.value();
+                    break;
+
+                case 'datetime':
+
+                    var start = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.datePicker.start, __WEBPACK_IMPORTED_MODULE_2_date_fns__["getHours"](this.timePicker.start)), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMinutes"](this.timePicker.start))) : undefined;
+                    var end = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](this.datePicker.end) : undefined;
+
+                    if (end && this.options.isRange) {
+                        // This options is not required - in other place i set eod on date
+                        //end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
+                    }
+
+                    string = start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(start), this.format, { locale: this.locale }) : '';
+                    if (end) {
+                        string += ' - ' + (end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(end), this.format, { locale: this.locale }) : '');
+                    }
+                    break;
+
+            }
+
+            return string;
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+
+            this._ui.header.start.day.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'DD', { locale: this.locale }) : '--';
+            this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
+
+            if (this.datePicker.start) {
+                this._ui.header.start.weekday.classList.remove('is-hidden');
+                this._ui.header.start.weekday.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.start, 'dddd', { locale: this.locale }) : '';
+            } else {
+                this._ui.header.start.weekday.classList.add('is-hidden');
+            }
+
+            if (this._ui.header.start.hour) {
+
+                if (this.options.editTimeManually) {
+                    this._ui.header.start.inputHours.value = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH', { locale: this.locale }) : '--';
+                    this._ui.header.start.inputMinutes.value = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'mm', { locale: this.locale }) : '--';
+                } else {
+                    this._ui.header.start.hour.innerHTML = this.timePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.start, 'HH:mm', { locale: this.locale }) : '--:--';
+                }
+            }
+
+            if (this._ui.header.end) {
+
+                this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'DD', { locale: this.locale }) : '--';
+
+                this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
+
+                if (this.datePicker.end) {
+                    this._ui.header.end.weekday.classList.remove('is-hidden');
+                    this._ui.header.end.weekday.innerHTML = this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.datePicker.end, 'dddd', { locale: this.locale }) : '';
+                } else {
+                    this._ui.header.end.weekday.classList.add('is-hidden');
+                }
+
+                if (this._ui.header.end && this._ui.header.end.hour) {
+                    if (this.options.editTimeManually) {
+                        this._ui.header.end.inputHours.value = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH', { locale: this.locale }) : '--';
+                        this._ui.header.end.inputMinutes.value = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'mm', { locale: this.locale }) : '--';
+                    } else {
+                        this._ui.header.end.hour.innerHTML = this.timePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.timePicker.end, 'HH:mm', { locale: this.locale }) : '--:--';
+                    }
+                }
+            }
+
+            this.emit('refresh', this);
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+
+            this.datePicker.clear();
+            this.timePicker.clear();
+
+            this.refresh();
+
+            this.emit('clear', this);
+        }
+
+        /**
+         * Show datePicker HTML Component
+         * @method show
+         * @return {void}
+         */
+
+    }, {
+        key: 'show',
+        value: function show() {
+
+            this.datePicker.show();
+            this.timePicker.show();
+
+            if (this._ui.modal) {
+                this._ui.modal.classList.add('is-active');
+            }
+            this._ui.wrapper.classList.add('is-active');
+            this._open = true;
+
+            this.emit('show', this);
+        }
+
+        /**
+         * Toggle Component
+         */
+
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            if (this._open) {
+                this.hide();
+            } else {
+                this.show();
+            }
+        }
+
+        /**
+         * Hide datePicker HTML Component
+         * @method hide
+         * @return {void}
+         */
+
+    }, {
+        key: 'hide',
+        value: function hide() {
+
+            if (!this._open) return;
+
+            this.datePicker.hide();
+            this.timePicker.hide();
+
+            this._open = false;
+            this._focus = false;
+            if (this._ui.modal) {
+                this._ui.modal.classList.remove('is-active');
+            }
+            this._ui.wrapper.classList.remove('is-active');
+
+            this.emit('hide', this);
+        }
+
+        // Set element value to datetime selected based on format
+
+    }, {
+        key: 'save',
+        value: function save() {
+
+            var date = this.value();
+
+            var _date$split = date.split(' - '),
+                _date$split2 = _slicedToArray(_date$split, 2),
+                start = _date$split2[0],
+                end = _date$split2[1];
+
+            this.element.value = date;
+            this._ui.dummy.dummy_1.value = start ? start : '';
+
+            if (this._ui.dummy.dummy_2) {
+                this._ui.dummy.dummy_2.value = end ? end : '';
+            }
+
+            if (this.options.displayMode !== 'inline') {
+                this.hide();
+            }
+        }
+
+        /**
+         * Destroy datePicker
+         * @method destroy
+         * @return {[type]} [description]
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            this._ui.wrapper.remove();
+        }
+
+        /****************************************************
+         *                                                  *
+         * PRIVATE FUNCTIONS                                *
+         *                                                  *
+         ****************************************************/
+        /**
+         * Initiate plugin instance
+         * @method _init
+         * @return {datePicker} Current plugin instance
+         */
+
+    }, {
+        key: '_init',
+        value: function _init() {
+            this._open = false;
+            // Set component type (date / time / datetime)
+            // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
+            this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
+            // Change element type to prevent browser default type="date" behavior
+            this.element.setAttribute('type', 'text');
+            this.datePicker = new __WEBPACK_IMPORTED_MODULE_5__datePicker__["a" /* default */](_extends({}, this.options, {
+                lang: this.lang
+            }));
+            this.timePicker = new __WEBPACK_IMPORTED_MODULE_6__timePicker__["a" /* default */](_extends({}, this.options, {
+                lang: this.lang
+            }));
+            if (this.element.value) {
+                this.datePicker.value(this.element.value);
+                this.timePicker.value(this.element.value);
+            }
+
+            this.lang = this.options.lang;
+            // Set export format based on component type
+            this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : this.options.dateFormat + ' ' + this.options.timeFormat;
+
+            // Force dialog display mode on mobile devices
+            if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
+                this.options.displayMode = 'dialog';
+            }
+            if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                if (this.options.displayMode === 'default') {
+                    this.options.displayMode = 'dialog';
+                }
+                this.options.displayDual = false;
+            }
+
+            this._build();
+            this._bindEvents();
+            this.save();
+
+            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.onReady)) {
+                this.on('ready', this.options.onReady);
+            }
+            this.emit('ready', this);
+        }
+
+        /**
+         * Build datePicker HTML component and append it to the DOM
+         * @method _build
+         * @return {datePicker} Current plugin instance
+         */
+
+    }, {
+        key: '_build',
+        value: function _build() {
+            var headerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_9__templates_header__["a" /* default */])(_extends({}, this.options, {
+                type: this._type,
+                datePicker: this.options.type !== 'time',
+                timePicker: this.options.type !== 'date'
+            })));
+            var footerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_10__templates_footer__["a" /* default */])(this.options));
+            var datetimePickerNode = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates__["a" /* default */])(_extends({}, this.options, {
+                id: this.id
+            })));
+
+            // Save pointer to each datePicker element for later use
+            this._ui = {
+                modal: datetimePickerNode.querySelector('.modal'),
+                wrapper: datetimePickerNode.querySelector('.datetimepicker'),
+                container: datetimePickerNode.querySelector('.datetimepicker-container'),
+                dummy: {
+                    container: datetimePickerNode.querySelector('.datetimepicker-dummy'),
+                    wrapper: datetimePickerNode.querySelector('.datetimepicker-dummy-wrapper'),
+                    dummy_1: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(1)'),
+                    dummy_2: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-dummy-input:nth-child(2)'),
+                    clear: datetimePickerNode.querySelector('.datetimepicker-dummy .datetimepicker-clear-button')
+                },
+                calendar: datetimePickerNode.querySelector('.datetimepicker'),
+                overlay: this.options.displayMode === 'dialog' ? {
+                    background: datetimePickerNode.querySelector('.modal-background'),
+                    close: datetimePickerNode.querySelector('.modal-close')
+                } : undefined,
+                header: {
+                    container: headerNode.querySelector('.datetimepicker-header'),
+                    start: {
+                        container: headerNode.querySelector('.datetimepicker-selection-start'),
+                        day: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-day'),
+                        month: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-month'),
+                        weekday: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-weekday'),
+                        hour: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour'),
+                        inputHours: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour.editable .datetimepicker-selection-input-hours'),
+                        inputMinutes: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour.editable .datetimepicker-selection-input-minutes'),
+                        empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
+                    },
+                    end: this.options.isRange ? {
+                        container: headerNode.querySelector('.datetimepicker-selection-end'),
+                        day: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-day'),
+                        month: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-month'),
+                        weekday: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-weekday'),
+                        hour: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour'),
+                        inputHours: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour.editable .datetimepicker-selection-input-hours'),
+                        inputMinutes: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour.editable .datetimepicker-selection-input-minutes'),
+                        empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
+                    } : undefined
+                },
+                footer: {
+                    container: footerNode.querySelector('.datetimepicker-footer'),
+                    validate: footerNode.querySelector('.datetimepicker-footer-validate'),
+                    today: footerNode.querySelector('.datetimepicker-footer-today'),
+                    clear: footerNode.querySelector('.datetimepicker-footer-clear'),
+                    cancel: footerNode.querySelector('.datetimepicker-footer-cancel')
+                }
+            };
+
+            if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showHeader)) {
+                this._ui.header.container.classList.add('is-hidden');
+            }
+            if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showFooter)) {
+                this._ui.footer.container.classList.add('is-hidden');
+            }
+            if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showTodayButton)) {
+                this._ui.footer.today.classList.add('is-hidden');
+            }
+            if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showClearButton)) {
+                this._ui.footer.clear.classList.add('is-hidden');
+            }
+
+            if (this.options.closeOnSelect && this._ui.footer.validate) {
+                this._ui.footer.validate.classList.add('is-hidden');
+            }
+
+            this._ui.container.appendChild(headerNode);
+            switch (this._type) {
+                case 'date':
+                    this._ui.container.appendChild(this.datePicker.render());
+                    break;
+                case 'time':
+                    this._ui.container.appendChild(this.timePicker.render());
+                    if (this._ui.footer.validate) {
+                        this._ui.footer.validate.classList.remove('is-hidden');
+                    }
+                    if (this._ui.footer.today) {
+                        this._ui.footer.today.classList.add('is-hidden');
+                    }
+                    break;
+                case 'datetime':
+                    this.options.closeOnSelect = false;
+                    if (this._ui.footer.validate) {
+                        this._ui.footer.validate.classList.remove('is-hidden');
+                    }
+                    this._ui.container.appendChild(this.datePicker.render());
+                    this._ui.container.appendChild(this.timePicker.render());
+                    break;
+            }
+
+            this._ui.wrapper.appendChild(footerNode);
+            this._ui.wrapper.classList.add('is-' + this.options.color);
+            this._ui.dummy.container.classList.add('is-' + this.options.color);
+            // Add datepicker HTML element to Document Body
+            this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
+            this._ui.dummy.wrapper.appendChild(this.element);
+            this.element.classList.add('is-hidden');
+            // this.element.style.visibility = 'hidden';
+            // this.element.style.position = 'absolute';
+
+            if (this.options.displayMode === 'inline') {
+                this._ui.wrapper.classList.add('is-active');
+            } else {
+                this._ui.dummy.container.classList.remove('is-hidden');
+                this._ui.wrapper.style.position = 'absolute';
+                this._ui.wrapper.classList.add('is-datetimepicker-default');
+            }
+            this.refresh();
+        }
+
+        /**
+         * Bind all events
+         * @method _bindEvents
+         * @return {void}
+         */
+
+    }, {
+        key: '_bindEvents',
+        value: function _bindEvents() {
+            var _this2 = this;
+
+            this._clickEvents.forEach(function (clickEvent) {
+                document.body.addEventListener(clickEvent, _this2.onDocumentClickDateTimePicker);
+            });
+
+            this.datePicker.on('select', this.onSelectDateTimePicker);
+            this.timePicker.on('select', this.onSelectDateTimePicker);
+
+            // Bind event to element in order to display/hide datePicker on click
+            if (this.options.toggleOnInputClick === true) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this2._ui.dummy.wrapper.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
+                    _this2.element.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
+                });
+            }
+
+            // Bind change time events for header inputs
+            if (this.options.type !== 'date' && this.options.editTimeManually) {
+                // Bind event for start hours change
+                this._ui.header.start.inputHours.addEventListener('change', this.onChangeStartHoursManually);
+                this._ui.header.start.inputHours.addEventListener('click', this.onClickTimeManuallyInput);
+                // Bind event for start minutes change
+                this._ui.header.start.inputMinutes.addEventListener('change', this.onChangeStartMinutesManually);
+                this._ui.header.start.inputMinutes.addEventListener('click', this.onClickTimeManuallyInput);
+                if (this.options.isRange) {
+                    // Bind event for end hours change
+                    this._ui.header.end.inputHours.addEventListener('change', this.onChangeEndHoursManually);
+                    this._ui.header.end.inputHours.addEventListener('click', this.onClickTimeManuallyInput);
+                    // Bind event for end minutes change
+                    this._ui.header.end.inputMinutes.addEventListener('change', this.onChangeEndMinutesManually);
+                    this._ui.header.end.inputMinutes.addEventListener('click', this.onClickTimeManuallyInput);
+                }
+            }
+
+            if (this.options.displayMode === 'dialog' && this._ui.overlay) {
+                // Bind close event on Close button
+                if (this._ui.overlay.close) {
+                    this._clickEvents.forEach(function (clickEvent) {
+                        _this2.this._ui.overlay.close.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
+                    });
+                }
+                // Bind close event on overlay based on options
+                if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
+                    this._clickEvents.forEach(function (clickEvent) {
+                        _this2._ui.overlay.background.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
+                    });
+                }
+            }
+
+            if (this._ui.footer.validate) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this2._ui.footer.validate.addEventListener(clickEvent, _this2.onValidateClickDateTimePicker);
+                });
+            }
+            if (this._ui.footer.today) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this2._ui.footer.today.addEventListener(clickEvent, _this2.onTodayClickDateTimePicker);
+                });
+            }
+            if (this._ui.footer.clear) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this2._ui.footer.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
+                });
+            }
+            this._clickEvents.forEach(function (clickEvent) {
+                _this2._ui.dummy.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
+            });
+            if (this._ui.footer.cancel) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this2._ui.footer.cancel.addEventListener(clickEvent, _this2.onCancelClickDateTimePicker);
+                });
+            }
+        }
+    }, {
+        key: 'id',
+
+
+        /****************************************************
+         *                                                  *
+         * GETTERS and SETTERS                              *
+         *                                                  *
+         ****************************************************/
+
+        /**
+         * Get id of current instance
+         */
+        get: function get() {
+            return this._id;
+        }
+
+        // Set language
+
+    }, {
+        key: 'lang',
+        set: function set() {
+            var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+            try {
+                this._locale = __webpack_require__(15)("./" + lang + '/index.js');
+            } catch (e) {
+                lang = 'en';
+                this._locale = __webpack_require__(15)("./" + lang + '/index.js');
+            } finally {
+                this._lang = lang;
+                this.datePicker.lang = lang;
+                this.timePicker.lang = lang;
+                return this;
+            }
+        }
+
+        // Get current language
+        ,
+        get: function get() {
+            return this._lang;
+        }
+    }, {
+        key: 'locale',
+        get: function get() {
+            return this._locale;
+        }
+
+        // Set format (set to yyyy-mm-dd HH:mm:ss by default)
+
+    }, {
+        key: 'format',
+        set: function set(format) {
+            this._format = format;
+            return this;
+        }
+
+        // Get format
+        ,
+        get: function get() {
+            return this._format;
+        }
+
+        /**
+         * * Date setter and getter
+         */
+
+    }, {
+        key: 'date',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this.datePicker.date = date;
+            return this;
+        }
+
+        // Get date object
+        ,
+        get: function get() {
+            return this.datePicker.date;
+        }
+    }, {
+        key: 'startDate',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.datePicker.start = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            return this;
         },
-        calendar: datetimePickerNode.querySelector('.datetimepicker'),
-        overlay: this.options.displayMode === 'dialog' ? {
-          background: datetimePickerNode.querySelector('.modal-background'),
-          close: datetimePickerNode.querySelector('.modal-close')
-        } : undefined,
-        header: {
-          container: headerNode.querySelector('.datetimepicker-header'),
-          start: {
-            container: headerNode.querySelector('.datetimepicker-selection-start'),
-            day: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-day'),
-            month: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-month'),
-            weekday: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-weekday'),
-            hour: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour'),
-            inputHours: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour.editable .datetimepicker-selection-input-hours'),
-            inputMinutes: headerNode.querySelector('.datetimepicker-selection-start .datetimepicker-selection-hour.editable .datetimepicker-selection-input-minutes'),
-            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
-          },
-          end: this.options.isRange ? {
-            container: headerNode.querySelector('.datetimepicker-selection-end'),
-            day: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-day'),
-            month: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-month'),
-            weekday: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-weekday'),
-            hour: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour'),
-            inputHours: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour.editable .datetimepicker-selection-input-hours'),
-            inputMinutes: headerNode.querySelector('.datetimepicker-selection-end .datetimepicker-selection-hour.editable .datetimepicker-selection-input-minutes'),
-            empty: headerNode.querySelector('.datetimepicker-selection-start .empty')
-          } : undefined
+        get: function get() {
+            return this.datePicker.start;
+        }
+    }, {
+        key: 'endDate',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.datePicker.end = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            return this;
         },
-        footer: {
-          container: footerNode.querySelector('.datetimepicker-footer'),
-          validate: footerNode.querySelector('.datetimepicker-footer-validate'),
-          today: footerNode.querySelector('.datetimepicker-footer-today'),
-          clear: footerNode.querySelector('.datetimepicker-footer-clear'),
-          cancel: footerNode.querySelector('.datetimepicker-footer-cancel')
+        get: function get() {
+            return this.datePicker.end;
         }
-      };
 
-      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showHeader)) {
-        this._ui.header.container.classList.add('is-hidden');
-      }
-      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showFooter)) {
-        this._ui.footer.container.classList.add('is-hidden');
-      }
-      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showTodayButton)) {
-        this._ui.footer.today.classList.add('is-hidden');
-      }
-      if (!__WEBPACK_IMPORTED_MODULE_1__utils_type__["a" /* BooleanParse */](this.options.showClearButton)) {
-        this._ui.footer.clear.classList.add('is-hidden');
-      }
+        /**
+         * minDate getter and setters
+         */
 
-      if (this.options.closeOnSelect && this._ui.footer.validate) {
-        this._ui.footer.validate.classList.add('is-hidden');
-      }
+    }, {
+        key: 'minDate',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-      this._ui.container.appendChild(headerNode);
-      switch (this._type) {
-        case 'date':
-          this._ui.container.appendChild(this.datePicker.render());
-          break;
-        case 'time':
-          this._ui.container.appendChild(this.timePicker.render());
-          if (this._ui.footer.validate) {
-            this._ui.footer.validate.classList.remove('is-hidden');
-          }
-          if (this._ui.footer.today) {
-            this._ui.footer.today.classList.add('is-hidden');
-          }
-          break;
-        case 'datetime':
-          this.options.closeOnSelect = false;
-          if (this._ui.footer.validate) {
-            this._ui.footer.validate.classList.remove('is-hidden');
-          }
-          this._ui.container.appendChild(this.datePicker.render());
-          this._ui.container.appendChild(this.timePicker.render());
-          break;
-      }
-
-      this._ui.wrapper.appendChild(footerNode);
-      this._ui.wrapper.classList.add('is-' + this.options.color);
-      this._ui.dummy.container.classList.add('is-' + this.options.color);
-      // Add datepicker HTML element to Document Body
-      this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
-      this._ui.dummy.wrapper.appendChild(this.element);
-      this.element.classList.add('is-hidden');
-      // this.element.style.visibility = 'hidden';
-      // this.element.style.position = 'absolute';
-
-      if (this.options.displayMode === 'inline') {
-        this._ui.wrapper.classList.add('is-active');
-      } else {
-        this._ui.dummy.container.classList.remove('is-hidden');
-        this._ui.wrapper.style.position = 'absolute';
-        this._ui.wrapper.classList.add('is-datetimepicker-default');
-      }
-      this.refresh();
-    }
-
-    /**
-     * Bind all events
-     * @method _bindEvents
-     * @return {void}
-     */
-
-  }, {
-    key: '_bindEvents',
-    value: function _bindEvents() {
-      var _this2 = this;
-
-      this._clickEvents.forEach(function (clickEvent) {
-        document.body.addEventListener(clickEvent, _this2.onDocumentClickDateTimePicker);
-      });
-
-      this.datePicker.on('select', this.onSelectDateTimePicker);
-      this.datePicker.on('select:start', this.onSelectDateTimePicker);
-      this.datePicker.on('select:end', this.onSelectDateTimePicker);
-      this.timePicker.on('select', this.onSelectDateTimePicker);
-      this.timePicker.on('select:start', this.onSelectDateTimePicker);
-      this.timePicker.on('select:end', this.onSelectDateTimePicker);
-
-      // Bind event to element in order to display/hide datePicker on click
-      if (this.options.toggleOnInputClick === true) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.dummy.wrapper.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
-          _this2.element.addEventListener(clickEvent, _this2.onToggleDateTimePicker);
-        });
-      }
-
-      // Bind change time events for header inputs
-      if (this.options.type !== 'date' && this.options.editTimeManually) {
-        // Bind event for start hours change
-        this._ui.header.start.inputHours.addEventListener('change', this.onChangeStartHoursManually);
-        this._ui.header.start.inputHours.addEventListener('click', this.onClickTimeManuallyInput);
-        // Bind event for start minutes change
-        this._ui.header.start.inputMinutes.addEventListener('change', this.onChangeStartMinutesManually);
-        this._ui.header.start.inputMinutes.addEventListener('click', this.onClickTimeManuallyInput);
-        if (this.options.isRange) {
-          // Bind event for end hours change
-          this._ui.header.end.inputHours.addEventListener('change', this.onChangeEndHoursManually);
-          this._ui.header.end.inputHours.addEventListener('click', this.onClickTimeManuallyInput);
-          // Bind event for end minutes change
-          this._ui.header.end.inputMinutes.addEventListener('change', this.onChangeEndMinutesManually);
-          this._ui.header.end.inputMinutes.addEventListener('click', this.onClickTimeManuallyInput);
+            this.datePicker.minDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            return this;
         }
-      }
 
-      if (this.options.displayMode === 'dialog' && this._ui.overlay) {
-        // Bind close event on Close button
-        if (this._ui.overlay.close) {
-          this._clickEvents.forEach(function (clickEvent) {
-            _this2.this._ui.overlay.close.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
-          });
+        // Get minDate
+        ,
+        get: function get() {
+            return this.datePicker.minDate;
         }
-        // Bind close event on overlay based on options
-        if (this.options.closeOnOverlayClick && this._ui.overlay.background) {
-          this._clickEvents.forEach(function (clickEvent) {
-            _this2._ui.overlay.background.addEventListener(clickEvent, _this2.onCloseDateTimePicker);
-          });
+
+        // Set maxDate
+
+    }, {
+        key: 'maxDate',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.datePicker.maxDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            return this;
         }
-      }
 
-      if (this._ui.footer.validate) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.validate.addEventListener(clickEvent, _this2.onValidateClickDateTimePicker);
-        });
-      }
-      if (this._ui.footer.today) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.today.addEventListener(clickEvent, _this2.onTodayClickDateTimePicker);
-        });
-      }
-      if (this._ui.footer.clear) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
-        });
-      }
-      this._clickEvents.forEach(function (clickEvent) {
-        _this2._ui.dummy.clear.addEventListener(clickEvent, _this2.onClearClickDateTimePicker);
-      });
-      if (this._ui.footer.cancel) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this2._ui.footer.cancel.addEventListener(clickEvent, _this2.onCancelClickDateTimePicker);
-        });
-      }
-    }
-  }, {
-    key: 'id',
-
-
-    /****************************************************
-     *                                                  *
-     * GETTERS and SETTERS                              *
-     *                                                  *
-     ****************************************************/
-
-    /**
-     * Get id of current instance
-     */
-    get: function get() {
-      return this._id;
-    }
-
-    // Set language
-
-  }, {
-    key: 'lang',
-    set: function set() {
-      var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
-
-      try {
-        this._locale = __webpack_require__(15)("./" + lang + '/index.js');
-      } catch (e) {
-        lang = 'en';
-        this._locale = __webpack_require__(15)("./" + lang + '/index.js');
-      } finally {
-        this._lang = lang;
-        this.datePicker.lang = lang;
-        this.timePicker.lang = lang;
-        return this;
-      }
-    }
-    // Get current language
-    ,
-    get: function get() {
-      return this._lang;
-    }
-  }, {
-    key: 'locale',
-    get: function get() {
-      return this._locale;
-    }
-
-    // Set format (set to yyyy-mm-dd HH:mm:ss by default)
-
-  }, {
-    key: 'format',
-    set: function set(format) {
-      this._format = format;
-      return this;
-    }
-    // Get format
-    ,
-    get: function get() {
-      return this._format;
-    }
-
-    /**
-     * * Date setter and getter
-     */
-
-  }, {
-    key: 'date',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      this.datePicker.date = date;
-      return this;
-    }
-    // Get date object
-    ,
-    get: function get() {
-      return this.datePicker.date;
-    }
-  }, {
-    key: 'startDate',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.datePicker.start = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
-      return this;
-    },
-    get: function get() {
-      return this.datePicker.start;
-    }
-  }, {
-    key: 'endDate',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.datePicker.end = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
-      return this;
-    },
-    get: function get() {
-      return this.datePicker.end;
-    }
-
-    /**
-     * minDate getter and setters
-     */
-
-  }, {
-    key: 'minDate',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.datePicker.minDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
-      return this;
-    }
-    // Get minDate
-    ,
-    get: function get() {
-      return this.datePicker.minDate;
-    }
-
-    // Set maxDate
-
-  }, {
-    key: 'maxDate',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.datePicker.maxDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
-      return this;
-    }
-    // Get maxDate
-    ,
-    get: function get() {
-      return this.datePicker.maxDate;
-    }
-
-    // Set dateFormat (set to yyyy-mm-dd by default)
-
-  }, {
-    key: 'dateFormat',
-    set: function set(dateFormat) {
-      this.datePicker.dateFormat = dateFormat;
-      return this;
-    }
-    // Get dateFormat
-    ,
-    get: function get() {
-      return this.datePicker.dateFormat;
-    }
-
-    /**
-     * * Time setter and getter
-     */
-
-  }, {
-    key: 'time',
-    set: function set() {
-      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      this.timePicker.time = time;
-      return this;
-    }
-    // Get time object
-    ,
-    get: function get() {
-      return this.timePicker.time;
-    }
-  }, {
-    key: 'startTime',
-    set: function set() {
-      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.timePicker.start = time;
-      return this;
-    },
-    get: function get() {
-      return this.timePicker.start;
-    }
-  }, {
-    key: 'endTime',
-    set: function set() {
-      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.timePicker.end = time;
-      return this;
-    },
-    get: function get() {
-      return this.timePicker.end;
-    }
-
-    /**
-     * minTime getter and setters
-     */
-
-  }, {
-    key: 'minTime',
-    set: function set() {
-      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.timePicker.minTime = time;
-      return this;
-    }
-    // Get minTime
-    ,
-    get: function get() {
-      return this.timePicker.minTime;
-    }
-
-    // Set maxTime
-
-  }, {
-    key: 'maxTime',
-    set: function set() {
-      var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.timePicker.maxTime = time;
-      return this;
-    }
-    // Get maxTime
-    ,
-    get: function get() {
-      return this.timePicker.maxTime;
-    }
-
-    // Set timeFormat (set to HH:MM:SS by default)
-
-  }, {
-    key: 'timeFormat',
-    set: function set(timeFormat) {
-      this.timePicker.dateFormat = timeFormat;
-      return this;
-    }
-    // Get timeFormat
-    ,
-    get: function get() {
-      return this.timePicker.timeFormat;
-    }
-  }], [{
-    key: 'attach',
-    value: function attach() {
-      var _this3 = this;
-
-      var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'input[type="date"]';
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var instances = new Array();
-
-      var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
-      [].forEach.call(elements, function (element) {
-        if (typeof element[_this3.constructor.name] === 'undefined') {
-          var instance = new bulmaCalendar(element, options);
-          element.bulmaCalendar = instance;
-          instances.push(instance);
-        } else {
-          instances.push(element[_this3.constructor.name]);
+        // Get maxDate
+        ,
+        get: function get() {
+            return this.datePicker.maxDate;
         }
-      });
 
-      return instances;
-    }
-  }]);
+        // Set dateFormat (set to yyyy-mm-dd by default)
 
-  return bulmaCalendar;
+    }, {
+        key: 'dateFormat',
+        set: function set(dateFormat) {
+            this.datePicker.dateFormat = dateFormat;
+            return this;
+        }
+
+        // Get dateFormat
+        ,
+        get: function get() {
+            return this.datePicker.dateFormat;
+        }
+
+        /**
+         * * Time setter and getter
+         */
+
+    }, {
+        key: 'time',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this.timePicker.time = time;
+            return this;
+        }
+
+        // Get time object
+        ,
+        get: function get() {
+            return this.timePicker.time;
+        }
+    }, {
+        key: 'startTime',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.timePicker.start = time;
+            return this;
+        },
+        get: function get() {
+            return this.timePicker.start;
+        }
+    }, {
+        key: 'endTime',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.timePicker.end = time;
+            return this;
+        },
+        get: function get() {
+            return this.timePicker.end;
+        }
+
+        /**
+         * minTime getter and setters
+         */
+
+    }, {
+        key: 'minTime',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.timePicker.minTime = time;
+            return this;
+        }
+
+        // Get minTime
+        ,
+        get: function get() {
+            return this.timePicker.minTime;
+        }
+
+        // Set maxTime
+
+    }, {
+        key: 'maxTime',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this.timePicker.maxTime = time;
+            return this;
+        }
+
+        // Get maxTime
+        ,
+        get: function get() {
+            return this.timePicker.maxTime;
+        }
+
+        // Set timeFormat (set to HH:MM:SS by default)
+
+    }, {
+        key: 'timeFormat',
+        set: function set(timeFormat) {
+            this.timePicker.dateFormat = timeFormat;
+            return this;
+        }
+
+        // Get timeFormat
+        ,
+        get: function get() {
+            return this.timePicker.timeFormat;
+        }
+    }], [{
+        key: 'attach',
+        value: function attach() {
+            var _this3 = this;
+
+            var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'input[type="date"]';
+            var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            var instances = new Array();
+
+            var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+            [].forEach.call(elements, function (element) {
+                if (typeof element[_this3.constructor.name] === 'undefined') {
+                    var instance = new bulmaCalendar(element, options);
+                    element.bulmaCalendar = instance;
+                    instances.push(instance);
+                } else {
+                    instances.push(element[_this3.constructor.name]);
+                }
+            });
+
+            return instances;
+        }
+    }]);
+
+    return bulmaCalendar;
 }(__WEBPACK_IMPORTED_MODULE_4__utils_events__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["default"] = (bulmaCalendar);
@@ -15743,917 +15751,927 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var datePicker = function (_EventEmitter) {
-  _inherits(datePicker, _EventEmitter);
+    _inherits(datePicker, _EventEmitter);
 
-  function datePicker() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    function datePicker() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-    _classCallCheck(this, datePicker);
+        _classCallCheck(this, datePicker);
 
-    var _this = _possibleConstructorReturn(this, (datePicker.__proto__ || Object.getPrototypeOf(datePicker)).call(this));
+        var _this = _possibleConstructorReturn(this, (datePicker.__proto__ || Object.getPrototypeOf(datePicker)).call(this));
 
-    _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_9__defaultOptions__["a" /* default */], options);
+        _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_9__defaultOptions__["a" /* default */], options);
 
-    _this._clickEvents = ['click', 'touch'];
-    _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* detectSupportsPassive */]();
-    _this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('datePicker');
-    _this.node = null;
+        _this._clickEvents = ['click', 'touch'];
+        _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* detectSupportsPassive */]();
+        _this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('datePicker');
+        _this.node = null;
 
-    _this.onPreviousDatePicker = _this.onPreviousDatePicker.bind(_this);
-    _this.onNextDatePicker = _this.onNextDatePicker.bind(_this);
-    _this.onSelectMonthDatePicker = _this.onSelectMonthDatePicker.bind(_this);
-    _this.onMonthClickDatePicker = _this.onMonthClickDatePicker.bind(_this);
-    _this.onSelectYearDatePicker = _this.onSelectYearDatePicker.bind(_this);
-    _this.onYearClickDatePicker = _this.onYearClickDatePicker.bind(_this);
-    _this.onDateClickDatePicker = _this.onDateClickDatePicker.bind(_this);
+        _this.onPreviousDatePicker = _this.onPreviousDatePicker.bind(_this);
+        _this.onNextDatePicker = _this.onNextDatePicker.bind(_this);
+        _this.onSelectMonthDatePicker = _this.onSelectMonthDatePicker.bind(_this);
+        _this.onMonthClickDatePicker = _this.onMonthClickDatePicker.bind(_this);
+        _this.onSelectYearDatePicker = _this.onSelectYearDatePicker.bind(_this);
+        _this.onYearClickDatePicker = _this.onYearClickDatePicker.bind(_this);
+        _this.onDateClickDatePicker = _this.onDateClickDatePicker.bind(_this);
 
-    _this._init();
-    return _this;
-  }
-
-  /****************************************************
-   *                                                  *
-   * GETTERS and SETTERS                              *
-   *                                                  *
-   ****************************************************/
-  /**
-   * Get id of current datePicker
-   */
-
-
-  _createClass(datePicker, [{
-    key: 'onPreviousDatePicker',
-
-
-    /****************************************************
-     *                                                  *
-     * EVENTS FUNCTIONS                                 *
-     *                                                  *
-     ****************************************************/
-    value: function onPreviousDatePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      var prevMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["lastDayOfMonth"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["subMonths"](new Date(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getYear"](this._visibleDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMonth"](this._visibleDate)), 1));
-      var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDaysInMonth"](prevMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getDate"](this._visibleDate));
-      this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](prevMonth, day), this.min) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](prevMonth, day);
-
-      this.refresh();
-    }
-  }, {
-    key: 'onNextDatePicker',
-    value: function onNextDatePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      var nextMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](this._visibleDate, 1);
-      var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDaysInMonth"](nextMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getDate"](this._visibleDate));
-      this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](nextMonth, day), this.max) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](nextMonth, day);
-
-      this.refresh();
-    }
-  }, {
-    key: 'onSelectMonthDatePicker',
-    value: function onSelectMonthDatePicker(e) {
-      e.stopPropagation();
-
-      if (this.options.enableMonthSwitch) {
-        this._ui.body.dates.classList.remove('is-active');
-        this._ui.body.years.classList.remove('is-active');
-        this._ui.body.months.classList.add('is-active');
-        this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-        this._ui.navigation.next.setAttribute('disabled', 'disabled');
-      }
-    }
-  }, {
-    key: 'onSelectYearDatePicker',
-    value: function onSelectYearDatePicker(e) {
-      e.stopPropagation();
-
-      if (this.options.enableYearSwitch) {
-        this._ui.body.dates.classList.remove('is-active');
-        this._ui.body.months.classList.remove('is-active');
-        this._ui.body.years.classList.add('is-active');
-        this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-        this._ui.navigation.next.setAttribute('disabled', 'disabled');
-
-        var currentYear = this._ui.body.years.querySelector('.calendar-year.is-active');
-        if (currentYear) {
-          this._ui.body.years.scrollTop = currentYear.offsetTop - this._ui.body.years.offsetTop - this._ui.body.years.clientHeight / 2;
-        }
-      }
-    }
-  }, {
-    key: 'onMonthClickDatePicker',
-    value: function onMonthClickDatePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-
-      e.stopPropagation();
-      var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["setMonth"](this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
-      this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](newDate, this.min) : newDate;
-      this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](this._visibleDate, this.max) : this._visibleDate;
-
-      this.refresh();
-    }
-  }, {
-    key: 'onYearClickDatePicker',
-    value: function onYearClickDatePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-
-      e.stopPropagation();
-      var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["setYear"](this._visibleDate, parseInt(e.currentTarget.dataset.year));
-      this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](newDate, this.min) : newDate;
-      this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](this._visibleDate, this.max) : this._visibleDate;
-
-      this.refresh();
-    }
-  }, {
-    key: 'onDateClickDatePicker',
-    value: function onDateClickDatePicker(e) {
-      if (!this._supportsPassive) {
-        e.preventDefault();
-      }
-      e.stopPropagation();
-
-      if (!e.currentTarget.classList.contains('is-disabled')) {
-        this._select(e.currentTarget.dataset.date);
-
-        this.refresh();
-      }
+        _this._init();
+        return _this;
     }
 
     /****************************************************
      *                                                  *
-     * PUBLIC FUNCTIONS                                 *
+     * GETTERS and SETTERS                              *
      *                                                  *
      ****************************************************/
-
-  }, {
-    key: 'isRange',
-    value: function isRange() {
-      return this.options.isRange;
-    }
-  }, {
-    key: 'enableDate',
-    value: function enableDate() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      var index = this.disabledDates.findIndex(function (disableDate) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disableDate, date);
-      });
-      if (index > -1) {
-        unset(this.disabledDates[index]);
-      }
-    }
-  }, {
-    key: 'disableDate',
-    value: function disableDate() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      var index = this.disabledDates.findIndex(function (disableDate) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disableDate, date);
-      });
-      if (index > -1) {
-        this.disabledDates.push(date);
-      }
-    }
-  }, {
-    key: 'highlightDate',
-    value: function highlightDate() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      var index = this.highlightedDates.findIndex(function (highlightDate) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
-      });
-      if (index > -1) {
-        unset(this.highlightedDates[index]);
-      }
-    }
-  }, {
-    key: 'unhighlightDate',
-    value: function unhighlightDate() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      var index = this.highlightedDates.findIndex(function (highlightDate) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
-      });
-      if (index > -1) {
-        this.highlightedDates.push(date);
-      }
-    }
-  }, {
-    key: 'enableWeekDay',
-    value: function enableWeekDay(day) {
-      var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disabledWeekDay, day);
-      });
-      if (index > -1) {
-        unset(this.disabledWeekDays[index]);
-      }
-    }
-  }, {
-    key: 'disableWeekDay',
-    value: function disableWeekDay(day) {
-      var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disabledWeekDay, date);
-      });
-      if (index > -1) {
-        this.disabledWeekDays.push(day);
-      }
-    }
-  }, {
-    key: 'show',
-    value: function show() {
-      if (!this._open) {
-        this._ui.body.dates.classList.add('is-active');
-        this._ui.body.months.classList.remove('is-active');
-        this._ui.body.years.classList.remove('is-active');
-        this._ui.navigation.previous.removeAttribute('disabled');
-        this._ui.navigation.next.removeAttribute('disabled');
-        this._ui.container.classList.add('is-active');
-        this._open = true;
-        this._focus = true;
-
-        this.emit('show', this);
-      }
-    }
-  }, {
-    key: 'hide',
-    value: function hide() {
-      if (this._open) {
-        this._open = false;
-        this._focus = false;
-        this._ui.container.classList.remove('is-active');
-        this.emit('hide', this);
-      }
-    }
-  }, {
-    key: 'toggle',
-    value: function toggle() {
-      if (!this._open) {
-        this.show();
-      } else {
-        this.hide();
-      }
-    }
-
     /**
-     * Get / Set datePicker value
-     * @param {null|Date|Object|String} date optional if null then return the current date as String
+     * Get id of current datePicker
      */
 
-  }, {
-    key: 'value',
-    value: function value() {
-      var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-      if (_value) {
-        if (this.options.isRange) {
-          if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
-            var dates = _value.split(' - ');
-            if (dates.length) {
-              this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(dates[0]), this.format, {
-                locale: this.locale
-              });
+    _createClass(datePicker, [{
+        key: 'onPreviousDatePicker',
+
+
+        /****************************************************
+         *                                                  *
+         * EVENTS FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+        value: function onPreviousDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
             }
-            if (dates.length === 2) {
-              this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(dates[1]), this.format, {
-                locale: this.locale
-              });
+            e.stopPropagation();
+
+            var prevMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["lastDayOfMonth"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["subMonths"](new Date(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getYear"](this._visibleDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getMonth"](this._visibleDate)), 1));
+            var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDaysInMonth"](prevMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getDate"](this._visibleDate));
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](prevMonth, day), this.min) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](prevMonth, day);
+
+            this.refresh();
+        }
+    }, {
+        key: 'onNextDatePicker',
+        value: function onNextDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
             }
-          }
-          if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](_value)) {
-            this._select(_value);
-          }
-        } else {
-          if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
-            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(_value), this.format, {
-              locale: this.locale
+            e.stopPropagation();
+
+            var nextMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](this._visibleDate, 1);
+            var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDaysInMonth"](nextMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["getDate"](this._visibleDate));
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](nextMonth, day), this.max) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["setDate"](nextMonth, day);
+
+            this.refresh();
+        }
+    }, {
+        key: 'onSelectMonthDatePicker',
+        value: function onSelectMonthDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            if (this.options.enableMonthSwitch) {
+                this._ui.body.dates.classList.remove('is-active');
+                this._ui.body.years.classList.remove('is-active');
+                this._ui.body.months.classList.add('is-active');
+                this._ui.navigation.previous.setAttribute('disabled', 'disabled');
+                this._ui.navigation.next.setAttribute('disabled', 'disabled');
+            }
+        }
+    }, {
+        key: 'onSelectYearDatePicker',
+        value: function onSelectYearDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            if (this.options.enableYearSwitch) {
+                this._ui.body.dates.classList.remove('is-active');
+                this._ui.body.months.classList.remove('is-active');
+                this._ui.body.years.classList.add('is-active');
+                this._ui.navigation.previous.setAttribute('disabled', 'disabled');
+                this._ui.navigation.next.setAttribute('disabled', 'disabled');
+
+                var currentYear = this._ui.body.years.querySelector('.calendar-year.is-active');
+                if (currentYear) {
+                    this._ui.body.years.scrollTop = currentYear.offsetTop - this._ui.body.years.offsetTop - this._ui.body.years.clientHeight / 2;
+                }
+            }
+        }
+    }, {
+        key: 'onMonthClickDatePicker',
+        value: function onMonthClickDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["setMonth"](this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](newDate, this.min) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](this._visibleDate, this.max) : this._visibleDate;
+
+            this.refresh();
+        }
+    }, {
+        key: 'onYearClickDatePicker',
+        value: function onYearClickDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["setYear"](this._visibleDate, parseInt(e.currentTarget.dataset.year));
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["max"](newDate, this.min) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["min"](this._visibleDate, this.max) : this._visibleDate;
+
+            this.refresh();
+        }
+    }, {
+        key: 'onDateClickDatePicker',
+        value: function onDateClickDatePicker(e) {
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            if (!e.currentTarget.classList.contains('is-disabled')) {
+                this._select(e.currentTarget.dataset.date);
+                this.refresh();
+            }
+        }
+
+        /****************************************************
+         *                                                  *
+         * PUBLIC FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+
+    }, {
+        key: 'isRange',
+        value: function isRange() {
+            return this.options.isRange;
+        }
+    }, {
+        key: 'enableDate',
+        value: function enableDate() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            var index = this.disabledDates.findIndex(function (disableDate) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disableDate, date);
             });
-            this.end = undefined;
-          }
-
-          if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](_value)) {
-            this._select(_value);
-          }
+            if (index > -1) {
+                unset(this.disabledDates[index]);
+            }
         }
-      } else {
-        var string = this.start && this._isValidDate(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, {
-          locale: this.locale
-        }) : '';
+    }, {
+        key: 'disableDate',
+        value: function disableDate() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-        if (this.options.isRange) {
-          if (this.end && this._isValidDate(this.end)) {
-            string += ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, this.format, { locale: this.locale });
-          }
+            var index = this.disabledDates.findIndex(function (disableDate) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disableDate, date);
+            });
+            if (index > -1) {
+                this.disabledDates.push(date);
+            }
         }
-        return string;
-      }
-    }
+    }, {
+        key: 'highlightDate',
+        value: function highlightDate() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-    /**
-     * Refresh datepicker with new year/month days
-     * @method _refreshdatepicker
-     * @return {[type]}        [description]
-     */
-
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      var _this2 = this;
-
-      this._ui.body.dates.innerHTML = '';
-
-      // the 12 months of the year (Jan-SDecat)
-      var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfYear"](this._visibleDate)).map(function (d, i) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](d, i), 'MM', {
-          locale: _this2.locale
-        });
-      });
-      this._ui.body.months.innerHTML = '';
-      this._ui.body.months.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_months__["a" /* default */])({
-        months: monthLabels,
-        locale: this.locale
-      })));
-      var months = this._ui.body.months.querySelectorAll('.datepicker-month') || [];
-      months.forEach(function (month) {
-        _this2._clickEvents.forEach(function (clickEvent) {
-          month.addEventListener(clickEvent, _this2.onMonthClickDatePicker);
-        });
-        month.classList.remove('is-active');
-        if (month.dataset.month === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'MM', {
-          locale: _this2.locale
-        })) {
-          month.classList.add('is-active');
+            var index = this.highlightedDates.findIndex(function (highlightDate) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
+            });
+            if (index > -1) {
+                unset(this.highlightedDates[index]);
+            }
         }
-      });
+    }, {
+        key: 'unhighlightDate',
+        value: function unhighlightDate() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-      var yearLabels = new Array(this.options.displayYearsCount * 2).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["subYears"](this._visibleDate, this.options.displayYearsCount)).map(function (d, i) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addYears"](d, i), 'YYYY', {
-          locale: _this2.locale
-        });
-      });
-      this._ui.body.years.innerHTML = '';
-      this._ui.body.years.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates_years__["a" /* default */])({
-        visibleDate: this._visibleDate,
-        years: yearLabels
-      })));
-      var years = this._ui.body.years.querySelectorAll('.datepicker-year') || [];
-      years.forEach(function (year) {
-        _this2._clickEvents.forEach(function (clickEvent) {
-          year.addEventListener(clickEvent, _this2.onYearClickDatePicker);
-        });
-        year.classList.remove('is-active');
-        if (year.dataset.year === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'YYYY', {
-          locale: _this2.locale
-        })) {
-          year.classList.add('is-active');
+            var index = this.highlightedDates.findIndex(function (highlightDate) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](highlightDate, date);
+            });
+            if (index > -1) {
+                this.highlightedDates.push(date);
+            }
         }
-      });
+    }, {
+        key: 'enableWeekDay',
+        value: function enableWeekDay(day) {
+            var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disabledWeekDay, day);
+            });
+            if (index > -1) {
+                unset(this.disabledWeekDays[index]);
+            }
+        }
+    }, {
+        key: 'disableWeekDay',
+        value: function disableWeekDay(day) {
+            var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](disabledWeekDay, date);
+            });
+            if (index > -1) {
+                this.disabledWeekDays.push(day);
+            }
+        }
+    }, {
+        key: 'show',
+        value: function show() {
 
-      // the 7 days of the week (Sun-Sat)
-      var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
-        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i), 'ddd', {
-          locale: _this2.locale
-        });
-      });
-      this._ui.body.dates.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates_weekdays__["a" /* default */])({
-        weekdays: weekdayLabels
-      })));
+            if (this._open) return;
 
-      if (this.min && __WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInMonths"](this._visibleDate, this.min) === 0) {
-        this._togglePreviousButton(false);
-      } else {
-        this._togglePreviousButton();
-      }
+            this._ui.body.dates.classList.add('is-active');
+            this._ui.body.months.classList.remove('is-active');
+            this._ui.body.years.classList.remove('is-active');
+            this._ui.navigation.previous.removeAttribute('disabled');
+            this._ui.navigation.next.removeAttribute('disabled');
+            this._ui.container.classList.add('is-active');
 
-      if (this.max && __WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInMonths"](this._visibleDate, this.max) === 0) {
-        this._toggleNextButton(false);
-      } else {
-        this._toggleNextButton();
-      }
+            this._open = true;
+            this._focus = true;
 
-      this._ui.navigation.month.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this._visibleDate, this.options.navigationMonthFormat, {
-        locale: this.locale
-      });
-      this._ui.navigation.year.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this._visibleDate, this.options.navigationYearFormat, {
-        locale: this.locale
-      });
+            this.emit('show', this);
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
 
-      this._renderDays();
+            if (!this._open) return;
 
-      this._ui.body.dates.classList.add('is-active');
-      this._ui.body.months.classList.remove('is-active');
-      this._ui.body.years.classList.remove('is-active');
-      this._ui.navigation.previous.removeAttribute('disabled');
-      this._ui.navigation.next.removeAttribute('disabled');
+            this._open = false;
+            this._focus = false;
 
-      return this;
-    }
-  }, {
-    key: 'clear',
-    value: function clear() {
-      var today = new Date();
-      this._date = {
-        start: undefined,
-        end: undefined
-      };
-      this._visibleDate = this._isValidDate(today, this.min, this.max) ? today : this.min;
-      this.refresh();
-    }
-  }, {
-    key: 'snapshot',
-    value: function snapshot() {
-      this._snapshots.push(_extends({}, this._date));
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      this.refresh();
-      return this.node;
-    }
+            this._ui.container.classList.remove('is-active');
 
-    /****************************************************
-     *                                                  *
-     * PRIVATE FUNCTIONS                                *
-     *                                                  *
-     ****************************************************/
+            this.emit('hide', this);
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            if (!this._open) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        }
 
-  }, {
-    key: '_init',
-    value: function _init() {
-      var today = new Date();
+        /**
+         * Get / Set datePicker value
+         * @param {null|Date|Object|String} date optional if null then return the current date as String
+         */
 
-      this._open = false;
-      this._snapshots = [];
-      this.lang = this.options.lang;
-      this.format = this.options.dateFormat || 'MM/DD/YYYY';
-      this.disabledDates = Array.isArray(this.options.disabledDates) ? this.options.disabledDates : [];
-      for (var i = 0; i < this.disabledDates.length; i++) {
-        // this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
-        // 	locale: this.locale
-        // });
+    }, {
+        key: 'value',
+        value: function value() {
+            var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-        this.disabledDates[i] = new Date(this.disabledDates[i].getFullYear(), this.disabledDates[i].getMonth(), this.disabledDates[i].getDate());
-      }
+            // Set
+            if (_value) {
 
-      this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
-      for (var i = 0; i < this.highlightedDates.length; i++) {
-        this.highlightedDates[i] = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.highlightedDates[i], this.format, {
-          locale: this.locale
-        });
-      }
+                if (this.options.isRange && __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
 
-      this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
-      this.min = this.options.minDate;
-      this.max = this.options.maxDate;
-      this._date = {
-        start: this.options.startDate,
-        end: this.options.isRange ? this.options.endDate : undefined
-      };
-      this._visibleDate = this._isValidDate(this.start) ? this.start : this._isValidDate(today, this.min, this.max) ? today : this.min;
+                    var dates = _value.split(' - ');
 
-      this._build();
-      this._bindEvents();
+                    if (dates.length) this.start = new Date(dates[0]);
+                    if (dates.length === 2) this.end = new Date(dates[1]);
+                } else {
+                    this._select(_value, false);
+                }
 
-      this.emit('ready', this);
-    }
-  }, {
-    key: '_build',
-    value: function _build() {
-      this.node = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_4__templates_datepicker__["a" /* default */])({
-        locale: this.locale,
-        visibleDate: this._visibleDate,
-        icons: this.options.icons
-      }));
+                return;
+            }
 
-      this._ui = {
-        container: this.node.firstChild,
-        navigation: {
-          container: this.node.querySelector('.datepicker-nav'),
-          previous: this.node.querySelector('.datepicker-nav-previous'),
-          next: this.node.querySelector('.datepicker-nav-next'),
-          month: this.node.querySelector('.datepicker-nav-month'),
-          year: this.node.querySelector('.datepicker-nav-year')
+            // Get
+            var string = this._isValidDate(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, { locale: this.locale }) : '';
+
+            if (this.options.isRange && this._isValidDate(this.end)) {
+                string += ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, this.format, { locale: this.locale });
+            }
+
+            return string;
+        }
+
+        /**
+         * Refresh datepicker with new year/month days
+         * @method _refreshdatepicker
+         * @return {[type]}        [description]
+         */
+
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            var _this2 = this;
+
+            this._ui.body.dates.innerHTML = '';
+
+            // the 12 months of the year (Jan-SDecat)
+            var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfYear"](this._visibleDate)).map(function (d, i) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addMonths"](d, i), 'MM', {
+                    locale: _this2.locale
+                });
+            });
+            this._ui.body.months.innerHTML = '';
+            this._ui.body.months.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_months__["a" /* default */])({
+                months: monthLabels,
+                locale: this.locale
+            })));
+            var months = this._ui.body.months.querySelectorAll('.datepicker-month') || [];
+            months.forEach(function (month) {
+                _this2._clickEvents.forEach(function (clickEvent) {
+                    month.addEventListener(clickEvent, _this2.onMonthClickDatePicker);
+                });
+                month.classList.remove('is-active');
+                if (month.dataset.month === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'MM', {
+                    locale: _this2.locale
+                })) {
+                    month.classList.add('is-active');
+                }
+            });
+
+            var yearLabels = new Array(this.options.displayYearsCount * 2).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["subYears"](this._visibleDate, this.options.displayYearsCount)).map(function (d, i) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addYears"](d, i), 'YYYY', {
+                    locale: _this2.locale
+                });
+            });
+            this._ui.body.years.innerHTML = '';
+            this._ui.body.years.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates_years__["a" /* default */])({
+                visibleDate: this._visibleDate,
+                years: yearLabels
+            })));
+            var years = this._ui.body.years.querySelectorAll('.datepicker-year') || [];
+            years.forEach(function (year) {
+                _this2._clickEvents.forEach(function (clickEvent) {
+                    year.addEventListener(clickEvent, _this2.onYearClickDatePicker);
+                });
+                year.classList.remove('is-active');
+                if (year.dataset.year === __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this2._visibleDate, 'YYYY', {
+                    locale: _this2.locale
+                })) {
+                    year.classList.add('is-active');
+                }
+            });
+
+            // the 7 days of the week (Sun-Sat)
+            var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](d, i), 'ddd', {
+                    locale: _this2.locale
+                });
+            });
+            this._ui.body.dates.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates_weekdays__["a" /* default */])({
+                weekdays: weekdayLabels
+            })));
+
+            if (this.min && __WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInMonths"](this._visibleDate, this.min) === 0) {
+                this._togglePreviousButton(false);
+            } else {
+                this._togglePreviousButton();
+            }
+
+            if (this.max && __WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInMonths"](this._visibleDate, this.max) === 0) {
+                this._toggleNextButton(false);
+            } else {
+                this._toggleNextButton();
+            }
+
+            this._ui.navigation.month.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this._visibleDate, this.options.navigationMonthFormat, {
+                locale: this.locale
+            });
+            this._ui.navigation.year.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this._visibleDate, this.options.navigationYearFormat, {
+                locale: this.locale
+            });
+
+            this._renderDays();
+
+            this._ui.body.dates.classList.add('is-active');
+            this._ui.body.months.classList.remove('is-active');
+            this._ui.body.years.classList.remove('is-active');
+            this._ui.navigation.previous.removeAttribute('disabled');
+            this._ui.navigation.next.removeAttribute('disabled');
+
+            return this;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+
+            var today = new Date();
+
+            this._date = {
+                start: undefined,
+                end: undefined
+            };
+
+            this._visibleDate = this._isValidDate(today, this.min, this.max) ? today : this.min;
+
+            this.refresh();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            this.refresh();
+            return this.node;
+        }
+
+        /****************************************************
+         *                                                  *
+         * PRIVATE FUNCTIONS                                *
+         *                                                  *
+         ****************************************************/
+
+    }, {
+        key: '_init',
+        value: function _init() {
+
+            var today = new Date();
+
+            this._open = false;
+            this.lang = this.options.lang;
+            this.format = this.options.dateFormat || 'MM/DD/YYYY';
+
+            this.disabledDates = Array.isArray(this.options.disabledDates) ? this.options.disabledDates : [];
+
+            for (var i = 0; i < this.disabledDates.length; i++) {
+                // this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
+                // 	locale: this.locale
+                // });
+
+                this.disabledDates[i] = new Date(this.disabledDates[i].getFullYear(), this.disabledDates[i].getMonth(), this.disabledDates[i].getDate());
+            }
+
+            this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
+
+            for (var i = 0; i < this.highlightedDates.length; i++) {
+                this.highlightedDates[i] = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.highlightedDates[i], this.format, {
+                    locale: this.locale
+                });
+            }
+
+            this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
+
+            this.min = this.options.minDate;
+            this.max = this.options.maxDate;
+            this._date = {
+                start: this.options.startDate,
+                end: this.options.isRange ? this.options.endDate : undefined
+            };
+
+            this._visibleDate = this._isValidDate(this.start) ? this.start : this._isValidDate(today, this.min, this.max) ? today : this.min;
+
+            this._build();
+            this._bindEvents();
+
+            this.emit('ready', this);
+        }
+    }, {
+        key: '_build',
+        value: function _build() {
+            this.node = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_4__templates_datepicker__["a" /* default */])({
+                locale: this.locale,
+                visibleDate: this._visibleDate,
+                icons: this.options.icons
+            }));
+
+            this._ui = {
+                container: this.node.firstChild,
+                navigation: {
+                    container: this.node.querySelector('.datepicker-nav'),
+                    previous: this.node.querySelector('.datepicker-nav-previous'),
+                    next: this.node.querySelector('.datepicker-nav-next'),
+                    month: this.node.querySelector('.datepicker-nav-month'),
+                    year: this.node.querySelector('.datepicker-nav-year')
+                },
+                body: {
+                    dates: this.node.querySelector('.datepicker-dates'),
+                    days: this.node.querySelector('.datepicker-days'),
+                    weekdays: this.node.querySelector('.datepicker-weekdays'),
+                    months: this.node.querySelector('.datepicker-months'),
+                    years: this.node.querySelector('.datepicker-years')
+                }
+            };
+        }
+    }, {
+        key: '_bindEvents',
+        value: function _bindEvents() {
+            var _this3 = this;
+
+            document.addEventListener('keydown', function (e) {
+                if (_this3._focus) {
+                    switch (e.keyCode || e.which) {
+                        case 37:
+                            _this3.onPreviousDatePicker(e);
+                            break;
+                        case 39:
+                            _this3.onNextDatePicker(e);
+                            break;
+                    }
+                }
+            });
+
+            // Bind year navigation events
+            if (this._ui.navigation.previous) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this3._ui.navigation.previous.addEventListener(clickEvent, _this3.onPreviousDatePicker);
+                });
+            }
+            if (this._ui.navigation.next) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this3._ui.navigation.next.addEventListener(clickEvent, _this3.onNextDatePicker);
+                });
+            }
+
+            if (this._ui.navigation.month) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this3._ui.navigation.month.addEventListener(clickEvent, _this3.onSelectMonthDatePicker);
+                });
+            }
+            if (this._ui.navigation.year) {
+                this._clickEvents.forEach(function (clickEvent) {
+                    _this3._ui.navigation.year.addEventListener(clickEvent, _this3.onSelectYearDatePicker);
+                });
+            }
+
+            var months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
+            months.forEach(function (month) {
+                _this3._clickEvents.forEach(function (clickEvent) {
+                    month.addEventListener(clickEvent, _this3.onMonthClickDatePicker);
+                });
+            });
+
+            var years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
+            years.forEach(function (year) {
+                _this3._clickEvents.forEach(function (clickEvent) {
+                    year.addEventListener(clickEvent, _this3.onYearClickDatePicker);
+                });
+            });
+        }
+
+        /**
+         * Bind events on each Day item
+         * @method _bindDaysEvents
+         * @return {void}
+         */
+
+    }, {
+        key: '_bindDaysEvents',
+        value: function _bindDaysEvents() {
+            var _this4 = this;
+
+            [].forEach.call(this._ui.days, function (day) {
+                _this4._clickEvents.forEach(function (clickEvent) {
+                    // if not in range, no click action
+                    // if in this month, select the date
+                    // if out of this month, jump to the date
+                    var onClick = !_this4._isValidDate(new Date(day.dataset.date), _this4.min, _this4.max) ? null : _this4.onDateClickDatePicker;
+                    day.addEventListener(clickEvent, onClick);
+                });
+
+                day.addEventListener('hover', function (e) {
+                    e.preventDEfault();
+                });
+            });
+        }
+    }, {
+        key: '_renderDays',
+        value: function _renderDays() {
+            var _this5 = this;
+
+            // first day of current month view
+            var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
+            // last day of current month view
+            var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
+
+            // get all days and whether they are within the current month and range
+            var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInDays"](end, start) + 1).fill(start).map(function (s, i) {
+                var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i));
+                var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["isSameMonth"](_this5._visibleDate, theDate);
+                var isInRange = _this5.options.isRange && __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](theDate, __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.end));
+                var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.max)) : false;
+                isDisabled = !isDisabled && _this5.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.min)) : isDisabled;
+                var isHighlighted = false;
+
+                if (_this5.disabledDates) {
+                    for (var j = 0; j < _this5.disabledDates.length; j++) {
+                        var day = _this5.disabledDates[j];
+                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
+                            day = day(_this5);
+                        }
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](day)) {
+                            isDisabled = true;
+                        }
+                    }
+                }
+
+                if (_this5.highlightedDates) {
+                    for (var _j = 0; _j < _this5.highlightedDates.length; _j++) {
+                        var _day = _this5.highlightedDates[_j];
+                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_day)) {
+                            _day = _day(_this5);
+                        }
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](_day)) {
+                            isHighlighted = true;
+                        }
+                    }
+                }
+
+                if (_this5.disabledWeekDays) {
+                    _this5.disabledWeekDays.forEach(function (day) {
+                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
+                            day = day(_this5);
+                        }
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDay"](theDate) == day) {
+                            isDisabled = true;
+                        }
+                    });
+                }
+
+                return {
+                    date: theDate,
+                    isRange: _this5.options.isRange,
+                    isToday: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isToday"](theDate),
+                    isStartDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), theDate),
+                    isEndDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.end), theDate),
+                    isDisabled: isDisabled,
+                    isThisMonth: isThisMonth,
+                    isHighlighted: isHighlighted,
+                    isInRange: isInRange
+                };
+            });
+
+            this._ui.body.dates.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_5__templates_days__["a" /* default */])(days)));
+            this._ui.days = this._ui.body.dates.querySelectorAll('.datepicker-date');
+            this._bindDaysEvents();
+        }
+    }, {
+        key: '_select',
+        value: function _select() {
+            var _this6 = this;
+
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+            var emit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+
+            date = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date) ? date : new Date(date);
+
+            if (this.options.isRange && (!this._isValidDate(this.start) || this._isValidDate(this.start) && this._isValidDate(this.end))) {
+                this.start = date;
+                this.end = undefined;
+                if (emit) this.emit('select:start', this);
+            } else if (this.options.isRange && !this._isValidDate(this.end)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](date, this.start)) {
+                    this.end = this.start;
+                    this.start = date;
+                    if (emit) this.emit('select', this);
+                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](date, this.start)) {
+                    this.end = date;
+                    if (emit) this.emit('select', this);
+                } else if (this.options.allowSameDayRange) {
+                    this.end = date;
+                    if (emit) this.emit('select', this);
+                } else {
+                    this.start = date;
+                    this.end = undefined;
+                    if (emit) this.emit('select:start', this);
+                }
+            } else {
+                this.start = date;
+                this.end = undefined;
+                if (emit) this.emit('select', this);
+            }
+
+            this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
+
+            if (this.options.isRange && this._isValidDate(this.start) && this._isValidDate(this.end)) {
+                new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInDays"](this.end, this.start) + 1).fill(this.start).map(function (s, i) {
+                    var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i);
+                    var dateElement = _this6._ui.body.dates.querySelector('.datepicker-date[data-date="' + theDate.toString() + '"]');
+                    if (dateElement) {
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](_this6.start, theDate)) {
+                            dateElement.classList.add('datepicker-range-start');
+                        }
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](_this6.end, theDate)) {
+                            dateElement.classList.add('datepicker-range-end');
+                        }
+                        dateElement.classList.add('datepicker-range');
+                    }
+                });
+            }
+        }
+    }, {
+        key: '_isValidDate',
+        value: function _isValidDate(date, min, max) {
+            try {
+                if (!date) {
+                    return false;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](date)) {
+                    if (!min && !max) {
+                        return true;
+                    }
+                    if (min && max) {
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](date, min, max);
+                    }
+                    if (max) {
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](date, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](date, max);
+                    }
+                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](date, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](date, min);
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                return false;
+            }
+        }
+    }, {
+        key: '_togglePreviousButton',
+        value: function _togglePreviousButton() {
+            var active = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            if (!active) {
+                this._ui.navigation.previous.setAttribute('disabled', 'disabled');
+            } else {
+                this._ui.navigation.previous.removeAttribute('disabled');
+            }
+        }
+    }, {
+        key: '_toggleNextButton',
+        value: function _toggleNextButton() {
+            var active = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+            if (!active) {
+                this._ui.navigation.next.setAttribute('disabled', 'disabled');
+            } else {
+                this._ui.navigation.next.removeAttribute('disabled');
+            }
+        }
+    }, {
+        key: 'id',
+        get: function get() {
+            return this._id;
+        }
+    }, {
+        key: 'date',
+        set: function set(date) {
+            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](date) && date.start && date.end) {
+                this._date = date;
+            }
+            return this;
         },
-        body: {
-          dates: this.node.querySelector('.datepicker-dates'),
-          days: this.node.querySelector('.datepicker-days'),
-          weekdays: this.node.querySelector('.datepicker-weekdays'),
-          months: this.node.querySelector('.datepicker-months'),
-          years: this.node.querySelector('.datepicker-years')
+        get: function get() {
+            return this._date || {
+                start: undefined,
+                end: undefined
+            };
         }
-      };
-    }
-  }, {
-    key: '_bindEvents',
-    value: function _bindEvents() {
-      var _this3 = this;
 
-      document.addEventListener('keydown', function (e) {
-        if (_this3._focus) {
-          switch (e.keyCode || e.which) {
-            case 37:
-              _this3.onPreviousDatePicker(e);
-              break;
-            case 39:
-              _this3.onNextDatePicker(e);
-              break;
-          }
+        // Set datePicker language
+
+    }, {
+        key: 'lang',
+        set: function set() {
+            var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+            this._lang = lang;
+            this._locale = __webpack_require__(15)("./" + lang + '/index.js');
+            return this;
         }
-      });
 
-      // Bind year navigation events
-      if (this._ui.navigation.previous) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this3._ui.navigation.previous.addEventListener(clickEvent, _this3.onPreviousDatePicker);
-        });
-      }
-      if (this._ui.navigation.next) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this3._ui.navigation.next.addEventListener(clickEvent, _this3.onNextDatePicker);
-        });
-      }
+        // Get current datePicker language
+        ,
+        get: function get() {
+            return this._lang;
+        }
+    }, {
+        key: 'locale',
+        get: function get() {
+            return this._locale;
+        }
+    }, {
+        key: 'start',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
-      if (this._ui.navigation.month) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this3._ui.navigation.month.addEventListener(clickEvent, _this3.onSelectMonthDatePicker);
-        });
-      }
-      if (this._ui.navigation.year) {
-        this._clickEvents.forEach(function (clickEvent) {
-          _this3._ui.navigation.year.addEventListener(clickEvent, _this3.onSelectYearDatePicker);
-        });
-      }
-
-      var months = this._ui.body.months.querySelectorAll('.calendar-month') || [];
-      months.forEach(function (month) {
-        _this3._clickEvents.forEach(function (clickEvent) {
-          month.addEventListener(clickEvent, _this3.onMonthClickDatePicker);
-        });
-      });
-
-      var years = this._ui.body.years.querySelectorAll('.calendar-year') || [];
-      years.forEach(function (year) {
-        _this3._clickEvents.forEach(function (clickEvent) {
-          year.addEventListener(clickEvent, _this3.onYearClickDatePicker);
-        });
-      });
-    }
-
-    /**
-     * Bind events on each Day item
-     * @method _bindDaysEvents
-     * @return {void}
-     */
-
-  }, {
-    key: '_bindDaysEvents',
-    value: function _bindDaysEvents() {
-      var _this4 = this;
-
-      [].forEach.call(this._ui.days, function (day) {
-        _this4._clickEvents.forEach(function (clickEvent) {
-          // if not in range, no click action
-          // if in this month, select the date
-          // if out of this month, jump to the date
-          var onClick = !_this4._isValidDate(new Date(day.dataset.date), _this4.min, _this4.max) ? null : _this4.onDateClickDatePicker;
-          day.addEventListener(clickEvent, onClick);
-        });
-
-        day.addEventListener('hover', function (e) {
-          e.preventDEfault();
-        });
-      });
-    }
-  }, {
-    key: '_renderDays',
-    value: function _renderDays() {
-      var _this5 = this;
-
-      // first day of current month view
-      var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
-      // last day of current month view
-      var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfWeek"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfMonth"](this._visibleDate), { weekStartsOn: this.options.weekStart });
-
-      // get all days and whether they are within the current month and range
-      var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInDays"](end, start) + 1).fill(start).map(function (s, i) {
-        var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i));
-        var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["isSameMonth"](_this5._visibleDate, theDate);
-        var isInRange = _this5.options.isRange && __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](theDate, __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.end));
-        var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](_this5.max)) : false;
-        isDisabled = !isDisabled && _this5.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.min)) : isDisabled;
-        var isHighlighted = false;
-
-        if (_this5.disabledDates) {
-          for (var j = 0; j < _this5.disabledDates.length; j++) {
-            var day = _this5.disabledDates[j];
-            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
-              day = day(_this5);
+            if (date) {
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+                    this._date.start = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.start;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+                    this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.start;
+                }
+            } else {
+                this._date.start = undefined;
             }
-            if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](day)) {
-              isDisabled = true;
+
+            return this;
+        },
+        get: function get() {
+            return this._date.start;
+        }
+    }, {
+        key: 'end',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            if (date) {
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+                    this._date.end = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._date.end;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+                    this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
+                }
+            } else {
+                this._date.end = undefined;
             }
-          }
+
+            return this;
+        },
+        get: function get() {
+            return this._date.end;
         }
 
-        if (_this5.highlightedDates) {
-          for (var _j = 0; _j < _this5.highlightedDates.length; _j++) {
-            var _day = _this5.highlightedDates[_j];
-            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_day)) {
-              _day = _day(_this5);
+        // Set min
+
+    }, {
+        key: 'min',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            if (date) {
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+                    this._min = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+                    this._min = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
+                }
             }
-            if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["getTime"](_day)) {
-              isHighlighted = true;
+
+            return this;
+        }
+
+        // Get min
+        ,
+        get: function get() {
+            return this._min;
+        }
+
+        // Set max
+
+    }, {
+        key: 'max',
+        set: function set() {
+            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (date) {
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
+                    this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
+                    this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
+                }
             }
-          }
+
+            return this;
         }
 
-        if (_this5.disabledWeekDays) {
-          _this5.disabledWeekDays.forEach(function (day) {
-            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
-              day = day(_this5);
-            }
-            if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["getDay"](theDate) == day) {
-              isDisabled = true;
-            }
-          });
+        // Get max
+        ,
+        get: function get() {
+            return this._max;
         }
 
-        return {
-          date: theDate,
-          isRange: _this5.options.isRange,
-          isToday: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isToday"](theDate),
-          isStartDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.start), theDate),
-          isEndDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](_this5.end), theDate),
-          isDisabled: isDisabled,
-          isThisMonth: isThisMonth,
-          isHighlighted: isHighlighted,
-          isInRange: isInRange
-        };
-      });
+        // Set date format (set to MM/DD/YYYY by default)
 
-      this._ui.body.dates.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_5__templates_days__["a" /* default */])(days)));
-      this._ui.days = this._ui.body.dates.querySelectorAll('.datepicker-date');
-      this._bindDaysEvents();
-    }
-  }, {
-    key: '_select',
-    value: function _select() {
-      var _this6 = this;
+    }, {
+        key: 'format',
+        set: function set() {
+            var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'MM/DD/YYYY';
 
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      this.snapshot();
-      date = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date) ? date : new Date(date);
-      if (this.options.isRange && (!this._isValidDate(this.start) || this._isValidDate(this.start) && this._isValidDate(this.end))) {
-        this.start = date;
-        this.end = undefined;
-        this.emit('select:start', this);
-      } else if (this.options.isRange && !this._isValidDate(this.end)) {
-        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](date, this.start)) {
-          this.end = this.start;
-          this.start = date;
-          this.emit('select', this);
-        } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](date, this.start)) {
-          this.end = date;
-          this.emit('select', this);
-        } else if (this.options.allowSameDayRange) {
-          this.end = date;
-          this.emit('select', this);
-        } else {
-          this.start = date;
-          this.end = undefined;
-          this.emit('select:start', this);
+            this._format = format;
+            return this;
         }
-      } else {
-        this.start = date;
-        this.end = undefined;
-        this.emit('select', this);
-      }
-      this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
 
-      if (this.options.isRange && this._isValidDate(this.start) && this._isValidDate(this.end)) {
-        new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["differenceInDays"](this.end, this.start) + 1).fill(this.start).map(function (s, i) {
-          var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addDays"](s, i);
-          var dateElement = _this6._ui.body.dates.querySelector('.datepicker-date[data-date="' + theDate.toString() + '"]');
-          if (dateElement) {
-            if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](_this6.start, theDate)) {
-              dateElement.classList.add('datepicker-range-start');
-            }
-            if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](_this6.end, theDate)) {
-              dateElement.classList.add('datepicker-range-end');
-            }
-            dateElement.classList.add('datepicker-range');
-          }
-        });
-      }
-    }
-  }, {
-    key: '_isValidDate',
-    value: function _isValidDate(date, min, max) {
-      try {
-        if (!date) {
-          return false;
+        // Get date format
+        ,
+        get: function get() {
+            return this._format;
         }
-        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](date)) {
-          if (!min && !max) {
-            return true;
-          }
-          if (min && max) {
-            return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](date, min, max);
-          }
-          if (max) {
-            return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](date, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](date, max);
-          }
-          return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](date, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](date, min);
-        } else {
-          return false;
-        }
-      } catch (e) {
-        return false;
-      }
-    }
-  }, {
-    key: '_togglePreviousButton',
-    value: function _togglePreviousButton() {
-      var active = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+    }]);
 
-      if (!active) {
-        this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-      } else {
-        this._ui.navigation.previous.removeAttribute('disabled');
-      }
-    }
-  }, {
-    key: '_toggleNextButton',
-    value: function _toggleNextButton() {
-      var active = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-      if (!active) {
-        this._ui.navigation.next.setAttribute('disabled', 'disabled');
-      } else {
-        this._ui.navigation.next.removeAttribute('disabled');
-      }
-    }
-  }, {
-    key: 'id',
-    get: function get() {
-      return this._id;
-    }
-  }, {
-    key: 'date',
-    set: function set(date) {
-      if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](date) && date.start && date.end) {
-        this._date = date;
-      }
-      return this;
-    },
-    get: function get() {
-      return this._date || {
-        start: undefined,
-        end: undefined
-      };
-    }
-
-    // Set datePicker language
-
-  }, {
-    key: 'lang',
-    set: function set() {
-      var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
-
-      this._lang = lang;
-      this._locale = __webpack_require__(15)("./" + lang + '/index.js');
-      return this;
-    }
-    // Get current datePicker language
-    ,
-    get: function get() {
-      return this._lang;
-    }
-  }, {
-    key: 'locale',
-    get: function get() {
-      return this._locale;
-    }
-  }, {
-    key: 'start',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      if (date) {
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-          this._date.start = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._date.start;
-        }
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-          this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.start;
-        }
-      } else {
-        this._date.start = undefined;
-      }
-
-      return this;
-    },
-    get: function get() {
-      return this._date.start;
-    }
-  }, {
-    key: 'end',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      if (date) {
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-          this._date.end = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._date.end;
-        }
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-          this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) : this._date.end;
-        }
-      } else {
-        this._date.end = undefined;
-      }
-
-      return this;
-    },
-    get: function get() {
-      return this._date.end;
-    }
-
-    // Set min
-
-  }, {
-    key: 'min',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-      if (date) {
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-          this._min = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
-        }
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-          this._min = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfDay"](date) : this._min;
-        }
-      }
-
-      return this;
-    }
-    // Get min
-    ,
-    get: function get() {
-      return this._min;
-    }
-
-    // Set max
-
-  }, {
-    key: 'max',
-    set: function set() {
-      var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-      if (date) {
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-          this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
-        }
-        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-          this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["parse"](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfDay"](date) : this._max;
-        }
-      }
-
-      return this;
-    }
-    // Get max
-    ,
-    get: function get() {
-      return this._max;
-    }
-
-    // Set date format (set to MM/DD/YYYY by default)
-
-  }, {
-    key: 'format',
-    set: function set() {
-      var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'MM/DD/YYYY';
-
-      this._format = format;
-      return this;
-    }
-    // Get date format
-    ,
-    get: function get() {
-      return this._format;
-    }
-  }]);
-
-  return datePicker;
+    return datePicker;
 }(__WEBPACK_IMPORTED_MODULE_3__utils_events__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (datePicker);
@@ -17383,767 +17401,708 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var timePicker = function (_EventEmitter) {
-	_inherits(timePicker, _EventEmitter);
-
-	function timePicker() {
-		var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-		_classCallCheck(this, timePicker);
-
-		var _this = _possibleConstructorReturn(this, (timePicker.__proto__ || Object.getPrototypeOf(timePicker)).call(this));
-
-		_this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */], options);
-
-		_this._clickEvents = ['click', 'touch'];
-		_this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* detectSupportsPassive */]();
-		_this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('timePicker');
-		_this.node = null;
-
-		_this.onPreviousHourStartTimePicker = _this.onPreviousHourStartTimePicker.bind(_this);
-		_this.onNextHourStartTimePicker = _this.onNextHourStartTimePicker.bind(_this);
-		_this.onPreviousMinuteStartTimePicker = _this.onPreviousMinuteStartTimePicker.bind(_this);
-		_this.onNextMinuteStartTimePicker = _this.onNextMinuteStartTimePicker.bind(_this);
-		_this.onPreviousHourEndTimePicker = _this.onPreviousHourEndTimePicker.bind(_this);
-		_this.onNextHourEndTimePicker = _this.onNextHourEndTimePicker.bind(_this);
-		_this.onPreviousMinuteEndTimePicker = _this.onPreviousMinuteEndTimePicker.bind(_this);
-		_this.onNextMinuteEndTimePicker = _this.onNextMinuteEndTimePicker.bind(_this);
-
-		_this._init();
-		return _this;
-	}
-
-	/****************************************************
-  *                                                  *
-  * PRIVATE FUNCTIONS                                *
-  *                                                  *
-  ****************************************************/
-
-
-	_createClass(timePicker, [{
-		key: '_init',
-		value: function _init() {
-			this._open = false;
-			this._snapshots = [];
-			this.lang = this.options.lang;
-			this.format = this.options.format || 'HH:mm';
-			this.min = this.options.min;
-			this.max = this.options.max;
-			this._time = {
-				start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
-				end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
-			};
-			this.start = this.options.start || __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
-			this.end = this.options.isRange ? this.options.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-
-			this._build();
-			this._bindEvents();
-
-			this.emit('ready', this);
-		}
-	}, {
-		key: '_build',
-		value: function _build() {
-			this.node = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_4__templates_timepicker__["a" /* default */])({
-				locale: this.locale,
-				isRange: this.options.isRange,
-				editTimeManually: this.options.editTimeManually,
-				icons: this.options.icons
-			}));
-
-			this._ui = {
-				container: this.node.firstChild,
-				start: {
-					container: this.node.querySelector('.timepicker-start'),
-					hours: {
-						container: this.node.querySelector('.timepicker-start .timepicker-hours'),
-						input: this.node.querySelector('.timepicker-start .timepicker-hours input'),
-						number: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-input-number'),
-						previous: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-previous'),
-						next: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-next')
-					},
-					minutes: {
-						container: this.node.querySelector('.timepicker-start .timepicker-minutes'),
-						input: this.node.querySelector('.timepicker-start .timepicker-minutes input'),
-						number: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-input-number'),
-						previous: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-previous'),
-						next: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-next')
-					}
-				},
-				end: {
-					container: this.node.querySelector('.timepicker-end'),
-					hours: {
-						container: this.node.querySelector('.timepicker-end .timepicker-hours'),
-						input: this.node.querySelector('.timepicker-end .timepicker-hours input'),
-						number: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-input-number'),
-						previous: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-previous'),
-						next: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-next')
-					},
-					minutes: {
-						container: this.node.querySelector('.timepicker-end .timepicker-minutes'),
-						input: this.node.querySelector('.timepicker-end .timepicker-minutes input'),
-						number: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-input-number'),
-						previous: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-previous'),
-						next: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-next')
-					}
-				}
-			};
-		}
-	}, {
-		key: '_bindEvents',
-		value: function _bindEvents() {
-			var _this2 = this;
-
-			this._clickEvents.forEach(function (clickEvent) {
-				_this2._ui.start.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourStartTimePicker);
-				_this2._ui.start.hours.next.addEventListener(clickEvent, _this2.onNextHourStartTimePicker);
-				_this2._ui.start.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteStartTimePicker);
-				_this2._ui.start.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteStartTimePicker);
-
-				if (_this2.options.isRange) {
-					_this2._ui.end.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourEndTimePicker);
-					_this2._ui.end.hours.next.addEventListener(clickEvent, _this2.onNextHourEndTimePicker);
-					_this2._ui.end.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteEndTimePicker);
-					_this2._ui.end.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteEndTimePicker);
-				}
-			});
-		}
-	}, {
-		key: '_select',
-		value: function _select() {
-			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-			this.snapshot();
-			time = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](time) ? time : new Date(time);
-			if (this.options.isRange && (!this._isValidTime(this.start) || this._isValidTime(this.start) && this._isValidTime(this.end))) {
-				this.start = time;
-				this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-				this.emit('select:start', this);
-			} else if (this.options.isRange && !this._isValidTime(this.end)) {
-				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, this.start)) {
-					this.end = this.start;
-					this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-					this.emit('select', this);
-				} else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, this.start)) {
-					this.end = time;
-					this.emit('select', this);
-				} else {
-					this.start = time;
-					this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-					this.emit('select:start', this);
-				}
-			} else {
-				this.start = time;
-				this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-				this.emit('select', this);
-			}
-		}
-	}, {
-		key: '_isValidTime',
-		value: function _isValidTime(time, min, max) {
-			try {
-				if (!time) {
-					return false;
-				}
-				if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](time)) {
-					if (!min && !max) {
-						return true;
-					}
-					if (min && max) {
-						return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](time, min, max);
-					}
-					if (max) {
-						return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, max);
-					}
-					return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, min);
-				} else {
-					return false;
-				}
-			} catch (e) {
-				return false;
-			}
-		}
-
-		/****************************************************
-   *                                                  *
-   * GETTERS and SETTERS                              *
-   *                                                  *
-   ****************************************************/
-		/**
-   * Get id of current TimePicker
-   */
-
-	}, {
-		key: 'onPreviousHourStartTimePicker',
-
-
-		/****************************************************
-   *                                                  *
-   * EVENTS FUNCTIONS                                 *
-   *                                                  *
-   ****************************************************/
-		value: function onPreviousHourStartTimePicker(e) {
-			var _this3 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.start, 1);
-			setTimeout(function () {
-				_this3._ui.start.hours.number.classList.add('is-decrement-hide');
-
-				setTimeout(function () {
-					_this3._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
-					_this3._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
-					_this3._ui.start.hours.number.classList.add('is-decrement-visible');
-				}, 100);
-
-				setTimeout(function () {
-					_this3._ui.start.hours.number.classList.remove('is-decrement-hide');
-					_this3._ui.start.hours.number.classList.remove('is-decrement-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onNextHourStartTimePicker',
-		value: function onNextHourStartTimePicker(e) {
-			var _this4 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.start, 1);
-			setTimeout(function () {
-				_this4._ui.start.hours.number.classList.add('is-increment-hide');
-
-				setTimeout(function () {
-					_this4._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
-					_this4._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
-					_this4._ui.start.hours.number.classList.add('is-increment-visible');
-				}, 100);
-
-				setTimeout(function () {
-					_this4._ui.start.hours.number.classList.remove('is-increment-hide');
-					_this4._ui.start.hours.number.classList.remove('is-increment-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onPreviousMinuteStartTimePicker',
-		value: function onPreviousMinuteStartTimePicker(e) {
-			var _this5 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.start, this.options.minuteSteps);
-			setTimeout(function () {
-				_this5._ui.start.minutes.number.classList.add('is-decrement-hide');
-
-				setTimeout(function () {
-					_this5._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
-					_this5._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
-					_this5._ui.start.minutes.number.classList.add('is-decrement-visible');
-
-					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH') !== _this5._ui.start.hours.input.value) {
-						_this5._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
-						_this5._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
-						_this5._ui.start.hours.number.classList.add('is-decrement-visible');
-					}
-				}, 100);
-
-				setTimeout(function () {
-					_this5._ui.start.minutes.number.classList.remove('is-decrement-hide');
-					_this5._ui.start.minutes.number.classList.remove('is-decrement-visible');
-
-					_this5._ui.start.hours.number.classList.remove('is-decrement-hide');
-					_this5._ui.start.hours.number.classList.remove('is-decrement-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onNextMinuteStartTimePicker',
-		value: function onNextMinuteStartTimePicker(e) {
-			var _this6 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.start, this.options.minuteSteps);
-			setTimeout(function () {
-				_this6._ui.start.minutes.number.classList.add('is-increment-hide');
-
-				setTimeout(function () {
-					_this6._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
-					_this6._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
-					_this6._ui.start.minutes.number.classList.add('is-increment-visible');
-
-					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH') !== _this6._ui.start.hours.input.value) {
-						_this6._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
-						_this6._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
-						_this6._ui.start.hours.number.classList.add('is-increment-visible');
-					}
-				}, 100);
-
-				setTimeout(function () {
-					_this6._ui.start.minutes.number.classList.remove('is-increment-hide');
-					_this6._ui.start.minutes.number.classList.remove('is-increment-visible');
-
-					_this6._ui.start.hours.number.classList.remove('is-increment-hide');
-					_this6._ui.start.hours.number.classList.remove('is-increment-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onPreviousHourEndTimePicker',
-		value: function onPreviousHourEndTimePicker(e) {
-			var _this7 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.end, 1);
-			setTimeout(function () {
-				_this7._ui.end.hours.number.classList.add('is-decrement-hide');
-
-				setTimeout(function () {
-					_this7._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
-					_this7._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
-					_this7._ui.end.hours.number.classList.add('is-decrement-visible');
-				}, 100);
-
-				setTimeout(function () {
-					_this7._ui.end.hours.number.classList.remove('is-decrement-hide');
-					_this7._ui.end.hours.number.classList.remove('is-decrement-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onNextHourEndTimePicker',
-		value: function onNextHourEndTimePicker(e) {
-			var _this8 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.end, 1);
-			setTimeout(function () {
-				_this8._ui.end.hours.number.classList.add('is-increment-hide');
-
-				setTimeout(function () {
-					_this8._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
-					_this8._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
-					_this8._ui.end.hours.number.classList.add('is-increment-visible');
-				}, 100);
-
-				setTimeout(function () {
-					_this8._ui.end.hours.number.classList.remove('is-increment-hide');
-					_this8._ui.end.hours.number.classList.remove('is-increment-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onPreviousMinuteEndTimePicker',
-		value: function onPreviousMinuteEndTimePicker(e) {
-			var _this9 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.end, this.options.minuteSteps);
-			setTimeout(function () {
-				_this9._ui.end.minutes.number.classList.add('is-decrement-hide');
-
-				setTimeout(function () {
-					_this9._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
-					_this9._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
-					_this9._ui.end.minutes.number.classList.add('is-decrement-visible');
-
-					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH') !== _this9._ui.end.hours.input.value) {
-						_this9._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
-						_this9._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
-						_this9._ui.end.hours.number.classList.add('is-decrement-visible');
-					}
-				}, 100);
-
-				setTimeout(function () {
-					_this9._ui.end.minutes.number.classList.remove('is-decrement-hide');
-					_this9._ui.end.minutes.number.classList.remove('is-decrement-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-	}, {
-		key: 'onNextMinuteEndTimePicker',
-		value: function onNextMinuteEndTimePicker(e) {
-			var _this10 = this;
-
-			if (!this._supportsPassive) {
-				e.preventDefault();
-			}
-			e.stopPropagation();
-
-			this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.end, this.options.minuteSteps);
-			setTimeout(function () {
-				_this10._ui.end.minutes.number.classList.add('is-increment-hide');
-
-				setTimeout(function () {
-					_this10._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
-					_this10._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
-					_this10._ui.end.minutes.number.classList.add('is-increment-visible');
-
-					if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH') !== _this10._ui.end.hours.input.value) {
-						_this10._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
-						_this10._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
-						_this10._ui.end.hours.number.classList.add('is-increment-visible');
-					}
-				}, 100);
-
-				setTimeout(function () {
-					_this10._ui.end.minutes.number.classList.remove('is-increment-hide');
-					_this10._ui.end.minutes.number.classList.remove('is-increment-visible');
-				}, 1100);
-			}, 100);
-
-			if (this.options.closeOnSelect === true && this.options.displayMode !== 'inline') {
-				this._select(this.time);
-			}
-
-			if (this.options.type === 'datetime') {
-				this.emit(this.options.isRange ? 'select:start' : 'select', {
-					time: this.time,
-					instance: this
-				});
-			}
-		}
-
-		/****************************************************
-   *                                                  *
-   * PUBLIC FUNCTIONS                                 *
-   *                                                  *
-   ****************************************************/
-
-	}, {
-		key: 'isRange',
-		value: function isRange() {
-			return this.options.isRange;
-		}
-	}, {
-		key: 'show',
-		value: function show() {
-			if (!this._open) {
-				this._ui.container.classList.add('is-active');
-				this._open = true;
-				this._focus = true;
-
-				this.emit('show', this);
-			}
-		}
-	}, {
-		key: 'hide',
-		value: function hide() {
-			this._open = false;
-			this._focus = false;
-			this._ui.container.classList.remove('is-active');
-			this.emit('hide', this);
-		}
-	}, {
-		key: 'toggle',
-		value: function toggle() {
-			if (!this._open) {
-				this.show();
-			} else {
-				this.hide();
-			}
-		}
-
-		/**
-   * Get / Set TimePicker value
-   * @param {null|time|Object|String} time optional if null then return the current time as String
-   */
-
-	}, {
-		key: 'value',
-		value: function value() {
-			var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-			if (_value) {
-				if (this.options.isRange) {
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
-						var times = _value.split(' - ');
-						if (times.length) {
-							this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(times[0]), this.format, {
-								locale: this.locale
-							});
-						}
-						if (times.length === 2) {
-							this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](new Date(times[1]), this.format, {
-								locale: this.locale
-							});
-						}
-					}
-					if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](_value) || __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](_value)) {
-						this._select(_value);
-					}
-				} else {
-					this._select(_value);
-				}
-			} else {
-				var string = this.start && this._isValidTime(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, {
-					locale: this.locale
-				}) : '';
-
-				if (this.options.isRange) {
-					if (this.end && this._isValidTime(this.end)) {
-						string += ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, this.format, { locale: this.locale });
-					}
-				}
-
-				return string;
-			}
-		}
-
-		/**
-   * Refresh Timepicker with new year/month days
-   * @method _refreshTimepicker
-   * @return {[type]}        [description]
-   */
-
-	}, {
-		key: 'refresh',
-		value: function refresh() {
-			this._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
-			this._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
-			this._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
-			this._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
-			if (this.options.isRange) {
-				this._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
-				this._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
-				this._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
-				this._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
-			}
-
-			return this;
-		}
-	}, {
-		key: 'clear',
-		value: function clear() {
-			this.time = {
-				start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
-				end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
-			};
-			this.refresh();
-		}
-	}, {
-		key: 'snapshot',
-		value: function snapshot() {
-			this._snapshots.push(_extends({}, this._time));
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			this.refresh();
-			return this.node;
-		}
-	}, {
-		key: 'id',
-		get: function get() {
-			return this._id;
-		}
-	}, {
-		key: 'time',
-		set: function set(time) {
-			if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](time) && time.start && time.end) {
-				this._time = time;
-			}
-			return this;
-		},
-		get: function get() {
-			return this._time || {
-				start: undefined,
-				end: undefined
-			};
-		}
-
-		// Set TimePicker language
-
-	}, {
-		key: 'lang',
-		set: function set() {
-			var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
-
-			this._lang = lang;
-			this._locale = __webpack_require__(15)("./" + lang + '/index.js');
-			return this;
-		}
-		// Get current TimePicker language
-		,
-		get: function get() {
-			return this._lang;
-		}
-	}, {
-		key: 'locale',
-		get: function get() {
-			return this._locale;
-		}
-	}, {
-		key: 'start',
-		set: function set(time) {
-			this._time.start = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.start : __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
-			return this;
-		},
-		get: function get() {
-			return this._time.start;
-		}
-	}, {
-		key: 'end',
-		set: function set(time) {
-			this._time.end = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
-			return this;
-		},
-		get: function get() {
-			return this._time.end;
-		}
-
-		// Set min
-
-	}, {
-		key: 'min',
-		set: function set() {
-			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-
-			this._min = time ? this._isValidTime(time) ? time : this._min : undefined;
-			return this;
-		}
-		// Get min
-		,
-		get: function get() {
-			return this._min;
-		}
-
-		// Set max
-
-	}, {
-		key: 'max',
-		set: function set() {
-			var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-			this._max = time ? this._isValidTime(time) ? time : this._max : undefined;
-			return this;
-		}
-		// Get max
-		,
-		get: function get() {
-			return this._max;
-		}
-
-		// Set time format (set to HH:mm by default)
-
-	}, {
-		key: 'format',
-		set: function set() {
-			var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'HH:mm';
-
-			this._format = format;
-			return this;
-		}
-		// Get time format
-		,
-		get: function get() {
-			return this._format;
-		}
-	}]);
-
-	return timePicker;
+    _inherits(timePicker, _EventEmitter);
+
+    function timePicker() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _classCallCheck(this, timePicker);
+
+        var _this = _possibleConstructorReturn(this, (timePicker.__proto__ || Object.getPrototypeOf(timePicker)).call(this));
+
+        _this.options = _extends({}, __WEBPACK_IMPORTED_MODULE_5__defaultOptions__["a" /* default */], options);
+
+        _this._clickEvents = ['click', 'touch'];
+        _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils__["a" /* detectSupportsPassive */]();
+        _this._id = __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* uuid */]('timePicker');
+        _this.node = null;
+
+        _this.onPreviousHourStartTimePicker = _this.onPreviousHourStartTimePicker.bind(_this);
+        _this.onNextHourStartTimePicker = _this.onNextHourStartTimePicker.bind(_this);
+        _this.onPreviousMinuteStartTimePicker = _this.onPreviousMinuteStartTimePicker.bind(_this);
+        _this.onNextMinuteStartTimePicker = _this.onNextMinuteStartTimePicker.bind(_this);
+        _this.onPreviousHourEndTimePicker = _this.onPreviousHourEndTimePicker.bind(_this);
+        _this.onNextHourEndTimePicker = _this.onNextHourEndTimePicker.bind(_this);
+        _this.onPreviousMinuteEndTimePicker = _this.onPreviousMinuteEndTimePicker.bind(_this);
+        _this.onNextMinuteEndTimePicker = _this.onNextMinuteEndTimePicker.bind(_this);
+
+        _this._init();
+        return _this;
+    }
+
+    /****************************************************
+     *                                                  *
+     * PRIVATE FUNCTIONS                                *
+     *                                                  *
+     ****************************************************/
+
+
+    _createClass(timePicker, [{
+        key: '_init',
+        value: function _init() {
+
+            this._open = false;
+            this.lang = this.options.lang;
+            this.format = this.options.format || 'HH:mm';
+            this.min = this.options.min;
+            this.max = this.options.max;
+
+            this._time = {
+                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
+                end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
+            };
+
+            this.start = this.options.start || __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
+            this.end = this.options.isRange ? this.options.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+
+            this._build();
+            this._bindEvents();
+
+            this.emit('ready', this);
+        }
+    }, {
+        key: '_build',
+        value: function _build() {
+            this.node = document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_4__templates_timepicker__["a" /* default */])({
+                locale: this.locale,
+                isRange: this.options.isRange,
+                editTimeManually: this.options.editTimeManually,
+                icons: this.options.icons
+            }));
+
+            this._ui = {
+                container: this.node.firstChild,
+                start: {
+                    container: this.node.querySelector('.timepicker-start'),
+                    hours: {
+                        container: this.node.querySelector('.timepicker-start .timepicker-hours'),
+                        input: this.node.querySelector('.timepicker-start .timepicker-hours input'),
+                        number: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-input-number'),
+                        previous: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-previous'),
+                        next: this.node.querySelector('.timepicker-start .timepicker-hours .timepicker-next')
+                    },
+                    minutes: {
+                        container: this.node.querySelector('.timepicker-start .timepicker-minutes'),
+                        input: this.node.querySelector('.timepicker-start .timepicker-minutes input'),
+                        number: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-input-number'),
+                        previous: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-previous'),
+                        next: this.node.querySelector('.timepicker-start .timepicker-minutes .timepicker-next')
+                    }
+                },
+                end: {
+                    container: this.node.querySelector('.timepicker-end'),
+                    hours: {
+                        container: this.node.querySelector('.timepicker-end .timepicker-hours'),
+                        input: this.node.querySelector('.timepicker-end .timepicker-hours input'),
+                        number: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-input-number'),
+                        previous: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-previous'),
+                        next: this.node.querySelector('.timepicker-end .timepicker-hours .timepicker-next')
+                    },
+                    minutes: {
+                        container: this.node.querySelector('.timepicker-end .timepicker-minutes'),
+                        input: this.node.querySelector('.timepicker-end .timepicker-minutes input'),
+                        number: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-input-number'),
+                        previous: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-previous'),
+                        next: this.node.querySelector('.timepicker-end .timepicker-minutes .timepicker-next')
+                    }
+                }
+            };
+        }
+    }, {
+        key: '_bindEvents',
+        value: function _bindEvents() {
+            var _this2 = this;
+
+            this._clickEvents.forEach(function (clickEvent) {
+                _this2._ui.start.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourStartTimePicker);
+                _this2._ui.start.hours.next.addEventListener(clickEvent, _this2.onNextHourStartTimePicker);
+                _this2._ui.start.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteStartTimePicker);
+                _this2._ui.start.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteStartTimePicker);
+
+                if (_this2.options.isRange) {
+                    _this2._ui.end.hours.previous.addEventListener(clickEvent, _this2.onPreviousHourEndTimePicker);
+                    _this2._ui.end.hours.next.addEventListener(clickEvent, _this2.onNextHourEndTimePicker);
+                    _this2._ui.end.minutes.previous.addEventListener(clickEvent, _this2.onPreviousMinuteEndTimePicker);
+                    _this2._ui.end.minutes.next.addEventListener(clickEvent, _this2.onNextMinuteEndTimePicker);
+                }
+            });
+        }
+    }, {
+        key: '_select',
+        value: function _select() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+            var emit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+
+            time = __WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](time) ? time : new Date(time);
+
+            if (this.options.isRange && (!this._isValidTime(this.start) || this._isValidTime(this.start) && this._isValidTime(this.end))) {
+                this.start = time;
+                this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+                if (emit) this.emit('select:start', this);
+            } else if (this.options.isRange && !this._isValidTime(this.end)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, this.start)) {
+                    this.end = this.start;
+                    this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+                    if (emit) this.emit('select', this);
+                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, this.start)) {
+                    this.end = time;
+                    if (emit) this.emit('select', this);
+                } else {
+                    this.start = time;
+                    this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+                    if (emit) this.emit('select:start', this);
+                }
+            } else {
+                this.start = time;
+                this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+                if (emit) this.emit('select', this);
+            }
+        }
+    }, {
+        key: '_isValidTime',
+        value: function _isValidTime(time, min, max) {
+            try {
+                if (!time) {
+                    return false;
+                }
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["isValid"](time)) {
+                    if (!min && !max) {
+                        return true;
+                    }
+                    if (min && max) {
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isWithinRange"](time, min, max);
+                    }
+                    if (max) {
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isBefore"](time, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, max);
+                    }
+                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["isAfter"](time, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["isEqual"](time, min);
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                return false;
+            }
+        }
+
+        /****************************************************
+         *                                                  *
+         * GETTERS and SETTERS                              *
+         *                                                  *
+         ****************************************************/
+        /**
+         * Get id of current TimePicker
+         */
+
+    }, {
+        key: 'onPreviousHourStartTimePicker',
+
+
+        /****************************************************
+         *                                                  *
+         * EVENTS FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+        value: function onPreviousHourStartTimePicker(e) {
+            var _this3 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.start, 1);
+
+            setTimeout(function () {
+
+                _this3._ui.start.hours.number.classList.add('is-decrement-hide');
+
+                setTimeout(function () {
+                    _this3._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
+                    _this3._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this3.start, 'HH');
+                    _this3._ui.start.hours.number.classList.add('is-decrement-visible');
+                    _this3._select(_this3.time);
+                }, 100);
+
+                setTimeout(function () {
+                    _this3._ui.start.hours.number.classList.remove('is-decrement-hide');
+                    _this3._ui.start.hours.number.classList.remove('is-decrement-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onNextHourStartTimePicker',
+        value: function onNextHourStartTimePicker(e) {
+            var _this4 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.start, 1);
+
+            setTimeout(function () {
+
+                _this4._ui.start.hours.number.classList.add('is-increment-hide');
+
+                setTimeout(function () {
+                    _this4._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
+                    _this4._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this4.start, 'HH');
+                    _this4._ui.start.hours.number.classList.add('is-increment-visible');
+                    _this4._select(_this4.time);
+                }, 100);
+
+                setTimeout(function () {
+                    _this4._ui.start.hours.number.classList.remove('is-increment-hide');
+                    _this4._ui.start.hours.number.classList.remove('is-increment-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onPreviousMinuteStartTimePicker',
+        value: function onPreviousMinuteStartTimePicker(e) {
+            var _this5 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.start, this.options.minuteSteps);
+
+            setTimeout(function () {
+
+                _this5._ui.start.minutes.number.classList.add('is-decrement-hide');
+
+                setTimeout(function () {
+
+                    _this5._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
+                    _this5._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'mm');
+                    _this5._ui.start.minutes.number.classList.add('is-decrement-visible');
+
+                    _this5._select(_this5.time);
+
+                    if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH') !== _this5._ui.start.hours.input.value) {
+                        _this5._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
+                        _this5._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this5.start, 'HH');
+                        _this5._ui.start.hours.number.classList.add('is-decrement-visible');
+                    }
+                }, 100);
+
+                setTimeout(function () {
+
+                    _this5._ui.start.minutes.number.classList.remove('is-decrement-hide');
+                    _this5._ui.start.minutes.number.classList.remove('is-decrement-visible');
+
+                    _this5._ui.start.hours.number.classList.remove('is-decrement-hide');
+                    _this5._ui.start.hours.number.classList.remove('is-decrement-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onNextMinuteStartTimePicker',
+        value: function onNextMinuteStartTimePicker(e) {
+            var _this6 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.start, this.options.minuteSteps);
+
+            setTimeout(function () {
+
+                _this6._ui.start.minutes.number.classList.add('is-increment-hide');
+
+                setTimeout(function () {
+
+                    _this6._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
+                    _this6._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'mm');
+                    _this6._ui.start.minutes.number.classList.add('is-increment-visible');
+
+                    _this6._select(_this6.time);
+
+                    if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH') !== _this6._ui.start.hours.input.value) {
+                        _this6._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
+                        _this6._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this6.start, 'HH');
+                        _this6._ui.start.hours.number.classList.add('is-increment-visible');
+                    }
+                }, 100);
+
+                setTimeout(function () {
+
+                    _this6._ui.start.minutes.number.classList.remove('is-increment-hide');
+                    _this6._ui.start.minutes.number.classList.remove('is-increment-visible');
+
+                    _this6._ui.start.hours.number.classList.remove('is-increment-hide');
+                    _this6._ui.start.hours.number.classList.remove('is-increment-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onPreviousHourEndTimePicker',
+        value: function onPreviousHourEndTimePicker(e) {
+            var _this7 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subHours"](this.end, 1);
+
+            setTimeout(function () {
+
+                _this7._ui.end.hours.number.classList.add('is-decrement-hide');
+
+                setTimeout(function () {
+                    _this7._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
+                    _this7._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this7.end, 'HH');
+                    _this7._ui.end.hours.number.classList.add('is-decrement-visible');
+                    _this7._select(_this7.time);
+                }, 100);
+
+                setTimeout(function () {
+                    _this7._ui.end.hours.number.classList.remove('is-decrement-hide');
+                    _this7._ui.end.hours.number.classList.remove('is-decrement-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onNextHourEndTimePicker',
+        value: function onNextHourEndTimePicker(e) {
+            var _this8 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addHours"](this.end, 1);
+
+            setTimeout(function () {
+
+                _this8._ui.end.hours.number.classList.add('is-increment-hide');
+
+                setTimeout(function () {
+                    _this8._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
+                    _this8._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this8.end, 'HH');
+                    _this8._ui.end.hours.number.classList.add('is-increment-visible');
+                    _this8._select(_this8.time);
+                }, 100);
+
+                setTimeout(function () {
+                    _this8._ui.end.hours.number.classList.remove('is-increment-hide');
+                    _this8._ui.end.hours.number.classList.remove('is-increment-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onPreviousMinuteEndTimePicker',
+        value: function onPreviousMinuteEndTimePicker(e) {
+            var _this9 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["subMinutes"](this.end, this.options.minuteSteps);
+
+            setTimeout(function () {
+
+                _this9._ui.end.minutes.number.classList.add('is-decrement-hide');
+
+                setTimeout(function () {
+
+                    _this9._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
+                    _this9._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'mm');
+                    _this9._ui.end.minutes.number.classList.add('is-decrement-visible');
+
+                    _this9._select(_this9.time);
+
+                    if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH') !== _this9._ui.end.hours.input.value) {
+                        _this9._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
+                        _this9._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this9.end, 'HH');
+                        _this9._ui.end.hours.number.classList.add('is-decrement-visible');
+                    }
+                }, 100);
+
+                setTimeout(function () {
+                    _this9._ui.end.minutes.number.classList.remove('is-decrement-hide');
+                    _this9._ui.end.minutes.number.classList.remove('is-decrement-visible');
+                }, 1100);
+            }, 100);
+        }
+    }, {
+        key: 'onNextMinuteEndTimePicker',
+        value: function onNextMinuteEndTimePicker(e) {
+            var _this10 = this;
+
+            if (!this._supportsPassive) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["addMinutes"](this.end, this.options.minuteSteps);
+
+            setTimeout(function () {
+
+                _this10._ui.end.minutes.number.classList.add('is-increment-hide');
+
+                setTimeout(function () {
+
+                    _this10._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
+                    _this10._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'mm');
+                    _this10._ui.end.minutes.number.classList.add('is-increment-visible');
+
+                    _this10._select(_this10.time);
+
+                    if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH') !== _this10._ui.end.hours.input.value) {
+                        _this10._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
+                        _this10._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](_this10.end, 'HH');
+                        _this10._ui.end.hours.number.classList.add('is-increment-visible');
+                    }
+                }, 100);
+
+                setTimeout(function () {
+                    _this10._ui.end.minutes.number.classList.remove('is-increment-hide');
+                    _this10._ui.end.minutes.number.classList.remove('is-increment-visible');
+                }, 1100);
+            }, 100);
+        }
+
+        /****************************************************
+         *                                                  *
+         * PUBLIC FUNCTIONS                                 *
+         *                                                  *
+         ****************************************************/
+
+    }, {
+        key: 'isRange',
+        value: function isRange() {
+            return this.options.isRange;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            if (!this._open) {
+                this._ui.container.classList.add('is-active');
+                this._open = true;
+                this._focus = true;
+
+                this.emit('show', this);
+            }
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this._open = false;
+            this._focus = false;
+            this._ui.container.classList.remove('is-active');
+            this.emit('hide', this);
+        }
+    }, {
+        key: 'toggle',
+        value: function toggle() {
+            if (!this._open) {
+                this.show();
+            } else {
+                this.hide();
+            }
+        }
+
+        /**
+         * Get / Set TimePicker value
+         * @param {null|time|Object|String} time optional if null then return the current time as String
+         */
+
+    }, {
+        key: 'value',
+        value: function value() {
+            var _value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            // Set
+            if (_value) {
+
+                if (this.options.isRange && __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](_value)) {
+
+                    var times = _value.split(' - ');
+
+                    if (times.length) this.start = new Date(times[0]);
+                    if (times.length === 2) this.end = new Date(times[1]);
+                } else {
+                    this._select(_value, false);
+                }
+
+                return;
+            }
+
+            // Get
+            var string = this._isValidTime(this.start) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, this.format, { locale: this.locale }) : '';
+
+            if (this.options.isRange && this._isValidTime(this.end)) {
+                string += ' - ' + __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, this.format, { locale: this.locale });
+            }
+
+            return string;
+        }
+
+        /**
+         * Refresh Timepicker with new year/month days
+         * @method _refreshTimepicker
+         * @return {[type]}        [description]
+         */
+
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+
+            this._ui.start.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
+            this._ui.start.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'HH');
+            this._ui.start.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
+            this._ui.start.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.start, 'mm');
+
+            if (this.options.isRange) {
+                this._ui.end.hours.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
+                this._ui.end.hours.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'HH');
+                this._ui.end.minutes.input.value = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
+                this._ui.end.minutes.number.innerText = __WEBPACK_IMPORTED_MODULE_2_date_fns__["format"](this.end, 'mm');
+            }
+
+            return this;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.time = {
+                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"](),
+                end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]()
+            };
+            this.refresh();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            this.refresh();
+            return this.node;
+        }
+    }, {
+        key: 'id',
+        get: function get() {
+            return this._id;
+        }
+    }, {
+        key: 'time',
+        set: function set(time) {
+            if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["d" /* isObject */](time) && time.start && time.end) {
+                this._time = time;
+            }
+            return this;
+        },
+        get: function get() {
+            return this._time || {
+                start: undefined,
+                end: undefined
+            };
+        }
+
+        // Set TimePicker language
+
+    }, {
+        key: 'lang',
+        set: function set() {
+            var lang = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'en';
+
+            this._lang = lang;
+            this._locale = __webpack_require__(15)("./" + lang + '/index.js');
+            return this;
+        }
+
+        // Get current TimePicker language
+        ,
+        get: function get() {
+            return this._lang;
+        }
+    }, {
+        key: 'locale',
+        get: function get() {
+            return this._locale;
+        }
+    }, {
+        key: 'start',
+        set: function set(time) {
+            this._time.start = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.start : __WEBPACK_IMPORTED_MODULE_2_date_fns__["startOfToday"]();
+            return this;
+        },
+        get: function get() {
+            return this._time.start;
+        }
+    }, {
+        key: 'end',
+        set: function set(time) {
+            this._time.end = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.end : __WEBPACK_IMPORTED_MODULE_2_date_fns__["endOfToday"]();
+            return this;
+        },
+        get: function get() {
+            return this._time.end;
+        }
+
+        // Set min
+
+    }, {
+        key: 'min',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+            this._min = time ? this._isValidTime(time) ? time : this._min : undefined;
+            return this;
+        }
+
+        // Get min
+        ,
+        get: function get() {
+            return this._min;
+        }
+
+        // Set max
+
+    }, {
+        key: 'max',
+        set: function set() {
+            var time = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this._max = time ? this._isValidTime(time) ? time : this._max : undefined;
+            return this;
+        }
+
+        // Get max
+        ,
+        get: function get() {
+            return this._max;
+        }
+
+        // Set time format (set to HH:mm by default)
+
+    }, {
+        key: 'format',
+        set: function set() {
+            var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'HH:mm';
+
+            this._format = format;
+            return this;
+        }
+
+        // Get time format
+        ,
+        get: function get() {
+            return this._format;
+        }
+    }]);
+
+    return timePicker;
 }(__WEBPACK_IMPORTED_MODULE_3__utils_events__["a" /* default */]);
 
 /* harmony default export */ __webpack_exports__["a"] = (timePicker);
