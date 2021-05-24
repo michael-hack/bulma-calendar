@@ -15,13 +15,16 @@ import templateFooter from './templates/footer';
 export default class bulmaCalendar extends EventEmitter {
 
     constructor(selector, options = {}) {
+
         super();
 
         this.element = types.isString(selector) ? document.querySelector(selector) : selector;
+
         // An invalid selector or non-DOM node has been provided.
         if (!this.element) {
             throw new Error('An invalid selector or non-DOM node has been provided.');
         }
+
         this._clickEvents     = ['click', 'touch'];
         this._supportsPassive = utils.detectSupportsPassive();
 
@@ -75,6 +78,7 @@ export default class bulmaCalendar extends EventEmitter {
 
         // Initiate plugin
         this._init();
+
     }
 
     /**
@@ -286,11 +290,9 @@ export default class bulmaCalendar extends EventEmitter {
      ****************************************************/
     onSelectDateTimePicker(e) {
 
-        alert("select");
-
         this.refresh();
 
-        if (this.options.closeOnSelect) {
+        if (e.type == 'select' && this.options.closeOnSelect) {
             this.save();
         }
 
@@ -373,8 +375,11 @@ export default class bulmaCalendar extends EventEmitter {
         }
         e.stopPropagation();
 
-        //this.save();
-        // TODO
+        // Reset value
+        this.value(this.element.value);
+
+        this.refresh();
+        this.save();
 
     }
 
@@ -658,6 +663,7 @@ export default class bulmaCalendar extends EventEmitter {
      * @return {datePicker} Current plugin instance
      */
     _init() {
+
         this._open = false;
         // Set component type (date / time / datetime)
         // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
@@ -700,6 +706,7 @@ export default class bulmaCalendar extends EventEmitter {
             this.on('ready', this.options.onReady);
         }
         this.emit('ready', this);
+
     }
 
     /**
@@ -850,7 +857,9 @@ export default class bulmaCalendar extends EventEmitter {
         });
 
         this.datePicker.on('select', this.onSelectDateTimePicker);
+        this.datePicker.on('select:start', this.onSelectDateTimePicker);
         this.timePicker.on('select', this.onSelectDateTimePicker);
+        this.timePicker.on('select:start', this.onSelectDateTimePicker);
 
         // Bind event to element in order to display/hide datePicker on click
         if (this.options.toggleOnInputClick === true) {

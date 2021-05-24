@@ -394,6 +394,8 @@ export default class datePicker extends EventEmitter {
                 this._select(value, false);
             }
 
+            this.refresh();
+
             return;
 
         }
@@ -577,8 +579,8 @@ export default class datePicker extends EventEmitter {
 
         this.disabledWeekDays = type.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
 
-        this.min   = this.options.minDate;
-        this.max   = this.options.maxDate;
+        this.min = this.options.minDate;
+        this.max = this.options.maxDate;
         this._date = {
             start: this.options.startDate,
             end:   this.options.isRange ? this.options.endDate : undefined,

@@ -15,8 +15,7 @@ ready(function () {
     labelTo: 'Check-out'
   });
 
-  var calendars = bulmaCalendar.attach('#datepickerDemoDefault2', {closeOnSelect: true});
-  var calendars = bulmaCalendar.attach('#datepickerDemoDefault', {closeOnSelect: false});
+  var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
   // To access to bulmaCalendar instance of an element
 const element = document.querySelector('#datepickerDemoDefault');
 if (element) {
@@ -29,9 +28,6 @@ if (element) {
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
     startDate: new Date('02/11/2018'),
-    minDate: '01/01/2018',
-    maxDate: '12/31/2018',
-    lang: 'fr'
   });
 
   bulmaCalendar.attach('#datepickerDemoDisabledDates', {

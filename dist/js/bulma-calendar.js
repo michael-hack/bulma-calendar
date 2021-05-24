@@ -10437,10 +10437,12 @@ var bulmaCalendar = function (_EventEmitter) {
         var _this = _possibleConstructorReturn(this, (bulmaCalendar.__proto__ || Object.getPrototypeOf(bulmaCalendar)).call(this));
 
         _this.element = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelector(selector) : selector;
+
         // An invalid selector or non-DOM node has been provided.
         if (!_this.element) {
             throw new Error('An invalid selector or non-DOM node has been provided.');
         }
+
         _this._clickEvents = ['click', 'touch'];
         _this._supportsPassive = __WEBPACK_IMPORTED_MODULE_0__utils_index__["a" /* detectSupportsPassive */]();
 
@@ -10485,6 +10487,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
         // Initiate plugin
         _this._init();
+
         return _this;
     }
 
@@ -10506,11 +10509,9 @@ var bulmaCalendar = function (_EventEmitter) {
          ****************************************************/
         value: function onSelectDateTimePicker(e) {
 
-            alert("select");
-
             this.refresh();
 
-            if (this.options.closeOnSelect) {
+            if (e.type == 'select' && this.options.closeOnSelect) {
                 this.save();
             }
 
@@ -10593,8 +10594,11 @@ var bulmaCalendar = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            //this.save();
-            // TODO
+            // Reset value
+            this.value(this.element.value);
+
+            this.refresh();
+            this.save();
         }
     }, {
         key: 'onCloseDateTimePicker',
@@ -10904,6 +10908,7 @@ var bulmaCalendar = function (_EventEmitter) {
     }, {
         key: '_init',
         value: function _init() {
+
             this._open = false;
             // Set component type (date / time / datetime)
             // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
@@ -11091,7 +11096,9 @@ var bulmaCalendar = function (_EventEmitter) {
             });
 
             this.datePicker.on('select', this.onSelectDateTimePicker);
+            this.datePicker.on('select:start', this.onSelectDateTimePicker);
             this.timePicker.on('select', this.onSelectDateTimePicker);
+            this.timePicker.on('select:start', this.onSelectDateTimePicker);
 
             // Bind event to element in order to display/hide datePicker on click
             if (this.options.toggleOnInputClick === true) {
@@ -16053,6 +16060,8 @@ var datePicker = function (_EventEmitter) {
                     this._select(_value, false);
                 }
 
+                this.refresh();
+
                 return;
             }
 
@@ -17936,6 +17945,8 @@ var timePicker = function (_EventEmitter) {
                 } else {
                     this._select(_value, false);
                 }
+
+                this.refresh();
 
                 return;
             }

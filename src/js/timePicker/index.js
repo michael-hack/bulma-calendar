@@ -607,6 +607,8 @@ export default class timePicker extends EventEmitter {
                 this._select(value, false);
             }
 
+            this.refresh();
+
             return;
 
         }
