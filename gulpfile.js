@@ -18,6 +18,7 @@ const postcss = require('gulp-postcss');
 const run = require('gulp-run');
 const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
+const minifycss = require('gulp-minify-css');
 
 /**
  * ----------------------------------------
@@ -41,10 +42,10 @@ const paths = {
 const config = {
   sass: {
     input: 'index.sass',
-    dependencies: ['node_modules/bulma/sass/utilities/_all.sass'],
+    dependencies: [paths.bulma + '_all.sass'],
     output: {
       filename: pkg.name,
-      format: 'compressed'
+      format: 'expanded'
     },
     source: paths.src + 'sass/',
     destination: paths.dist + 'css/'
@@ -79,35 +80,34 @@ gulp.task('build:styles', function () {
         loadPath: [config.sass.source],
         includePaths: ['node_modules', paths.bulma]
       }))
-      .pipe(concat(config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'))
       .pipe(postcss([autoprefixer({
-        browsers: pkg.broswers
+        browsers: pkg.browsers
       })]))
-      .pipe(cleancss())
+
+      .pipe(concat(config.sass.output.filename + '.css'))
       .pipe(gulp.dest(config.sass.destination))
-      .pipe(gulp.dest(paths.src + paths.demo + 'assets/css/'));
+
+      .pipe(minifycss())
+      .pipe(concat(config.sass.output.filename + '.min.css'))
+      .pipe(gulp.dest(config.sass.destination))
+
   } else {
     return gulp.src('.').pipe(nop());
   }
 });
 
-// Copy original sass file to dist
-gulp.task('build:styles:copy', function () {
-//   if (fs.existsSync(config.sass.source + config.sass.input)) {
-//     return gulp.src(config.sass.source + config.sass.input)
-//       .pipe(concat(config.sass.output.filename + '.sass'))
-//       .pipe(gulp.dest(config.sass.destination));
-//   } else {
-    return gulp.src('.').pipe(nop());
-//   }
-});
-
 gulp.task('clean:styles', function () {
   return del([
-    config.sass.destination + config.sass.output.filename + '.sass',
-    config.sass.destination + config.sass.output.filename + '.scss',
-    config.sass.destination + config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css'
+    config.sass.destination + config.sass.output.filename + '.css',
+    config.sass.destination + config.sass.output.filename + '.min.css'
   ]);
+});
+
+gulp.task('copy:styles', function () {
+    return gulp
+        .src(config.sass.destination + config.sass.output.filename + '.min.css')
+        .pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'css'))
+        .pipe(gulp.dest(paths.demo + paths.assets + 'css'));
 });
 
 /**
@@ -140,8 +140,10 @@ gulp.task('build:scripts', function () {
           }, ],
         }
       }), webpack)
+
       .pipe(concat(config.javascript.output.filename + '.js'))
       .pipe(gulp.dest(config.javascript.destination))
+
       .pipe(concat(config.javascript.output.filename + '.min.js'))
       .pipe(uglify({
             keep_fnames: true,
@@ -154,7 +156,6 @@ gulp.task('build:scripts', function () {
           log(colors.red('[Error]'), err.toString());
         })
       )
-      .pipe(gulp.dest(paths.src + paths.demo + 'assets/js/'));
   } else {
     return gulp.src('.').pipe(nop());
   }
@@ -167,24 +168,43 @@ gulp.task('clean:scripts', function () {
   ]);
 });
 
-
-/**
- * ----------------------------------------
- *  GLOBAL CLEAN
- * ----------------------------------------
- */
-// Deletes the entire dist directory.
-gulp.task('clean', function () {
-  return del(paths.dist);
+gulp.task('copy:scripts', function () {
+    return gulp
+        .src(config.javascript.destination + config.javascript.output.filename + '.min.js')
+        .pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'js'))
+        .pipe(gulp.dest(paths.demo + paths.assets + 'js'));
 });
 
 /**
  * ----------------------------------------
- *  GLOBAL BUILD
+ *  GLOBAL TASKS
  * ----------------------------------------
  */
-gulp.task('build', gulp.series('clean', 'build:styles', 'build:styles:copy', 'build:scripts', function (callback) {
-  callback();
+
+gulp.task('clean', function () {
+    return del(paths.dist);
+});
+
+gulp.task('build', gulp.series('clean', 'build:styles', 'build:scripts', 'copy:styles', 'copy:scripts'));
+
+gulp.task('sync', function(callback) {
+    browserSync.reload();
+    callback();
+})
+
+gulp.task('watch', gulp.series('build', function() {
+
+    browserSync.init({
+        server: paths.demo,
+        ghostMode: false, // Toggle to mirror clicks, reloads etc. (performance)
+        logFileChanges: true,
+        logLevel: 'debug',
+        open: true // Toggle to automatically open page when starting.
+    });
+
+    gulp.watch(config.javascript.source + paths.pattern.js, gulp.series('build:scripts', 'copy:scripts', 'sync'));
+    gulp.watch(config.sass.source + paths.pattern.sass, gulp.series('build:styles', 'copy:styles', 'sync'));
+
 }));
 
 /**
@@ -240,19 +260,6 @@ gulp.task('build:demo:watch', gulp.series('demo:dependencies', function (callbac
   browserSync.reload();
   callback();
 }));
-
-gulp.task('copy:styles', function (callback) {
-  return gulp
-    .src(paths.src + paths.demo + paths.assets + 'css/' + config.sass.output.filename + (config.sass.output.format === 'compressed' ? '.min' : '') + '.css')
-    .pipe(gulp.dest(paths.demo + paths.assets + 'css'));
-});
-
-gulp.task('copy:scripts', function (callback) {
-  return gulp
-    .src(paths.src + paths.demo + paths.assets + 'js/' + config.javascript.output.filename + '.min.js')
-    .pipe(gulp.dest(paths.demo + paths.assets + 'js'));
-});
-
 
 /**
  * ----------------------------------------
