@@ -10483,7 +10483,6 @@ var bulmaCalendar = function (_EventEmitter) {
         _this.onChangeStartMinutesManually = _this.onChangeStartMinutesManually.bind(_this);
         _this.onChangeEndHoursManually = _this.onChangeEndHoursManually.bind(_this);
         _this.onChangeEndMinutesManually = _this.onChangeEndMinutesManually.bind(_this);
-        _this.changeTimeManually = _this.changeTimeManually.bind(_this);
 
         // Initiate plugin
         _this._init();
@@ -10510,12 +10509,11 @@ var bulmaCalendar = function (_EventEmitter) {
         value: function onSelectDateTimePicker(e) {
 
             this.refresh();
+            this.emit(e.type, this);
 
-            if (e.type == 'select' && this.options.closeOnSelect) {
+            if (e.type === 'select' && this.options.closeOnSelect) {
                 this.save();
             }
-
-            this.emit(e.type, this);
         }
     }, {
         key: 'onDocumentClickDateTimePicker',
@@ -10548,9 +10546,9 @@ var bulmaCalendar = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            this.save();
-
             this.emit('validate', this);
+
+            this.save();
         }
     }, {
         key: 'onTodayClickDateTimePicker',
@@ -10619,44 +10617,46 @@ var bulmaCalendar = function (_EventEmitter) {
     }, {
         key: 'onChangeStartHoursManually',
         value: function onChangeStartHoursManually(e) {
-            var start = this.timePicker._time.start;
-            start.setHours(e.currentTarget.value);
-            this.timePicker.start = start;
 
-            this.changeTimeManually();
+            this.timePicker.start.setHours(e.currentTarget.value);
+            this.refresh();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
         }
     }, {
         key: 'onChangeStartMinutesManually',
         value: function onChangeStartMinutesManually(e) {
-            var start = this.timePicker._time.start;
-            start.setMinutes(e.currentTarget.value);
-            this.timePicker.start = start;
 
-            this.changeTimeManually();
+            this.timePicker.start.setMinutes(e.currentTarget.value);
+            this.refresh();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
         }
     }, {
         key: 'onChangeEndHoursManually',
         value: function onChangeEndHoursManually(e) {
-            var end = this.timePicker._time.end;
-            end.setHours(e.currentTarget.value);
-            this.timePicker.end = end;
 
-            this.changeTimeManually();
+            this.timePicker.end.setHours(e.currentTarget.value);
+            this.refresh();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
         }
     }, {
         key: 'onChangeEndMinutesManually',
         value: function onChangeEndMinutesManually(e) {
-            var end = this.timePicker._time.end;
-            end.setMinutes(e.currentTarget.value);
-            this.timePicker.end = end;
 
-            this.changeTimeManually();
-        }
-    }, {
-        key: 'changeTimeManually',
-        value: function changeTimeManually() {
+            this.timePicker.end.setMinutes(e.currentTarget.value);
             this.refresh();
-            this.save();
+
+            if (this.options.closeOnSelect) {
+                this.save();
+            }
         }
 
         /****************************************************
@@ -10880,6 +10880,8 @@ var bulmaCalendar = function (_EventEmitter) {
             if (this.options.displayMode !== 'inline') {
                 this.hide();
             }
+
+            this.emit('save', this);
         }
 
         /**
