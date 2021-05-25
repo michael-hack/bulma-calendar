@@ -5,6 +5,7 @@ import EventEmitter from '../utils/events';
 
 import template from './templates/timepicker';
 import defaultOptions from './defaultOptions';
+import dateUtils from "date-and-time";
 
 export default class timePicker extends EventEmitter {
 
@@ -51,8 +52,8 @@ export default class timePicker extends EventEmitter {
             end:   dateFns.endOfToday()
         };
 
-        this.start = this.options.start || dateFns.startOfToday();
-        this.end   = this.options.isRange ? this.options.end : dateFns.endOfToday();
+        this.start = this._newDate(this.options.startTime) || dateFns.startOfToday();
+        this.end   = this.options.isRange ? this._newDate(this.options.endTime) : dateFns.endOfToday();
 
         this._build();
         this._bindEvents();
@@ -124,9 +125,33 @@ export default class timePicker extends EventEmitter {
         });
     }
 
+    /**
+     * NewDate - Helper
+     * @param date
+     * @returns {Date|undefined}
+     * @private
+     */
+    _newDate(time) {
+
+        if (!time) {
+            return undefined;
+        }
+
+        let result = new Date(time);
+
+        if (!type.isDate(result)) {
+            result = dateUtils.parse(time, this.format);
+        }
+
+        return result;
+
+    }
+
     _select(time = undefined, emit = true) {
 
-        time = type.isDate(time) ? time : new Date(time);
+        if (!type.isDate(time)) {
+            time = this._newDate(time);
+        }
 
         if (this.options.isRange && (!this._isValidTime(this.start) || (this._isValidTime(this.start) && this._isValidTime(this.end)))) {
             this.start = time;
@@ -163,7 +188,7 @@ export default class timePicker extends EventEmitter {
                     return true;
                 }
                 if (min && max) {
-                    return dateFns.isWithinRange(time, min, max);
+                    return dateFns.isWithinInterval(time, { start: min, end: max });
                 }
                 if (max) {
                     return dateFns.isBefore(time, max) || dateFns.isEqual(time, max);
@@ -204,10 +229,16 @@ export default class timePicker extends EventEmitter {
     }
 
     // Set TimePicker language
-    set lang(lang = 'en') {
-        this._lang   = lang;
-        this._locale = require(`date-fns/locale/${lang}/index.js`);
-        return this;
+    set lang(lang) {
+        try {
+            this._locale = require(`date-fns/locale/${lang}/index.js`);
+        } catch (e) {
+            lang         = 'en-US';
+            this._locale = require(`date-fns/locale/${lang}/index.js`);
+        } finally {
+            this._lang = lang;
+            return this;
+        }
     }
 
     // Get current TimePicker language
@@ -238,7 +269,7 @@ export default class timePicker extends EventEmitter {
     }
 
     // Set min
-    set min(time = undefined) {
+    set min(time) {
         this._min = time ? (this._isValidTime(time) ? time : this._min) : undefined;
         return this;
     }
@@ -249,7 +280,7 @@ export default class timePicker extends EventEmitter {
     }
 
     // Set max
-    set max(time = null) {
+    set max(time) {
         this._max = time ? (this._isValidTime(time) ? time : this._max) : undefined;
         return this;
     }
@@ -260,7 +291,7 @@ export default class timePicker extends EventEmitter {
     }
 
     // Set time format (set to HH:mm by default)
-    set format(format = 'HH:mm') {
+    set format(format) {
         this._format = format;
         return this;
     }
@@ -292,7 +323,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.start.hours.number.innerText = dateFns.format(this.start, 'HH');
                 this._ui.start.hours.input.value      = dateFns.format(this.start, 'HH');
                 this._ui.start.hours.number.classList.add('is-decrement-visible');
-                this._select(this.time);
+                this.emit('select', this);
             }, 100);
 
             setTimeout(() => {
@@ -321,7 +352,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.start.hours.number.innerText = dateFns.format(this.start, 'HH');
                 this._ui.start.hours.input.value      = dateFns.format(this.start, 'HH');
                 this._ui.start.hours.number.classList.add('is-increment-visible');
-                this._select(this.time);
+                this.emit('select', this);
             }, 100);
 
             setTimeout(() => {
@@ -352,7 +383,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.start.minutes.input.value      = dateFns.format(this.start, 'mm');
                 this._ui.start.minutes.number.classList.add('is-decrement-visible');
 
-                this._select(this.time);
+                this.emit('select', this);
 
                 if (dateFns.format(this.start, 'HH') !== this._ui.start.hours.input.value) {
                     this._ui.start.hours.number.innerText = dateFns.format(this.start, 'HH');
@@ -395,7 +426,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.start.minutes.input.value      = dateFns.format(this.start, 'mm');
                 this._ui.start.minutes.number.classList.add('is-increment-visible');
 
-                this._select(this.time);
+                this.emit('select', this);
 
                 if (dateFns.format(this.start, 'HH') !== this._ui.start.hours.input.value) {
                     this._ui.start.hours.number.innerText = dateFns.format(this.start, 'HH');
@@ -436,7 +467,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.end.hours.number.innerText = dateFns.format(this.end, 'HH');
                 this._ui.end.hours.input.value      = dateFns.format(this.end, 'HH');
                 this._ui.end.hours.number.classList.add('is-decrement-visible');
-                this._select(this.time);
+                this.emit('select', this);
             }, 100);
 
             setTimeout(() => {
@@ -465,7 +496,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.end.hours.number.innerText = dateFns.format(this.end, 'HH');
                 this._ui.end.hours.input.value      = dateFns.format(this.end, 'HH');
                 this._ui.end.hours.number.classList.add('is-increment-visible');
-                this._select(this.time);
+                this.emit('select', this);
             }, 100);
 
             setTimeout(() => {
@@ -496,7 +527,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.end.minutes.input.value      = dateFns.format(this.end, 'mm');
                 this._ui.end.minutes.number.classList.add('is-decrement-visible');
 
-                this._select(this.time);
+                this.emit('select', this);
 
                 if (dateFns.format(this.end, 'HH') !== this._ui.end.hours.input.value) {
                     this._ui.end.hours.number.innerText = dateFns.format(this.end, 'HH');
@@ -534,7 +565,7 @@ export default class timePicker extends EventEmitter {
                 this._ui.end.minutes.input.value      = dateFns.format(this.end, 'mm');
                 this._ui.end.minutes.number.classList.add('is-increment-visible');
 
-                this._select(this.time);
+                this.emit('select', this);
 
                 if (dateFns.format(this.end, 'HH') !== this._ui.end.hours.input.value) {
                     this._ui.end.hours.number.innerText = dateFns.format(this.end, 'HH');
@@ -600,8 +631,8 @@ export default class timePicker extends EventEmitter {
 
                 const times = value.split(' - ');
 
-                if (times.length)       this.start = new Date(times[0]);
-                if (times.length === 2) this.end   = new Date(times[1]);
+                if (times.length)       this.start = this._newDate(times[0]);
+                if (times.length === 2) this.end   = this._newDate(times[1]);
 
             } else {
                 this._select(value, false);
