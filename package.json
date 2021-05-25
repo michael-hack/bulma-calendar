@@ -34,7 +34,7 @@
   "homepage": "https://bulma-calendar.onrender.com",
   "dependencies": {
     "date-and-time": "^0.14.2",
-    "date-fns": "^1.29.0"
+    "date-fns": "^2.21.3"
   },
   "peerDependencies": {
     "bulma": "*"

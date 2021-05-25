@@ -116,11 +116,11 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     // Set language
-    set lang(lang = 'en') {
+    set lang(lang) {
         try {
             this._locale = require(`date-fns/locale/${lang}/index.js`);
         } catch (e) {
-            lang         = 'en';
+            lang         = 'en-US';
             this._locale = require(`date-fns/locale/${lang}/index.js`);
         } finally {
             this._lang           = lang;
@@ -153,7 +153,7 @@ export default class bulmaCalendar extends EventEmitter {
     /**
      * * Date setter and getter
      */
-    set date(date = null) {
+    set date(date) {
         this.datePicker.date = date;
         return this;
     }
@@ -163,7 +163,7 @@ export default class bulmaCalendar extends EventEmitter {
         return this.datePicker.date;
     }
 
-    set startDate(date = undefined) {
+    set startDate(date) {
         this.datePicker.start = dateUtils.parse(date, this.dateFormat);
         return this;
     }
@@ -172,7 +172,7 @@ export default class bulmaCalendar extends EventEmitter {
         return this.datePicker.start;
     }
 
-    set endDate(date = undefined) {
+    set endDate(date) {
         this.datePicker.end = dateUtils.parse(date, this.dateFormat);
         return this;
     }
@@ -184,7 +184,7 @@ export default class bulmaCalendar extends EventEmitter {
     /**
      * minDate getter and setters
      */
-    set minDate(date = undefined) {
+    set minDate(date) {
         this.datePicker.minDate = dateUtils.parse(date, this.dateFormat);
         return this;
     }
@@ -195,7 +195,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     // Set maxDate
-    set maxDate(date = undefined) {
+    set maxDate(date) {
         this.datePicker.maxDate = dateUtils.parse(date, this.dateFormat);
         return this;
     }
@@ -219,7 +219,7 @@ export default class bulmaCalendar extends EventEmitter {
     /**
      * * Time setter and getter
      */
-    set time(time = null) {
+    set time(time) {
         this.timePicker.time = time;
         return this;
     }
@@ -229,7 +229,7 @@ export default class bulmaCalendar extends EventEmitter {
         return this.timePicker.time;
     }
 
-    set startTime(time = undefined) {
+    set startTime(time) {
         this.timePicker.start = time;
         return this;
     }
@@ -238,7 +238,7 @@ export default class bulmaCalendar extends EventEmitter {
         return this.timePicker.start;
     }
 
-    set endTime(time = undefined) {
+    set endTime(time) {
         this.timePicker.end = time;
         return this;
     }
@@ -250,7 +250,7 @@ export default class bulmaCalendar extends EventEmitter {
     /**
      * minTime getter and setters
      */
-    set minTime(time = undefined) {
+    set minTime(time) {
         this.timePicker.minTime = time;
         return this;
     }
@@ -261,7 +261,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     // Set maxTime
-    set maxTime(time = undefined) {
+    set maxTime(time) {
         this.timePicker.maxTime = time;
         return this;
     }
@@ -329,7 +329,9 @@ export default class bulmaCalendar extends EventEmitter {
 
         this.emit('validate', this);
 
-        this.save();
+        if (!types.isFunction(this.options.onValidate)) {
+            this.save();
+        }
 
     }
 
@@ -360,7 +362,7 @@ export default class bulmaCalendar extends EventEmitter {
 
         this.clear();
 
-        if (this.options.closeOnSelect) {
+        if (!this.isOpen() || this.options.closeOnSelect) {
             this.save();
         }
 
@@ -489,20 +491,29 @@ export default class bulmaCalendar extends EventEmitter {
 
             case 'datetime':
 
-                let start = this.datePicker.start
-                    ? dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.start, dateFns.getHours(this.timePicker.start)), dateFns.getMinutes(this.timePicker.start)))
-                    : undefined;
-                let end = this.datePicker.end ? dateFns.getTime(this.datePicker.end) : undefined;
+                let start = this.datePicker.start;
+                let end   = this.datePicker.end;
 
-                if (end && this.options.isRange) {
-                    // This options is not required - in other place i set eod on date
-                    //end = dateFns.getTime(dateFns.addMinutes(dateFns.addHours(this.datePicker.end, dateFns.getHours(this.timePicker.end)), dateFns.getMinutes(this.timePicker.end)));
+                if (start && this.timePicker.start) {
+
+                    start.setHours(this.timePicker.start.getHours());
+                    start.setMinutes(this.timePicker.start.getMinutes());
+
+                    string = dateFns.format(start, this.format, { locale: this.locale })
+
                 }
 
-                string = start ? dateFns.format(new Date(start), this.format, { locale: this.locale }) : '';
-                if (end) {
-                    string += ` - ${end ? dateFns.format(new Date(end), this.format, { locale: this.locale }) : ''}`;
+                if (this.options.isRange) {
+
+                    if (end && this.timePicker.end) {
+                        end.setHours(this.timePicker.end.getHours());
+                        end.setMinutes(this.timePicker.end.getMinutes());
+                    }
+
+                    string += ` - ${end ? dateFns.format(end, this.format, { locale: this.locale }) : ''}`;
+
                 }
+
                 break;
 
         }
@@ -513,12 +524,12 @@ export default class bulmaCalendar extends EventEmitter {
 
     refresh() {
 
-        this._ui.header.start.day.innerHTML   = this.datePicker.start ? dateFns.format(this.datePicker.start, 'DD', { locale: this.locale }) : '--';
+        this._ui.header.start.day.innerHTML   = this.datePicker.start ? dateFns.format(this.datePicker.start, 'dd', { locale: this.locale }) : '--';
         this._ui.header.start.month.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
 
         if (this.datePicker.start) {
             this._ui.header.start.weekday.classList.remove('is-hidden');
-            this._ui.header.start.weekday.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, 'dddd', { locale: this.locale }) : '';
+            this._ui.header.start.weekday.innerHTML = this.datePicker.start ? dateFns.format(this.datePicker.start, 'EEEE', { locale: this.locale }) : '';
         } else {
             this._ui.header.start.weekday.classList.add('is-hidden');
         }
@@ -537,14 +548,14 @@ export default class bulmaCalendar extends EventEmitter {
         if (this._ui.header.end) {
 
             this._ui.header.end.day.innerHTML =
-                this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, 'DD', { locale: this.locale }) : '--';
+                this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, 'dd', { locale: this.locale }) : '--';
 
             this._ui.header.end.month.innerHTML =
                 this.options.isRange && this.datePicker.end ? dateFns.format(this.datePicker.end, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
 
             if (this.datePicker.end) {
                 this._ui.header.end.weekday.classList.remove('is-hidden');
-                this._ui.header.end.weekday.innerHTML = this.datePicker.end ? dateFns.format(this.datePicker.end, 'dddd', { locale: this.locale }) : '';
+                this._ui.header.end.weekday.innerHTML = this.datePicker.end ? dateFns.format(this.datePicker.end, 'EEEE', { locale: this.locale }) : '';
             } else {
                 this._ui.header.end.weekday.classList.add('is-hidden');
             }
@@ -588,6 +599,7 @@ export default class bulmaCalendar extends EventEmitter {
         if (this._ui.modal) {
             this._ui.modal.classList.add('is-active');
         }
+
         this._ui.wrapper.classList.add('is-active');
         this._open = true;
 
@@ -632,15 +644,9 @@ export default class bulmaCalendar extends EventEmitter {
     // Set element value to datetime selected based on format
     save() {
 
-        const date         = this.value();
-        const [start, end] = date.split(' - ');
+        this.element.setAttribute('value', this.value());
 
-        this.element.value           = date;
-        this._ui.dummy.dummy_1.value = start ? start : '';
-
-        if (this._ui.dummy.dummy_2) {
-            this._ui.dummy.dummy_2.value = end ? end : '';
-        }
+        this._refreshInput();
 
         if (this.options.displayMode !== 'inline') {
             this.hide();
@@ -672,27 +678,23 @@ export default class bulmaCalendar extends EventEmitter {
     _init() {
 
         this._open = false;
-        // Set component type (date / time / datetime)
-        // this.options.type = (['date', 'time', 'datetime'].indexOf(this.element.getAttribute('type').toLowerCase()) > -1) ? this.element.getAttribute('type').toLowerCase() : this.options.type;
-        this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date';
+        this._type = ['date', 'time', 'datetime'].indexOf(this.options.type.toLowerCase()) > -1 ? this.options.type.toLowerCase() : 'date'; // Set component type (date / time / datetime)
+
         // Change element type to prevent browser default type="date" behavior
         this.element.setAttribute('type', 'text');
-        this.datePicker = new datePicker({
-            ...this.options,
-            lang: this.lang,
-        });
-        this.timePicker = new timePicker({
-            ...this.options,
-            lang: this.lang,
-        });
+
+        // create pickers
+        this.datePicker = new datePicker({ ...this.options, lang: this.lang });
+        this.timePicker = new timePicker({ ...this.options, lang: this.lang });
+
+        // apply value to picker
         if (this.element.value) {
             this.datePicker.value(this.element.value);
             this.timePicker.value(this.element.value);
         }
 
         this.lang   = this.options.lang;
-        // Set export format based on component type
-        this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : `${this.options.dateFormat} ${this.options.timeFormat}`;
+        this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : `${this.options.dateFormat} ${this.options.timeFormat}`; // Set export format based on component type
 
         // Force dialog display mode on mobile devices
         if (this.options.displayMode === 'default' && window.matchMedia('screen and (max-width: 768px)').matches) {
@@ -707,11 +709,15 @@ export default class bulmaCalendar extends EventEmitter {
 
         this._build();
         this._bindEvents();
-        this.save();
+        this._refreshInput();
 
         if (types.isFunction(this.options.onReady)) {
             this.on('ready', this.options.onReady);
         }
+        if (types.isFunction(this.options.onValidate)) {
+            this.on('validate', this.options.onValidate);
+        }
+
         this.emit('ready', this);
 
     }
@@ -815,7 +821,11 @@ export default class bulmaCalendar extends EventEmitter {
                 this._ui.container.appendChild(this.datePicker.render());
                 break;
             case 'time':
+                this.options.closeOnSelect = false;
                 this._ui.container.appendChild(this.timePicker.render());
+                if (this.options.labelFrom || this.options.labelTo) {
+                    this._ui.header.container.classList.remove('is-hidden');
+                }
                 if (this._ui.footer.validate) {
                     this._ui.footer.validate.classList.remove('is-hidden');
                 }
@@ -840,8 +850,6 @@ export default class bulmaCalendar extends EventEmitter {
         this.element.parentNode.insertBefore(datetimePickerNode, this.element.nextSibling);
         this._ui.dummy.wrapper.appendChild(this.element);
         this.element.classList.add('is-hidden');
-        // this.element.style.visibility = 'hidden';
-        // this.element.style.position = 'absolute';
 
         if (this.options.displayMode === 'inline') {
             this._ui.wrapper.classList.add('is-active');
@@ -932,6 +940,22 @@ export default class bulmaCalendar extends EventEmitter {
                 this._ui.footer.cancel.addEventListener(clickEvent, this.onCancelClickDateTimePicker);
             });
         }
+    }
+
+    /**
+     * Refresh Input
+     * @private
+     */
+    _refreshInput() {
+
+        const [start, end] = this.value().split(' - ');
+
+        this._ui.dummy.dummy_1.value = start ? start : '';
+
+        if (this._ui.dummy.dummy_2) {
+            this._ui.dummy.dummy_2.value = end ? end : '';
+        }
+
     }
 
 }

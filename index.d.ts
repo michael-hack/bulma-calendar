@@ -45,7 +45,7 @@ declare namespace bulmaCalendar {
     /**
      * Date format pattern
      *
-     * @default 'MM/DD/YYYY'
+     * @default 'MM/dd/yyyy'
      */
     dateFormat?: string;
 
@@ -66,14 +66,14 @@ declare namespace bulmaCalendar {
     /**
      * Navigation year format pattern
      *
-     * @default 'YYYY'
+     * @default 'yyyy'
      */
     navigationYearFormat?: string;
 
     /**
      * Header month year format pattern
      *
-     * @default 'MMMM YYYY'
+     * @default 'MMMM yyyy'
      */
     headerMonthYearFromat?: string;
 

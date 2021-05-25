@@ -1,7 +1,9 @@
-import {
-	getMonth
-} from 'date-fns';
+import { format } from 'date-fns';
 
 export default (data) => {
-	return `${data.years.map(year => (`<div class="datepicker-year${year === getMonth(data.visibleDate) ? ' is-active' : ''}" data-year="${year}"><span class="item">${year}</span></div>`)).join('')}`;
+    return `${data.years.map(year => (`
+        <div class="datepicker-year" data-year="${format(year, 'yyyy', { locale: data.locale })}">
+            <span class="item">${format(year, 'yyyy', { locale: data.locale })}</span>
+        </div>
+    `)).join('')}`;
 }
