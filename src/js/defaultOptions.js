@@ -3,12 +3,12 @@ const defaultOptions = {
   color: 'primary',
   isRange: false,
   allowSameDayRange: true,
-  lang: navigator.language.substring(0, 2) || 'en', // internationalization
-  dateFormat: 'MM/DD/YYYY',
+  lang: navigator.language || 'en', // internationalization
+  dateFormat: 'MM/dd/yyyy',
   timeFormat: 'HH:mm',
   navigationMonthFormat: 'MMMM',
-  navigationYearFormat: 'YYYY',
-  headerMonthYearFromat: 'MMMM YYYY',
+  navigationYearFormat: 'yyyy',
+  headerMonthYearFromat: 'MMMM yyyy',
   displayMode: 'default',
   editTimeManually: false,
   position: 'auto',
@@ -42,6 +42,7 @@ const defaultOptions = {
   closeOnSelect: true,
   toggleOnInputClick: true,
   onReady: null,
+  onValidate: null,
   icons: {
     previous: `<svg viewBox="0 0 50 80" xml:space="preserve">
       <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>

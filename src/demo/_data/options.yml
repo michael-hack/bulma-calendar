@@ -21,7 +21,7 @@
 - name: 'dateFormat'
   type: String
   description: 'Date format pattern'
-  value: 'MM/DD/YYYY'
+  value: 'MM/dd/yyyy'
 - name: 'timeFormat'
   type: String
   description: 'Time format pattern'

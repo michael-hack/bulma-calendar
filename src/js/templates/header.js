@@ -27,7 +27,7 @@ export default (data) => {
 		</div>
 		${data.isRange ? `
 		<div class="datetimepicker-selection-details">
-			<div class="datetimepicker-selection-to${data.labelTo === '' ? ' is-hidden' : ''}">${data.labelTo}</div>
+			<div class="datetimepicker-selection-to ${data.labelTo === '' ? ' is-hidden' : ''}">${data.labelTo}</div>
 			<div class="datetimepicker-selection-end">
 				<div class="datetimepicker-selection-wrapper">
 					<div class="datetimepicker-selection-day"></div>

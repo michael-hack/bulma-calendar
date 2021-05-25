@@ -2,7 +2,7 @@ const defaultOptions = {
   color: 'primary',
   isRange: false,
   allowSameDayRange: true,
-  lang: 'en', // internationalization
+  lang: 'en-US', // internationalization
   startDate: undefined,
   endDate: undefined,
   minDate: null,
@@ -11,9 +11,9 @@ const defaultOptions = {
   disabledWeekDays: undefined,
   highlightedDates: [],
   weekStart: 0,
-  dateFormat: 'MM/DD/YYYY',
+  dateFormat: 'MM/dd/yyyy',
   navigationMonthFormat: 'MMMM',
-  navigationYearFormat: 'YYYY',
+  navigationYearFormat: 'yyyy',
   enableMonthSwitch: true,
   enableYearSwitch: true,
   displayYearsCount: 50,
