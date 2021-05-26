@@ -4,54 +4,47 @@ route: demonstration
 title: Demonstration
 ---
 {% capture calendar_datepicker_example_inline %}
-<input id="datepickerDemoInline" class="input" type="time" data-display-mode="inline" value="09/25/2018">
+<input id="datepickerDemoInline" class="input" type="time" data-display-mode="inline" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_info %}
-<input id="datepickerDemoInlineInfo" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="info" value="09/25/2018">
+<input id="datepickerDemoInlineInfo" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="info" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_success %}
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="success" value="09/25/2018">
+<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="success" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_warning %}
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="warning" value="09/25/2018">
+<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="warning" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_danger %}
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="danger" value="09/25/2018">
+<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="danger" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_grey %}
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="grey" value="09/25/2018">
+<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="grey" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_dark %}
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="dark" value="09/25/2018">
+<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="dark" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_black %}
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true"
-  data-color="black" value="09/25/2018">
+<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="black" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_inline_range %}
-<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="time">
+<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="time" value="08:00 - 14:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example %}
-<input id="datepickerDemoDefault" class="input" type="time" value="09/25/2018">
+<input id="datepickerDemoDefault" class="input" type="time" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_range %}
-<input id="datepickerDemoRange" class="input" data-is-range="true" type="time">
+<input id="datepickerDemoRange" class="input" data-is-range="true" type="time" value="08:00 - 14:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_range_labels %}
@@ -59,19 +52,7 @@ title: Demonstration
 {% endcapture %}
 
 {% capture calendar_datepicker_example_dialog %}
-<input id="datepickerDemoDialog" class="input" type="time" value="09/25/2018">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_disabled_dates %}
-<input id="datepickerDemoDisabledDates" class="input" type="time" value="09/25/2018">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_disabled_weekdays %}
-<input id="datepickerDemoDisabledWeekDays" class="input" type="time" value="09/25/2018">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_weekstart %}
-<input id="datepickerDemoWeekStart" class="input" type="time" value="09/25/2018">
+<input id="datepickerDemoDialog" class="input" type="time" value="08:00">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_labels %}
@@ -137,16 +118,6 @@ title: Demonstration
     {{calendar_datepicker_example_labels}}
   </div>
 </div>
-
-{% include anchor.html name="Design options" %}
-<h1 class="title is-5">Disabled dates</h1>
-<p>Yesterday and tomorrow are disbaled</p>
-{{calendar_datepicker_example_disabled_dates}}
-<br />
-<br />
-<h1 class="title is-5">Change week start</h1>
-<p>Week starts on Monday</p>
-{{calendar_datepicker_example_weekstart}}
 
 {% include anchor.html name="Colors" %}
 <div class="columns is-multiline">

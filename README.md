@@ -10,55 +10,64 @@ Bulma's extension to display a calendar. It can be used on page as large calenda
 ### Date format
 
 ```js
-date = new bulmaCalendar(document.querySelector('.sr-date'), {
-  dataFormat: 'd MM yyyy' // 1 January 2018
+var calendars = new bulmaCalendar('.bulmaCalendar', {
+    dateFormat: 'dd.MM.yyyy' // 01.01.2021
 });
 ```
 
-where `dataFormat` is a string with a combination of this values:
+where `dateFormat` is a string with a combination of this values:
 
 ```
 d: short day (1-31)
 dd: long day (00-31)
-D: weekday (es: Monday)
-m: short month (1-12)
-mm: long month (01-12)
-M: short month name (es: Jan, Feb)
-MM: full month name (es: January)
+EEE: short weekday (es: Mon)
+EEEE: long weekday (es: Monday)
+M: short month (1-12)
+MM: long month (01-12)
+MMM: short month name (es: Jan, Feb)
+MMMM: full month name (es: January)
 yy: short year (18)
 yyyy: full year (2018)
 ```
+
+For more values take a look at the [date-fns 2.x format](https://date-fns.org/v2.21.3/docs/format).
 
 ### Language
 
 ```js
 
-date = new bulmaCalendar(document.querySelector('.sr-date'), {
-  lang: 'it' // one of: en (default), fr, de, tr, it, th, pt-BR
+var calendars = new bulmaCalendar('.bulmaCalendar', {
+    lang: 'it' // refer to date-fns locales
 });
 ```
 
-### Other options
+### Default Options
 
-Here's the options object and the default values as appears on code.
+Here's the options object and the default values as appears on code. For more options, please see the documentation.
 
 ```js
 var defaultOptions = {
-  startDate: new Date(),
-  // the default data format `field` value
-  dateFormat: 'yyyy/mm/dd',
-  // internationalization
-  lang: 'en',
-  overlay: false,
-  closeOnSelect: true,
-  // callback function
-  onSelect: null,   // callback(new Date(year, month, day))
-  onOpen: null,     // callback(this)
-  onClose: null,    // callback(this)
-  onRender: null    // callback(this)
+    color: 'primary',
+    isRange: false,
+    allowSameDayRange: true,
+    lang: 'en-US',
+    startDate: undefined,
+    endDate: undefined,
+    minDate: null,
+    maxDate: null,
+    disabledDates: [],
+    disabledWeekDays: undefined,
+    highlightedDates: [],
+    weekStart: 0,
+    dateFormat: 'MM/dd/yyyy',
+    navigationMonthFormat: 'MMMM',
+    navigationYearFormat: 'yyyy',
+    enableMonthSwitch: true,
+    enableYearSwitch: true,
+    displayYearsCount: 50,
 };
 ```
 
-Documentation & Demo
----
-You can find the Documentation and a demo [here](https://bulma-calendar.onrender.com/customization)
+# Documentation & Demo
+
+You can find the full Documentation and a demo [here](https://doc.mh-s.de/bulma-calendar)

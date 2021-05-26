@@ -16,8 +16,8 @@
   value: 'true'
 - name: 'lang'
   type: String
-  description: 'Display lang (from language supported by <a href="https://date-fns.org/v1.29.0/docs/format" targer="_blank">date-fns</a>)'
-  value: 'navigator.language.substring(0, 2) || "en"'
+  description: 'Display lang (from language supported by <a href="https://date-fns.org/v2.21.3/docs/format" targer="_blank">date-fns 2.x</a>)'
+  value: 'navigator.language || "en-US"'
 - name: 'dateFormat'
   type: String
   description: 'Date format pattern'
@@ -149,6 +149,9 @@
 - name: 'onReady'
   type: Function
   description: 'Callback to trigger once picker initiated'
+- name: 'onValidate'
+  type: Function
+  description: 'Callback for manual validation before save()'
   value: 'null'
 - name: 'icons.previous'
   type: String

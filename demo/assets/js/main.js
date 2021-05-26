@@ -1,12 +1,7 @@
 ready(function () {
   bulmaCalendar.attach('.bulmaCalendar');
 
-  bulmaCalendar.attach('#datepickerDemoRange', {
-        startDate: '2021-05-20',
-        endDate: '2021-05-23',
-        startTime: '10:00',
-        endTime: '14:00'
-  });
+  bulmaCalendar.attach('#datepickerDemoRange');
   bulmaCalendar.attach('#datepickerDemoInline');
   bulmaCalendar.attach('#datepickerDemoInlineInfo');
   bulmaCalendar.attach('#datepickerDemoInlineSuccess');
@@ -20,10 +15,7 @@ ready(function () {
     labelTo: 'Check-out'
   });
 
-  var calendars = bulmaCalendar.attach('#datepickerDemoDefault', {
-        startDate: '2021-05-20',
-        startTime: '10:00'
-  });
+  var calendars = bulmaCalendar.attach('#datepickerDemoDefault');
   // To access to bulmaCalendar instance of an element
 const element = document.querySelector('#datepickerDemoDefault');
 if (element) {
@@ -35,7 +27,7 @@ if (element) {
 
   bulmaCalendar.attach('#datepickerDemoDialog', {
     displayMode: 'dialog',
-    startDate: new Date('02/11/2018'),
+    startDate: new Date('02/11/2018')
   });
 
   bulmaCalendar.attach('#datepickerDemoDisabledDates', {
