@@ -28,6 +28,10 @@
       link: '#setters'
     - name: Events
       link: '#events'
+- name: Components
+  submenus:
+    - name: VueJS
+      link: 'components/vuejs'
 - name: Customization
   link: 'customization'
 - name: Changelog

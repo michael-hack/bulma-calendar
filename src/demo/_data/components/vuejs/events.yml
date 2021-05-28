@@ -1,0 +1,6 @@
+- name: 'save'
+  description: 'Triggered when start / end date is saved'
+  parameters: 'date | [date, date]'
+- name: 'select'
+  description: 'Triggered when start / end date is selected, but not yet validated and saved'
+  parameters: 'date | [date, date]'

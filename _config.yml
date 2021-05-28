@@ -1,8 +1,8 @@
 # Variables
 title:         "Bulma Calendar"
 description:   "Responsive - Interactive Date/Time Picker"
-version:       6.1.2
-url:           "https://doc.mh-s.de/bulma-calendar"
+version:       6.1.3
+#url:           "https://doc.mh-s.de/bulma-calendar"
 
 # Build
 markdown:      kramdown

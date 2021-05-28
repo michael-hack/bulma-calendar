@@ -1,0 +1,28 @@
+- name: 'type'
+  type: String
+  description: 'Bulma Calendar Type: date|time|datetime'
+  value: 'datetime'
+- name: 'clearable'
+  type: Boolean
+  description: 'Date / Time is clearable'
+  value: false
+- name: 'dialog'
+  type: Boolean
+  description: 'Display Mode: Dialog'
+  value: false
+- name: 'inline'
+  type: Boolean
+  description: 'Display Mode: Inline'
+  value: false
+- name: 'range'
+  type: Boolean
+  description: 'Range Selection instead of Single Date'
+  value: false
+- name: 'options'
+  type: Object
+  description: 'JS Object with regular Bulma Calendar Options'
+  value: {}
+- name: 'value'
+  type: String
+  description: 'Initial Start- / End-Time: date|[date, date]|null'
+  value: 'null'

@@ -242,7 +242,7 @@ new Vue({
 <section class="section is-paddingless">
 	<p>The component comes with various files:</p>
 	<div class="file-tree">
-		
+
 	</div>
 	<p>Depending on your need your can use either pre-compiled files from <code>dist</code> directory or sources from <code>src</code> directory.</p>
 </section>
@@ -271,7 +271,7 @@ new Vue({
 					<li><a href="#include-sass">Sass</a></li>
 				</ul>
 			</div>
-			
+
 			<div class="tab-contents">
 				<div id="include-css" class="tab-content is-active">
 					<p>{% highlight html %}{{ component_include_css }}{% endhighlight %}</p>
@@ -332,7 +332,7 @@ new Vue({
 </section>
 
 {% include anchor.html name="Options" %}
-{% include options.html %}
+{% include options.html data=site.data.options %}
 
 <article class="message is-info">
 	<div class="message-body">
@@ -363,5 +363,5 @@ new Vue({
 {% include anchor.html name="Events" %}
 <section class="section is-paddingless">
 	<p>Calendar component comes with Events Management API so you can easily react to its behavior.</p>
-	{% include events.html %}
+	{% include events.html data=site.data.events %}
 </section>

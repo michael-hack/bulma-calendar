@@ -1,0 +1,74 @@
+---
+layout: default
+route: components
+title: VueJS
+subtitle: Component
+---
+
+<div class="notification is-warning is-light">
+    The VueJS Component is new and currently under development.
+</div>
+
+{% include anchor.html name="Integration" %}
+
+<section class="section is-paddingless">
+
+    <p>The VueJS Component can be easily imported and used in VueJS.</p>
+
+    {% highlight vue %}
+<template>
+    <div id="app">
+
+        <div class="field">
+            <label class="label">Date</label>
+            <div class="control">
+                <bulma_calendar type="date" v-model="date" :options="options" dialog range />
+            </div>
+        </div>
+
+        <div class="field">
+            Selected Range: {% raw %}{{ displayDate }}{% endraw %}
+        </div>
+
+    </div>
+</template>
+
+<script>
+
+    import bulma_calendar from "bulma-calendar/dist/components/vue/bulma_calendar.vue";
+
+    export default {
+        components: { bulma_calendar },
+        computed: {
+            displayDate() {
+                if (!this.date[0] || !this.date[1]) return '- n/a -';
+                return this.date[0] + ' to ' + this.date[1];
+            }
+        },
+        data() {
+            return {
+                date: [null, null],
+                options: {
+                    dateFormat: 'dd.MM.yyyy',
+                    labelFrom:  'From',
+                    labelTo:    'To',
+                }
+            }
+        }
+    }
+
+</script>
+{% endhighlight %}
+
+
+</section>
+
+{% include anchor.html name="Events" %}
+<section class="section is-paddingless">
+    {% include events.html data=site.data.components.vuejs.events %}
+</section>
+
+{% include anchor.html name="Options" %}
+<section class="section is-paddingless">
+    {% include options.html data=site.data.components.vuejs.options %}
+</section>
