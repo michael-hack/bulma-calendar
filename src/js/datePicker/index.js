@@ -12,6 +12,7 @@ import templateYears from './templates/years';
 import defaultOptions from './defaultOptions';
 
 export default class datePicker extends EventEmitter {
+
     constructor(options = {}) {
         super();
 
@@ -846,6 +847,8 @@ export default class datePicker extends EventEmitter {
     }
 
     _setVisibleDate(date) {
+
+        if (!date) return;
 
         if (this.min) date = dateFns.max([date, this.min]);
         if (this.max) date = dateFns.min([date, this.max]);
