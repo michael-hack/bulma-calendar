@@ -465,6 +465,7 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Type</th>
         <th>Default value</th>
       </tr>
     </thead>
@@ -472,522 +473,667 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Type</th>
         <th>Default value</th>
       </tr>
     </tfoot>
     <tbody>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">type</code>
           </td>
-          <td >
+          <td>
             Component type: date|time|datetime
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>datetime</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">color</code>
           </td>
-          <td >
+          <td>
             Picker dominant color
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>primary</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">isRange</code>
           </td>
-          <td >
+          <td>
             Range capability (start and end date/time selection
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>false</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">allowSameDayRange</code>
           </td>
-          <td >
+          <td>
             Possibility to select same date as start and end date in range mode
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">lang</code>
           </td>
-          <td >
+          <td>
             Display lang (from language supported by <a href="https://date-fns.org/v2.21.3/docs/format" targer="_blank">date-fns 2.x</a>)
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>navigator.language || "en-US"</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">dateFormat</code>
           </td>
-          <td >
+          <td>
             Date format pattern
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>MM/dd/yyyy</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">timeFormat</code>
           </td>
-          <td >
+          <td>
             Time format pattern
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>HH:mm</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">displayMode</code>
           </td>
-          <td >
+          <td>
             Display mode: default|dialog|inline
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>default</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">position</code>
           </td>
-          <td >
+          <td>
             
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>auto</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">showHeader</code>
           </td>
-          <td >
+          <td>
             Show/Hide header block (with current selection)
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">headerPosition</code>
           </td>
-          <td >
+          <td>
             Header block position: top|bottom
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>top</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">showFooter</code>
           </td>
-          <td >
+          <td>
             Show/Hide footer block
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">showButtons</code>
           </td>
-          <td >
+          <td>
             Show/Hide buttons
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">showTodayButton</code>
           </td>
-          <td >
+          <td>
             Show/Hide Today Button
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">showClearButton</code>
           </td>
-          <td >
+          <td>
             Show/Hide Clear Button
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">cancelLabel</code>
           </td>
-          <td >
+          <td>
             Cancel button label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Cancel</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">clearLabel</code>
           </td>
-          <td >
+          <td>
             Clear button label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Clear</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">todayLabel</code>
           </td>
-          <td >
+          <td>
             Today button label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Today</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">nowLabel</code>
           </td>
-          <td >
+          <td>
             Now button label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Now</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">validateLabel</code>
           </td>
-          <td >
+          <td>
             Validate button label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Validate</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">enableMonthSwitch</code>
           </td>
-          <td >
+          <td>
             Enable/disable month switch
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">enableYearSwitch</code>
           </td>
-          <td >
+          <td>
             Enable/disable year switch
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">startDate</code>
           </td>
-          <td >
+          <td>
             Pre-selected start date
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>undefined</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">endDate</code>
           </td>
-          <td >
+          <td>
             Pre-selected end date
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>undefined</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">minDate</code>
           </td>
-          <td >
+          <td>
             Minimum date allowed
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>null</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">maxDate</code>
           </td>
-          <td >
+          <td>
             Maximum date allowed
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>null</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">disabledDates</code>
           </td>
-          <td >
+          <td>
             List of disabled dates
           </td>
+            <td>
+                <code>Date[] | String[] | Function(this, day)</code>
+            </td>
           <td>
             <code></code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">disabledWeekDays</code>
           </td>
-          <td >
+          <td>
             List of disabled week days
           </td>
+            <td>
+                <code>Number[] | String '1,2,3,...'</code>
+            </td>
           <td>
             <code>undefined</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
+            <code style="white-space: nowrap;">highlightedDates</code>
+          </td>
+          <td>
+            List of highlighted dates
+          </td>
+            <td>
+                <code>Date[] | String[] | Function(this, day)</code>
+            </td>
+          <td>
+            <code></code>
+          </td>
+        </tr>
+      
+        <tr>
+          <td>
             <code style="white-space: nowrap;">weekStart</code>
           </td>
-          <td >
+          <td>
             Default weekstart day number (sunday by default)
           </td>
+            <td>
+                <code>Integer</code>
+            </td>
           <td>
             <code>0</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">startTime</code>
           </td>
-          <td >
+          <td>
             Pre-selected start time
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>undefined</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">endTime</code>
           </td>
-          <td >
+          <td>
             Pre-selected end time
           </td>
+            <td>
+                <code>Date | String</code>
+            </td>
           <td>
             <code>undefined</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">minuteSteps</code>
           </td>
-          <td >
+          <td>
             Steps for minutes selector
           </td>
+            <td>
+                <code>Integer</code>
+            </td>
           <td>
             <code>5</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">labelFrom</code>
           </td>
-          <td >
+          <td>
             From label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code></code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">labelTo</code>
           </td>
-          <td >
+          <td>
             To label
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code></code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">closeOnOverlayClick</code>
           </td>
-          <td >
+          <td>
             Close picker on overlay click (only for dialog display style)
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">closeOnSelect</code>
           </td>
-          <td >
+          <td>
             Automatically close the datePicker when date selected (or range date selected) - not available for inline display style. If set to False then a validate button will be displayed into the footer section.
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">toggleOnInputClick</code>
           </td>
-          <td >
+          <td>
             Automatically open datepicker when click into input element
           </td>
+            <td>
+                <code>Boolean</code>
+            </td>
           <td>
             <code>true</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">onReady</code>
           </td>
-          <td >
+          <td>
             Callback to trigger once picker initiated
           </td>
+            <td>
+                <code>Function</code>
+            </td>
           <td>
             <code></code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">onValidate</code>
           </td>
-          <td >
+          <td>
             Callback for manual validation before save()
           </td>
+            <td>
+                <code>Function</code>
+            </td>
           <td>
-            <code>null</code>
+            <code></code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">icons.previous</code>
           </td>
-          <td >
+          <td>
             Previous button icon
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Svg content</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">icons.next</code>
           </td>
-          <td >
+          <td>
             Next button icon
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Svg content</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">icons.time</code>
           </td>
-          <td >
+          <td>
             Time icon
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Svg content</code>
           </td>
         </tr>
       
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">icons.date</code>
           </td>
-          <td >
+          <td>
             Date icon
           </td>
+            <td>
+                <code>String</code>
+            </td>
           <td>
             <code>Svg content</code>
           </td>

@@ -126,15 +126,7 @@ export default class datePicker extends EventEmitter {
 
     // Set min
     set min(date) {
-        if (date) {
-            if (type.isDate(date)) {
-                this._min = this._isValidDate(date) ? dateFns.startOfDay(date) : this._min;
-            }
-            if (type.isString(date)) {
-                this._min = this._isValidDate(dateFns.parse(date)) ? dateFns.startOfDay(date) : this._min;
-            }
-        }
-
+        this._min = this._newDate(date);
         return this;
     }
 
@@ -145,15 +137,7 @@ export default class datePicker extends EventEmitter {
 
     // Set max
     set max(date) {
-        if (date) {
-            if (type.isDate(date)) {
-                this._max = this._isValidDate(date) ? dateFns.endOfDay(date) : this._max;
-            }
-            if (type.isString(date)) {
-                this._max = this._isValidDate(dateFns.parse(date)) ? dateFns.endOfDay(date) : this._max;
-            }
-        }
-
+        this._max = this._newDate(date);
         return this;
     }
 
@@ -185,10 +169,10 @@ export default class datePicker extends EventEmitter {
         }
         e.stopPropagation();
 
-        const prevMonth   = dateFns.lastDayOfMonth(dateFns.subMonths(new Date(dateFns.getYear(this._visibleDate), dateFns.getMonth(this._visibleDate)), 1));
-        const day         = Math.min(dateFns.getDaysInMonth(prevMonth), dateFns.getDate(this._visibleDate));
-        this._visibleDate = this.min ? dateFns.max(dateFns.setDate(prevMonth, day), this.min) : dateFns.setDate(prevMonth, day);
+        const prevMonth = dateFns.lastDayOfMonth(dateFns.subMonths(new Date(dateFns.getYear(this._visibleDate), dateFns.getMonth(this._visibleDate)), 1));
+        const day       = Math.min(dateFns.getDaysInMonth(prevMonth), dateFns.getDate(this._visibleDate));
 
+        this._setVisibleDate(dateFns.setDate(prevMonth, day));
         this.refresh();
 
     }
@@ -202,8 +186,8 @@ export default class datePicker extends EventEmitter {
 
         const nextMonth   = dateFns.addMonths(this._visibleDate, 1);
         const day         = Math.min(dateFns.getDaysInMonth(nextMonth), dateFns.getDate(this._visibleDate));
-        this._visibleDate = this.max ? dateFns.min(dateFns.setDate(nextMonth, day), this.max) : dateFns.setDate(nextMonth, day);
 
+        this._setVisibleDate(dateFns.setDate(nextMonth, day));
         this.refresh();
 
     }
@@ -301,6 +285,7 @@ export default class datePicker extends EventEmitter {
     }
 
     enableDate(date = undefined) {
+        if (!Array.isArray(this.disabledDates)) return;
         const index = this.disabledDates.findIndex((disableDate) => dateFns.isEqual(disableDate, date));
         if (index > -1) {
             unset(this.disabledDates[index]);
@@ -308,6 +293,7 @@ export default class datePicker extends EventEmitter {
     }
 
     disableDate(date = undefined) {
+        if (!Array.isArray(this.disabledDates)) return;
         const index = this.disabledDates.findIndex((disableDate) => dateFns.isEqual(disableDate, date));
         if (index > -1) {
             this.disabledDates.push(date);
@@ -315,6 +301,7 @@ export default class datePicker extends EventEmitter {
     }
 
     highlightDate(date = undefined) {
+        if (!Array.isArray(this.highlightedDates)) return;
         const index = this.highlightedDates.findIndex((highlightDate) => dateFns.isEqual(highlightDate, date));
         if (index > -1) {
             unset(this.highlightedDates[index]);
@@ -322,6 +309,7 @@ export default class datePicker extends EventEmitter {
     }
 
     unhighlightDate(date = undefined) {
+        if (!Array.isArray(this.highlightedDates)) return;
         const index = this.highlightedDates.findIndex((highlightDate) => dateFns.isEqual(highlightDate, date));
         if (index > -1) {
             this.highlightedDates.push(date);
@@ -513,8 +501,6 @@ export default class datePicker extends EventEmitter {
         this._ui.body.dates.classList.add('is-active');
         this._ui.body.months.classList.remove('is-active');
         this._ui.body.years.classList.remove('is-active');
-        this._ui.navigation.previous.removeAttribute('disabled');
-        this._ui.navigation.next.removeAttribute('disabled');
 
         return this;
 
@@ -529,7 +515,7 @@ export default class datePicker extends EventEmitter {
             end:   undefined,
         };
 
-        this._visibleDate = this._isValidDate(today, this.min, this.max) ? today : this.min;
+        this._visibleDate = this._setVisibleDate(today);
 
         this.refresh();
 
@@ -553,25 +539,21 @@ export default class datePicker extends EventEmitter {
         this.lang   = this.options.lang;
         this.format = this.options.dateFormat || 'MM/dd/yyyy';
 
-        this.disabledDates = Array.isArray(this.options.disabledDates) ? this.options.disabledDates : [];
-
-        for (var i = 0; i < this.disabledDates.length; i++) {
-            // this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
-            // 	locale: this.locale
-            // });
-
-            this.disabledDates[i] = new Date(this.disabledDates[i].getFullYear(), this.disabledDates[i].getMonth(), this.disabledDates[i].getDate());
-        }
-
-        this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
-
-        for (var i = 0; i < this.highlightedDates.length; i++) {
-            this.highlightedDates[i] = dateFns.format(this.highlightedDates[i], this.format, {
-                locale: this.locale,
-            });
-        }
-
+        this.disabledDates    = type.isFunction(this.options.disabledDates) ? this.options.disabledDates : [];
         this.disabledWeekDays = type.isString(this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
+        this.highlightedDates = type.isFunction(this.options.highlightedDates) ? this.options.highlightedDates : [];
+
+        if (Array.isArray(this.options.disabledDates)) {
+            for (let i = 0; i < this.options.disabledDates.length; i++) {
+                this.disabledDates.push(this._newDate(this.options.disabledDates[i]));
+            }
+        }
+
+        if (Array.isArray(this.options.highlightedDates)) {
+            for (let i = 0; i < this.options.highlightedDates.length; i++) {
+                this.highlightedDates.push(this._newDate(this.options.highlightedDates[i]));
+            }
+        }
 
         this.min = this._newDate(this.options.minDate);
         this.max = this._newDate(this.options.maxDate);
@@ -728,35 +710,39 @@ export default class datePicker extends EventEmitter {
             isDisabled        = !isDisabled && this.min ? dateFns.isBefore(dateFns.startOfDay(theDate), dateFns.startOfDay(this.min)) : isDisabled;
             let isHighlighted = false;
 
-            if (this.disabledDates) {
+            // Disabled Dates
+            if (Array.isArray(this.disabledDates)) {
                 for (let j = 0; j < this.disabledDates.length; j++) {
-                    let day = this.disabledDates[j];
-                    if (type.isFunction(day)) {
-                        day = day(this);
+                    if (theDate.toDateString() === this.disabledDates[j].toDateString()) {
+                        isDisabled = true;
                     }
-                    if (dateFns.getTime(theDate) == dateFns.getTime(day)) {
+                }
+            } else {
+                if (type.isFunction(this.disabledDates)) {
+                    if (this.disabledDates(this, theDate)) {
                         isDisabled = true;
                     }
                 }
             }
 
-            if (this.highlightedDates) {
+            // Highlighted Dates
+            if (Array.isArray(this.highlightedDates)) {
                 for (let j = 0; j < this.highlightedDates.length; j++) {
-                    let day = this.highlightedDates[j];
-                    if (type.isFunction(day)) {
-                        day = day(this);
+                    if (theDate.toDateString() === this.highlightedDates[j].toDateString()) {
+                        isHighlighted = true;
                     }
-                    if (dateFns.getTime(theDate) == dateFns.getTime(day)) {
+                }
+            } else {
+                if (type.isFunction(this.highlightedDates)) {
+                    if (this.highlightedDates(this, theDate)) {
                         isHighlighted = true;
                     }
                 }
             }
 
+            // Disabled Weekdays
             if (this.disabledWeekDays) {
                 this.disabledWeekDays.forEach((day) => {
-                    if (type.isFunction(day)) {
-                        day = day(this);
-                    }
                     if (dateFns.getDay(theDate) == day) {
                         isDisabled = true;
                     }
@@ -815,7 +801,7 @@ export default class datePicker extends EventEmitter {
             if (emit) this.emit('select', this);
         }
 
-        this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
+        this._setVisibleDate(this.start);
 
         if (this.options.isRange && this._isValidDate(this.start) && this._isValidDate(this.end)) {
             new Array(dateFns.differenceInDays(this.end, this.start) + 1).fill(this.start).map((s, i) => {
@@ -857,6 +843,15 @@ export default class datePicker extends EventEmitter {
         } catch (e) {
             return false;
         }
+    }
+
+    _setVisibleDate(date) {
+
+        if (this.min) date = dateFns.max([date, this.min]);
+        if (this.max) date = dateFns.min([date, this.max]);
+
+        this._visibleDate = date;
+
     }
 
     _togglePreviousButton(active = true) {

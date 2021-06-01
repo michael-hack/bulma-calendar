@@ -4,6 +4,7 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Type</th>
         <th>Default value</th>
       </tr>
     </thead>
@@ -11,18 +12,22 @@
       <tr>
         <th>Name</th>
         <th>Description</th>
+        <th>Type</th>
         <th>Default value</th>
       </tr>
     </tfoot>
     <tbody>
       {% for option in include.data %}
         <tr>
-          <td >
+          <td>
             <code style="white-space: nowrap;">{{ option.name }}</code>
           </td>
-          <td >
+          <td>
             {{ option.description }}
           </td>
+            <td>
+                <code>{{ option.type }}</code>
+            </td>
           <td>
             <code>{{ option.value }}</code>
           </td>

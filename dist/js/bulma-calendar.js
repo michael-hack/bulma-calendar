@@ -987,7 +987,7 @@ function startOfISOWeek(dirtyDate) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInCalendarDays;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -1517,7 +1517,7 @@ var map = {
 	"./hi/_lib/formatDistance/index.js": 254,
 	"./hi/_lib/formatLong/index.js": 255,
 	"./hi/_lib/formatRelative/index.js": 256,
-	"./hi/_lib/localize/index.js": 38,
+	"./hi/_lib/localize/index.js": 39,
 	"./hi/_lib/match/index.js": 257,
 	"./hi/index.js": 671,
 	"./hr/_lib/formatDistance/index.js": 258,
@@ -1827,7 +1827,7 @@ webpackContext.id = 23;
 /* unused harmony reexport addQuarters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__addSeconds_index_js__ = __webpack_require__(75);
 /* unused harmony reexport addSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__addWeeks_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__addWeeks_index_js__ = __webpack_require__(33);
 /* unused harmony reexport addWeeks */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__addYears_index_js__ = __webpack_require__(76);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_11__addYears_index_js__["a"]; });
@@ -1863,11 +1863,11 @@ webpackContext.id = 23;
 /* unused harmony reexport differenceInHours */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__differenceInISOWeekYears_index_js__ = __webpack_require__(487);
 /* unused harmony reexport differenceInISOWeekYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__differenceInMilliseconds_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__differenceInMilliseconds_index_js__ = __webpack_require__(34);
 /* unused harmony reexport differenceInMilliseconds */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__differenceInMinutes_index_js__ = __webpack_require__(84);
 /* unused harmony reexport differenceInMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__ = __webpack_require__(35);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__differenceInQuarters_index_js__ = __webpack_require__(488);
 /* unused harmony reexport differenceInQuarters */
@@ -1986,7 +1986,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__getSeconds_index_js__ = __webpack_require__(540);
 /* unused harmony reexport getSeconds */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__getTime_index_js__ = __webpack_require__(106);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_89__getTime_index_js__["a"]; });
+/* unused harmony reexport getTime */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__getUnixTime_index_js__ = __webpack_require__(541);
 /* unused harmony reexport getUnixTime */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__getWeek_index_js__ = __webpack_require__(107);
@@ -1998,19 +1998,19 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__getWeeksInMonth_index_js__ = __webpack_require__(543);
 /* unused harmony reexport getWeeksInMonth */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__getYear_index_js__ = __webpack_require__(544);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_95__getYear_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_95__getYear_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__intervalToDuration_index_js__ = __webpack_require__(545);
 /* unused harmony reexport intervalToDuration */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__intlFormat_index_js__ = __webpack_require__(546);
 /* unused harmony reexport intlFormat */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__isAfter_index_js__ = __webpack_require__(547);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_98__isAfter_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_98__isAfter_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__isBefore_index_js__ = __webpack_require__(548);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_99__isBefore_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_99__isBefore_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__isDate_index_js__ = __webpack_require__(549);
 /* unused harmony reexport isDate */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__isEqual_index_js__ = __webpack_require__(550);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_101__isEqual_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_101__isEqual_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__isExists_index_js__ = __webpack_require__(551);
 /* unused harmony reexport isExists */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__isFirstDayOfMonth_index_js__ = __webpack_require__(552);
@@ -2040,7 +2040,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__isSameMinute_index_js__ = __webpack_require__(116);
 /* unused harmony reexport isSameMinute */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__isSameMonth_index_js__ = __webpack_require__(117);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_116__isSameMonth_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_116__isSameMonth_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__isSameQuarter_index_js__ = __webpack_require__(118);
 /* unused harmony reexport isSameQuarter */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__isSameSecond_index_js__ = __webpack_require__(119);
@@ -2072,19 +2072,19 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_131__isThursday_index_js__ = __webpack_require__(572);
 /* unused harmony reexport isThursday */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_132__isToday_index_js__ = __webpack_require__(573);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_132__isToday_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_132__isToday_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_133__isTomorrow_index_js__ = __webpack_require__(574);
 /* unused harmony reexport isTomorrow */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_134__isTuesday_index_js__ = __webpack_require__(575);
 /* unused harmony reexport isTuesday */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_135__isValid_index_js__ = __webpack_require__(8);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_135__isValid_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_135__isValid_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_136__isWednesday_index_js__ = __webpack_require__(576);
 /* unused harmony reexport isWednesday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_137__isWeekend_index_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_137__isWeekend_index_js__ = __webpack_require__(31);
 /* unused harmony reexport isWeekend */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_138__isWithinInterval_index_js__ = __webpack_require__(577);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_138__isWithinInterval_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_138__isWithinInterval_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_139__isYesterday_index_js__ = __webpack_require__(578);
 /* unused harmony reexport isYesterday */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_140__lastDayOfDecade_index_js__ = __webpack_require__(579);
@@ -2094,7 +2094,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_142__lastDayOfISOWeekYear_index_js__ = __webpack_require__(581);
 /* unused harmony reexport lastDayOfISOWeekYear */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_143__lastDayOfMonth_index_js__ = __webpack_require__(109);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_143__lastDayOfMonth_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_143__lastDayOfMonth_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_144__lastDayOfQuarter_index_js__ = __webpack_require__(582);
 /* unused harmony reexport lastDayOfQuarter */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_145__lastDayOfWeek_index_js__ = __webpack_require__(122);
@@ -2104,11 +2104,11 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_147__lightFormat_index_js__ = __webpack_require__(584);
 /* unused harmony reexport lightFormat */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_148__max_index_js__ = __webpack_require__(585);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return __WEBPACK_IMPORTED_MODULE_148__max_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_148__max_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_149__milliseconds_index_js__ = __webpack_require__(586);
 /* unused harmony reexport milliseconds */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_150__min_index_js__ = __webpack_require__(587);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return __WEBPACK_IMPORTED_MODULE_150__min_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return __WEBPACK_IMPORTED_MODULE_150__min_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_151__nextDay_index_js__ = __webpack_require__(12);
 /* unused harmony reexport nextDay */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_152__nextFriday_index_js__ = __webpack_require__(588);
@@ -2126,7 +2126,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_158__nextWednesday_index_js__ = __webpack_require__(594);
 /* unused harmony reexport nextWednesday */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_159__parse_index_js__ = __webpack_require__(112);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return __WEBPACK_IMPORTED_MODULE_159__parse_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return __WEBPACK_IMPORTED_MODULE_159__parse_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_160__parseISO_index_js__ = __webpack_require__(595);
 /* unused harmony reexport parseISO */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_161__parseJSON_index_js__ = __webpack_require__(596);
@@ -2136,7 +2136,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_163__set_index_js__ = __webpack_require__(598);
 /* unused harmony reexport set */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_164__setDate_index_js__ = __webpack_require__(599);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return __WEBPACK_IMPORTED_MODULE_164__setDate_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return __WEBPACK_IMPORTED_MODULE_164__setDate_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_165__setDay_index_js__ = __webpack_require__(600);
 /* unused harmony reexport setDay */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_166__setDayOfYear_index_js__ = __webpack_require__(601);
@@ -2154,7 +2154,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_172__setMinutes_index_js__ = __webpack_require__(606);
 /* unused harmony reexport setMinutes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_173__setMonth_index_js__ = __webpack_require__(58);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return __WEBPACK_IMPORTED_MODULE_173__setMonth_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return __WEBPACK_IMPORTED_MODULE_173__setMonth_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_174__setQuarter_index_js__ = __webpack_require__(607);
 /* unused harmony reexport setQuarter */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_175__setSeconds_index_js__ = __webpack_require__(608);
@@ -2164,9 +2164,9 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_177__setWeekYear_index_js__ = __webpack_require__(610);
 /* unused harmony reexport setWeekYear */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_178__setYear_index_js__ = __webpack_require__(611);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return __WEBPACK_IMPORTED_MODULE_178__setYear_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__ = __webpack_require__(31);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return __WEBPACK_IMPORTED_MODULE_178__setYear_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__ = __webpack_require__(32);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_180__startOfDecade_index_js__ = __webpack_require__(612);
 /* unused harmony reexport startOfDecade */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_181__startOfHour_index_js__ = __webpack_require__(114);
@@ -2177,22 +2177,22 @@ webpackContext.id = 23;
 /* unused harmony reexport startOfISOWeekYear */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_184__startOfMinute_index_js__ = __webpack_require__(49);
 /* unused harmony reexport startOfMinute */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__ = __webpack_require__(35);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__ = __webpack_require__(36);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_186__startOfQuarter_index_js__ = __webpack_require__(50);
 /* unused harmony reexport startOfQuarter */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_187__startOfSecond_index_js__ = __webpack_require__(120);
 /* unused harmony reexport startOfSecond */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_188__startOfToday_index_js__ = __webpack_require__(613);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return __WEBPACK_IMPORTED_MODULE_188__startOfToday_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return __WEBPACK_IMPORTED_MODULE_188__startOfToday_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_189__startOfTomorrow_index_js__ = __webpack_require__(614);
 /* unused harmony reexport startOfTomorrow */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_190__startOfWeek_index_js__ = __webpack_require__(11);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return __WEBPACK_IMPORTED_MODULE_190__startOfWeek_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return __WEBPACK_IMPORTED_MODULE_190__startOfWeek_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_191__startOfWeekYear_index_js__ = __webpack_require__(55);
 /* unused harmony reexport startOfWeekYear */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_192__startOfYear_index_js__ = __webpack_require__(52);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return __WEBPACK_IMPORTED_MODULE_192__startOfYear_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return __WEBPACK_IMPORTED_MODULE_192__startOfYear_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_193__startOfYesterday_index_js__ = __webpack_require__(615);
 /* unused harmony reexport startOfYesterday */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_194__sub_index_js__ = __webpack_require__(110);
@@ -2202,15 +2202,15 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_196__subDays_index_js__ = __webpack_require__(56);
 /* unused harmony reexport subDays */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_197__subHours_index_js__ = __webpack_require__(617);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return __WEBPACK_IMPORTED_MODULE_197__subHours_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return __WEBPACK_IMPORTED_MODULE_197__subHours_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_198__subISOWeekYears_index_js__ = __webpack_require__(83);
 /* unused harmony reexport subISOWeekYears */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_199__subMilliseconds_index_js__ = __webpack_require__(29);
 /* unused harmony reexport subMilliseconds */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_200__subMinutes_index_js__ = __webpack_require__(618);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return __WEBPACK_IMPORTED_MODULE_200__subMinutes_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return __WEBPACK_IMPORTED_MODULE_200__subMinutes_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_201__subMonths_index_js__ = __webpack_require__(111);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return __WEBPACK_IMPORTED_MODULE_201__subMonths_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return __WEBPACK_IMPORTED_MODULE_201__subMonths_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_202__subQuarters_index_js__ = __webpack_require__(619);
 /* unused harmony reexport subQuarters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_203__subSeconds_index_js__ = __webpack_require__(620);
@@ -2218,7 +2218,7 @@ webpackContext.id = 23;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_204__subWeeks_index_js__ = __webpack_require__(621);
 /* unused harmony reexport subWeeks */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_205__subYears_index_js__ = __webpack_require__(622);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "O", function() { return __WEBPACK_IMPORTED_MODULE_205__subYears_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return __WEBPACK_IMPORTED_MODULE_205__subYears_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_206__toDate_index_js__ = __webpack_require__(1);
 /* unused harmony reexport toDate */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_207__constants_index_js__ = __webpack_require__(623);
@@ -2608,7 +2608,7 @@ function startOfISOWeekYear(dirtyDate) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameDay;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -2688,6 +2688,36 @@ function subMilliseconds(dirtyDate, dirtyAmount) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFunction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BooleanParse; });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var isFunction = function isFunction(unknown) {
+	return typeof unknown === 'function';
+};
+var isString = function isString(unknown) {
+	return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
+};
+var isDate = function isDate(unknown) {
+	return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
+};
+var isObject = function isObject(unknown) {
+	return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
+};
+
+var falsy = /^(?:f(?:alse)?|no?|0+)$/i;
+var BooleanParse = function BooleanParse(val) {
+	return !falsy.test(val) && !!val;
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isWeekend;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
@@ -2723,7 +2753,7 @@ function isWeekend(dirtyDate) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2763,7 +2793,7 @@ function startOfDay(dirtyDate) {
 }
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2805,7 +2835,7 @@ function addWeeks(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2849,7 +2879,7 @@ function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2921,7 +2951,7 @@ function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2962,7 +2992,7 @@ function startOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2985,7 +3015,7 @@ function startOfUTCISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3019,7 +3049,7 @@ function startOfUTCWeek(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3223,7 +3253,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3331,36 +3361,6 @@ var detectSupportsPassive = function detectSupportsPassive() {
 	} catch (e) {}
 
 	return supportsPassive;
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isFunction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isString; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isDate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BooleanParse; });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var isFunction = function isFunction(unknown) {
-	return typeof unknown === 'function';
-};
-var isString = function isString(unknown) {
-	return typeof unknown === 'string' || !!unknown && (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && Object.prototype.toString.call(unknown) === '[object String]';
-};
-var isDate = function isDate(unknown) {
-	return (Object.prototype.toString.call(unknown) === '[object Date]' || unknown instanceof Date) && !isNaN(unknown.valueOf());
-};
-var isObject = function isObject(unknown) {
-	return (typeof unknown === 'function' || (typeof unknown === 'undefined' ? 'undefined' : _typeof(unknown)) === 'object' && !!unknown) && !Array.isArray(unknown);
-};
-
-var falsy = /^(?:f(?:alse)?|no?|0+)$/i;
-var BooleanParse = function BooleanParse(val) {
-	return !falsy.test(val) && !!val;
 };
 
 /***/ }),
@@ -3711,7 +3711,7 @@ function endOfMonth(dirtyDate) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInSeconds;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3839,7 +3839,7 @@ function startOfQuarter(dirtyDate) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = eachWeekendOfInterval;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachDayOfInterval_index_js__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isSunday_index_js__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isWeekend_index_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isWeekend_index_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3941,7 +3941,7 @@ function startOfYear(dirtyDate) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5907,7 +5907,7 @@ module.exports = exports.default;
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addBusinessDays;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isWeekend_index_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isWeekend_index_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
@@ -6446,7 +6446,7 @@ function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInHours;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -6537,7 +6537,7 @@ function subISOWeekYears(dirtyDate, dirtyAmount) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInMinutes;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7431,7 +7431,7 @@ var formatters = {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCISOWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCISOWeekYear_index_js__ = __webpack_require__(519);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -7458,7 +7458,7 @@ function getUTCISOWeek(dirtyDate) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCISOWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7494,7 +7494,7 @@ function getUTCISOWeekYear(dirtyDate) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCWeek_index_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeekYear_index_js__ = __webpack_require__(520);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -7651,7 +7651,7 @@ function throwProtectedError(token, format, input) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatDistance;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMonths_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMonths_index_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInSeconds_index_js__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__locale_en_US_index_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__toDate_index_js__ = __webpack_require__(1);
@@ -22005,7 +22005,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatDistance;
 
-var _index = _interopRequireDefault(__webpack_require__(38));
+var _index = _interopRequireDefault(__webpack_require__(39));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22211,7 +22211,7 @@ var _index = _interopRequireDefault(__webpack_require__(5));
 
 var _index2 = _interopRequireDefault(__webpack_require__(4));
 
-var _index3 = _interopRequireDefault(__webpack_require__(38));
+var _index3 = _interopRequireDefault(__webpack_require__(39));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44196,8 +44196,8 @@ module.exports = exports.default;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_date_and_time__);
@@ -45106,7 +45106,7 @@ var bulmaCalendar = function (_EventEmitter) {
     }, {
         key: 'minDate',
         set: function set(date) {
-            this.datePicker.minDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            this.datePicker.minDate = date;
             return this;
         }
 
@@ -45121,7 +45121,7 @@ var bulmaCalendar = function (_EventEmitter) {
     }, {
         key: 'maxDate',
         set: function set(date) {
-            this.datePicker.maxDate = __WEBPACK_IMPORTED_MODULE_3_date_and_time___default.a.parse(date, this.dateFormat);
+            this.datePicker.maxDate = date;
             return this;
         }
 
@@ -45235,7 +45235,8 @@ var bulmaCalendar = function (_EventEmitter) {
             var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'input[type="date"]';
             var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-            var instances = new Array();
+
+            var instances = [];
 
             var elements = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
             [].forEach.call(elements, function (element) {
@@ -45690,7 +45691,7 @@ function compareDesc(dirtyDateLeft, dirtyDateRight) {
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isWeekend_index_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isWeekend_index_js__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInCalendarDays_index_js__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__addDays_index_js__ = __webpack_require__(9);
@@ -45922,7 +45923,7 @@ function differenceInISOWeekYears(dirtyDateLeft, dirtyDateRight) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -46290,7 +46291,7 @@ function eachQuarterOfInterval(dirtyInterval) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addWeeks_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addWeeks_index_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeek_index_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
@@ -46375,7 +46376,7 @@ function eachWeekOfInterval(dirtyInterval, options) {
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachWeekendOfInterval_index_js__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfMonth_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfMonth_index_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfMonth_index_js__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -48409,7 +48410,7 @@ function getUTCDayOfYear(dirtyDate) {
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfUTCISOWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getUTCISOWeekYear_index_js__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48434,7 +48435,7 @@ function startOfUTCISOWeekYear(dirtyDate) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfUTCWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getUTCWeekYear_index_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49511,7 +49512,7 @@ function getHours(dirtyDate) {
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfISOWeekYear_index_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49855,7 +49856,7 @@ function getUnixTime(dirtyDate) {
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getDate_index_js__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -49934,7 +49935,7 @@ function getWeekOfMonth(date, dirtyOptions) {
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarWeeks_index_js__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lastDayOfMonth_index_js__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -50024,7 +50025,7 @@ function getYear(dirtyDate) {
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInYears_index_js__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInMonths_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInMonths_index_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInDays_index_js__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__differenceInHours_index_js__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__differenceInMinutes_index_js__ = __webpack_require__(84);
@@ -50861,8 +50862,8 @@ function isMatch(dateString, formatString, dirtyOptions) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_setUTCISODay_index_js__ = __webpack_require__(558);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_setUTCISOWeek_index_js__ = __webpack_require__(559);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_setUTCWeek_index_js__ = __webpack_require__(560);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_startOfUTCISOWeek_index_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_startOfUTCWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_startOfUTCISOWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_startOfUTCWeek_index_js__ = __webpack_require__(38);
 
 
 
@@ -55346,7 +55347,7 @@ function startOfDecade(dirtyDate) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfToday;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(32);
 
 /**
  * @name startOfToday
@@ -55664,7 +55665,7 @@ function subSeconds(dirtyDate, dirtyAmount) {
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55767,8 +55768,8 @@ var minTime = -maxTime;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_and_time___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_date_and_time__);
@@ -55788,6 +55789,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -55857,10 +55859,10 @@ var datePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            var prevMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* lastDayOfMonth */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["N" /* subMonths */](new Date(__WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* getYear */](this._visibleDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["p" /* getMonth */](this._visibleDate)), 1));
+            var prevMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["y" /* lastDayOfMonth */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["M" /* subMonths */](new Date(__WEBPACK_IMPORTED_MODULE_2_date_fns__["q" /* getYear */](this._visibleDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["p" /* getMonth */](this._visibleDate)), 1));
             var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["o" /* getDaysInMonth */](prevMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["m" /* getDate */](this._visibleDate));
-            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* max */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setDate */](prevMonth, day), this.min) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setDate */](prevMonth, day);
 
+            this._setVisibleDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* setDate */](prevMonth, day));
             this.refresh();
         }
     }, {
@@ -55874,8 +55876,8 @@ var datePicker = function (_EventEmitter) {
 
             var nextMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["d" /* addMonths */](this._visibleDate, 1);
             var day = Math.min(__WEBPACK_IMPORTED_MODULE_2_date_fns__["o" /* getDaysInMonth */](nextMonth), __WEBPACK_IMPORTED_MODULE_2_date_fns__["m" /* getDate */](this._visibleDate));
-            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* min */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setDate */](nextMonth, day), this.max) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setDate */](nextMonth, day);
 
+            this._setVisibleDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* setDate */](nextMonth, day));
             this.refresh();
         }
     }, {
@@ -55926,9 +55928,9 @@ var datePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["E" /* setMonth */](this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
-            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* max */](newDate, this.min) : newDate;
-            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* min */](this._visibleDate, this.max) : this._visibleDate;
+            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setMonth */](this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */](newDate, this.min) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */](this._visibleDate, this.max) : this._visibleDate;
 
             this.refresh();
         }
@@ -55941,9 +55943,9 @@ var datePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* setYear */](this._visibleDate, parseInt(e.currentTarget.dataset.year));
-            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* max */](newDate, this.min) : newDate;
-            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* min */](this._visibleDate, this.max) : this._visibleDate;
+            var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["E" /* setYear */](this._visibleDate, parseInt(e.currentTarget.dataset.year));
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */](newDate, this.min) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */](this._visibleDate, this.max) : this._visibleDate;
 
             this.refresh();
         }
@@ -55978,8 +55980,9 @@ var datePicker = function (_EventEmitter) {
         value: function enableDate() {
             var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
+            if (!Array.isArray(this.disabledDates)) return;
             var index = this.disabledDates.findIndex(function (disableDate) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](disableDate, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disableDate, date);
             });
             if (index > -1) {
                 unset(this.disabledDates[index]);
@@ -55990,8 +55993,9 @@ var datePicker = function (_EventEmitter) {
         value: function disableDate() {
             var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
+            if (!Array.isArray(this.disabledDates)) return;
             var index = this.disabledDates.findIndex(function (disableDate) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](disableDate, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disableDate, date);
             });
             if (index > -1) {
                 this.disabledDates.push(date);
@@ -56002,8 +56006,9 @@ var datePicker = function (_EventEmitter) {
         value: function highlightDate() {
             var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
+            if (!Array.isArray(this.highlightedDates)) return;
             var index = this.highlightedDates.findIndex(function (highlightDate) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](highlightDate, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](highlightDate, date);
             });
             if (index > -1) {
                 unset(this.highlightedDates[index]);
@@ -56014,8 +56019,9 @@ var datePicker = function (_EventEmitter) {
         value: function unhighlightDate() {
             var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
+            if (!Array.isArray(this.highlightedDates)) return;
             var index = this.highlightedDates.findIndex(function (highlightDate) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](highlightDate, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](highlightDate, date);
             });
             if (index > -1) {
                 this.highlightedDates.push(date);
@@ -56025,7 +56031,7 @@ var datePicker = function (_EventEmitter) {
         key: 'enableWeekDay',
         value: function enableWeekDay(day) {
             var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](disabledWeekDay, day);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disabledWeekDay, day);
             });
             if (index > -1) {
                 unset(this.disabledWeekDays[index]);
@@ -56035,7 +56041,7 @@ var datePicker = function (_EventEmitter) {
         key: 'disableWeekDay',
         value: function disableWeekDay(day) {
             var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](disabledWeekDay, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disabledWeekDay, date);
             });
             if (index > -1) {
                 this.disabledWeekDays.push(day);
@@ -56134,7 +56140,7 @@ var datePicker = function (_EventEmitter) {
             this._ui.body.dates.innerHTML = '';
 
             // the 12 months of the year
-            var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["K" /* startOfYear */](this._visibleDate)).map(function (d, i) {
+            var monthLabels = new Array(12).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["J" /* startOfYear */](this._visibleDate)).map(function (d, i) {
                 return __WEBPACK_IMPORTED_MODULE_2_date_fns__["d" /* addMonths */](d, i);
             });
 
@@ -56156,7 +56162,7 @@ var datePicker = function (_EventEmitter) {
             });
 
             // years
-            var yearLabels = new Array(this.options.displayYearsCount * 2).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["O" /* subYears */](this._visibleDate, this.options.displayYearsCount)).map(function (d, i) {
+            var yearLabels = new Array(this.options.displayYearsCount * 2).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["N" /* subYears */](this._visibleDate, this.options.displayYearsCount)).map(function (d, i) {
                 return __WEBPACK_IMPORTED_MODULE_2_date_fns__["e" /* addYears */](d, i);
             });
             this._ui.body.years.innerHTML = '';
@@ -56176,7 +56182,7 @@ var datePicker = function (_EventEmitter) {
             });
 
             // the 7 days of the week (Sun-Sat)
-            var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["J" /* startOfWeek */](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
+            var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfWeek */](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
                 return __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](d, i), 'EEE', {
                     locale: _this2.locale
                 });
@@ -56209,8 +56215,6 @@ var datePicker = function (_EventEmitter) {
             this._ui.body.dates.classList.add('is-active');
             this._ui.body.months.classList.remove('is-active');
             this._ui.body.years.classList.remove('is-active');
-            this._ui.navigation.previous.removeAttribute('disabled');
-            this._ui.navigation.next.removeAttribute('disabled');
 
             return this;
         }
@@ -56225,7 +56229,7 @@ var datePicker = function (_EventEmitter) {
                 end: undefined
             };
 
-            this._visibleDate = this._isValidDate(today, this.min, this.max) ? today : this.min;
+            this._visibleDate = this._setVisibleDate(today);
 
             this.refresh();
         }
@@ -56252,25 +56256,21 @@ var datePicker = function (_EventEmitter) {
             this.lang = this.options.lang;
             this.format = this.options.dateFormat || 'MM/dd/yyyy';
 
-            this.disabledDates = Array.isArray(this.options.disabledDates) ? this.options.disabledDates : [];
-
-            for (var i = 0; i < this.disabledDates.length; i++) {
-                // this.disabledDates[i] = dateFns.format(this.disabledDates[i], this.format, {
-                // 	locale: this.locale
-                // });
-
-                this.disabledDates[i] = new Date(this.disabledDates[i].getFullYear(), this.disabledDates[i].getMonth(), this.disabledDates[i].getDate());
-            }
-
-            this.highlightedDates = Array.isArray(this.options.highlightedDates) ? this.options.highlightedDates : [];
-
-            for (var i = 0; i < this.highlightedDates.length; i++) {
-                this.highlightedDates[i] = __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.highlightedDates[i], this.format, {
-                    locale: this.locale
-                });
-            }
-
+            this.disabledDates = __WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.disabledDates) ? this.options.disabledDates : [];
             this.disabledWeekDays = __WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](this.options.disabledWeekDays) ? this.options.disabledWeekDays.split(',') : Array.isArray(this.options.disabledWeekDays) ? this.options.disabledWeekDays : [];
+            this.highlightedDates = __WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.highlightedDates) ? this.options.highlightedDates : [];
+
+            if (Array.isArray(this.options.disabledDates)) {
+                for (var i = 0; i < this.options.disabledDates.length; i++) {
+                    this.disabledDates.push(this._newDate(this.options.disabledDates[i]));
+                }
+            }
+
+            if (Array.isArray(this.options.highlightedDates)) {
+                for (var _i = 0; _i < this.options.highlightedDates.length; _i++) {
+                    this.highlightedDates.push(this._newDate(this.options.highlightedDates[_i]));
+                }
+            }
 
             this.min = this._newDate(this.options.minDate);
             this.max = this._newDate(this.options.maxDate);
@@ -56423,48 +56423,52 @@ var datePicker = function (_EventEmitter) {
         value: function _renderDays() {
             var _this5 = this;
 
-            var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["J" /* startOfWeek */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["H" /* startOfMonth */](this._visibleDate), { weekStartsOn: this.options.weekStart }); // first day of current month view
+            var start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfWeek */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfMonth */](this._visibleDate), { weekStartsOn: this.options.weekStart }); // first day of current month view
             var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["k" /* endOfWeek */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["i" /* endOfMonth */](this._visibleDate), { weekStartsOn: this.options.weekStart }); // last day of current month view
 
             // get all days and whether they are within the current month and range
             var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInDays */](end, start) + 1).fill(start).map(function (s, i) {
 
-                var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](s, i));
-                var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["v" /* isSameMonth */](_this5._visibleDate, theDate);
-                var isInRange = _this5.options.isRange && _this5.end && __WEBPACK_IMPORTED_MODULE_2_date_fns__["y" /* isWithinInterval */](theDate, { start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](_this5.start), end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](_this5.end) });
-                var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isAfter */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](_this5.max)) : false;
-                isDisabled = !isDisabled && _this5.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isBefore */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](_this5.min)) : isDisabled;
+                var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](s, i));
+                var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isSameMonth */](_this5._visibleDate, theDate);
+                var isInRange = _this5.options.isRange && _this5.end && __WEBPACK_IMPORTED_MODULE_2_date_fns__["x" /* isWithinInterval */](theDate, { start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](_this5.start), end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](_this5.end) });
+                var isDisabled = _this5.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* isAfter */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](_this5.max)) : false;
+                isDisabled = !isDisabled && _this5.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isBefore */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](theDate), __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](_this5.min)) : isDisabled;
                 var isHighlighted = false;
 
-                if (_this5.disabledDates) {
+                // Disabled Dates
+                if (Array.isArray(_this5.disabledDates)) {
                     for (var j = 0; j < _this5.disabledDates.length; j++) {
-                        var day = _this5.disabledDates[j];
-                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
-                            day = day(_this5);
+                        if (theDate.toDateString() === _this5.disabledDates[j].toDateString()) {
+                            isDisabled = true;
                         }
-                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["q" /* getTime */](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["q" /* getTime */](day)) {
+                    }
+                } else {
+                    if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_this5.disabledDates)) {
+                        if (_this5.disabledDates(_this5, theDate)) {
                             isDisabled = true;
                         }
                     }
                 }
 
-                if (_this5.highlightedDates) {
+                // Highlighted Dates
+                if (Array.isArray(_this5.highlightedDates)) {
                     for (var _j = 0; _j < _this5.highlightedDates.length; _j++) {
-                        var _day = _this5.highlightedDates[_j];
-                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_day)) {
-                            _day = _day(_this5);
+                        if (theDate.toDateString() === _this5.highlightedDates[_j].toDateString()) {
+                            isHighlighted = true;
                         }
-                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["q" /* getTime */](theDate) == __WEBPACK_IMPORTED_MODULE_2_date_fns__["q" /* getTime */](_day)) {
+                    }
+                } else {
+                    if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](_this5.highlightedDates)) {
+                        if (_this5.highlightedDates(_this5, theDate)) {
                             isHighlighted = true;
                         }
                     }
                 }
 
+                // Disabled Weekdays
                 if (_this5.disabledWeekDays) {
                     _this5.disabledWeekDays.forEach(function (day) {
-                        if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](day)) {
-                            day = day(_this5);
-                        }
                         if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["n" /* getDay */](theDate) == day) {
                             isDisabled = true;
                         }
@@ -56474,9 +56478,9 @@ var datePicker = function (_EventEmitter) {
                 return {
                     date: theDate,
                     isRange: _this5.options.isRange,
-                    isToday: __WEBPACK_IMPORTED_MODULE_2_date_fns__["w" /* isToday */](theDate),
-                    isStartDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](_this5.start), theDate),
-                    isEndDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](_this5.end), theDate),
+                    isToday: __WEBPACK_IMPORTED_MODULE_2_date_fns__["v" /* isToday */](theDate),
+                    isStartDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](_this5.start), theDate),
+                    isEndDate: __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](_this5.end), theDate),
                     isDisabled: isDisabled,
                     isThisMonth: isThisMonth,
                     isHighlighted: isHighlighted,
@@ -56506,11 +56510,11 @@ var datePicker = function (_EventEmitter) {
                 this.end = undefined;
                 if (emit) this.emit('select:start', this);
             } else if (this.options.isRange && !this._isValidDate(this.end)) {
-                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isBefore */](date, this.start)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isBefore */](date, this.start)) {
                     this.end = this.start;
                     this.start = date;
                     if (emit) this.emit('select', this);
-                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isAfter */](date, this.start)) {
+                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* isAfter */](date, this.start)) {
                     this.end = date;
                     if (emit) this.emit('select', this);
                 } else if (this.options.allowSameDayRange) {
@@ -56527,17 +56531,17 @@ var datePicker = function (_EventEmitter) {
                 if (emit) this.emit('select', this);
             }
 
-            this._visibleDate = this._isValidDate(this.start) ? this.start : this._visibleDate;
+            this._setVisibleDate(this.start);
 
             if (this.options.isRange && this._isValidDate(this.start) && this._isValidDate(this.end)) {
                 new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInDays */](this.end, this.start) + 1).fill(this.start).map(function (s, i) {
                     var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](s, i);
                     var dateElement = _this6._ui.body.dates.querySelector('.datepicker-date[data-date="' + theDate.toString() + '"]');
                     if (dateElement) {
-                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](_this6.start, theDate)) {
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](_this6.start, theDate)) {
                             dateElement.classList.add('datepicker-range-start');
                         }
-                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](_this6.end, theDate)) {
+                        if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](_this6.end, theDate)) {
                             dateElement.classList.add('datepicker-range-end');
                         }
                         dateElement.classList.add('datepicker-range');
@@ -56552,23 +56556,32 @@ var datePicker = function (_EventEmitter) {
                 if (!date) {
                     return false;
                 }
-                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["x" /* isValid */](date)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["w" /* isValid */](date)) {
                     if (!min && !max) {
                         return true;
                     }
                     if (min && max) {
-                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["y" /* isWithinInterval */](date, { start: min, end: max });
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["x" /* isWithinInterval */](date, { start: min, end: max });
                     }
                     if (max) {
-                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isBefore */](date, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](date, max);
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isBefore */](date, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](date, max);
                     }
-                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isAfter */](date, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](date, min);
+                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* isAfter */](date, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](date, min);
                 } else {
                     return false;
                 }
             } catch (e) {
                 return false;
             }
+        }
+    }, {
+        key: '_setVisibleDate',
+        value: function _setVisibleDate(date) {
+
+            if (this.min) date = __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */]([date, this.min]);
+            if (this.max) date = __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */]([date, this.max]);
+
+            this._visibleDate = date;
         }
     }, {
         key: '_togglePreviousButton',
@@ -56643,10 +56656,10 @@ var datePicker = function (_EventEmitter) {
         set: function set(date) {
             if (date) {
                 if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-                    this._date.start = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](date) : this._date.start;
+                    this._date.start = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](date) : this._date.start;
                 }
                 if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-                    this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date)) : this._date.start;
+                    this._date.start = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* parse */](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* parse */](date)) : this._date.start;
                 }
             } else {
                 this._date.start = undefined;
@@ -56665,7 +56678,7 @@ var datePicker = function (_EventEmitter) {
                     this._date.end = this._isValidDate(date, this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](date) : this._date.end;
                 }
                 if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-                    this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date)) : this._date.end;
+                    this._date.end = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* parse */](date), this.min, this.max) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["B" /* parse */](date)) : this._date.end;
                 }
             } else {
                 this._date.end = undefined;
@@ -56682,15 +56695,7 @@ var datePicker = function (_EventEmitter) {
     }, {
         key: 'min',
         set: function set(date) {
-            if (date) {
-                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-                    this._min = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](date) : this._min;
-                }
-                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-                    this._min = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["G" /* startOfDay */](date) : this._min;
-                }
-            }
-
+            this._min = this._newDate(date);
             return this;
         }
 
@@ -56705,15 +56710,7 @@ var datePicker = function (_EventEmitter) {
     }, {
         key: 'max',
         set: function set(date) {
-            if (date) {
-                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["b" /* isDate */](date)) {
-                    this._max = this._isValidDate(date) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](date) : this._max;
-                }
-                if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["e" /* isString */](date)) {
-                    this._max = this._isValidDate(__WEBPACK_IMPORTED_MODULE_2_date_fns__["C" /* parse */](date)) ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["h" /* endOfDay */](date) : this._max;
-                }
-            }
-
+            this._max = this._newDate(date);
             return this;
         }
 
@@ -58831,7 +58828,7 @@ var _index2 = _interopRequireDefault(__webpack_require__(255));
 
 var _index3 = _interopRequireDefault(__webpack_require__(256));
 
-var _index4 = _interopRequireDefault(__webpack_require__(38));
+var _index4 = _interopRequireDefault(__webpack_require__(39));
 
 var _index5 = _interopRequireDefault(__webpack_require__(257));
 
@@ -61162,8 +61159,8 @@ module.exports = exports.default;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(718);
@@ -61237,11 +61234,11 @@ var timePicker = function (_EventEmitter) {
             this.max = this.options.max;
 
             this._time = {
-                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfToday */](),
+                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["H" /* startOfToday */](),
                 end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["j" /* endOfToday */]()
             };
 
-            this.start = this._newDate(this.options.startTime) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfToday */]();
+            this.start = this._newDate(this.options.startTime) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["H" /* startOfToday */]();
             this.end = this.options.isRange ? this._newDate(this.options.endTime) : __WEBPACK_IMPORTED_MODULE_2_date_fns__["j" /* endOfToday */]();
 
             this._build();
@@ -61356,11 +61353,11 @@ var timePicker = function (_EventEmitter) {
                 this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["j" /* endOfToday */]();
                 if (emit) this.emit('select:start', this);
             } else if (this.options.isRange && !this._isValidTime(this.end)) {
-                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isBefore */](time, this.start)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isBefore */](time, this.start)) {
                     this.end = this.start;
                     this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["j" /* endOfToday */]();
                     if (emit) this.emit('select', this);
-                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isAfter */](time, this.start)) {
+                } else if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* isAfter */](time, this.start)) {
                     this.end = time;
                     if (emit) this.emit('select', this);
                 } else {
@@ -61381,17 +61378,17 @@ var timePicker = function (_EventEmitter) {
                 if (!time) {
                     return false;
                 }
-                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["x" /* isValid */](time)) {
+                if (__WEBPACK_IMPORTED_MODULE_2_date_fns__["w" /* isValid */](time)) {
                     if (!min && !max) {
                         return true;
                     }
                     if (min && max) {
-                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["y" /* isWithinInterval */](time, { start: min, end: max });
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["x" /* isWithinInterval */](time, { start: min, end: max });
                     }
                     if (max) {
-                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isBefore */](time, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](time, max);
+                        return __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isBefore */](time, max) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](time, max);
                     }
-                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["s" /* isAfter */](time, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isEqual */](time, min);
+                    return __WEBPACK_IMPORTED_MODULE_2_date_fns__["r" /* isAfter */](time, min) || __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](time, min);
                 } else {
                     return false;
                 }
@@ -61426,7 +61423,7 @@ var timePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["L" /* subHours */](this.start, 1);
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["K" /* subHours */](this.start, 1);
 
             setTimeout(function () {
 
@@ -61484,7 +61481,7 @@ var timePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["M" /* subMinutes */](this.start, this.options.minuteSteps);
+            this.start = __WEBPACK_IMPORTED_MODULE_2_date_fns__["L" /* subMinutes */](this.start, this.options.minuteSteps);
 
             setTimeout(function () {
 
@@ -61566,7 +61563,7 @@ var timePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["L" /* subHours */](this.end, 1);
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["K" /* subHours */](this.end, 1);
 
             setTimeout(function () {
 
@@ -61624,7 +61621,7 @@ var timePicker = function (_EventEmitter) {
             }
             e.stopPropagation();
 
-            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["M" /* subMinutes */](this.end, this.options.minuteSteps);
+            this.end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["L" /* subMinutes */](this.end, this.options.minuteSteps);
 
             setTimeout(function () {
 
@@ -61795,7 +61792,7 @@ var timePicker = function (_EventEmitter) {
         key: 'clear',
         value: function clear() {
             this.time = {
-                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfToday */](),
+                start: __WEBPACK_IMPORTED_MODULE_2_date_fns__["H" /* startOfToday */](),
                 end: __WEBPACK_IMPORTED_MODULE_2_date_fns__["j" /* endOfToday */]()
             };
             this.refresh();
@@ -61855,7 +61852,7 @@ var timePicker = function (_EventEmitter) {
     }, {
         key: 'start',
         set: function set(time) {
-            this._time.start = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.start : __WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfToday */]();
+            this._time.start = time ? this._isValidTime(time, this.min, this.max) ? time : this._time.start : __WEBPACK_IMPORTED_MODULE_2_date_fns__["H" /* startOfToday */]();
             return this;
         },
         get: function get() {
@@ -61876,7 +61873,7 @@ var timePicker = function (_EventEmitter) {
     }, {
         key: 'min',
         set: function set(time) {
-            this._min = time ? this._isValidTime(time) ? time : this._min : undefined;
+            this._min = this._newDate(time);
             return this;
         }
 
@@ -61891,7 +61888,7 @@ var timePicker = function (_EventEmitter) {
     }, {
         key: 'max',
         set: function set(time) {
-            this._max = time ? this._isValidTime(time) ? time : this._max : undefined;
+            this._max = this._newDate(time);
             return this;
         }
 

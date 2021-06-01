@@ -87,39 +87,43 @@
   description: 'Enable/disable year switch'
   value: 'true'
 - name: 'startDate'
-  type: Date
+  type: Date | String
   description: 'Pre-selected start date'
   value: 'undefined'
 - name: 'endDate'
-  type: Date
+  type: Date | String
   description: 'Pre-selected end date'
   value: 'undefined'
 - name: 'minDate'
-  type: Date
+  type: Date | String
   description: 'Minimum date allowed'
   value: 'null'
 - name: 'maxDate'
-  type: Date
+  type: Date | String
   description: 'Maximum date allowed'
   value: 'null'
 - name: 'disabledDates'
-  type: Array of date
+  type: Date[] | String[] | Function(this, day)
   description: 'List of disabled dates'
   value: []
 - name: 'disabledWeekDays'
-  type: Array of day number
+  type: Number[] | String '1,2,3,...'
   description: 'List of disabled week days'
   value: 'undefined'
+- name: 'highlightedDates'
+  type: Date[] | String[] | Function(this, day)
+  description: 'List of highlighted dates'
+  value: []
 - name: 'weekStart'
   type: Integer
   description: 'Default weekstart day number (sunday by default)'
   value: 0,
 - name: 'startTime'
-  type: Date
+  type: Date | String
   description: 'Pre-selected start time'
   value: 'undefined'
 - name: 'endTime'
-  type: Date
+  type: Date | String
   description: 'Pre-selected end time'
   value: 'undefined'
 - name: 'minuteSteps'
@@ -152,7 +156,6 @@
 - name: 'onValidate'
   type: Function
   description: 'Callback for manual validation before save()'
-  value: 'null'
 - name: 'icons.previous'
   type: String
   description: 'Previous button icon'

@@ -270,7 +270,7 @@ export default class timePicker extends EventEmitter {
 
     // Set min
     set min(time) {
-        this._min = time ? (this._isValidTime(time) ? time : this._min) : undefined;
+        this._min = this._newDate(time);
         return this;
     }
 
@@ -281,7 +281,7 @@ export default class timePicker extends EventEmitter {
 
     // Set max
     set max(time) {
-        this._max = time ? (this._isValidTime(time) ? time : this._max) : undefined;
+        this._max = this._newDate(time);
         return this;
     }
 

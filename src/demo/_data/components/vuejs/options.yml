@@ -23,6 +23,6 @@
   description: 'JS Object with regular Bulma Calendar Options'
   value: {}
 - name: 'value'
-  type: String
-  description: 'Initial Start- / End-Time: date|[date, date]|null'
+  type: Date | [Date, Date] | null
+  description: 'Initial Start- / End-Time'
   value: 'null'

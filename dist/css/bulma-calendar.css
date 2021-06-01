@@ -611,82 +611,82 @@
       align-items: center;
       font-size: 1.5rem;
       color: #00d1b2; }
-    .datetimepicker .timepicker.is-white .timepicker-input,
-    .datetimepicker .timepicker.is-white .timepicker-input-number,
-    .datetimepicker .timepicker.is-white .timepicker-time-divider {
-      color: white !important; }
-    .datetimepicker .timepicker.is-black .timepicker-input,
-    .datetimepicker .timepicker.is-black .timepicker-input-number,
-    .datetimepicker .timepicker.is-black .timepicker-time-divider {
-      color: #0a0a0a !important; }
-    .datetimepicker .timepicker.is-light .timepicker-input,
-    .datetimepicker .timepicker.is-light .timepicker-input-number,
-    .datetimepicker .timepicker.is-light .timepicker-time-divider {
-      color: whitesmoke !important; }
-    .datetimepicker .timepicker.is-dark .timepicker-input,
-    .datetimepicker .timepicker.is-dark .timepicker-input-number,
-    .datetimepicker .timepicker.is-dark .timepicker-time-divider {
-      color: #363636 !important; }
-    .datetimepicker .timepicker.is-primary .timepicker-input,
-    .datetimepicker .timepicker.is-primary .timepicker-input-number,
-    .datetimepicker .timepicker.is-primary .timepicker-time-divider {
-      color: #00d1b2 !important; }
-    .datetimepicker .timepicker.is-link .timepicker-input,
-    .datetimepicker .timepicker.is-link .timepicker-input-number,
-    .datetimepicker .timepicker.is-link .timepicker-time-divider {
-      color: #3273dc !important; }
-    .datetimepicker .timepicker.is-info .timepicker-input,
-    .datetimepicker .timepicker.is-info .timepicker-input-number,
-    .datetimepicker .timepicker.is-info .timepicker-time-divider {
-      color: #209cee !important; }
-    .datetimepicker .timepicker.is-success .timepicker-input,
-    .datetimepicker .timepicker.is-success .timepicker-input-number,
-    .datetimepicker .timepicker.is-success .timepicker-time-divider {
-      color: #23d160 !important; }
-    .datetimepicker .timepicker.is-warning .timepicker-input,
-    .datetimepicker .timepicker.is-warning .timepicker-input-number,
-    .datetimepicker .timepicker.is-warning .timepicker-time-divider {
-      color: #ffdd57 !important; }
-    .datetimepicker .timepicker.is-danger .timepicker-input,
-    .datetimepicker .timepicker.is-danger .timepicker-input-number,
-    .datetimepicker .timepicker.is-danger .timepicker-time-divider {
-      color: #ff3860 !important; }
-    .datetimepicker .timepicker.is-black-bis .timepicker-input,
-    .datetimepicker .timepicker.is-black-bis .timepicker-input-number,
-    .datetimepicker .timepicker.is-black-bis .timepicker-time-divider {
-      color: #121212 !important; }
-    .datetimepicker .timepicker.is-black-ter .timepicker-input,
-    .datetimepicker .timepicker.is-black-ter .timepicker-input-number,
-    .datetimepicker .timepicker.is-black-ter .timepicker-time-divider {
-      color: #242424 !important; }
-    .datetimepicker .timepicker.is-grey-darker .timepicker-input,
-    .datetimepicker .timepicker.is-grey-darker .timepicker-input-number,
-    .datetimepicker .timepicker.is-grey-darker .timepicker-time-divider {
-      color: #363636 !important; }
-    .datetimepicker .timepicker.is-grey-dark .timepicker-input,
-    .datetimepicker .timepicker.is-grey-dark .timepicker-input-number,
-    .datetimepicker .timepicker.is-grey-dark .timepicker-time-divider {
-      color: #4a4a4a !important; }
-    .datetimepicker .timepicker.is-grey .timepicker-input,
-    .datetimepicker .timepicker.is-grey .timepicker-input-number,
-    .datetimepicker .timepicker.is-grey .timepicker-time-divider {
-      color: #7a7a7a !important; }
-    .datetimepicker .timepicker.is-grey-light .timepicker-input,
-    .datetimepicker .timepicker.is-grey-light .timepicker-input-number,
-    .datetimepicker .timepicker.is-grey-light .timepicker-time-divider {
-      color: #b5b5b5 !important; }
-    .datetimepicker .timepicker.is-grey-lighter .timepicker-input,
-    .datetimepicker .timepicker.is-grey-lighter .timepicker-input-number,
-    .datetimepicker .timepicker.is-grey-lighter .timepicker-time-divider {
-      color: #dbdbdb !important; }
-    .datetimepicker .timepicker.is-white-ter .timepicker-input,
-    .datetimepicker .timepicker.is-white-ter .timepicker-input-number,
-    .datetimepicker .timepicker.is-white-ter .timepicker-time-divider {
-      color: whitesmoke !important; }
-    .datetimepicker .timepicker.is-white-bis .timepicker-input,
-    .datetimepicker .timepicker.is-white-bis .timepicker-input-number,
-    .datetimepicker .timepicker.is-white-bis .timepicker-time-divider {
-      color: #fafafa !important; }
+  .datetimepicker.is-white .timepicker-input,
+  .datetimepicker.is-white .timepicker-input-number,
+  .datetimepicker.is-white .timepicker-time-divider {
+    color: white !important; }
+  .datetimepicker.is-black .timepicker-input,
+  .datetimepicker.is-black .timepicker-input-number,
+  .datetimepicker.is-black .timepicker-time-divider {
+    color: #0a0a0a !important; }
+  .datetimepicker.is-light .timepicker-input,
+  .datetimepicker.is-light .timepicker-input-number,
+  .datetimepicker.is-light .timepicker-time-divider {
+    color: whitesmoke !important; }
+  .datetimepicker.is-dark .timepicker-input,
+  .datetimepicker.is-dark .timepicker-input-number,
+  .datetimepicker.is-dark .timepicker-time-divider {
+    color: #363636 !important; }
+  .datetimepicker.is-primary .timepicker-input,
+  .datetimepicker.is-primary .timepicker-input-number,
+  .datetimepicker.is-primary .timepicker-time-divider {
+    color: #00d1b2 !important; }
+  .datetimepicker.is-link .timepicker-input,
+  .datetimepicker.is-link .timepicker-input-number,
+  .datetimepicker.is-link .timepicker-time-divider {
+    color: #3273dc !important; }
+  .datetimepicker.is-info .timepicker-input,
+  .datetimepicker.is-info .timepicker-input-number,
+  .datetimepicker.is-info .timepicker-time-divider {
+    color: #209cee !important; }
+  .datetimepicker.is-success .timepicker-input,
+  .datetimepicker.is-success .timepicker-input-number,
+  .datetimepicker.is-success .timepicker-time-divider {
+    color: #23d160 !important; }
+  .datetimepicker.is-warning .timepicker-input,
+  .datetimepicker.is-warning .timepicker-input-number,
+  .datetimepicker.is-warning .timepicker-time-divider {
+    color: #ffdd57 !important; }
+  .datetimepicker.is-danger .timepicker-input,
+  .datetimepicker.is-danger .timepicker-input-number,
+  .datetimepicker.is-danger .timepicker-time-divider {
+    color: #ff3860 !important; }
+  .datetimepicker.is-black-bis .timepicker-input,
+  .datetimepicker.is-black-bis .timepicker-input-number,
+  .datetimepicker.is-black-bis .timepicker-time-divider {
+    color: #121212 !important; }
+  .datetimepicker.is-black-ter .timepicker-input,
+  .datetimepicker.is-black-ter .timepicker-input-number,
+  .datetimepicker.is-black-ter .timepicker-time-divider {
+    color: #242424 !important; }
+  .datetimepicker.is-grey-darker .timepicker-input,
+  .datetimepicker.is-grey-darker .timepicker-input-number,
+  .datetimepicker.is-grey-darker .timepicker-time-divider {
+    color: #363636 !important; }
+  .datetimepicker.is-grey-dark .timepicker-input,
+  .datetimepicker.is-grey-dark .timepicker-input-number,
+  .datetimepicker.is-grey-dark .timepicker-time-divider {
+    color: #4a4a4a !important; }
+  .datetimepicker.is-grey .timepicker-input,
+  .datetimepicker.is-grey .timepicker-input-number,
+  .datetimepicker.is-grey .timepicker-time-divider {
+    color: #7a7a7a !important; }
+  .datetimepicker.is-grey-light .timepicker-input,
+  .datetimepicker.is-grey-light .timepicker-input-number,
+  .datetimepicker.is-grey-light .timepicker-time-divider {
+    color: #b5b5b5 !important; }
+  .datetimepicker.is-grey-lighter .timepicker-input,
+  .datetimepicker.is-grey-lighter .timepicker-input-number,
+  .datetimepicker.is-grey-lighter .timepicker-time-divider {
+    color: #dbdbdb !important; }
+  .datetimepicker.is-white-ter .timepicker-input,
+  .datetimepicker.is-white-ter .timepicker-input-number,
+  .datetimepicker.is-white-ter .timepicker-time-divider {
+    color: whitesmoke !important; }
+  .datetimepicker.is-white-bis .timepicker-input,
+  .datetimepicker.is-white-bis .timepicker-input-number,
+  .datetimepicker.is-white-bis .timepicker-time-divider {
+    color: #fafafa !important; }
   .datetimepicker.is-white .datetimepicker-header .datetimepicker-selection-day {
     color: white; }
   .datetimepicker.is-white .datepicker-nav {

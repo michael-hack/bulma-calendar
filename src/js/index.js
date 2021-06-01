@@ -1,5 +1,5 @@
 import * as utils from './utils/index';
-import * as types from './utils/type';
+import * as type from './utils/type';
 import * as dateFns from 'date-fns';
 import dateUtils from 'date-and-time';
 import EventEmitter from './utils/events';
@@ -18,7 +18,7 @@ export default class bulmaCalendar extends EventEmitter {
 
         super();
 
-        this.element = types.isString(selector) ? document.querySelector(selector) : selector;
+        this.element = type.isString(selector) ? document.querySelector(selector) : selector;
 
         // An invalid selector or non-DOM node has been provided.
         if (!this.element) {
@@ -86,9 +86,10 @@ export default class bulmaCalendar extends EventEmitter {
      * @return {Array} Array of all datePicker instances
      */
     static attach(selector = 'input[type="date"]', options = {}) {
-        let instances = new Array();
 
-        const elements = types.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
+        let instances = [];
+
+        const elements = type.isString(selector) ? document.querySelectorAll(selector) : Array.isArray(selector) ? selector : [selector];
         [].forEach.call(elements, (element) => {
             if (typeof element[this.constructor.name] === 'undefined') {
                 const instance        = new bulmaCalendar(element, options);
@@ -100,6 +101,7 @@ export default class bulmaCalendar extends EventEmitter {
         });
 
         return instances;
+
     }
 
     /****************************************************
@@ -185,7 +187,7 @@ export default class bulmaCalendar extends EventEmitter {
      * minDate getter and setters
      */
     set minDate(date) {
-        this.datePicker.minDate = dateUtils.parse(date, this.dateFormat);
+        this.datePicker.minDate = date;
         return this;
     }
 
@@ -196,7 +198,7 @@ export default class bulmaCalendar extends EventEmitter {
 
     // Set maxDate
     set maxDate(date) {
-        this.datePicker.maxDate = dateUtils.parse(date, this.dateFormat);
+        this.datePicker.maxDate = date;
         return this;
     }
 
@@ -329,7 +331,7 @@ export default class bulmaCalendar extends EventEmitter {
 
         this.emit('validate', this);
 
-        if (!types.isFunction(this.options.onValidate)) {
+        if (!type.isFunction(this.options.onValidate)) {
             this.save();
         }
 
@@ -711,10 +713,10 @@ export default class bulmaCalendar extends EventEmitter {
         this._bindEvents();
         this._refreshInput();
 
-        if (types.isFunction(this.options.onReady)) {
+        if (type.isFunction(this.options.onReady)) {
             this.on('ready', this.options.onReady);
         }
-        if (types.isFunction(this.options.onValidate)) {
+        if (type.isFunction(this.options.onValidate)) {
             this.on('validate', this.options.onValidate);
         }
 
@@ -798,16 +800,16 @@ export default class bulmaCalendar extends EventEmitter {
             },
         };
 
-        if (!types.BooleanParse(this.options.showHeader)) {
+        if (!type.BooleanParse(this.options.showHeader)) {
             this._ui.header.container.classList.add('is-hidden');
         }
-        if (!types.BooleanParse(this.options.showFooter)) {
+        if (!type.BooleanParse(this.options.showFooter)) {
             this._ui.footer.container.classList.add('is-hidden');
         }
-        if (!types.BooleanParse(this.options.showTodayButton)) {
+        if (!type.BooleanParse(this.options.showTodayButton)) {
             this._ui.footer.today.classList.add('is-hidden');
         }
-        if (!types.BooleanParse(this.options.showClearButton)) {
+        if (!type.BooleanParse(this.options.showClearButton)) {
             this._ui.footer.clear.classList.add('is-hidden');
         }
 
