@@ -4,57 +4,35 @@ route: demonstration
 title: Demonstration
 ---
 
-{% capture calendar_datepicker_example_inline %}
-<input id="datepickerDemoInline" class="input" type="date" data-display-mode="inline" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_info %}
-<input id="datepickerDemoInlineInfo" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="info" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_success %}
-<input id="datepickerDemoInlineSuccess" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="success" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_warning %}
-<input id="datepickerDemoInlineWarning" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="warning" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_danger %}
-<input id="datepickerDemoInlineDanger" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="danger" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_grey %}
-<input id="datepickerDemoInlineSuccess" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="grey" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_dark %}
-<input id="datepickerDemoInlineWarning" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="dark" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_black %}
-<input id="datepickerDemoInlineDanger" class="input" type="date" data-display-mode="inline" data-is-range="true" data-color="black" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_range %}
-<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="date" value="2021-01-01 - 2021-01-05">
-{% endcapture %}
-
 {% capture calendar_datepicker_example %}
-<input id="datepickerDemoDefault" class="input" type="date" value="2021-01-01">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_range %}
-<input id="datepickerDemoRange" class="input" data-is-range="true" type="date" value="2021-01-01 - 2021-01-05">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_range_labels %}
-<input id="datepickerDemoRangeLabels" class="input" data-is-range="true" type="date">
+<input class="input bulmaCalendar" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_dialog %}
-<input id="datepickerDemoDialog" class="input" type="date" value="2021-01-01">
+<input class="input bulmaCalendar" type="date" data-display-mode="dialog">
 {% endcapture %}
+
+{% capture calendar_datepicker_example_inline %}
+<input class="input bulmaCalendar" type="date" data-display-mode="inline">
+{% endcapture %}
+
+
+{% capture calendar_datepicker_example_range %}
+<input class="input bulmaCalendarRange" type="date">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_range %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_range_labels %}
+<input class="input bulmaCalendarRangeLabels" type="date">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_labels %}
+<input class="input bulmaCalendarRangeLabels" type="date" data-display-mode="inline">
+{% endcapture %}
+
 
 {% capture calendar_datepicker_example_disabled_dates %}
 <input id="datepickerDemoDisabledDates" class="input" type="date">
@@ -65,16 +43,42 @@ title: Demonstration
 {% endcapture %}
 
 {% capture calendar_datepicker_example_highlighted_dates %}
-<input id="datepickerDemoHighlithedDates" class="input" type="date">
+<input id="datepickerDemoHighlightedDates" class="input" type="date">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_weekstart %}
 <input id="datepickerDemoWeekStart" class="input" type="date">
 {% endcapture %}
 
-{% capture calendar_datepicker_example_labels %}
-<input id="datepickerDemoLabels" class="input" type="date">
+
+{% capture calendar_datepicker_example_inline_info %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="info">
 {% endcapture %}
+
+{% capture calendar_datepicker_example_inline_success %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="success">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_warning %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="warning">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_danger %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="danger">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_grey %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="grey">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_dark %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="dark">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_black %}
+<input class="input bulmaCalendarRange" type="date" data-display-mode="inline" data-color="black">
+{% endcapture %}
+
 
 {% include anchor.html name="Display styles" %}
 <p>Calendar component comes with multiple display styles. The default style will show the datePicker as a popover

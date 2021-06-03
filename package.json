@@ -33,7 +33,6 @@
   },
   "homepage": "https://doc.mh-s.de/bulma-calendar",
   "dependencies": {
-    "date-and-time": "^0.14.2",
     "date-fns": "^2.21.3"
   },
   "peerDependencies": {

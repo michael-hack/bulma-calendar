@@ -1,7 +1,6 @@
 import * as utils from './utils/index';
 import * as type from './utils/type';
 import * as dateFns from 'date-fns';
-import dateUtils from 'date-and-time';
 import EventEmitter from './utils/events';
 
 import datePicker from './datePicker';
@@ -166,7 +165,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     set startDate(date) {
-        this.datePicker.start = dateUtils.parse(date, this.dateFormat);
+        this.datePicker.start = date;
         return this;
     }
 
@@ -175,7 +174,7 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     set endDate(date) {
-        this.datePicker.end = dateUtils.parse(date, this.dateFormat);
+        this.datePicker.end = date;
         return this;
     }
 
@@ -471,8 +470,30 @@ export default class bulmaCalendar extends EventEmitter {
         // Set
         if (value) {
 
+            if (this.options.type == 'datetime') {
+                if (this.options.isRange) {
+
+                    if (type.isString(value)) {
+                        value = value.split(' - ');
+                    }
+
+                    if (Array.isArray(value)) {
+                        if (value.length) value[0] = utils.newDate(value[0], this.format);
+                        if (value.length === 2) value[1] = utils.newDate(value[1], this.format);
+                    }
+
+                } else {
+                    if (type.isString(value)) {
+                        value = utils.newDate(value, this.format);
+                    }
+                }
+            }
+
             this.datePicker.value(value);
             this.timePicker.value(value);
+
+            this._refreshInput();
+            this.refresh();
 
             return;
 
@@ -646,8 +667,6 @@ export default class bulmaCalendar extends EventEmitter {
     // Set element value to datetime selected based on format
     save() {
 
-        this.element.setAttribute('value', this.value());
-
         this._refreshInput();
 
         if (this.options.displayMode !== 'inline') {
@@ -686,14 +705,8 @@ export default class bulmaCalendar extends EventEmitter {
         this.element.setAttribute('type', 'text');
 
         // create pickers
-        this.datePicker = new datePicker({ ...this.options, lang: this.lang });
-        this.timePicker = new timePicker({ ...this.options, lang: this.lang });
-
-        // apply value to picker
-        if (this.element.value) {
-            this.datePicker.value(this.element.value);
-            this.timePicker.value(this.element.value);
-        }
+        this.datePicker = new datePicker({ ...this.options });
+        this.timePicker = new timePicker({ ...this.options });
 
         this.lang   = this.options.lang;
         this.format = this._type === 'date' ? this.options.dateFormat : this._type === 'time' ? this.options.timeFormat : `${this.options.dateFormat} ${this.options.timeFormat}`; // Set export format based on component type
@@ -713,6 +726,12 @@ export default class bulmaCalendar extends EventEmitter {
         this._bindEvents();
         this._refreshInput();
 
+        // apply value to picker
+        if (this.element.value) {
+            this.value(this.element.value);
+        }
+
+        // Callbacks
         if (type.isFunction(this.options.onReady)) {
             this.on('ready', this.options.onReady);
         }
@@ -869,6 +888,7 @@ export default class bulmaCalendar extends EventEmitter {
      * @return {void}
      */
     _bindEvents() {
+
         this._clickEvents.forEach((clickEvent) => {
             document.body.addEventListener(clickEvent, this.onDocumentClickDateTimePicker);
         });
@@ -942,6 +962,7 @@ export default class bulmaCalendar extends EventEmitter {
                 this._ui.footer.cancel.addEventListener(clickEvent, this.onCancelClickDateTimePicker);
             });
         }
+
     }
 
     /**
@@ -957,6 +978,8 @@ export default class bulmaCalendar extends EventEmitter {
         if (this._ui.dummy.dummy_2) {
             this._ui.dummy.dummy_2.value = end ? end : '';
         }
+
+        this.element.setAttribute('value', this.value());
 
     }
 

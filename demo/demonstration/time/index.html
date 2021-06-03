@@ -24,18 +24,21 @@
 </head>
 
 <body>
+
   <div class="mobile-burger burger is-hidden-desktop" data-target="#doc-menu">
     <span></span>
     <span></span>
     <span></span>
   </div>
+
   <div class="columns is-gapless">
+
     <div id="doc-menu" class="column is-2 has-background-grey-lighter menu is-mobile">
       <section class="section">
         <h1 class="title is-4 has-text-weight-semibold has-text-centered">Bulma Calendar <span class="is-size-5 has-text-primary has-text-weight-light">Documentation</span></h1>
         <div class="has-text-centered">
           <span>
-            <img src="https://badgen.net/badge/Version/6.1.5/green" alt="v6.1.5">
+            <img src="https://badgen.net/badge/Version/6.1.6/green" alt="v6.1.6">
           </span>
         </div>
       </section>
@@ -121,6 +124,7 @@
 </ul>
 
     </div>
+
     <div class="column">
       <div class="hero is-light">
         <div class="hero-body">
@@ -130,9 +134,12 @@
           </div>
         </div>
       </div>
+
       <section class="section">
         <div class="container is-fluid">
           
+
+
 
 
 
@@ -177,7 +184,7 @@
 <div class="tab-contents">
   <div id="display-default" class="tab-content is-active">
     
-<input id="datepickerDemoDefault" class="input" type="time" value="08:00">
+<input class="input bulmaCalendar" type="time">
 
     <p class="help">To view a demo just click into the input above.</p>
   </div>
@@ -185,14 +192,14 @@
   <div id="display-dialog" class="tab-content">
     <p>"Dialog" style displays the DatePicker as a dialog modal</p>
     
-<input id="datepickerDemoDialog" class="input" type="time" value="08:00">
+<input class="input bulmaCalendar" type="time" data-display-mode="dialog">
 
     <p class="help">To view a demo just click into the input above.</p>
   </div>
   <div id="display-inline" class="tab-content">
     <p>"Inline" style visually replaces the input element by the datepicker</p>
     
-<input id="datepickerDemoInline" class="input" type="time" data-display-mode="inline" value="08:00">
+<input class="input bulmaCalendar" type="time" data-display-mode="inline">
 
   </div>
 
@@ -215,27 +222,27 @@
 <div class="tab-contents">
   <div id="range" class="tab-content is-active">
     
-<input id="datepickerDemoRange" class="input" data-is-range="true" type="time" value="08:00 - 14:00">
+<input class="input bulmaCalendarRange" type="time">
 
   </div>
 
   <div id="range-inline" class="tab-content">
     
-<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="time" value="08:00 - 14:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline">
 
   </div>
 
   <div id="range-labels" class="tab-content">
     <p>You can easily customize labels.</p>
     
-<input id="datepickerDemoRangeLabels" class="input" data-is-range="true" type="time">
+<input class="input bulmaCalendarRangeLabels" type="time">
 
   </div>
 
   <div id="range-labels-inline" class="tab-content">
     <p>You can easily customize from and to selection labels.</p>
     
-<input id="datepickerDemoLabels" class="input" type="time">
+<input class="input bulmaCalendarRangeLabels" type="time" data-display-mode="inline">
 
   </div>
 </div>
@@ -247,55 +254,63 @@
 <div class="columns is-multiline">
   <div class="column is-half">
     
-<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="time" value="08:00 - 14:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineInfo" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="info" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="info">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="success" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="success">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="warning" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="warning">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="danger" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="danger">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="grey" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="grey">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="dark" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="dark">
 
   </div>
   <div class="column is-half">
     
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="black" value="08:00">
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="black">
 
   </div>
 </div>
 
         </div>
       </section>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+                <p>Bulma Calendar - v6.1.6</p>
+                <a href="https://www.mh-s.de/datenschutz/">Privacy</a> | <a href="https://www.mh-s.de/impressum/">Imprint</a>
+            </div>
+        </footer>
+
     </div>
   </div>
 
   <script src="/assets/js/doc.js"></script>
   <script src="/assets/js/bulma-calendar.min.js"></script>
   <script src="/assets/js/main.js"></script>
-  
+
 </body>
 
 </html>

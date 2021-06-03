@@ -3,60 +3,63 @@ layout: default
 route: demonstration
 title: Demonstration
 ---
-{% capture calendar_datepicker_example_inline %}
-<input id="datepickerDemoInline" class="input" type="time" data-display-mode="inline" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_info %}
-<input id="datepickerDemoInlineInfo" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="info" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_success %}
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="success" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_warning %}
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="warning" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_danger %}
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="danger" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_grey %}
-<input id="datepickerDemoInlineSuccess" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="grey" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_dark %}
-<input id="datepickerDemoInlineWarning" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="dark" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_black %}
-<input id="datepickerDemoInlineDanger" class="input" type="time" data-display-mode="inline" data-is-range="true" data-color="black" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_inline_range %}
-<input id="datepickerDemoInlineRange" class="input" data-display-mode="inline" data-is-range="true" type="time" value="08:00 - 14:00">
-{% endcapture %}
 
 {% capture calendar_datepicker_example %}
-<input id="datepickerDemoDefault" class="input" type="time" value="08:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_range %}
-<input id="datepickerDemoRange" class="input" data-is-range="true" type="time" value="08:00 - 14:00">
-{% endcapture %}
-
-{% capture calendar_datepicker_example_range_labels %}
-<input id="datepickerDemoRangeLabels" class="input" data-is-range="true" type="time">
+<input class="input bulmaCalendar" type="time">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_dialog %}
-<input id="datepickerDemoDialog" class="input" type="time" value="08:00">
+<input class="input bulmaCalendar" type="time" data-display-mode="dialog">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline %}
+<input class="input bulmaCalendar" type="time" data-display-mode="inline">
+{% endcapture %}
+
+
+{% capture calendar_datepicker_example_range %}
+<input class="input bulmaCalendarRange" type="time">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_range %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_range_labels %}
+<input class="input bulmaCalendarRangeLabels" type="time">
 {% endcapture %}
 
 {% capture calendar_datepicker_example_labels %}
-<input id="datepickerDemoLabels" class="input" type="time">
+<input class="input bulmaCalendarRangeLabels" type="time" data-display-mode="inline">
+{% endcapture %}
+
+
+{% capture calendar_datepicker_example_inline_info %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="info">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_success %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="success">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_warning %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="warning">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_danger %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="danger">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_grey %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="grey">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_dark %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="dark">
+{% endcapture %}
+
+{% capture calendar_datepicker_example_inline_black %}
+<input class="input bulmaCalendarRange" type="time" data-display-mode="inline" data-color="black">
 {% endcapture %}
 
 {% include anchor.html name="Display styles" %}

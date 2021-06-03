@@ -5,7 +5,6 @@ import EventEmitter from '../utils/events';
 
 import template from './templates/timepicker';
 import defaultOptions from './defaultOptions';
-import dateUtils from "date-and-time";
 
 export default class timePicker extends EventEmitter {
 
@@ -52,8 +51,8 @@ export default class timePicker extends EventEmitter {
             end:   dateFns.endOfToday()
         };
 
-        this.start = this._newDate(this.options.startTime) || dateFns.startOfToday();
-        this.end   = this.options.isRange ? this._newDate(this.options.endTime) : dateFns.endOfToday();
+        this.start = utils.newDate(this.options.startTime, this.format, 'HH:mm') || dateFns.startOfToday();
+        this.end   = this.options.isRange ? utils.newDate(this.options.endTime, this.format, 'HH:mm') : dateFns.endOfToday();
 
         this._build();
         this._bindEvents();
@@ -125,32 +124,10 @@ export default class timePicker extends EventEmitter {
         });
     }
 
-    /**
-     * NewDate - Helper
-     * @param date
-     * @returns {Date|undefined}
-     * @private
-     */
-    _newDate(time) {
-
-        if (!time) {
-            return undefined;
-        }
-
-        let result = new Date(time);
-
-        if (!type.isDate(result)) {
-            result = dateUtils.parse(time, this.format);
-        }
-
-        return result;
-
-    }
-
     _select(time = undefined, emit = true) {
 
         if (!type.isDate(time)) {
-            time = this._newDate(time);
+            time = utils.newDate(time, this.format, 'HH:mm');
         }
 
         if (this.options.isRange && (!this._isValidTime(this.start) || (this._isValidTime(this.start) && this._isValidTime(this.end)))) {
@@ -251,8 +228,20 @@ export default class timePicker extends EventEmitter {
     }
 
     set start(time) {
-        this._time.start = time ? (this._isValidTime(time, this.min, this.max) ? time : this._time.start) : dateFns.startOfToday();
+
+        if (!time) {
+            this._time.start = dateFns.startOfToday();
+            return this;
+        }
+
+        time = utils.newDate(time, this.format, 'HH:mm');
+
+        if (this._isValidTime(time, this.min, this.max)) {
+            this._time.start = time;
+        }
+
         return this;
+
     }
 
     get start() {
@@ -260,8 +249,20 @@ export default class timePicker extends EventEmitter {
     }
 
     set end(time) {
-        this._time.end = time ? (this._isValidTime(time, this.min, this.max) ? time : this._time.end) : dateFns.endOfToday();
+
+        if (!time) {
+            this._time.end = dateFns.endOfToday();
+            return this;
+        }
+
+        time = utils.newDate(time, this.format, 'HH:mm');
+
+        if (this._isValidTime(time, this.min, this.max)) {
+            this._time.end = time;
+        }
+
         return this;
+
     }
 
     get end() {
@@ -270,7 +271,7 @@ export default class timePicker extends EventEmitter {
 
     // Set min
     set min(time) {
-        this._min = this._newDate(time);
+        this._min = utils.newDate(time, this.format, 'HH:mm');
         return this;
     }
 
@@ -281,7 +282,7 @@ export default class timePicker extends EventEmitter {
 
     // Set max
     set max(time) {
-        this._max = this._newDate(time);
+        this._max = utils.newDate(time, this.format, 'HH:mm');
         return this;
     }
 
@@ -627,12 +628,16 @@ export default class timePicker extends EventEmitter {
         // Set
         if (value) {
 
-            if (this.options.isRange && type.isString(value)) {
+            if (this.options.isRange) {
 
-                const times = value.split(' - ');
+                if (type.isString(value)) {
+                    value = value.split(' - ');
+                }
 
-                if (times.length)       this.start = this._newDate(times[0]);
-                if (times.length === 2) this.end   = this._newDate(times[1]);
+                if (Array.isArray(value)) {
+                    if (value.length)       this.start = utils.newDate(value[0], this.format, 'yyyy-MM-dd');
+                    if (value.length === 2) this.end   = utils.newDate(value[1], this.format, 'yyyy-MM-dd');
+                }
 
             } else {
                 this._select(value, false);

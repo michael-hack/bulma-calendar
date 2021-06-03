@@ -1,7 +1,6 @@
 import * as utils from '../utils';
 import * as type from '../utils/type';
 import * as dateFns from 'date-fns';
-import dateUtils from "date-and-time";
 import EventEmitter from '../utils/events';
 
 import template from './templates/datepicker';
@@ -88,18 +87,20 @@ export default class datePicker extends EventEmitter {
     }
 
     set start(date) {
-        if (date) {
-            if (type.isDate(date)) {
-                this._date.start = this._isValidDate(date, this.min, this.max) ? dateFns.startOfDay(date) : this._date.start;
-            }
-            if (type.isString(date)) {
-                this._date.start = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.startOfDay(dateFns.parse(date)) : this._date.start;
-            }
-        } else {
+
+        if (!date) {
             this._date.start = undefined;
+            return this;
+        }
+
+        date = utils.newDate(date, this.format, 'yyyy-MM-dd');
+
+        if (this._isValidDate(date, this.min, this.max)) {
+            this._date.start = dateFns.startOfDay(date);
         }
 
         return this;
+
     }
 
     get start() {
@@ -107,18 +108,20 @@ export default class datePicker extends EventEmitter {
     }
 
     set end(date) {
-        if (date) {
-            if (type.isDate(date)) {
-                this._date.end = this._isValidDate(date, this.min, this.max) ? dateFns.endOfDay(date) : this._date.end;
-            }
-            if (type.isString(date)) {
-                this._date.end = this._isValidDate(dateFns.parse(date), this.min, this.max) ? dateFns.endOfDay(dateFns.parse(date)) : this._date.end;
-            }
-        } else {
+
+        if (!date) {
             this._date.end = undefined;
+            return this;
+        }
+
+        date = utils.newDate(date, this.format, 'yyyy-MM-dd');
+
+        if (this._isValidDate(date, this.min, this.max)) {
+            this._date.end = dateFns.endOfDay(date);
         }
 
         return this;
+
     }
 
     get end() {
@@ -127,7 +130,7 @@ export default class datePicker extends EventEmitter {
 
     // Set min
     set min(date) {
-        this._min = this._newDate(date);
+        this._min = utils.newDate(date, this.format, 'yyyy-MM-dd');
         return this;
     }
 
@@ -138,7 +141,7 @@ export default class datePicker extends EventEmitter {
 
     // Set max
     set max(date) {
-        this._max = this._newDate(date);
+        this._max = utils.newDate(date, this.format, 'yyyy-MM-dd');
         return this;
     }
 
@@ -270,7 +273,7 @@ export default class datePicker extends EventEmitter {
         e.stopPropagation();
 
         if (!e.currentTarget.classList.contains('is-disabled')) {
-            this._select(e.currentTarget.dataset.date);
+            this._select(new Date(e.currentTarget.dataset.date));
             this.refresh();
         }
 
@@ -379,12 +382,16 @@ export default class datePicker extends EventEmitter {
         // Set
         if (value) {
 
-            if (this.options.isRange && type.isString(value)) {
+            if (this.options.isRange) {
 
-                const dates = value.split(' - ');
+                if (type.isString(value)) {
+                    value = value.split(' - ');
+                }
 
-                if (dates.length)       this.start = this._newDate(dates[0]);
-                if (dates.length === 2) this.end   = this._newDate(dates[1]);
+                if (Array.isArray(value)) {
+                    if (value.length)       this.start = utils.newDate(value[0], this.format, 'yyyy-MM-dd');
+                    if (value.length === 2) this.end   = utils.newDate(value[1], this.format, 'yyyy-MM-dd');
+                }
 
             } else {
                 this._select(value, false);
@@ -516,8 +523,7 @@ export default class datePicker extends EventEmitter {
             end:   undefined,
         };
 
-        this._visibleDate = this._setVisibleDate(today);
-
+        this._setVisibleDate(today);
         this.refresh();
 
     }
@@ -546,21 +552,21 @@ export default class datePicker extends EventEmitter {
 
         if (Array.isArray(this.options.disabledDates)) {
             for (let i = 0; i < this.options.disabledDates.length; i++) {
-                this.disabledDates.push(this._newDate(this.options.disabledDates[i]));
+                this.disabledDates.push(utils.newDate(this.options.disabledDates[i], this.format, 'yyyy-MM-dd'));
             }
         }
 
         if (Array.isArray(this.options.highlightedDates)) {
             for (let i = 0; i < this.options.highlightedDates.length; i++) {
-                this.highlightedDates.push(this._newDate(this.options.highlightedDates[i]));
+                this.highlightedDates.push(utils.newDate(this.options.highlightedDates[i], this.format, 'yyyy-MM-dd'));
             }
         }
 
-        this.min = this._newDate(this.options.minDate);
-        this.max = this._newDate(this.options.maxDate);
+        this.min = this.options.minDate;
+        this.max = this.options.maxDate;
         this._date = {
-            start: this._newDate(this.options.startDate),
-            end:   this.options.isRange ? this._newDate(this.options.endDate) : undefined,
+            start: utils.newDate(this.options.startDate, this.format, 'yyyy-MM-dd'),
+            end:   this.options.isRange ? utils.newDate(this.options.endDate, this.format, 'yyyy-MM-dd') : undefined,
         };
 
         this._visibleDate = this._isValidDate(this.start) ? this.start : this._isValidDate(today, this.min, this.max) ? today : this.min;
@@ -674,28 +680,6 @@ export default class datePicker extends EventEmitter {
         });
     }
 
-    /**
-     * NewDate - Helper
-     * @param date
-     * @returns {Date|undefined}
-     * @private
-     */
-    _newDate(date) {
-
-        if (!date) {
-            return undefined;
-        }
-
-        let result = new Date(date);
-
-        if (!type.isDate(result)) {
-            result = dateUtils.parse(date, this.format);
-        }
-
-        return result;
-
-    }
-
     _renderDays() {
 
         const start = dateFns.startOfWeek(dateFns.startOfMonth(this._visibleDate), { weekStartsOn: this.options.weekStart }); // first day of current month view
@@ -773,7 +757,7 @@ export default class datePicker extends EventEmitter {
     _select(date = undefined, emit = true) {
 
         if (!type.isDate(date)) {
-            date = this._newDate(date);
+            date = utils.newDate(date, this.format, 'yyyy-MM-dd');
         }
 
         if (this.options.isRange && (!this._isValidDate(this.start) || (this._isValidDate(this.start) && this._isValidDate(this.end)))) {
