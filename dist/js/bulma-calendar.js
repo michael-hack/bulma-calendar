@@ -44204,6 +44204,10 @@ var bulmaCalendar = function (_EventEmitter) {
 
             this.refresh();
 
+            if (!this.isOpen()) {
+                this._refreshInput();
+            }
+
             this.emit('clear', this);
         }
 

@@ -605,6 +605,10 @@ export default class bulmaCalendar extends EventEmitter {
 
         this.refresh();
 
+        if (!this.isOpen()) {
+            this._refreshInput();
+        }
+
         this.emit('clear', this);
 
     }
