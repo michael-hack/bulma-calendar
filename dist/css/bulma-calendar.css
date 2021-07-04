@@ -1373,7 +1373,7 @@
 .datetimepicker-dummy.is-white-bis .datetimepicker-clear-button {
   color: #fafafa; }
 
-.modal .datetimepicker {
+.datetimepicker-wrapper.modal .datetimepicker {
   display: block;
   max-height: 95vh;
   width: 22rem;

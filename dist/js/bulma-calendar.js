@@ -44380,7 +44380,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
             // Save pointer to each datePicker element for later use
             this._ui = {
-                modal: datetimePickerNode.querySelector('.modal'),
+                modal: datetimePickerNode.querySelector('.datetimepicker-wrapper.modal'),
                 wrapper: datetimePickerNode.querySelector('.datetimepicker'),
                 container: datetimePickerNode.querySelector('.datetimepicker-container'),
                 dummy: {
