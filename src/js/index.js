@@ -728,12 +728,13 @@ export default class bulmaCalendar extends EventEmitter {
 
         this._build();
         this._bindEvents();
-        this._refreshInput();
 
         // apply value to picker
         if (this.element.value) {
             this.value(this.element.value);
         }
+
+        this._refreshInput();
 
         // Callbacks
         if (type.isFunction(this.options.onReady)) {

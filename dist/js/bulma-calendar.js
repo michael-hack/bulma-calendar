@@ -44341,12 +44341,13 @@ var bulmaCalendar = function (_EventEmitter) {
 
             this._build();
             this._bindEvents();
-            this._refreshInput();
 
             // apply value to picker
             if (this.element.value) {
                 this.value(this.element.value);
             }
+
+            this._refreshInput();
 
             // Callbacks
             if (__WEBPACK_IMPORTED_MODULE_1__utils_type__["c" /* isFunction */](this.options.onReady)) {
