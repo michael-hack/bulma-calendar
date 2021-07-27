@@ -43863,6 +43863,11 @@ var bulmaCalendar = function (_EventEmitter) {
         _this.onChangeEndHoursManually = _this.onChangeEndHoursManually.bind(_this);
         _this.onChangeEndMinutesManually = _this.onChangeEndMinutesManually.bind(_this);
 
+        // Required Handler
+        if (_this.element.required) {}
+        // TODO
+
+
         // Initiate plugin
         _this._init();
 
@@ -44228,6 +44233,7 @@ var bulmaCalendar = function (_EventEmitter) {
                 this._ui.modal.classList.add('is-active');
             }
 
+            this._ui.dummy.wrapper.classList.add('is-active');
             this._ui.wrapper.classList.add('is-active');
             this._open = true;
 
@@ -44268,6 +44274,8 @@ var bulmaCalendar = function (_EventEmitter) {
             if (this._ui.modal) {
                 this._ui.modal.classList.remove('is-active');
             }
+
+            this._ui.dummy.wrapper.classList.remove('is-active');
             this._ui.wrapper.classList.remove('is-active');
 
             this.emit('hide', this);

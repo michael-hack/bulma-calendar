@@ -74,6 +74,11 @@ export default class bulmaCalendar extends EventEmitter {
         this.onChangeEndHoursManually      = this.onChangeEndHoursManually.bind(this);
         this.onChangeEndMinutesManually    = this.onChangeEndMinutesManually.bind(this);
 
+        // Required Handler
+        if (this.element.required) {
+            // TODO
+        }
+
         // Initiate plugin
         this._init();
 
@@ -627,6 +632,7 @@ export default class bulmaCalendar extends EventEmitter {
             this._ui.modal.classList.add('is-active');
         }
 
+        this._ui.dummy.wrapper.classList.add('is-active');
         this._ui.wrapper.classList.add('is-active');
         this._open = true;
 
@@ -662,6 +668,8 @@ export default class bulmaCalendar extends EventEmitter {
         if (this._ui.modal) {
             this._ui.modal.classList.remove('is-active');
         }
+
+        this._ui.dummy.wrapper.classList.remove('is-active');
         this._ui.wrapper.classList.remove('is-active');
 
         this.emit('hide', this);

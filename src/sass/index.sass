@@ -1,3 +1,6 @@
+@import "../../node_modules/bulma/sass/utilities/controls.sass"
+@import "../../node_modules/bulma/sass/elements/form.sass"
+
 $calendar-border: .1rem solid $white-ter !default
 $calendar-border-radius: $radius-small !default
 $calendar-selection-background-color: $primary !default
@@ -612,7 +615,12 @@ $calendar-date-padding: .1rem 0 !default
         width: 1.75rem
 
     .datetimepicker-dummy-wrapper
-        border: 1px solid $grey-light
+
+        +input
+        box-shadow: $input-shadow
+        &[readonly]
+            box-shadow: none
+
         cursor: pointer
         display: flex
         flex: 1 100%
@@ -624,12 +632,12 @@ $calendar-date-padding: .1rem 0 !default
         &::before
             content: ''
             mask: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGZpbGw9ImN1cnJlbnRjb2xvciIgZD0iTTU3LDRoLTdWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIMTlWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIM0MyLjQ0Nyw0LDIsNC40NDcsMiw1djExdjQzYzAsMC41NTMsMC40NDcsMSwxLDFoNTRjMC41NTMsMCwxLTAuNDQ3LDEtMVYxNlY1QzU4LDQuNDQ3LDU3LjU1Myw0LDU3LDR6IE00MywyaDV2M3YzaC01VjVWMnogTTEyLDJoNXYzdjNoLTVWNVYyeiBNNCw2aDZ2M2MwLDAuNTUzLDAuNDQ3LDEsMSwxaDdjMC41NTMsMCwxLTAuNDQ3LDEtMVY2aDIydjNjMCwwLjU1MywwLjQ0NywxLDEsMWg3YzAuNTUzLDAsMS0wLjQ0NywxLTFWNmg2djlINFY2ek00LDU4VjE3aDUydjQxSDR6Ii8+PHBhdGggZmlsbD0iY3VycmVudGNvbG9yIiBkPSJNMzgsMjNoLTdoLTJoLTdoLTJoLTl2OXYydjd2MnY5aDloMmg3aDJoN2gyaDl2LTl2LTJ2LTd2LTJ2LTloLTlIMzh6TTMxLDI1aDd2N2gtN1YyNXpNMzgsNDFoLTd2LTdoN1Y0MXpNMjIsMzRoN3Y3aC03VjM0ek0yMiwyNWg3djdoLTdWMjV6TTEzLDI1aDd2N2gtN1YyNXpNMTMsMzRoN3Y3aC03VjM0ek0yMCw1MGgtN3YtN2g3VjUwek0yOSw1MGgtN3YtN2g3VjUweiBNMzgsNTBoLTd2LTdoN1Y1MHogTTQ3LDUwaC03di03aDdWNTB6IE00Nyw0MWgtN3YtN2g3VjQxek00NywyNXY3aC03di03SDQ3eiIvPjwvZz48L3N2Zz4=)
+            -webkit-mask: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNjAgNjAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxwYXRoIGZpbGw9ImN1cnJlbnRjb2xvciIgZD0iTTU3LDRoLTdWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIMTlWMWMwLTAuNTUzLTAuNDQ3LTEtMS0xaC03Yy0wLjU1MywwLTEsMC40NDctMSwxdjNIM0MyLjQ0Nyw0LDIsNC40NDcsMiw1djExdjQzYzAsMC41NTMsMC40NDcsMSwxLDFoNTRjMC41NTMsMCwxLTAuNDQ3LDEtMVYxNlY1QzU4LDQuNDQ3LDU3LjU1Myw0LDU3LDR6IE00MywyaDV2M3YzaC01VjVWMnogTTEyLDJoNXYzdjNoLTVWNVYyeiBNNCw2aDZ2M2MwLDAuNTUzLDAuNDQ3LDEsMSwxaDdjMC41NTMsMCwxLTAuNDQ3LDEtMVY2aDIydjNjMCwwLjU1MywwLjQ0NywxLDEsMWg3YzAuNTUzLDAsMS0wLjQ0NywxLTFWNmg2djlINFY2ek00LDU4VjE3aDUydjQxSDR6Ii8+PHBhdGggZmlsbD0iY3VycmVudGNvbG9yIiBkPSJNMzgsMjNoLTdoLTJoLTdoLTJoLTl2OXYydjd2MnY5aDloMmg3aDJoN2gyaDl2LTl2LTJ2LTd2LTJ2LTloLTlIMzh6TTMxLDI1aDd2N2gtN1YyNXpNMzgsNDFoLTd2LTdoN1Y0MXpNMjIsMzRoN3Y3aC03VjM0ek0yMiwyNWg3djdoLTdWMjV6TTEzLDI1aDd2N2gtN1YyNXpNMTMsMzRoN3Y3aC03VjM0ek0yMCw1MGgtN3YtN2g3VjUwek0yOSw1MGgtN3YtN2g3VjUweiBNMzgsNTBoLTd2LTdoN1Y1MHogTTQ3LDUwaC03di03aDdWNTB6IE00Nyw0MWgtN3YtN2g3VjQxek00NywyNXY3aC03di03SDQ3eiIvPjwvZz48L3N2Zz4=)
             position: absolute
             top: .65rem
             left: .75rem
             width: 1.25rem
             height: 1.25rem
-            background-color: $primary
 
         .datetimepicker-dummy-input
             color: $text
@@ -654,15 +662,29 @@ $calendar-date-padding: .1rem 0 !default
 
 .datetimepicker-dummy
     @each $name, $pair in $colors
+
         $color: nth($pair, 1)
         $color-invert: findColorInvert($color)
+
         &.is-#{$name}
             &:before,
             &::before
                 background-color: $color
 
+            .datetimepicker-dummy-wrapper
+                &:before,
+                &::before
+                    background-color: $color
+                &:focus,
+                &.is-focused,
+                &:active,
+                &.is-active
+                    border-color: $color
+                    box-shadow: $input-focus-box-shadow-size rgba($color, 0.25)
+
             .datetimepicker-clear-button
                 color: $color
+
     @each $name, $value in $shades
         $color: $value
         $color-invert: findColorInvert($color)
