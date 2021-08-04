@@ -1250,7 +1250,7 @@ module.exports = exports.default;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__differenceInCalendarISOWeeks_index_js__ = __webpack_require__(484);
 /* unused harmony reexport differenceInCalendarISOWeeks */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__differenceInCalendarMonths_index_js__ = __webpack_require__(77);
-/* unused harmony reexport differenceInCalendarMonths */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_21__differenceInCalendarMonths_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__differenceInCalendarQuarters_index_js__ = __webpack_require__(485);
 /* unused harmony reexport differenceInCalendarQuarters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__differenceInCalendarWeeks_index_js__ = __webpack_require__(79);
@@ -1258,7 +1258,7 @@ module.exports = exports.default;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__differenceInCalendarYears_index_js__ = __webpack_require__(80);
 /* unused harmony reexport differenceInCalendarYears */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__differenceInDays_index_js__ = __webpack_require__(45);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_25__differenceInDays_index_js__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_25__differenceInDays_index_js__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__differenceInHours_index_js__ = __webpack_require__(81);
 /* unused harmony reexport differenceInHours */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__differenceInISOWeekYears_index_js__ = __webpack_require__(486);
@@ -1268,7 +1268,7 @@ module.exports = exports.default;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__differenceInMinutes_index_js__ = __webpack_require__(83);
 /* unused harmony reexport differenceInMinutes */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__ = __webpack_require__(35);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__["a"]; });
+/* unused harmony reexport differenceInMonths */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__differenceInQuarters_index_js__ = __webpack_require__(487);
 /* unused harmony reexport differenceInQuarters */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__differenceInSeconds_index_js__ = __webpack_require__(48);
@@ -55492,8 +55492,8 @@ var datePicker = function (_EventEmitter) {
                 this._ui.body.dates.classList.remove('is-active');
                 this._ui.body.years.classList.remove('is-active');
                 this._ui.body.months.classList.add('is-active');
-                this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-                this._ui.navigation.next.setAttribute('disabled', 'disabled');
+                this._toggleNextButton(false);
+                this._togglePreviousButton(false);
             }
         }
     }, {
@@ -55509,8 +55509,8 @@ var datePicker = function (_EventEmitter) {
                 this._ui.body.dates.classList.remove('is-active');
                 this._ui.body.months.classList.remove('is-active');
                 this._ui.body.years.classList.add('is-active');
-                this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-                this._ui.navigation.next.setAttribute('disabled', 'disabled');
+                this._toggleNextButton(false);
+                this._togglePreviousButton(false);
 
                 var currentYear = this._ui.body.years.querySelector('.calendar-year.is-active');
                 if (currentYear) {
@@ -55652,11 +55652,7 @@ var datePicker = function (_EventEmitter) {
 
             if (this._open) return;
 
-            this._ui.body.dates.classList.add('is-active');
-            this._ui.body.months.classList.remove('is-active');
-            this._ui.body.years.classList.remove('is-active');
-            this._ui.navigation.previous.removeAttribute('disabled');
-            this._ui.navigation.next.removeAttribute('disabled');
+            this.refresh();
             this._ui.container.classList.add('is-active');
 
             this._open = true;
@@ -55794,13 +55790,13 @@ var datePicker = function (_EventEmitter) {
                 weekdays: weekdayLabels
             })));
 
-            if (this.min && __WEBPACK_IMPORTED_MODULE_2_date_fns__["g" /* differenceInMonths */](this._visibleDate, this.min) === 0) {
+            if (this.min && __WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInCalendarMonths */](this._visibleDate, this.min) === 0) {
                 this._togglePreviousButton(false);
             } else {
                 this._togglePreviousButton();
             }
 
-            if (this.max && __WEBPACK_IMPORTED_MODULE_2_date_fns__["g" /* differenceInMonths */](this._visibleDate, this.max) === 0) {
+            if (this.max && __WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInCalendarMonths */](this._visibleDate, this.max) === 0) {
                 this._toggleNextButton(false);
             } else {
                 this._toggleNextButton();
@@ -55944,7 +55940,6 @@ var datePicker = function (_EventEmitter) {
                     _this3._ui.navigation.next.addEventListener(clickEvent, _this3.onNextDatePicker);
                 });
             }
-
             if (this._ui.navigation.month) {
                 this._clickEvents.forEach(function (clickEvent) {
                     _this3._ui.navigation.month.addEventListener(clickEvent, _this3.onSelectMonthDatePicker);
@@ -56005,7 +56000,7 @@ var datePicker = function (_EventEmitter) {
             var end = __WEBPACK_IMPORTED_MODULE_2_date_fns__["k" /* endOfWeek */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["i" /* endOfMonth */](this._visibleDate), { weekStartsOn: this.options.weekStart }); // last day of current month view
 
             // get all days and whether they are within the current month and range
-            var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInDays */](end, start) + 1).fill(start).map(function (s, i) {
+            var days = new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["g" /* differenceInDays */](end, start) + 1).fill(start).map(function (s, i) {
 
                 var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["F" /* startOfDay */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](s, i));
                 var isThisMonth = __WEBPACK_IMPORTED_MODULE_2_date_fns__["u" /* isSameMonth */](_this5._visibleDate, theDate);
@@ -56112,7 +56107,7 @@ var datePicker = function (_EventEmitter) {
             this._setVisibleDate(this.start);
 
             if (this.options.isRange && this._isValidDate(this.start) && this._isValidDate(this.end)) {
-                new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInDays */](this.end, this.start) + 1).fill(this.start).map(function (s, i) {
+                new Array(__WEBPACK_IMPORTED_MODULE_2_date_fns__["g" /* differenceInDays */](this.end, this.start) + 1).fill(this.start).map(function (s, i) {
                     var theDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](s, i);
                     var dateElement = _this6._ui.body.dates.querySelector('.datepicker-date[data-date="' + theDate.toString() + '"]');
                     if (dateElement) {

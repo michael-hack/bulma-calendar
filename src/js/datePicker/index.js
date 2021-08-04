@@ -207,8 +207,8 @@ export default class datePicker extends EventEmitter {
             this._ui.body.dates.classList.remove('is-active');
             this._ui.body.years.classList.remove('is-active');
             this._ui.body.months.classList.add('is-active');
-            this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-            this._ui.navigation.next.setAttribute('disabled', 'disabled');
+            this._toggleNextButton(false);
+            this._togglePreviousButton(false);
         }
 
     }
@@ -224,8 +224,8 @@ export default class datePicker extends EventEmitter {
             this._ui.body.dates.classList.remove('is-active');
             this._ui.body.months.classList.remove('is-active');
             this._ui.body.years.classList.add('is-active');
-            this._ui.navigation.previous.setAttribute('disabled', 'disabled');
-            this._ui.navigation.next.setAttribute('disabled', 'disabled');
+            this._toggleNextButton(false);
+            this._togglePreviousButton(false);
 
             const currentYear = this._ui.body.years.querySelector('.calendar-year.is-active');
             if (currentYear) {
@@ -338,11 +338,7 @@ export default class datePicker extends EventEmitter {
 
         if (this._open) return;
 
-        this._ui.body.dates.classList.add('is-active');
-        this._ui.body.months.classList.remove('is-active');
-        this._ui.body.years.classList.remove('is-active');
-        this._ui.navigation.previous.removeAttribute('disabled');
-        this._ui.navigation.next.removeAttribute('disabled');
+        this.refresh();
         this._ui.container.classList.add('is-active');
 
         this._open  = true;
@@ -485,13 +481,13 @@ export default class datePicker extends EventEmitter {
             )
         );
 
-        if (this.min && dateFns.differenceInMonths(this._visibleDate, this.min) === 0) {
+        if (this.min && dateFns.differenceInCalendarMonths(this._visibleDate, this.min) === 0) {
             this._togglePreviousButton(false);
         } else {
             this._togglePreviousButton();
         }
 
-        if (this.max && dateFns.differenceInMonths(this._visibleDate, this.max) === 0) {
+        if (this.max && dateFns.differenceInCalendarMonths(this._visibleDate, this.max) === 0) {
             this._toggleNextButton(false);
         } else {
             this._toggleNextButton();
@@ -632,7 +628,6 @@ export default class datePicker extends EventEmitter {
                 this._ui.navigation.next.addEventListener(clickEvent, this.onNextDatePicker);
             });
         }
-
         if (this._ui.navigation.month) {
             this._clickEvents.forEach((clickEvent) => {
                 this._ui.navigation.month.addEventListener(clickEvent, this.onSelectMonthDatePicker);
