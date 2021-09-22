@@ -6,9 +6,9 @@ const defaultOptions = {
   lang: navigator.language || 'en-US', // internationalization
   dateFormat: 'MM/dd/yyyy',
   timeFormat: 'HH:mm',
-  navigationMonthFormat: 'MMMM',
+  navigationMonthFormat: 'LLLL',
   navigationYearFormat: 'yyyy',
-  headerMonthYearFromat: 'MMMM yyyy',
+  headerMonthYearFromat: 'LLLL yyyy',
   displayMode: 'default',
   editTimeManually: false,
   position: 'auto',

@@ -55528,8 +55528,8 @@ var datePicker = function (_EventEmitter) {
             e.stopPropagation();
 
             var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["D" /* setMonth */](this._visibleDate, parseInt(e.currentTarget.dataset.month) - 1);
-            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */](newDate, this.min) : newDate;
-            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */](this._visibleDate, this.max) : this._visibleDate;
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */]([newDate, this.min]) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */]([this._visibleDate, this.max]) : this._visibleDate;
 
             this.refresh();
         }
@@ -55543,8 +55543,8 @@ var datePicker = function (_EventEmitter) {
             e.stopPropagation();
 
             var newDate = __WEBPACK_IMPORTED_MODULE_2_date_fns__["E" /* setYear */](this._visibleDate, parseInt(e.currentTarget.dataset.year));
-            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */](newDate, this.min) : newDate;
-            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */](this._visibleDate, this.max) : this._visibleDate;
+            this._visibleDate = this.min ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["z" /* max */]([newDate, this.min]) : newDate;
+            this._visibleDate = this.max ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["A" /* min */]([this._visibleDate, this.max]) : this._visibleDate;
 
             this.refresh();
         }
@@ -56359,7 +56359,7 @@ var datePicker = function (_EventEmitter) {
 
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
     return '' + data.months.map(function (month) {
-        return '\n        <div class="datepicker-month" data-month="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'MM', { locale: data.locale }) + '">\n            ' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'MMM', { locale: data.locale }) + '\n        </div>\n    ';
+        return '\n        <div class="datepicker-month" data-month="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'MM', { locale: data.locale }) + '">\n            ' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'LLL', { locale: data.locale }) + '\n        </div>\n    ';
     }).join('');
 });
 
@@ -61537,9 +61537,9 @@ var defaultOptions = {
   lang: navigator.language || 'en-US', // internationalization
   dateFormat: 'MM/dd/yyyy',
   timeFormat: 'HH:mm',
-  navigationMonthFormat: 'MMMM',
+  navigationMonthFormat: 'LLLL',
   navigationYearFormat: 'yyyy',
-  headerMonthYearFromat: 'MMMM yyyy',
+  headerMonthYearFromat: 'LLLL yyyy',
   displayMode: 'default',
   editTimeManually: false,
   position: 'auto',
