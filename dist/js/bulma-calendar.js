@@ -55782,7 +55782,7 @@ var datePicker = function (_EventEmitter) {
 
             // the 7 days of the week (Sun-Sat)
             var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfWeek */](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](d, i), 'EEE', {
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](d, i), 'ccc', {
                     locale: _this2.locale
                 });
             });
