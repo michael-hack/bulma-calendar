@@ -156,6 +156,30 @@
 - name: 'onValidate'
   type: Function
   description: 'Callback for manual validation before save()'
+- name: 'formats.header'
+  type: String
+  description: 'Header format pattern month / year'
+  value: 'LLLL yyyy'
+- name: 'formats.navigationMonth'
+  type: String
+  description: 'Month format pattern for the navigation bar'
+  value: 'LLLL'
+- name: 'formats.navigationYear'
+  type: String
+  description: 'Year format pattern for the navigation bar'
+  value: 'yyyy'
+- name: 'formats.selectMonth'
+  type: String
+  description: 'Format pattern for the month selection'
+  value: 'LLL'
+- name: 'formats.selectYear'
+  type: String
+  description: 'Format pattern for the year selection'
+  value: 'yyyy'
+- name: 'formats.weekday'
+  type: String
+  description: 'Format pattern for the weekdays'
+  value: 'ccc'
 - name: 'icons.previous'
   type: String
   description: 'Previous button icon'

@@ -427,6 +427,7 @@ export default class datePicker extends EventEmitter {
             document.createRange().createContextualFragment(
                 templateMonths({
                     months: monthLabels,
+                    format: this.options.formats.selectMonth,
                     locale: this.locale,
                 })
             )
@@ -453,6 +454,8 @@ export default class datePicker extends EventEmitter {
                 templateYears({
                     visibleDate: this._visibleDate,
                     years:       yearLabels,
+                    format:      this.options.formats.selectYear,
+                    locale:      this.locale,
                 })
             )
         );
@@ -469,14 +472,14 @@ export default class datePicker extends EventEmitter {
 
         // the 7 days of the week (Sun-Sat)
         const weekdayLabels = new Array(7).fill(dateFns.startOfWeek(this._visibleDate, {weekStartsOn: this.options.weekStart})).map((d, i) =>
-            dateFns.format(dateFns.addDays(d, i), 'ccc', {
-                locale: this.locale,
-            })
+            dateFns.addDays(d, i)
         );
         this._ui.body.dates.appendChild(
             document.createRange().createContextualFragment(
                 templateWeekdays({
-                    weekdays: weekdayLabels,
+                    days:   weekdayLabels,
+                    format: this.options.formats.weekday,
+                    locale: this.locale,
                 })
             )
         );
@@ -493,12 +496,8 @@ export default class datePicker extends EventEmitter {
             this._toggleNextButton();
         }
 
-        this._ui.navigation.month.innerHTML = dateFns.format(this._visibleDate, this.options.navigationMonthFormat, {
-            locale: this.locale,
-        });
-        this._ui.navigation.year.innerHTML = dateFns.format(this._visibleDate, this.options.navigationYearFormat, {
-            locale: this.locale,
-        });
+        this._ui.navigation.month.innerHTML = dateFns.format(this._visibleDate, this.options.formats.navigationMonth, {locale: this.locale});
+        this._ui.navigation.year.innerHTML  = dateFns.format(this._visibleDate, this.options.formats.navigationYear, {locale: this.locale});
 
         this._renderDays();
 

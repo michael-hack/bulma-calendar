@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 477);
+/******/ 	return __webpack_require__(__webpack_require__.s = 498);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -158,8 +158,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = buildFormatLongFn;
 
 function buildFormatLongFn(args) {
-  return function (dirtyOptions) {
-    var options = dirtyOptions || {};
+  return function () {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    // TODO: Remove String()
     var width = options.width ? String(options.width) : args.defaultWidth;
     var format = args.formats[width] || args.formats[args.defaultWidth];
     return format;
@@ -198,7 +199,8 @@ function buildLocalizeFn(args) {
       valuesArray = args.values[_width] || args.values[_defaultWidth];
     }
 
-    var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
+    var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challange you to try to remove it!
+
     return valuesArray[index];
   };
 }
@@ -218,9 +220,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = buildMatchFn;
 
 function buildMatchFn(args) {
-  return function (dirtyString, dirtyOptions) {
-    var string = String(dirtyString);
-    var options = dirtyOptions || {};
+  return function (string) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var width = options.width;
     var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
     var matchResult = string.match(matchPattern);
@@ -231,23 +232,18 @@ function buildMatchFn(args) {
 
     var matchedString = matchResult[0];
     var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+    var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function (pattern) {
+      return pattern.test(matchedString);
+    }) : findKey(parsePatterns, function (pattern) {
+      return pattern.test(matchedString);
+    });
     var value;
-
-    if (Object.prototype.toString.call(parsePatterns) === '[object Array]') {
-      value = findIndex(parsePatterns, function (pattern) {
-        return pattern.test(matchedString);
-      });
-    } else {
-      value = findKey(parsePatterns, function (pattern) {
-        return pattern.test(matchedString);
-      });
-    }
-
-    value = args.valueCallback ? args.valueCallback(value) : value;
+    value = args.valueCallback ? args.valueCallback(key) : key;
     value = options.valueCallback ? options.valueCallback(value) : value;
+    var rest = string.slice(matchedString.length);
     return {
       value: value,
-      rest: string.slice(matchedString.length)
+      rest: rest
     };
   };
 }
@@ -258,6 +254,8 @@ function findKey(object, predicate) {
       return key;
     }
   }
+
+  return undefined;
 }
 
 function findIndex(array, predicate) {
@@ -266,6 +264,8 @@ function findIndex(array, predicate) {
       return key;
     }
   }
+
+  return undefined;
 }
 
 module.exports = exports.default;
@@ -283,27 +283,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = buildMatchPatternFn;
 
 function buildMatchPatternFn(args) {
-  return function (dirtyString, dirtyOptions) {
-    var string = String(dirtyString);
-    var options = dirtyOptions || {};
+  return function (string) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var matchResult = string.match(args.matchPattern);
-
-    if (!matchResult) {
-      return null;
-    }
-
+    if (!matchResult) return null;
     var matchedString = matchResult[0];
     var parseResult = string.match(args.parsePattern);
-
-    if (!parseResult) {
-      return null;
-    }
-
+    if (!parseResult) return null;
     var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
     value = options.valueCallback ? options.valueCallback(value) : value;
+    var rest = string.slice(matchedString.length);
     return {
       value: value,
-      rest: string.slice(matchedString.length)
+      rest: rest
     };
   };
 }
@@ -332,6 +324,143 @@ function toInteger(dirtyNumber) {
 
 /***/ }),
 /* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return daysInWeek; });
+/* unused harmony export maxTime */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return millisecondsInMinute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return millisecondsInHour; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return millisecondsInSecond; });
+/* unused harmony export minTime */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return minutesInHour; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return monthsInQuarter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return monthsInYear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return quartersInYear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return secondsInHour; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return secondsInMinute; });
+/**
+ * Days in 1 week.
+ *
+ * @name daysInWeek
+ * @constant
+ * @type {number}
+ * @default
+ */
+var daysInWeek = 7;
+/**
+ * Maximum allowed time.
+ *
+ * @name maxTime
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var maxTime = Math.pow(10, 8) * 24 * 60 * 60 * 1000;
+/**
+ * Milliseconds in 1 minute
+ *
+ * @name millisecondsInMinute
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var millisecondsInMinute = 60000;
+/**
+ * Milliseconds in 1 hour
+ *
+ * @name millisecondsInHour
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var millisecondsInHour = 3600000;
+/**
+ * Milliseconds in 1 second
+ *
+ * @name millisecondsInSecond
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var millisecondsInSecond = 1000;
+/**
+ * Minimum allowed time.
+ *
+ * @name minTime
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var minTime = -maxTime;
+/**
+ * Minutes in 1 hour
+ *
+ * @name minutesInHour
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var minutesInHour = 60;
+/**
+ * Months in 1 quarter
+ *
+ * @name monthsInQuarter
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var monthsInQuarter = 3;
+/**
+ * Months in 1 year
+ *
+ * @name monthsInYear
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var monthsInYear = 12;
+/**
+ * Quarters in 1 year
+ *
+ * @name quartersInYear
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var quartersInYear = 4;
+/**
+ * Seconds in 1 hour
+ *
+ * @name secondsInHour
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var secondsInHour = 3600;
+/**
+ * Seconds in 1 minute
+ *
+ * @name secondsInMinute
+ * @constant
+ * @type {number}
+ * @default
+ */
+
+var secondsInMinute = 60;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -342,9 +471,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = isSameUTCWeek;
 
-var _index = _interopRequireDefault(__webpack_require__(635));
+var _index = _interopRequireDefault(__webpack_require__(681));
 
-var _index2 = _interopRequireDefault(__webpack_require__(60));
+var _index2 = _interopRequireDefault(__webpack_require__(63));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -360,13 +489,15 @@ function isSameUTCWeek(dirtyDateLeft, dirtyDateRight, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isValid;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isDate_index_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 /**
@@ -413,28 +544,33 @@ module.exports = exports.default;
  *
  * @example
  * // For the valid date:
- * var result = isValid(new Date(2014, 1, 31))
+ * const result = isValid(new Date(2014, 1, 31))
  * //=> true
  *
  * @example
  * // For the value, convertable into a date:
- * var result = isValid(1393804800000)
+ * const result = isValid(1393804800000)
  * //=> true
  *
  * @example
  * // For the invalid date:
- * var result = isValid(new Date(''))
+ * const result = isValid(new Date(''))
  * //=> false
  */
 
 function isValid(dirtyDate) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  var date = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
-  return !isNaN(date);
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+
+  if (!Object(__WEBPACK_IMPORTED_MODULE_0__isDate_index_js__["a" /* default */])(dirtyDate) && typeof dirtyDate !== 'number') {
+    return false;
+  }
+
+  var date = Object(__WEBPACK_IMPORTED_MODULE_1__toDate_index_js__["a" /* default */])(dirtyDate);
+  return !isNaN(Number(date));
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -487,7 +623,7 @@ function addDays(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -510,7 +646,7 @@ function getTimezoneOffsetInMilliseconds(date) {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -574,20 +710,17 @@ function startOfWeek(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = nextDay;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
 
-
-var baseMap = [7, 6, 5, 4, 3, 2, 1];
 /**
  * @name nextDay
  * @category Weekday Helpers
@@ -613,23 +746,57 @@ var baseMap = [7, 6, 5, 4, 3, 2, 1];
  */
 
 function nextDay(date, day) {
-  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var map = genMap(day);
-  return Object(__WEBPACK_IMPORTED_MODULE_2__addDays_index_js__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_3__toDate_index_js__["a" /* default */])(date), map[Object(__WEBPACK_IMPORTED_MODULE_1__getDay_index_js__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_3__toDate_index_js__["a" /* default */])(date))]);
-}
-
-function genMap(daysToMove) {
-  if (daysToMove === 0) {
-    return baseMap;
-  } else {
-    var mapStart = baseMap.slice(-daysToMove);
-    var mapEnd = baseMap.slice(0, baseMap.length - daysToMove);
-    return mapStart.concat(mapEnd);
-  }
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var delta = day - Object(__WEBPACK_IMPORTED_MODULE_1__getDay_index_js__["a" /* default */])(date);
+  if (delta <= 0) delta += 7;
+  return Object(__WEBPACK_IMPORTED_MODULE_0__addDays_index_js__["a" /* default */])(date, delta);
 }
 
 /***/ }),
-/* 13 */
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = previousDay;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__subDays_index_js__ = __webpack_require__(43);
+
+
+
+
+/**
+ * @name previousDay
+ * @category Weekday Helpers
+ * @summary When is the previous day of the week?
+ *
+ * @description
+ * When is the previous day of the week? 0-6 the day of the week, 0 represents Sunday.
+ *
+ * @param {Date | number} date - the date to check
+ * @param {number} day - day of the week
+ * @returns {Date} - the date is the previous day of week
+ * @throws {TypeError} - 2 arguments required
+ *
+ * @example
+ * // When is the previous Monday before Mar, 20, 2020?
+ * const result = previousDay(new Date(2020, 2, 20), 1)
+ * //=> Mon Mar 16 2020 00:00:00
+ *
+ * @example
+ * // When is the previous Tuesday before Mar, 21, 2020?
+ * const result = previousDay(new Date(2020, 2, 21), 2)
+ * //=> Tue Mar 17 2020 00:00:00
+ */
+function previousDay(date, day) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var delta = Object(__WEBPACK_IMPORTED_MODULE_1__getDay_index_js__["a" /* default */])(date) - day;
+  if (delta <= 0) delta += 7;
+  return Object(__WEBPACK_IMPORTED_MODULE_2__subDays_index_js__["a" /* default */])(date, delta);
+}
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -638,7 +805,7 @@ function genMap(daysToMove) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = formatRelative;
+exports.default = void 0;
 var formatRelativeLocale = {
   lastWeek: "'last' eeee 'at' p",
   yesterday: "'yesterday at' p",
@@ -648,14 +815,16 @@ var formatRelativeLocale = {
   other: 'P'
 };
 
-function formatRelative(token, _date, _baseDate, _options) {
+var formatRelative = function (token, _date, _baseDate, _options) {
   return formatRelativeLocale[token];
-}
+};
 
+var _default = formatRelative;
+exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -678,12 +847,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -760,16 +929,13 @@ var formattingDayPeriodValues = {
   }
 };
 
-function ordinalNumber(dirtyNumber, _dirtyOptions) {
+var ordinalNumber = function (dirtyNumber, _options) {
   var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
   // if they are different for different grammatical genders,
-  // use `options.unit`:
+  // use `options.unit`.
   //
-  //   var options = dirtyOptions || {}
-  //   var unit = String(options.unit)
-  //
-  // where `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
-  // 'day', 'hour', 'minute', 'second'
+  // `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+  // 'day', 'hour', 'minute', 'second'.
 
   var rem100 = number % 100;
 
@@ -787,7 +953,7 @@ function ordinalNumber(dirtyNumber, _dirtyOptions) {
   }
 
   return number + 'th';
-}
+};
 
 var localize = {
   ordinalNumber: ordinalNumber,
@@ -799,7 +965,7 @@ var localize = {
     values: quarterValues,
     defaultWidth: 'wide',
     argumentCallback: function (quarter) {
-      return Number(quarter) - 1;
+      return quarter - 1;
     }
   }),
   month: (0, _index.default)({
@@ -822,7 +988,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -833,9 +999,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(5));
+var _index = _interopRequireDefault(__webpack_require__(4));
 
-var _index2 = _interopRequireDefault(__webpack_require__(4));
+var _index2 = _interopRequireDefault(__webpack_require__(5));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -893,20 +1059,20 @@ var parseDayPeriodPatterns = {
   }
 };
 var match = {
-  ordinalNumber: (0, _index.default)({
+  ordinalNumber: (0, _index2.default)({
     matchPattern: matchOrdinalNumberPattern,
     parsePattern: parseOrdinalNumberPattern,
     valueCallback: function (value) {
       return parseInt(value, 10);
     }
   }),
-  era: (0, _index2.default)({
+  era: (0, _index.default)({
     matchPatterns: matchEraPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseEraPatterns,
     defaultParseWidth: 'any'
   }),
-  quarter: (0, _index2.default)({
+  quarter: (0, _index.default)({
     matchPatterns: matchQuarterPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseQuarterPatterns,
@@ -915,19 +1081,19 @@ var match = {
       return index + 1;
     }
   }),
-  month: (0, _index2.default)({
+  month: (0, _index.default)({
     matchPatterns: matchMonthPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseMonthPatterns,
     defaultParseWidth: 'any'
   }),
-  day: (0, _index2.default)({
+  day: (0, _index.default)({
     matchPatterns: matchDayPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseDayPatterns,
     defaultParseWidth: 'any'
   }),
-  dayPeriod: (0, _index2.default)({
+  dayPeriod: (0, _index.default)({
     matchPatterns: matchDayPeriodPatterns,
     defaultMatchWidth: 'any',
     parsePatterns: parseDayPeriodPatterns,
@@ -939,689 +1105,483 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = startOfISOWeek;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-/**
- * @name startOfISOWeek
- * @category ISO Week Helpers
- * @summary Return the start of an ISO week for the given date.
- *
- * @description
- * Return the start of an ISO week for the given date.
- * The result will be in the local timezone.
- *
- * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {Date|Number} date - the original date
- * @returns {Date} the start of an ISO week
- * @throws {TypeError} 1 argument required
- *
- * @example
- * // The start of an ISO week for 2 September 2014 11:55:00:
- * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
- * //=> Mon Sep 01 2014 00:00:00
- */
-
-function startOfISOWeek(dirtyDate) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  return Object(__WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__["a" /* default */])(dirtyDate, {
-    weekStartsOn: 1
-  });
-}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = differenceInCalendarDays;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-
-var MILLISECONDS_IN_DAY = 86400000;
-/**
- * @name differenceInCalendarDays
- * @category Day Helpers
- * @summary Get the number of calendar days between the given dates.
- *
- * @description
- * Get the number of calendar days between the given dates. This means that the times are removed
- * from the dates and then the difference in days is calculated.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {Date|Number} dateLeft - the later date
- * @param {Date|Number} dateRight - the earlier date
- * @returns {Number} the number of calendar days
- * @throws {TypeError} 2 arguments required
- *
- * @example
- * // How many calendar days are between
- * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
- * const result = differenceInCalendarDays(
- *   new Date(2012, 6, 2, 0, 0),
- *   new Date(2011, 6, 2, 23, 0)
- * )
- * //=> 366
- * // How many calendar days are between
- * // 2 July 2011 23:59:00 and 3 July 2011 00:01:00?
- * const result = differenceInCalendarDays(
- *   new Date(2011, 6, 3, 0, 1),
- *   new Date(2011, 6, 2, 23, 59)
- * )
- * //=> 1
- */
-
-function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
-  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var startOfDayLeft = Object(__WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__["a" /* default */])(dirtyDateLeft);
-  var startOfDayRight = Object(__WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__["a" /* default */])(dirtyDateRight);
-  var timestampLeft = startOfDayLeft.getTime() - Object(__WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__["a" /* default */])(startOfDayLeft);
-  var timestampRight = startOfDayRight.getTime() - Object(__WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__["a" /* default */])(startOfDayRight); // Round the number of days to the nearest integer
-  // because the number of milliseconds in a day is not constant
-  // (e.g. it's different in the day of the daylight saving time clock shift)
-
-  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY);
-}
-
-/***/ }),
 /* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = compareAsc;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-/**
- * @name compareAsc
- * @category Common Helpers
- * @summary Compare the two dates and return -1, 0 or 1.
- *
- * @description
- * Compare the two dates and return 1 if the first date is after the second,
- * -1 if the first date is before the second or 0 if dates are equal.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {Date|Number} dateLeft - the first date to compare
- * @param {Date|Number} dateRight - the second date to compare
- * @returns {Number} the result of the comparison
- * @throws {TypeError} 2 arguments required
- *
- * @example
- * // Compare 11 February 1987 and 10 July 1989:
- * const result = compareAsc(new Date(1987, 1, 11), new Date(1989, 6, 10))
- * //=> -1
- *
- * @example
- * // Sort the array of dates:
- * const result = [
- *   new Date(1995, 6, 2),
- *   new Date(1987, 1, 11),
- *   new Date(1989, 6, 10)
- * ].sort(compareAsc)
- * //=> [
- * //   Wed Feb 11 1987 00:00:00,
- * //   Mon Jul 10 1989 00:00:00,
- * //   Sun Jul 02 1995 00:00:00
- * // ]
- */
-
-function compareAsc(dirtyDateLeft, dirtyDateRight) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var dateLeft = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateLeft);
-  var dateRight = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateRight);
-  var diff = dateLeft.getTime() - dateRight.getTime();
-
-  if (diff < 0) {
-    return -1;
-  } else if (diff > 0) {
-    return 1; // Return 0 if diff is 0; return NaN if diff is NaN
-  } else {
-    return diff;
-  }
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = formatDistance;
-var formatDistanceLocale = {
-  lessThanXSeconds: {
-    one: 'less than a second',
-    other: 'less than {{count}} seconds'
-  },
-  xSeconds: {
-    one: '1 second',
-    other: '{{count}} seconds'
-  },
-  halfAMinute: 'half a minute',
-  lessThanXMinutes: {
-    one: 'less than a minute',
-    other: 'less than {{count}} minutes'
-  },
-  xMinutes: {
-    one: '1 minute',
-    other: '{{count}} minutes'
-  },
-  aboutXHours: {
-    one: 'about 1 hour',
-    other: 'about {{count}} hours'
-  },
-  xHours: {
-    one: '1 hour',
-    other: '{{count}} hours'
-  },
-  xDays: {
-    one: '1 day',
-    other: '{{count}} days'
-  },
-  aboutXWeeks: {
-    one: 'about 1 week',
-    other: 'about {{count}} weeks'
-  },
-  xWeeks: {
-    one: '1 week',
-    other: '{{count}} weeks'
-  },
-  aboutXMonths: {
-    one: 'about 1 month',
-    other: 'about {{count}} months'
-  },
-  xMonths: {
-    one: '1 month',
-    other: '{{count}} months'
-  },
-  aboutXYears: {
-    one: 'about 1 year',
-    other: 'about {{count}} years'
-  },
-  xYears: {
-    one: '1 year',
-    other: '{{count}} years'
-  },
-  overXYears: {
-    one: 'over 1 year',
-    other: 'over {{count}} years'
-  },
-  almostXYears: {
-    one: 'almost 1 year',
-    other: 'almost {{count}} years'
-  }
-};
-
-function formatDistance(token, count, options) {
-  options = options || {};
-  var result;
-
-  if (typeof formatDistanceLocale[token] === 'string') {
-    result = formatDistanceLocale[token];
-  } else if (count === 1) {
-    result = formatDistanceLocale[token].one;
-  } else {
-    result = formatDistanceLocale[token].other.replace('{{count}}', count);
-  }
-
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
-      return 'in ' + result;
-    } else {
-      return result + ' ago';
-    }
-  }
-
-  return result;
-}
-
-module.exports = exports.default;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_index_js__ = __webpack_require__(478);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__add_index_js__ = __webpack_require__(499);
 /* unused harmony reexport add */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addBusinessDays_index_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addBusinessDays_index_js__ = __webpack_require__(73);
 /* unused harmony reexport addBusinessDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__ = __webpack_require__(10);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__addHours_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__addHours_index_js__ = __webpack_require__(47);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__addHours_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__addISOWeekYears_index_js__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__addISOWeekYears_index_js__ = __webpack_require__(75);
 /* unused harmony reexport addISOWeekYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__addMilliseconds_index_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__addMilliseconds_index_js__ = __webpack_require__(28);
 /* unused harmony reexport addMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__addMinutes_index_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__addMinutes_index_js__ = __webpack_require__(48);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_6__addMinutes_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__addMonths_index_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__addMonths_index_js__ = __webpack_require__(27);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_7__addMonths_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__addQuarters_index_js__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__addQuarters_index_js__ = __webpack_require__(49);
 /* unused harmony reexport addQuarters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__addSeconds_index_js__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__addSeconds_index_js__ = __webpack_require__(77);
 /* unused harmony reexport addSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__addWeeks_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__addWeeks_index_js__ = __webpack_require__(36);
 /* unused harmony reexport addWeeks */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__addYears_index_js__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__addYears_index_js__ = __webpack_require__(78);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_11__addYears_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__areIntervalsOverlapping_index_js__ = __webpack_require__(479);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__areIntervalsOverlapping_index_js__ = __webpack_require__(500);
 /* unused harmony reexport areIntervalsOverlapping */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__closestIndexTo_index_js__ = __webpack_require__(480);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__clamp_index_js__ = __webpack_require__(501);
+/* unused harmony reexport clamp */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__closestIndexTo_index_js__ = __webpack_require__(502);
 /* unused harmony reexport closestIndexTo */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__closestTo_index_js__ = __webpack_require__(481);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__closestTo_index_js__ = __webpack_require__(503);
 /* unused harmony reexport closestTo */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__compareAsc_index_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__compareAsc_index_js__ = __webpack_require__(21);
 /* unused harmony reexport compareAsc */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__compareDesc_index_js__ = __webpack_require__(482);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__compareDesc_index_js__ = __webpack_require__(504);
 /* unused harmony reexport compareDesc */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__differenceInBusinessDays_index_js__ = __webpack_require__(483);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__daysToWeeks_index_js__ = __webpack_require__(505);
+/* unused harmony reexport daysToWeeks */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__differenceInBusinessDays_index_js__ = __webpack_require__(506);
 /* unused harmony reexport differenceInBusinessDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__differenceInCalendarDays_index_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__differenceInCalendarDays_index_js__ = __webpack_require__(20);
 /* unused harmony reexport differenceInCalendarDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__differenceInCalendarISOWeekYears_index_js__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__differenceInCalendarISOWeekYears_index_js__ = __webpack_require__(82);
 /* unused harmony reexport differenceInCalendarISOWeekYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__differenceInCalendarISOWeeks_index_js__ = __webpack_require__(484);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__differenceInCalendarISOWeeks_index_js__ = __webpack_require__(507);
 /* unused harmony reexport differenceInCalendarISOWeeks */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__differenceInCalendarMonths_index_js__ = __webpack_require__(77);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_21__differenceInCalendarMonths_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__differenceInCalendarQuarters_index_js__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__differenceInCalendarMonths_index_js__ = __webpack_require__(83);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_23__differenceInCalendarMonths_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__differenceInCalendarQuarters_index_js__ = __webpack_require__(508);
 /* unused harmony reexport differenceInCalendarQuarters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__differenceInCalendarWeeks_index_js__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__differenceInCalendarWeeks_index_js__ = __webpack_require__(85);
 /* unused harmony reexport differenceInCalendarWeeks */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__differenceInCalendarYears_index_js__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__differenceInCalendarYears_index_js__ = __webpack_require__(86);
 /* unused harmony reexport differenceInCalendarYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__differenceInDays_index_js__ = __webpack_require__(45);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_25__differenceInDays_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__differenceInHours_index_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__differenceInDays_index_js__ = __webpack_require__(50);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_27__differenceInDays_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__differenceInHours_index_js__ = __webpack_require__(87);
 /* unused harmony reexport differenceInHours */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__differenceInISOWeekYears_index_js__ = __webpack_require__(486);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__differenceInISOWeekYears_index_js__ = __webpack_require__(509);
 /* unused harmony reexport differenceInISOWeekYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__differenceInMilliseconds_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__differenceInMilliseconds_index_js__ = __webpack_require__(37);
 /* unused harmony reexport differenceInMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__differenceInMinutes_index_js__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__differenceInMinutes_index_js__ = __webpack_require__(89);
 /* unused harmony reexport differenceInMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__differenceInMonths_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__differenceInMonths_index_js__ = __webpack_require__(38);
 /* unused harmony reexport differenceInMonths */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__differenceInQuarters_index_js__ = __webpack_require__(487);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__differenceInQuarters_index_js__ = __webpack_require__(510);
 /* unused harmony reexport differenceInQuarters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__differenceInSeconds_index_js__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__differenceInSeconds_index_js__ = __webpack_require__(53);
 /* unused harmony reexport differenceInSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__differenceInWeeks_index_js__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__differenceInWeeks_index_js__ = __webpack_require__(511);
 /* unused harmony reexport differenceInWeeks */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__differenceInYears_index_js__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__differenceInYears_index_js__ = __webpack_require__(91);
 /* unused harmony reexport differenceInYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__eachDayOfInterval_index_js__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__eachDayOfInterval_index_js__ = __webpack_require__(92);
 /* unused harmony reexport eachDayOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__eachHourOfInterval_index_js__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__eachHourOfInterval_index_js__ = __webpack_require__(512);
 /* unused harmony reexport eachHourOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__eachMinuteOfInterval_index_js__ = __webpack_require__(490);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__eachMinuteOfInterval_index_js__ = __webpack_require__(513);
 /* unused harmony reexport eachMinuteOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__eachMonthOfInterval_index_js__ = __webpack_require__(491);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__eachMonthOfInterval_index_js__ = __webpack_require__(514);
 /* unused harmony reexport eachMonthOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__eachQuarterOfInterval_index_js__ = __webpack_require__(492);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__eachQuarterOfInterval_index_js__ = __webpack_require__(515);
 /* unused harmony reexport eachQuarterOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__eachWeekOfInterval_index_js__ = __webpack_require__(493);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__eachWeekOfInterval_index_js__ = __webpack_require__(516);
 /* unused harmony reexport eachWeekOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__eachWeekendOfInterval_index_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__eachWeekendOfInterval_index_js__ = __webpack_require__(56);
 /* unused harmony reexport eachWeekendOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__eachWeekendOfMonth_index_js__ = __webpack_require__(494);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__eachWeekendOfMonth_index_js__ = __webpack_require__(517);
 /* unused harmony reexport eachWeekendOfMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__eachWeekendOfYear_index_js__ = __webpack_require__(495);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__eachWeekendOfYear_index_js__ = __webpack_require__(518);
 /* unused harmony reexport eachWeekendOfYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__eachYearOfInterval_index_js__ = __webpack_require__(496);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__eachYearOfInterval_index_js__ = __webpack_require__(519);
 /* unused harmony reexport eachYearOfInterval */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__endOfDay_index_js__ = __webpack_require__(46);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_45__endOfDay_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__endOfDecade_index_js__ = __webpack_require__(497);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__endOfDay_index_js__ = __webpack_require__(51);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_47__endOfDay_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__endOfDecade_index_js__ = __webpack_require__(520);
 /* unused harmony reexport endOfDecade */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__endOfHour_index_js__ = __webpack_require__(498);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__endOfHour_index_js__ = __webpack_require__(521);
 /* unused harmony reexport endOfHour */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__endOfISOWeek_index_js__ = __webpack_require__(499);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__endOfISOWeek_index_js__ = __webpack_require__(522);
 /* unused harmony reexport endOfISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__endOfISOWeekYear_index_js__ = __webpack_require__(500);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__endOfISOWeekYear_index_js__ = __webpack_require__(523);
 /* unused harmony reexport endOfISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__endOfMinute_index_js__ = __webpack_require__(501);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__endOfMinute_index_js__ = __webpack_require__(524);
 /* unused harmony reexport endOfMinute */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__endOfMonth_index_js__ = __webpack_require__(47);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_51__endOfMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__endOfQuarter_index_js__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__endOfMonth_index_js__ = __webpack_require__(52);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return __WEBPACK_IMPORTED_MODULE_53__endOfMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__endOfQuarter_index_js__ = __webpack_require__(525);
 /* unused harmony reexport endOfQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__endOfSecond_index_js__ = __webpack_require__(503);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__endOfSecond_index_js__ = __webpack_require__(526);
 /* unused harmony reexport endOfSecond */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__endOfToday_index_js__ = __webpack_require__(504);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_54__endOfToday_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__endOfTomorrow_index_js__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__endOfToday_index_js__ = __webpack_require__(527);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_56__endOfToday_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__endOfTomorrow_index_js__ = __webpack_require__(528);
 /* unused harmony reexport endOfTomorrow */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__endOfWeek_index_js__ = __webpack_require__(88);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_56__endOfWeek_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__endOfYear_index_js__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__endOfWeek_index_js__ = __webpack_require__(94);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return __WEBPACK_IMPORTED_MODULE_58__endOfWeek_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__endOfYear_index_js__ = __webpack_require__(93);
 /* unused harmony reexport endOfYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_58__endOfYesterday_index_js__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__endOfYesterday_index_js__ = __webpack_require__(529);
 /* unused harmony reexport endOfYesterday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_59__format_index_js__ = __webpack_require__(89);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_59__format_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_60__formatDistance_index_js__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__format_index_js__ = __webpack_require__(95);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return __WEBPACK_IMPORTED_MODULE_61__format_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__formatDistance_index_js__ = __webpack_require__(102);
 /* unused harmony reexport formatDistance */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_61__formatDistanceStrict_index_js__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__formatDistanceStrict_index_js__ = __webpack_require__(105);
 /* unused harmony reexport formatDistanceStrict */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_62__formatDistanceToNow_index_js__ = __webpack_require__(520);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__formatDistanceToNow_index_js__ = __webpack_require__(543);
 /* unused harmony reexport formatDistanceToNow */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_63__formatDistanceToNowStrict_index_js__ = __webpack_require__(521);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__formatDistanceToNowStrict_index_js__ = __webpack_require__(544);
 /* unused harmony reexport formatDistanceToNowStrict */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_64__formatDuration_index_js__ = __webpack_require__(522);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__formatDuration_index_js__ = __webpack_require__(545);
 /* unused harmony reexport formatDuration */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_65__formatISO_index_js__ = __webpack_require__(523);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__formatISO_index_js__ = __webpack_require__(546);
 /* unused harmony reexport formatISO */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_66__formatISO9075_index_js__ = __webpack_require__(524);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__formatISO9075_index_js__ = __webpack_require__(547);
 /* unused harmony reexport formatISO9075 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_67__formatISODuration_index_js__ = __webpack_require__(525);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__formatISODuration_index_js__ = __webpack_require__(548);
 /* unused harmony reexport formatISODuration */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__formatRFC3339_index_js__ = __webpack_require__(526);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__formatRFC3339_index_js__ = __webpack_require__(549);
 /* unused harmony reexport formatRFC3339 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__formatRFC7231_index_js__ = __webpack_require__(527);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__formatRFC7231_index_js__ = __webpack_require__(550);
 /* unused harmony reexport formatRFC7231 */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__formatRelative_index_js__ = __webpack_require__(528);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__formatRelative_index_js__ = __webpack_require__(551);
 /* unused harmony reexport formatRelative */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__fromUnixTime_index_js__ = __webpack_require__(529);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__fromUnixTime_index_js__ = __webpack_require__(552);
 /* unused harmony reexport fromUnixTime */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_72__getDate_index_js__ = __webpack_require__(100);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_72__getDate_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_73__getDay_index_js__ = __webpack_require__(54);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_73__getDay_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__getDayOfYear_index_js__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_74__getDate_index_js__ = __webpack_require__(106);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return __WEBPACK_IMPORTED_MODULE_74__getDate_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__getDay_index_js__ = __webpack_require__(42);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return __WEBPACK_IMPORTED_MODULE_75__getDay_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__getDayOfYear_index_js__ = __webpack_require__(553);
 /* unused harmony reexport getDayOfYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_75__getDaysInMonth_index_js__ = __webpack_require__(101);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_75__getDaysInMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_76__getDaysInYear_index_js__ = __webpack_require__(531);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__getDaysInMonth_index_js__ = __webpack_require__(107);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return __WEBPACK_IMPORTED_MODULE_77__getDaysInMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__getDaysInYear_index_js__ = __webpack_require__(554);
 /* unused harmony reexport getDaysInYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_77__getDecade_index_js__ = __webpack_require__(532);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__getDecade_index_js__ = __webpack_require__(555);
 /* unused harmony reexport getDecade */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_78__getHours_index_js__ = __webpack_require__(533);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__getHours_index_js__ = __webpack_require__(556);
 /* unused harmony reexport getHours */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_79__getISODay_index_js__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__getISODay_index_js__ = __webpack_require__(109);
 /* unused harmony reexport getISODay */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_80__getISOWeek_index_js__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__getISOWeek_index_js__ = __webpack_require__(110);
 /* unused harmony reexport getISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_81__getISOWeekYear_index_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__getISOWeekYear_index_js__ = __webpack_require__(23);
 /* unused harmony reexport getISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_82__getISOWeeksInYear_index_js__ = __webpack_require__(534);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__getISOWeeksInYear_index_js__ = __webpack_require__(557);
 /* unused harmony reexport getISOWeeksInYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_83__getMilliseconds_index_js__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__getMilliseconds_index_js__ = __webpack_require__(558);
 /* unused harmony reexport getMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_84__getMinutes_index_js__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__getMinutes_index_js__ = __webpack_require__(559);
 /* unused harmony reexport getMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_85__getMonth_index_js__ = __webpack_require__(537);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_85__getMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__getOverlappingDaysInIntervals_index_js__ = __webpack_require__(538);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__getMonth_index_js__ = __webpack_require__(560);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return __WEBPACK_IMPORTED_MODULE_87__getMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__getOverlappingDaysInIntervals_index_js__ = __webpack_require__(561);
 /* unused harmony reexport getOverlappingDaysInIntervals */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__getQuarter_index_js__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__getQuarter_index_js__ = __webpack_require__(84);
 /* unused harmony reexport getQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__getSeconds_index_js__ = __webpack_require__(539);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__getSeconds_index_js__ = __webpack_require__(562);
 /* unused harmony reexport getSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__getTime_index_js__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__getTime_index_js__ = __webpack_require__(111);
 /* unused harmony reexport getTime */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_90__getUnixTime_index_js__ = __webpack_require__(540);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__getUnixTime_index_js__ = __webpack_require__(563);
 /* unused harmony reexport getUnixTime */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_91__getWeek_index_js__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__getWeek_index_js__ = __webpack_require__(112);
 /* unused harmony reexport getWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_92__getWeekOfMonth_index_js__ = __webpack_require__(541);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__getWeekOfMonth_index_js__ = __webpack_require__(564);
 /* unused harmony reexport getWeekOfMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_93__getWeekYear_index_js__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__getWeekYear_index_js__ = __webpack_require__(113);
 /* unused harmony reexport getWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_94__getWeeksInMonth_index_js__ = __webpack_require__(542);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__getWeeksInMonth_index_js__ = __webpack_require__(565);
 /* unused harmony reexport getWeeksInMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_95__getYear_index_js__ = __webpack_require__(543);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_95__getYear_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_96__intervalToDuration_index_js__ = __webpack_require__(544);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__getYear_index_js__ = __webpack_require__(566);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return __WEBPACK_IMPORTED_MODULE_97__getYear_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__hoursToMilliseconds_index_js__ = __webpack_require__(567);
+/* unused harmony reexport hoursToMilliseconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__hoursToMinutes_index_js__ = __webpack_require__(568);
+/* unused harmony reexport hoursToMinutes */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__hoursToSeconds_index_js__ = __webpack_require__(569);
+/* unused harmony reexport hoursToSeconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__intervalToDuration_index_js__ = __webpack_require__(570);
 /* unused harmony reexport intervalToDuration */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_97__intlFormat_index_js__ = __webpack_require__(545);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__intlFormat_index_js__ = __webpack_require__(571);
 /* unused harmony reexport intlFormat */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_98__isAfter_index_js__ = __webpack_require__(546);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_98__isAfter_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_99__isBefore_index_js__ = __webpack_require__(547);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_99__isBefore_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_100__isDate_index_js__ = __webpack_require__(548);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__isAfter_index_js__ = __webpack_require__(572);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return __WEBPACK_IMPORTED_MODULE_103__isAfter_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__isBefore_index_js__ = __webpack_require__(573);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return __WEBPACK_IMPORTED_MODULE_104__isBefore_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__isDate_index_js__ = __webpack_require__(81);
 /* unused harmony reexport isDate */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_101__isEqual_index_js__ = __webpack_require__(549);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_101__isEqual_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_102__isExists_index_js__ = __webpack_require__(550);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__isEqual_index_js__ = __webpack_require__(574);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return __WEBPACK_IMPORTED_MODULE_106__isEqual_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_107__isExists_index_js__ = __webpack_require__(575);
 /* unused harmony reexport isExists */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_103__isFirstDayOfMonth_index_js__ = __webpack_require__(551);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_108__isFirstDayOfMonth_index_js__ = __webpack_require__(576);
 /* unused harmony reexport isFirstDayOfMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_104__isFriday_index_js__ = __webpack_require__(552);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_109__isFriday_index_js__ = __webpack_require__(577);
 /* unused harmony reexport isFriday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_105__isFuture_index_js__ = __webpack_require__(553);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_110__isFuture_index_js__ = __webpack_require__(578);
 /* unused harmony reexport isFuture */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_106__isLastDayOfMonth_index_js__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_111__isLastDayOfMonth_index_js__ = __webpack_require__(90);
 /* unused harmony reexport isLastDayOfMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_107__isLeapYear_index_js__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_112__isLeapYear_index_js__ = __webpack_require__(108);
 /* unused harmony reexport isLeapYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_108__isMatch_index_js__ = __webpack_require__(554);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__isMatch_index_js__ = __webpack_require__(579);
 /* unused harmony reexport isMatch */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_109__isMonday_index_js__ = __webpack_require__(560);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__isMonday_index_js__ = __webpack_require__(585);
 /* unused harmony reexport isMonday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_110__isPast_index_js__ = __webpack_require__(561);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__isPast_index_js__ = __webpack_require__(586);
 /* unused harmony reexport isPast */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_111__isSameDay_index_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__isSameDay_index_js__ = __webpack_require__(30);
 /* unused harmony reexport isSameDay */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_112__isSameHour_index_js__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__isSameHour_index_js__ = __webpack_require__(118);
 /* unused harmony reexport isSameHour */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_113__isSameISOWeek_index_js__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__isSameISOWeek_index_js__ = __webpack_require__(120);
 /* unused harmony reexport isSameISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_114__isSameISOWeekYear_index_js__ = __webpack_require__(562);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_119__isSameISOWeekYear_index_js__ = __webpack_require__(587);
 /* unused harmony reexport isSameISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_115__isSameMinute_index_js__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_120__isSameMinute_index_js__ = __webpack_require__(121);
 /* unused harmony reexport isSameMinute */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_116__isSameMonth_index_js__ = __webpack_require__(116);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_116__isSameMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_117__isSameQuarter_index_js__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_121__isSameMonth_index_js__ = __webpack_require__(122);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return __WEBPACK_IMPORTED_MODULE_121__isSameMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_122__isSameQuarter_index_js__ = __webpack_require__(123);
 /* unused harmony reexport isSameQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_118__isSameSecond_index_js__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_123__isSameSecond_index_js__ = __webpack_require__(124);
 /* unused harmony reexport isSameSecond */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_119__isSameWeek_index_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_124__isSameWeek_index_js__ = __webpack_require__(60);
 /* unused harmony reexport isSameWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_120__isSameYear_index_js__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__isSameYear_index_js__ = __webpack_require__(126);
 /* unused harmony reexport isSameYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_121__isSaturday_index_js__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__isSaturday_index_js__ = __webpack_require__(74);
 /* unused harmony reexport isSaturday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_122__isSunday_index_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_127__isSunday_index_js__ = __webpack_require__(46);
 /* unused harmony reexport isSunday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_123__isThisHour_index_js__ = __webpack_require__(563);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_128__isThisHour_index_js__ = __webpack_require__(588);
 /* unused harmony reexport isThisHour */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_124__isThisISOWeek_index_js__ = __webpack_require__(564);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_129__isThisISOWeek_index_js__ = __webpack_require__(589);
 /* unused harmony reexport isThisISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_125__isThisMinute_index_js__ = __webpack_require__(565);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_130__isThisMinute_index_js__ = __webpack_require__(590);
 /* unused harmony reexport isThisMinute */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_126__isThisMonth_index_js__ = __webpack_require__(566);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_131__isThisMonth_index_js__ = __webpack_require__(591);
 /* unused harmony reexport isThisMonth */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_127__isThisQuarter_index_js__ = __webpack_require__(567);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_132__isThisQuarter_index_js__ = __webpack_require__(592);
 /* unused harmony reexport isThisQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_128__isThisSecond_index_js__ = __webpack_require__(568);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_133__isThisSecond_index_js__ = __webpack_require__(593);
 /* unused harmony reexport isThisSecond */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_129__isThisWeek_index_js__ = __webpack_require__(569);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_134__isThisWeek_index_js__ = __webpack_require__(594);
 /* unused harmony reexport isThisWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_130__isThisYear_index_js__ = __webpack_require__(570);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_135__isThisYear_index_js__ = __webpack_require__(595);
 /* unused harmony reexport isThisYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_131__isThursday_index_js__ = __webpack_require__(571);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_136__isThursday_index_js__ = __webpack_require__(596);
 /* unused harmony reexport isThursday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_132__isToday_index_js__ = __webpack_require__(572);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_132__isToday_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_133__isTomorrow_index_js__ = __webpack_require__(573);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_137__isToday_index_js__ = __webpack_require__(597);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return __WEBPACK_IMPORTED_MODULE_137__isToday_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_138__isTomorrow_index_js__ = __webpack_require__(598);
 /* unused harmony reexport isTomorrow */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_134__isTuesday_index_js__ = __webpack_require__(574);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_139__isTuesday_index_js__ = __webpack_require__(599);
 /* unused harmony reexport isTuesday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_135__isValid_index_js__ = __webpack_require__(8);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_135__isValid_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_136__isWednesday_index_js__ = __webpack_require__(575);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_140__isValid_index_js__ = __webpack_require__(9);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return __WEBPACK_IMPORTED_MODULE_140__isValid_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_141__isWednesday_index_js__ = __webpack_require__(600);
 /* unused harmony reexport isWednesday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_137__isWeekend_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_142__isWeekend_index_js__ = __webpack_require__(34);
 /* unused harmony reexport isWeekend */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_138__isWithinInterval_index_js__ = __webpack_require__(576);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_138__isWithinInterval_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_139__isYesterday_index_js__ = __webpack_require__(577);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_143__isWithinInterval_index_js__ = __webpack_require__(601);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return __WEBPACK_IMPORTED_MODULE_143__isWithinInterval_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_144__isYesterday_index_js__ = __webpack_require__(602);
 /* unused harmony reexport isYesterday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_140__lastDayOfDecade_index_js__ = __webpack_require__(578);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_145__lastDayOfDecade_index_js__ = __webpack_require__(603);
 /* unused harmony reexport lastDayOfDecade */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_141__lastDayOfISOWeek_index_js__ = __webpack_require__(579);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_146__lastDayOfISOWeek_index_js__ = __webpack_require__(604);
 /* unused harmony reexport lastDayOfISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_142__lastDayOfISOWeekYear_index_js__ = __webpack_require__(580);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_147__lastDayOfISOWeekYear_index_js__ = __webpack_require__(605);
 /* unused harmony reexport lastDayOfISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_143__lastDayOfMonth_index_js__ = __webpack_require__(108);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_143__lastDayOfMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_144__lastDayOfQuarter_index_js__ = __webpack_require__(581);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_148__lastDayOfMonth_index_js__ = __webpack_require__(114);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return __WEBPACK_IMPORTED_MODULE_148__lastDayOfMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_149__lastDayOfQuarter_index_js__ = __webpack_require__(606);
 /* unused harmony reexport lastDayOfQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_145__lastDayOfWeek_index_js__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_150__lastDayOfWeek_index_js__ = __webpack_require__(127);
 /* unused harmony reexport lastDayOfWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_146__lastDayOfYear_index_js__ = __webpack_require__(582);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_151__lastDayOfYear_index_js__ = __webpack_require__(607);
 /* unused harmony reexport lastDayOfYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_147__lightFormat_index_js__ = __webpack_require__(583);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_152__lightFormat_index_js__ = __webpack_require__(608);
 /* unused harmony reexport lightFormat */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_148__max_index_js__ = __webpack_require__(584);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_148__max_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_149__milliseconds_index_js__ = __webpack_require__(585);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_153__max_index_js__ = __webpack_require__(79);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return __WEBPACK_IMPORTED_MODULE_153__max_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_154__milliseconds_index_js__ = __webpack_require__(609);
 /* unused harmony reexport milliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_150__min_index_js__ = __webpack_require__(586);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return __WEBPACK_IMPORTED_MODULE_150__min_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_151__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_155__millisecondsToHours_index_js__ = __webpack_require__(610);
+/* unused harmony reexport millisecondsToHours */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_156__millisecondsToMinutes_index_js__ = __webpack_require__(611);
+/* unused harmony reexport millisecondsToMinutes */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_157__millisecondsToSeconds_index_js__ = __webpack_require__(612);
+/* unused harmony reexport millisecondsToSeconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_158__min_index_js__ = __webpack_require__(80);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return __WEBPACK_IMPORTED_MODULE_158__min_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_159__minutesToHours_index_js__ = __webpack_require__(613);
+/* unused harmony reexport minutesToHours */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_160__minutesToMilliseconds_index_js__ = __webpack_require__(614);
+/* unused harmony reexport minutesToMilliseconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_161__minutesToSeconds_index_js__ = __webpack_require__(615);
+/* unused harmony reexport minutesToSeconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_162__monthsToQuarters_index_js__ = __webpack_require__(616);
+/* unused harmony reexport monthsToQuarters */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_163__monthsToYears_index_js__ = __webpack_require__(617);
+/* unused harmony reexport monthsToYears */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_164__nextDay_index_js__ = __webpack_require__(13);
 /* unused harmony reexport nextDay */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_152__nextFriday_index_js__ = __webpack_require__(587);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_165__nextFriday_index_js__ = __webpack_require__(618);
 /* unused harmony reexport nextFriday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_153__nextMonday_index_js__ = __webpack_require__(588);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_166__nextMonday_index_js__ = __webpack_require__(619);
 /* unused harmony reexport nextMonday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_154__nextSaturday_index_js__ = __webpack_require__(589);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_167__nextSaturday_index_js__ = __webpack_require__(620);
 /* unused harmony reexport nextSaturday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_155__nextSunday_index_js__ = __webpack_require__(590);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_168__nextSunday_index_js__ = __webpack_require__(621);
 /* unused harmony reexport nextSunday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_156__nextThursday_index_js__ = __webpack_require__(591);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_169__nextThursday_index_js__ = __webpack_require__(622);
 /* unused harmony reexport nextThursday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_157__nextTuesday_index_js__ = __webpack_require__(592);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_170__nextTuesday_index_js__ = __webpack_require__(623);
 /* unused harmony reexport nextTuesday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_158__nextWednesday_index_js__ = __webpack_require__(593);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_171__nextWednesday_index_js__ = __webpack_require__(624);
 /* unused harmony reexport nextWednesday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_159__parse_index_js__ = __webpack_require__(111);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return __WEBPACK_IMPORTED_MODULE_159__parse_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_160__parseISO_index_js__ = __webpack_require__(594);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_172__parse_index_js__ = __webpack_require__(117);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return __WEBPACK_IMPORTED_MODULE_172__parse_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_173__parseISO_index_js__ = __webpack_require__(625);
 /* unused harmony reexport parseISO */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_161__parseJSON_index_js__ = __webpack_require__(595);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_174__parseJSON_index_js__ = __webpack_require__(626);
 /* unused harmony reexport parseJSON */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_162__roundToNearestMinutes_index_js__ = __webpack_require__(596);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_175__previousDay_index_js__ = __webpack_require__(14);
+/* unused harmony reexport previousDay */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_176__previousFriday_index_js__ = __webpack_require__(627);
+/* unused harmony reexport previousFriday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_177__previousMonday_index_js__ = __webpack_require__(628);
+/* unused harmony reexport previousMonday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_178__previousSaturday_index_js__ = __webpack_require__(629);
+/* unused harmony reexport previousSaturday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_179__previousSunday_index_js__ = __webpack_require__(630);
+/* unused harmony reexport previousSunday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_180__previousThursday_index_js__ = __webpack_require__(631);
+/* unused harmony reexport previousThursday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_181__previousTuesday_index_js__ = __webpack_require__(632);
+/* unused harmony reexport previousTuesday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_182__previousWednesday_index_js__ = __webpack_require__(633);
+/* unused harmony reexport previousWednesday */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_183__quartersToMonths_index_js__ = __webpack_require__(634);
+/* unused harmony reexport quartersToMonths */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_184__quartersToYears_index_js__ = __webpack_require__(635);
+/* unused harmony reexport quartersToYears */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__roundToNearestMinutes_index_js__ = __webpack_require__(636);
 /* unused harmony reexport roundToNearestMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_163__set_index_js__ = __webpack_require__(597);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_186__secondsToHours_index_js__ = __webpack_require__(637);
+/* unused harmony reexport secondsToHours */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_187__secondsToMilliseconds_index_js__ = __webpack_require__(638);
+/* unused harmony reexport secondsToMilliseconds */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_188__secondsToMinutes_index_js__ = __webpack_require__(639);
+/* unused harmony reexport secondsToMinutes */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_189__set_index_js__ = __webpack_require__(640);
 /* unused harmony reexport set */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_164__setDate_index_js__ = __webpack_require__(598);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return __WEBPACK_IMPORTED_MODULE_164__setDate_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_165__setDay_index_js__ = __webpack_require__(599);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_190__setDate_index_js__ = __webpack_require__(641);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return __WEBPACK_IMPORTED_MODULE_190__setDate_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_191__setDay_index_js__ = __webpack_require__(642);
 /* unused harmony reexport setDay */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_166__setDayOfYear_index_js__ = __webpack_require__(600);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_192__setDayOfYear_index_js__ = __webpack_require__(643);
 /* unused harmony reexport setDayOfYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_167__setHours_index_js__ = __webpack_require__(601);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_193__setHours_index_js__ = __webpack_require__(644);
 /* unused harmony reexport setHours */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_168__setISODay_index_js__ = __webpack_require__(602);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_194__setISODay_index_js__ = __webpack_require__(645);
 /* unused harmony reexport setISODay */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_169__setISOWeek_index_js__ = __webpack_require__(603);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_195__setISOWeek_index_js__ = __webpack_require__(646);
 /* unused harmony reexport setISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_170__setISOWeekYear_index_js__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_196__setISOWeekYear_index_js__ = __webpack_require__(76);
 /* unused harmony reexport setISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_171__setMilliseconds_index_js__ = __webpack_require__(604);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_197__setMilliseconds_index_js__ = __webpack_require__(647);
 /* unused harmony reexport setMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_172__setMinutes_index_js__ = __webpack_require__(605);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_198__setMinutes_index_js__ = __webpack_require__(648);
 /* unused harmony reexport setMinutes */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_173__setMonth_index_js__ = __webpack_require__(58);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return __WEBPACK_IMPORTED_MODULE_173__setMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_174__setQuarter_index_js__ = __webpack_require__(606);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_199__setMonth_index_js__ = __webpack_require__(61);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return __WEBPACK_IMPORTED_MODULE_199__setMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_200__setQuarter_index_js__ = __webpack_require__(649);
 /* unused harmony reexport setQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_175__setSeconds_index_js__ = __webpack_require__(607);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_201__setSeconds_index_js__ = __webpack_require__(650);
 /* unused harmony reexport setSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_176__setWeek_index_js__ = __webpack_require__(608);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_202__setWeek_index_js__ = __webpack_require__(651);
 /* unused harmony reexport setWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_177__setWeekYear_index_js__ = __webpack_require__(609);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_203__setWeekYear_index_js__ = __webpack_require__(652);
 /* unused harmony reexport setWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_178__setYear_index_js__ = __webpack_require__(610);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return __WEBPACK_IMPORTED_MODULE_178__setYear_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__ = __webpack_require__(32);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return __WEBPACK_IMPORTED_MODULE_179__startOfDay_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_180__startOfDecade_index_js__ = __webpack_require__(611);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_204__setYear_index_js__ = __webpack_require__(653);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return __WEBPACK_IMPORTED_MODULE_204__setYear_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_205__startOfDay_index_js__ = __webpack_require__(35);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return __WEBPACK_IMPORTED_MODULE_205__startOfDay_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_206__startOfDecade_index_js__ = __webpack_require__(654);
 /* unused harmony reexport startOfDecade */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_181__startOfHour_index_js__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_207__startOfHour_index_js__ = __webpack_require__(119);
 /* unused harmony reexport startOfHour */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_182__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_208__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* unused harmony reexport startOfISOWeek */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_183__startOfISOWeekYear_index_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_209__startOfISOWeekYear_index_js__ = __webpack_require__(29);
 /* unused harmony reexport startOfISOWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_184__startOfMinute_index_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_210__startOfMinute_index_js__ = __webpack_require__(54);
 /* unused harmony reexport startOfMinute */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__ = __webpack_require__(36);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return __WEBPACK_IMPORTED_MODULE_185__startOfMonth_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_186__startOfQuarter_index_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_211__startOfMonth_index_js__ = __webpack_require__(39);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return __WEBPACK_IMPORTED_MODULE_211__startOfMonth_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_212__startOfQuarter_index_js__ = __webpack_require__(55);
 /* unused harmony reexport startOfQuarter */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_187__startOfSecond_index_js__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_213__startOfSecond_index_js__ = __webpack_require__(125);
 /* unused harmony reexport startOfSecond */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_188__startOfToday_index_js__ = __webpack_require__(612);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return __WEBPACK_IMPORTED_MODULE_188__startOfToday_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_189__startOfTomorrow_index_js__ = __webpack_require__(613);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_214__startOfToday_index_js__ = __webpack_require__(655);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return __WEBPACK_IMPORTED_MODULE_214__startOfToday_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_215__startOfTomorrow_index_js__ = __webpack_require__(656);
 /* unused harmony reexport startOfTomorrow */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_190__startOfWeek_index_js__ = __webpack_require__(11);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return __WEBPACK_IMPORTED_MODULE_190__startOfWeek_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_191__startOfWeekYear_index_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_216__startOfWeek_index_js__ = __webpack_require__(12);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "I", function() { return __WEBPACK_IMPORTED_MODULE_216__startOfWeek_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_217__startOfWeekYear_index_js__ = __webpack_require__(59);
 /* unused harmony reexport startOfWeekYear */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_192__startOfYear_index_js__ = __webpack_require__(52);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return __WEBPACK_IMPORTED_MODULE_192__startOfYear_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_193__startOfYesterday_index_js__ = __webpack_require__(614);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_218__startOfYear_index_js__ = __webpack_require__(57);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "J", function() { return __WEBPACK_IMPORTED_MODULE_218__startOfYear_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_219__startOfYesterday_index_js__ = __webpack_require__(657);
 /* unused harmony reexport startOfYesterday */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_194__sub_index_js__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_220__sub_index_js__ = __webpack_require__(115);
 /* unused harmony reexport sub */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_195__subBusinessDays_index_js__ = __webpack_require__(615);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_221__subBusinessDays_index_js__ = __webpack_require__(658);
 /* unused harmony reexport subBusinessDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_196__subDays_index_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_222__subDays_index_js__ = __webpack_require__(43);
 /* unused harmony reexport subDays */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_197__subHours_index_js__ = __webpack_require__(616);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return __WEBPACK_IMPORTED_MODULE_197__subHours_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_198__subISOWeekYears_index_js__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_223__subHours_index_js__ = __webpack_require__(659);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "K", function() { return __WEBPACK_IMPORTED_MODULE_223__subHours_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_224__subISOWeekYears_index_js__ = __webpack_require__(88);
 /* unused harmony reexport subISOWeekYears */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_199__subMilliseconds_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_225__subMilliseconds_index_js__ = __webpack_require__(32);
 /* unused harmony reexport subMilliseconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_200__subMinutes_index_js__ = __webpack_require__(617);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return __WEBPACK_IMPORTED_MODULE_200__subMinutes_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_201__subMonths_index_js__ = __webpack_require__(110);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return __WEBPACK_IMPORTED_MODULE_201__subMonths_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_202__subQuarters_index_js__ = __webpack_require__(618);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_226__subMinutes_index_js__ = __webpack_require__(660);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "L", function() { return __WEBPACK_IMPORTED_MODULE_226__subMinutes_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_227__subMonths_index_js__ = __webpack_require__(116);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "M", function() { return __WEBPACK_IMPORTED_MODULE_227__subMonths_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_228__subQuarters_index_js__ = __webpack_require__(661);
 /* unused harmony reexport subQuarters */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_203__subSeconds_index_js__ = __webpack_require__(619);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_229__subSeconds_index_js__ = __webpack_require__(662);
 /* unused harmony reexport subSeconds */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_204__subWeeks_index_js__ = __webpack_require__(620);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_230__subWeeks_index_js__ = __webpack_require__(663);
 /* unused harmony reexport subWeeks */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_205__subYears_index_js__ = __webpack_require__(621);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return __WEBPACK_IMPORTED_MODULE_205__subYears_index_js__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_206__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_231__subYears_index_js__ = __webpack_require__(664);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "N", function() { return __WEBPACK_IMPORTED_MODULE_231__subYears_index_js__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_232__toDate_index_js__ = __webpack_require__(1);
 /* unused harmony reexport toDate */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_207__constants_index_js__ = __webpack_require__(622);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_233__weeksToDays_index_js__ = __webpack_require__(665);
+/* unused harmony reexport weeksToDays */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_234__yearsToMonths_index_js__ = __webpack_require__(666);
+/* unused harmony reexport yearsToMonths */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_235__yearsToQuarters_index_js__ = __webpack_require__(667);
+/* unused harmony reexport yearsToQuarters */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_236__constants_index_js__ = __webpack_require__(7);
 /* unused harmony namespace reexport */
 // This file is generated automatically by `scripts/build/indices.js`. Please, don't change it.
 
@@ -1833,14 +1793,309 @@ module.exports = exports.default;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = startOfISOWeek;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+/**
+ * @name startOfISOWeek
+ * @category ISO Week Helpers
+ * @summary Return the start of an ISO week for the given date.
+ *
+ * @description
+ * Return the start of an ISO week for the given date.
+ * The result will be in the local timezone.
+ *
+ * ISO week-numbering year: http://en.wikipedia.org/wiki/ISO_week_date
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {Date|Number} date - the original date
+ * @returns {Date} the start of an ISO week
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // The start of an ISO week for 2 September 2014 11:55:00:
+ * var result = startOfISOWeek(new Date(2014, 8, 2, 11, 55, 0))
+ * //=> Mon Sep 01 2014 00:00:00
+ */
+
+function startOfISOWeek(dirtyDate) {
+  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__["a" /* default */])(dirtyDate, {
+    weekStartsOn: 1
+  });
+}
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = differenceInCalendarDays;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+
+var MILLISECONDS_IN_DAY = 86400000;
+/**
+ * @name differenceInCalendarDays
+ * @category Day Helpers
+ * @summary Get the number of calendar days between the given dates.
+ *
+ * @description
+ * Get the number of calendar days between the given dates. This means that the times are removed
+ * from the dates and then the difference in days is calculated.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {Date|Number} dateLeft - the later date
+ * @param {Date|Number} dateRight - the earlier date
+ * @returns {Number} the number of calendar days
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // How many calendar days are between
+ * // 2 July 2011 23:00:00 and 2 July 2012 00:00:00?
+ * const result = differenceInCalendarDays(
+ *   new Date(2012, 6, 2, 0, 0),
+ *   new Date(2011, 6, 2, 23, 0)
+ * )
+ * //=> 366
+ * // How many calendar days are between
+ * // 2 July 2011 23:59:00 and 3 July 2011 00:01:00?
+ * const result = differenceInCalendarDays(
+ *   new Date(2011, 6, 3, 0, 1),
+ *   new Date(2011, 6, 2, 23, 59)
+ * )
+ * //=> 1
+ */
+
+function differenceInCalendarDays(dirtyDateLeft, dirtyDateRight) {
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var startOfDayLeft = Object(__WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__["a" /* default */])(dirtyDateLeft);
+  var startOfDayRight = Object(__WEBPACK_IMPORTED_MODULE_1__startOfDay_index_js__["a" /* default */])(dirtyDateRight);
+  var timestampLeft = startOfDayLeft.getTime() - Object(__WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__["a" /* default */])(startOfDayLeft);
+  var timestampRight = startOfDayRight.getTime() - Object(__WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__["a" /* default */])(startOfDayRight); // Round the number of days to the nearest integer
+  // because the number of milliseconds in a day is not constant
+  // (e.g. it's different in the day of the daylight saving time clock shift)
+
+  return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY);
+}
+
 /***/ }),
 /* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = compareAsc;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+/**
+ * @name compareAsc
+ * @category Common Helpers
+ * @summary Compare the two dates and return -1, 0 or 1.
+ *
+ * @description
+ * Compare the two dates and return 1 if the first date is after the second,
+ * -1 if the first date is before the second or 0 if dates are equal.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {Date|Number} dateLeft - the first date to compare
+ * @param {Date|Number} dateRight - the second date to compare
+ * @returns {Number} the result of the comparison
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // Compare 11 February 1987 and 10 July 1989:
+ * const result = compareAsc(new Date(1987, 1, 11), new Date(1989, 6, 10))
+ * //=> -1
+ *
+ * @example
+ * // Sort the array of dates:
+ * const result = [
+ *   new Date(1995, 6, 2),
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * ].sort(compareAsc)
+ * //=> [
+ * //   Wed Feb 11 1987 00:00:00,
+ * //   Mon Jul 10 1989 00:00:00,
+ * //   Sun Jul 02 1995 00:00:00
+ * // ]
+ */
+
+function compareAsc(dirtyDateLeft, dirtyDateRight) {
+  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var dateLeft = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateLeft);
+  var dateRight = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateRight);
+  var diff = dateLeft.getTime() - dateRight.getTime();
+
+  if (diff < 0) {
+    return -1;
+  } else if (diff > 0) {
+    return 1; // Return 0 if diff is 0; return NaN if diff is NaN
+  } else {
+    return diff;
+  }
+}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var formatDistanceLocale = {
+  lessThanXSeconds: {
+    one: 'less than a second',
+    other: 'less than {{count}} seconds'
+  },
+  xSeconds: {
+    one: '1 second',
+    other: '{{count}} seconds'
+  },
+  halfAMinute: 'half a minute',
+  lessThanXMinutes: {
+    one: 'less than a minute',
+    other: 'less than {{count}} minutes'
+  },
+  xMinutes: {
+    one: '1 minute',
+    other: '{{count}} minutes'
+  },
+  aboutXHours: {
+    one: 'about 1 hour',
+    other: 'about {{count}} hours'
+  },
+  xHours: {
+    one: '1 hour',
+    other: '{{count}} hours'
+  },
+  xDays: {
+    one: '1 day',
+    other: '{{count}} days'
+  },
+  aboutXWeeks: {
+    one: 'about 1 week',
+    other: 'about {{count}} weeks'
+  },
+  xWeeks: {
+    one: '1 week',
+    other: '{{count}} weeks'
+  },
+  aboutXMonths: {
+    one: 'about 1 month',
+    other: 'about {{count}} months'
+  },
+  xMonths: {
+    one: '1 month',
+    other: '{{count}} months'
+  },
+  aboutXYears: {
+    one: 'about 1 year',
+    other: 'about {{count}} years'
+  },
+  xYears: {
+    one: '1 year',
+    other: '{{count}} years'
+  },
+  overXYears: {
+    one: 'over 1 year',
+    other: 'over {{count}} years'
+  },
+  almostXYears: {
+    one: 'almost 1 year',
+    other: 'almost {{count}} years'
+  }
+};
+
+var formatDistance = function (token, count, options) {
+  var result;
+  var tokenValue = formatDistanceLocale[token];
+
+  if (typeof tokenValue === 'string') {
+    result = tokenValue;
+  } else if (count === 1) {
+    result = tokenValue.one;
+  } else {
+    result = tokenValue.other.replace('{{count}}', count.toString());
+  }
+
+  if (options !== null && options !== void 0 && options.addSuffix) {
+    if (options.comparison && options.comparison > 0) {
+      return 'in ' + result;
+    } else {
+      return result + ' ago';
+    }
+  }
+
+  return result;
+};
+
+var _default = formatDistance;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getISOWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -1898,15 +2153,16 @@ function getISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_formatDistance_index_js__ = __webpack_require__(507);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_formatLong_index_js__ = __webpack_require__(508);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_formatRelative_index_js__ = __webpack_require__(510);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_localize_index_js__ = __webpack_require__(511);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_match_index_js__ = __webpack_require__(513);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_formatDistance_index_js__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_formatLong_index_js__ = __webpack_require__(531);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_formatRelative_index_js__ = __webpack_require__(533);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_localize_index_js__ = __webpack_require__(534);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_match_index_js__ = __webpack_require__(536);
+
 
 
 
@@ -1921,7 +2177,6 @@ function getISOWeekYear(dirtyDate) {
  * @author Sasha Koss [@kossnocorp]{@link https://github.com/kossnocorp}
  * @author Lesha Koss [@leshakoss]{@link https://github.com/leshakoss}
  */
-
 var locale = {
   code: 'en-US',
   formatDistance: __WEBPACK_IMPORTED_MODULE_0__lib_formatDistance_index_js__["a" /* default */],
@@ -1939,7 +2194,7 @@ var locale = {
 /* harmony default export */ __webpack_exports__["a"] = (locale);
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1956,7 +2211,7 @@ function addLeadingZeros(number, targetLength) {
 }
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -1964,458 +2219,476 @@ var map = {
 	"./_lib/buildLocalizeFn/index.js": 3,
 	"./_lib/buildMatchFn/index.js": 4,
 	"./_lib/buildMatchPatternFn/index.js": 5,
-	"./af/_lib/formatDistance/index.js": 122,
-	"./af/_lib/formatLong/index.js": 123,
-	"./af/_lib/formatRelative/index.js": 124,
-	"./af/_lib/localize/index.js": 125,
-	"./af/_lib/match/index.js": 126,
-	"./af/index.js": 630,
-	"./ar-DZ/_lib/formatDistance/index.js": 127,
-	"./ar-DZ/_lib/formatLong/index.js": 128,
-	"./ar-DZ/_lib/formatRelative/index.js": 129,
-	"./ar-DZ/_lib/localize/index.js": 130,
-	"./ar-DZ/_lib/match/index.js": 131,
-	"./ar-DZ/index.js": 631,
-	"./ar-MA/_lib/formatDistance/index.js": 132,
-	"./ar-MA/_lib/formatLong/index.js": 133,
-	"./ar-MA/_lib/formatRelative/index.js": 134,
-	"./ar-MA/_lib/localize/index.js": 135,
-	"./ar-MA/_lib/match/index.js": 136,
-	"./ar-MA/index.js": 632,
-	"./ar-SA/_lib/formatDistance/index.js": 137,
-	"./ar-SA/_lib/formatLong/index.js": 138,
-	"./ar-SA/_lib/formatRelative/index.js": 139,
-	"./ar-SA/_lib/localize/index.js": 140,
-	"./ar-SA/_lib/match/index.js": 141,
-	"./ar-SA/index.js": 633,
-	"./az/_lib/formatDistance/index.js": 142,
-	"./az/_lib/formatLong/index.js": 143,
-	"./az/_lib/formatRelative/index.js": 144,
-	"./az/_lib/localize/index.js": 145,
-	"./az/_lib/match/index.js": 146,
-	"./az/index.js": 634,
-	"./be/_lib/formatDistance/index.js": 147,
-	"./be/_lib/formatLong/index.js": 148,
-	"./be/_lib/formatRelative/index.js": 149,
-	"./be/_lib/localize/index.js": 150,
-	"./be/_lib/match/index.js": 151,
-	"./be/index.js": 638,
-	"./bg/_lib/formatDistance/index.js": 152,
-	"./bg/_lib/formatLong/index.js": 153,
-	"./bg/_lib/formatRelative/index.js": 154,
-	"./bg/_lib/localize/index.js": 155,
-	"./bg/_lib/match/index.js": 156,
-	"./bg/index.js": 639,
-	"./bn/_lib/formatDistance/index.js": 157,
-	"./bn/_lib/formatLong/index.js": 158,
-	"./bn/_lib/formatRelative/index.js": 159,
-	"./bn/_lib/localize/index.js": 61,
-	"./bn/_lib/match/index.js": 160,
-	"./bn/index.js": 640,
-	"./ca/_lib/formatDistance/index.js": 161,
-	"./ca/_lib/formatLong/index.js": 162,
-	"./ca/_lib/formatRelative/index.js": 163,
-	"./ca/_lib/localize/index.js": 164,
-	"./ca/_lib/match/index.js": 165,
-	"./ca/index.js": 641,
-	"./cs/_lib/formatDistance/index.js": 166,
-	"./cs/_lib/formatLong/index.js": 167,
-	"./cs/_lib/formatRelative/index.js": 168,
-	"./cs/_lib/localize/index.js": 169,
-	"./cs/_lib/match/index.js": 170,
-	"./cs/index.js": 642,
-	"./cy/_lib/formatDistance/index.js": 171,
-	"./cy/_lib/formatLong/index.js": 172,
-	"./cy/_lib/formatRelative/index.js": 173,
-	"./cy/_lib/localize/index.js": 174,
-	"./cy/_lib/match/index.js": 175,
-	"./cy/index.js": 643,
-	"./da/_lib/formatDistance/index.js": 176,
-	"./da/_lib/formatLong/index.js": 177,
-	"./da/_lib/formatRelative/index.js": 178,
-	"./da/_lib/localize/index.js": 179,
-	"./da/_lib/match/index.js": 180,
-	"./da/index.js": 644,
-	"./de-AT/_lib/localize/index.js": 181,
-	"./de-AT/index.js": 645,
-	"./de/_lib/formatDistance/index.js": 62,
-	"./de/_lib/formatLong/index.js": 63,
-	"./de/_lib/formatRelative/index.js": 64,
-	"./de/_lib/localize/index.js": 182,
-	"./de/_lib/match/index.js": 65,
-	"./de/index.js": 646,
-	"./el/_lib/formatDistance/index.js": 183,
-	"./el/_lib/formatLong/index.js": 184,
-	"./el/_lib/formatRelative/index.js": 185,
-	"./el/_lib/localize/index.js": 186,
-	"./el/_lib/match/index.js": 187,
-	"./el/index.js": 647,
-	"./en-AU/_lib/formatLong/index.js": 188,
-	"./en-AU/index.js": 648,
-	"./en-CA/_lib/formatDistance/index.js": 189,
-	"./en-CA/_lib/formatLong/index.js": 190,
-	"./en-CA/index.js": 649,
-	"./en-GB/_lib/formatLong/index.js": 191,
-	"./en-GB/index.js": 650,
-	"./en-IN/_lib/formatLong/index.js": 192,
-	"./en-IN/index.js": 651,
-	"./en-NZ/_lib/formatLong/index.js": 193,
-	"./en-NZ/index.js": 652,
-	"./en-US/_lib/formatDistance/index.js": 19,
-	"./en-US/_lib/formatLong/index.js": 194,
-	"./en-US/_lib/formatRelative/index.js": 13,
-	"./en-US/_lib/localize/index.js": 14,
-	"./en-US/_lib/match/index.js": 15,
-	"./en-US/index.js": 653,
-	"./en-ZA/_lib/formatLong/index.js": 195,
-	"./en-ZA/index.js": 654,
-	"./eo/_lib/formatDistance/index.js": 196,
-	"./eo/_lib/formatLong/index.js": 197,
-	"./eo/_lib/formatRelative/index.js": 198,
-	"./eo/_lib/localize/index.js": 199,
-	"./eo/_lib/match/index.js": 200,
-	"./eo/index.js": 655,
-	"./es/_lib/formatDistance/index.js": 201,
-	"./es/_lib/formatLong/index.js": 202,
-	"./es/_lib/formatRelative/index.js": 203,
-	"./es/_lib/localize/index.js": 204,
-	"./es/_lib/match/index.js": 205,
-	"./es/index.js": 656,
-	"./et/_lib/formatDistance/index.js": 206,
-	"./et/_lib/formatLong/index.js": 207,
-	"./et/_lib/formatRelative/index.js": 208,
-	"./et/_lib/localize/index.js": 209,
-	"./et/_lib/match/index.js": 210,
-	"./et/index.js": 657,
-	"./eu/_lib/formatDistance/index.js": 211,
-	"./eu/_lib/formatLong/index.js": 212,
-	"./eu/_lib/formatRelative/index.js": 213,
-	"./eu/_lib/localize/index.js": 214,
-	"./eu/_lib/match/index.js": 215,
-	"./eu/index.js": 658,
-	"./fa-IR/_lib/formatDistance/index.js": 216,
-	"./fa-IR/_lib/formatLong/index.js": 217,
-	"./fa-IR/_lib/formatRelative/index.js": 218,
-	"./fa-IR/_lib/localize/index.js": 219,
-	"./fa-IR/_lib/match/index.js": 220,
-	"./fa-IR/index.js": 659,
-	"./fi/_lib/formatDistance/index.js": 221,
-	"./fi/_lib/formatLong/index.js": 222,
-	"./fi/_lib/formatRelative/index.js": 223,
-	"./fi/_lib/localize/index.js": 224,
-	"./fi/_lib/match/index.js": 225,
-	"./fi/index.js": 660,
-	"./fr-CA/_lib/formatLong/index.js": 226,
-	"./fr-CA/index.js": 661,
-	"./fr-CH/_lib/formatDistance/index.js": 227,
-	"./fr-CH/_lib/formatLong/index.js": 228,
-	"./fr-CH/_lib/formatRelative/index.js": 229,
-	"./fr-CH/_lib/formatters/index.js": 662,
-	"./fr-CH/_lib/localize/index.js": 230,
-	"./fr-CH/_lib/match/index.js": 231,
-	"./fr-CH/index.js": 663,
-	"./fr/_lib/formatDistance/index.js": 66,
-	"./fr/_lib/formatLong/index.js": 232,
-	"./fr/_lib/formatRelative/index.js": 67,
-	"./fr/_lib/formatters/index.js": 664,
-	"./fr/_lib/localize/index.js": 68,
-	"./fr/_lib/match/index.js": 69,
-	"./fr/index.js": 665,
-	"./gd/_lib/formatDistance/index.js": 233,
-	"./gd/_lib/formatLong/index.js": 234,
-	"./gd/_lib/formatRelative/index.js": 235,
-	"./gd/_lib/localize/index.js": 236,
-	"./gd/_lib/match/index.js": 237,
-	"./gd/index.js": 666,
-	"./gl/_lib/formatDistance/index.js": 238,
-	"./gl/_lib/formatLong/index.js": 239,
-	"./gl/_lib/formatRelative/index.js": 240,
-	"./gl/_lib/localize/index.js": 241,
-	"./gl/_lib/match/index.js": 242,
-	"./gl/index.js": 667,
-	"./gu/_lib/formatDistance/index.js": 243,
-	"./gu/_lib/formatLong/index.js": 244,
-	"./gu/_lib/formatRelative/index.js": 245,
-	"./gu/_lib/localize/index.js": 246,
-	"./gu/_lib/match/index.js": 247,
-	"./gu/index.js": 668,
-	"./he/_lib/formatDistance/index.js": 248,
-	"./he/_lib/formatLong/index.js": 249,
-	"./he/_lib/formatRelative/index.js": 250,
-	"./he/_lib/localize/index.js": 251,
-	"./he/_lib/match/index.js": 252,
-	"./he/index.js": 669,
-	"./hi/_lib/formatDistance/index.js": 253,
-	"./hi/_lib/formatLong/index.js": 254,
-	"./hi/_lib/formatRelative/index.js": 255,
-	"./hi/_lib/localize/index.js": 39,
-	"./hi/_lib/match/index.js": 256,
-	"./hi/index.js": 670,
-	"./hr/_lib/formatDistance/index.js": 257,
-	"./hr/_lib/formatLong/index.js": 258,
-	"./hr/_lib/formatRelative/index.js": 259,
-	"./hr/_lib/localize/index.js": 260,
-	"./hr/_lib/match/index.js": 261,
-	"./hr/index.js": 671,
-	"./ht/_lib/formatDistance/index.js": 262,
-	"./ht/_lib/formatLong/index.js": 263,
-	"./ht/_lib/formatRelative/index.js": 264,
-	"./ht/_lib/formatters/index.js": 672,
-	"./ht/_lib/localize/index.js": 265,
-	"./ht/_lib/match/index.js": 266,
-	"./ht/index.js": 673,
-	"./hu/_lib/formatDistance/index.js": 267,
-	"./hu/_lib/formatLong/index.js": 268,
-	"./hu/_lib/formatRelative/index.js": 269,
-	"./hu/_lib/localize/index.js": 270,
-	"./hu/_lib/match/index.js": 271,
-	"./hu/index.js": 674,
-	"./hy/_lib/formatDistance/index.js": 272,
-	"./hy/_lib/formatLong/index.js": 273,
-	"./hy/_lib/formatRelative/index.js": 274,
-	"./hy/_lib/localize/index.js": 275,
-	"./hy/_lib/match/index.js": 276,
-	"./hy/index.js": 675,
-	"./id/_lib/formatDistance/index.js": 277,
-	"./id/_lib/formatLong/index.js": 278,
-	"./id/_lib/formatRelative/index.js": 279,
-	"./id/_lib/localize/index.js": 280,
-	"./id/_lib/match/index.js": 281,
-	"./id/index.js": 676,
-	"./is/_lib/formatDistance/index.js": 282,
-	"./is/_lib/formatLong/index.js": 283,
-	"./is/_lib/formatRelative/index.js": 284,
-	"./is/_lib/localize/index.js": 285,
-	"./is/_lib/match/index.js": 286,
-	"./is/index.js": 677,
-	"./it/_lib/formatDistance/index.js": 287,
-	"./it/_lib/formatLong/index.js": 288,
-	"./it/_lib/formatRelative/index.js": 289,
-	"./it/_lib/localize/index.js": 290,
-	"./it/_lib/match/index.js": 291,
-	"./it/index.js": 678,
-	"./ja/_lib/formatDistance/index.js": 292,
-	"./ja/_lib/formatLong/index.js": 293,
-	"./ja/_lib/formatRelative/index.js": 294,
-	"./ja/_lib/localize/index.js": 295,
-	"./ja/_lib/match/index.js": 296,
-	"./ja/index.js": 679,
-	"./ka/_lib/formatDistance/index.js": 297,
-	"./ka/_lib/formatLong/index.js": 298,
-	"./ka/_lib/formatRelative/index.js": 299,
-	"./ka/_lib/localize/index.js": 300,
-	"./ka/_lib/match/index.js": 301,
-	"./ka/index.js": 680,
-	"./kk/_lib/formatDistance/index.js": 302,
-	"./kk/_lib/formatLong/index.js": 303,
-	"./kk/_lib/formatRelative/index.js": 304,
-	"./kk/_lib/localize/index.js": 305,
-	"./kk/_lib/match/index.js": 306,
-	"./kk/index.js": 681,
-	"./kn/_lib/formatDistance/index.js": 307,
-	"./kn/_lib/formatLong/index.js": 308,
-	"./kn/_lib/formatRelative/index.js": 309,
-	"./kn/_lib/localize/index.js": 310,
-	"./kn/_lib/match/index.js": 311,
-	"./kn/index.js": 682,
-	"./ko/_lib/formatDistance/index.js": 312,
-	"./ko/_lib/formatLong/index.js": 313,
-	"./ko/_lib/formatRelative/index.js": 314,
-	"./ko/_lib/localize/index.js": 315,
-	"./ko/_lib/match/index.js": 316,
-	"./ko/index.js": 683,
-	"./lb/_lib/formatDistance/index.js": 317,
-	"./lb/_lib/formatLong/index.js": 318,
-	"./lb/_lib/formatRelative/index.js": 319,
-	"./lb/_lib/localize/index.js": 320,
-	"./lb/_lib/match/index.js": 321,
-	"./lb/index.js": 684,
-	"./lt/_lib/formatDistance/index.js": 322,
-	"./lt/_lib/formatLong/index.js": 323,
-	"./lt/_lib/formatRelative/index.js": 324,
-	"./lt/_lib/localize/index.js": 325,
-	"./lt/_lib/match/index.js": 326,
-	"./lt/index.js": 685,
-	"./lv/_lib/formatDistance/index.js": 327,
-	"./lv/_lib/formatLong/index.js": 328,
-	"./lv/_lib/formatRelative/index.js": 329,
-	"./lv/_lib/localize/index.js": 330,
-	"./lv/_lib/match/index.js": 331,
-	"./lv/index.js": 686,
-	"./mk/_lib/formatDistance/index.js": 332,
-	"./mk/_lib/formatLong/index.js": 333,
-	"./mk/_lib/formatRelative/index.js": 334,
-	"./mk/_lib/localize/index.js": 335,
-	"./mk/_lib/match/index.js": 336,
-	"./mk/index.js": 687,
-	"./mn/_lib/formatDistance/index.js": 337,
-	"./mn/_lib/formatLong/index.js": 338,
-	"./mn/_lib/formatRelative/index.js": 339,
-	"./mn/_lib/localize/index.js": 340,
-	"./mn/_lib/match/index.js": 341,
-	"./mn/index.js": 688,
-	"./ms/_lib/formatDistance/index.js": 342,
-	"./ms/_lib/formatLong/index.js": 343,
-	"./ms/_lib/formatRelative/index.js": 344,
-	"./ms/_lib/localize/index.js": 345,
-	"./ms/_lib/match/index.js": 346,
-	"./ms/index.js": 689,
-	"./mt/_lib/formatDistance/index.js": 347,
-	"./mt/_lib/formatLong/index.js": 348,
-	"./mt/_lib/formatRelative/index.js": 349,
-	"./mt/_lib/localize/index.js": 350,
-	"./mt/_lib/match/index.js": 351,
-	"./mt/index.js": 690,
-	"./nb/_lib/formatDistance/index.js": 352,
-	"./nb/_lib/formatLong/index.js": 353,
-	"./nb/_lib/formatRelative/index.js": 354,
-	"./nb/_lib/localize/index.js": 355,
-	"./nb/_lib/match/index.js": 356,
-	"./nb/index.js": 691,
-	"./nl-BE/_lib/formatDistance/index.js": 357,
-	"./nl-BE/_lib/formatLong/index.js": 358,
-	"./nl-BE/_lib/formatRelative/index.js": 359,
-	"./nl-BE/_lib/localize/index.js": 360,
-	"./nl-BE/_lib/match/index.js": 361,
-	"./nl-BE/index.js": 692,
-	"./nl/_lib/formatDistance/index.js": 362,
-	"./nl/_lib/formatLong/index.js": 363,
-	"./nl/_lib/formatRelative/index.js": 364,
-	"./nl/_lib/localize/index.js": 365,
-	"./nl/_lib/match/index.js": 366,
-	"./nl/index.js": 693,
-	"./nn/_lib/formatDistance/index.js": 367,
-	"./nn/_lib/formatLong/index.js": 368,
-	"./nn/_lib/formatRelative/index.js": 369,
-	"./nn/_lib/localize/index.js": 370,
-	"./nn/_lib/match/index.js": 371,
-	"./nn/index.js": 694,
-	"./pl/_lib/formatDistance/index.js": 372,
-	"./pl/_lib/formatLong/index.js": 373,
-	"./pl/_lib/formatRelative/index.js": 374,
-	"./pl/_lib/localize/index.js": 375,
-	"./pl/_lib/match/index.js": 376,
-	"./pl/index.js": 695,
-	"./pt-BR/_lib/formatDistance/index.js": 377,
-	"./pt-BR/_lib/formatLong/index.js": 378,
-	"./pt-BR/_lib/formatRelative/index.js": 379,
-	"./pt-BR/_lib/localize/index.js": 380,
-	"./pt-BR/_lib/match/index.js": 381,
-	"./pt-BR/index.js": 696,
-	"./pt/_lib/formatDistance/index.js": 382,
-	"./pt/_lib/formatLong/index.js": 383,
-	"./pt/_lib/formatRelative/index.js": 384,
-	"./pt/_lib/localize/index.js": 385,
-	"./pt/_lib/match/index.js": 386,
-	"./pt/index.js": 697,
-	"./ro/_lib/formatDistance/index.js": 387,
-	"./ro/_lib/formatLong/index.js": 388,
-	"./ro/_lib/formatRelative/index.js": 389,
-	"./ro/_lib/localize/index.js": 390,
-	"./ro/_lib/match/index.js": 391,
-	"./ro/index.js": 698,
-	"./ru/_lib/formatDistance/index.js": 392,
-	"./ru/_lib/formatLong/index.js": 393,
-	"./ru/_lib/formatRelative/index.js": 394,
-	"./ru/_lib/localize/index.js": 395,
-	"./ru/_lib/match/index.js": 396,
-	"./ru/index.js": 699,
-	"./sk/_lib/formatDistance/index.js": 397,
-	"./sk/_lib/formatLong/index.js": 398,
-	"./sk/_lib/formatRelative/index.js": 399,
-	"./sk/_lib/localize/index.js": 400,
-	"./sk/_lib/match/index.js": 401,
-	"./sk/index.js": 700,
-	"./sl/_lib/formatDistance/index.js": 402,
-	"./sl/_lib/formatLong/index.js": 403,
-	"./sl/_lib/formatRelative/index.js": 404,
-	"./sl/_lib/localize/index.js": 405,
-	"./sl/_lib/match/index.js": 406,
-	"./sl/index.js": 701,
-	"./sq/_lib/formatDistance/index.js": 407,
-	"./sq/_lib/formatLong/index.js": 408,
-	"./sq/_lib/formatRelative/index.js": 409,
-	"./sq/_lib/localize/index.js": 410,
-	"./sq/_lib/match/index.js": 411,
-	"./sq/index.js": 702,
-	"./sr-Latn/_lib/formatDistance/index.js": 412,
-	"./sr-Latn/_lib/formatLong/index.js": 413,
-	"./sr-Latn/_lib/formatRelative/index.js": 414,
-	"./sr-Latn/_lib/localize/index.js": 415,
-	"./sr-Latn/_lib/match/index.js": 416,
-	"./sr-Latn/index.js": 703,
-	"./sr/_lib/formatDistance/index.js": 417,
-	"./sr/_lib/formatLong/index.js": 418,
-	"./sr/_lib/formatRelative/index.js": 419,
-	"./sr/_lib/localize/index.js": 420,
-	"./sr/_lib/match/index.js": 421,
-	"./sr/index.js": 704,
-	"./sv/_lib/formatDistance/index.js": 422,
-	"./sv/_lib/formatLong/index.js": 423,
-	"./sv/_lib/formatRelative/index.js": 424,
-	"./sv/_lib/localize/index.js": 425,
-	"./sv/_lib/match/index.js": 426,
-	"./sv/index.js": 705,
-	"./ta/_lib/formatDistance/index.js": 427,
-	"./ta/_lib/formatLong/index.js": 428,
-	"./ta/_lib/formatRelative/index.js": 429,
-	"./ta/_lib/localize/index.js": 430,
-	"./ta/_lib/match/index.js": 431,
-	"./ta/index.js": 706,
-	"./te/_lib/formatDistance/index.js": 432,
-	"./te/_lib/formatLong/index.js": 433,
-	"./te/_lib/formatRelative/index.js": 434,
-	"./te/_lib/localize/index.js": 435,
-	"./te/_lib/match/index.js": 436,
-	"./te/index.js": 707,
-	"./th/_lib/formatDistance/index.js": 437,
-	"./th/_lib/formatLong/index.js": 438,
-	"./th/_lib/formatRelative/index.js": 439,
-	"./th/_lib/localize/index.js": 440,
-	"./th/_lib/match/index.js": 441,
-	"./th/index.js": 708,
-	"./tr/_lib/formatDistance/index.js": 442,
-	"./tr/_lib/formatLong/index.js": 443,
-	"./tr/_lib/formatRelative/index.js": 444,
-	"./tr/_lib/localize/index.js": 445,
-	"./tr/_lib/match/index.js": 446,
-	"./tr/index.js": 709,
-	"./ug/_lib/formatDistance/index.js": 447,
-	"./ug/_lib/formatLong/index.js": 448,
-	"./ug/_lib/formatRelative/index.js": 449,
-	"./ug/_lib/localize/index.js": 450,
-	"./ug/_lib/match/index.js": 451,
-	"./ug/index.js": 710,
-	"./uk/_lib/formatDistance/index.js": 452,
-	"./uk/_lib/formatLong/index.js": 453,
-	"./uk/_lib/formatRelative/index.js": 454,
-	"./uk/_lib/localize/index.js": 455,
-	"./uk/_lib/match/index.js": 456,
-	"./uk/index.js": 711,
-	"./uz/_lib/formatDistance/index.js": 457,
-	"./uz/_lib/formatLong/index.js": 458,
-	"./uz/_lib/formatRelative/index.js": 459,
-	"./uz/_lib/localize/index.js": 460,
-	"./uz/_lib/match/index.js": 461,
-	"./uz/index.js": 712,
-	"./vi/_lib/formatDistance/index.js": 462,
-	"./vi/_lib/formatLong/index.js": 463,
-	"./vi/_lib/formatRelative/index.js": 464,
-	"./vi/_lib/localize/index.js": 465,
-	"./vi/_lib/match/index.js": 466,
-	"./vi/index.js": 713,
-	"./zh-CN/_lib/formatDistance/index.js": 467,
-	"./zh-CN/_lib/formatLong/index.js": 468,
-	"./zh-CN/_lib/formatRelative/index.js": 469,
-	"./zh-CN/_lib/localize/index.js": 470,
-	"./zh-CN/_lib/match/index.js": 471,
-	"./zh-CN/index.js": 714,
-	"./zh-TW/_lib/formatDistance/index.js": 472,
-	"./zh-TW/_lib/formatLong/index.js": 473,
-	"./zh-TW/_lib/formatRelative/index.js": 474,
-	"./zh-TW/_lib/localize/index.js": 475,
-	"./zh-TW/_lib/match/index.js": 476,
-	"./zh-TW/index.js": 715
+	"./af/_lib/formatDistance/index.js": 128,
+	"./af/_lib/formatLong/index.js": 129,
+	"./af/_lib/formatRelative/index.js": 130,
+	"./af/_lib/localize/index.js": 131,
+	"./af/_lib/match/index.js": 132,
+	"./af/index.js": 675,
+	"./ar-DZ/_lib/formatDistance/index.js": 133,
+	"./ar-DZ/_lib/formatLong/index.js": 134,
+	"./ar-DZ/_lib/formatRelative/index.js": 135,
+	"./ar-DZ/_lib/localize/index.js": 136,
+	"./ar-DZ/_lib/match/index.js": 137,
+	"./ar-DZ/index.js": 676,
+	"./ar-MA/_lib/formatDistance/index.js": 138,
+	"./ar-MA/_lib/formatLong/index.js": 139,
+	"./ar-MA/_lib/formatRelative/index.js": 140,
+	"./ar-MA/_lib/localize/index.js": 141,
+	"./ar-MA/_lib/match/index.js": 142,
+	"./ar-MA/index.js": 677,
+	"./ar-SA/_lib/formatDistance/index.js": 143,
+	"./ar-SA/_lib/formatLong/index.js": 144,
+	"./ar-SA/_lib/formatRelative/index.js": 145,
+	"./ar-SA/_lib/localize/index.js": 146,
+	"./ar-SA/_lib/match/index.js": 147,
+	"./ar-SA/index.js": 678,
+	"./ar-TN/_lib/formatDistance/index.js": 148,
+	"./ar-TN/_lib/formatLong/index.js": 149,
+	"./ar-TN/_lib/formatRelative/index.js": 150,
+	"./ar-TN/_lib/localize/index.js": 151,
+	"./ar-TN/_lib/match/index.js": 152,
+	"./ar-TN/index.js": 679,
+	"./az/_lib/formatDistance/index.js": 153,
+	"./az/_lib/formatLong/index.js": 154,
+	"./az/_lib/formatRelative/index.js": 155,
+	"./az/_lib/localize/index.js": 156,
+	"./az/_lib/match/index.js": 157,
+	"./az/index.js": 680,
+	"./be/_lib/formatDistance/index.js": 158,
+	"./be/_lib/formatLong/index.js": 159,
+	"./be/_lib/formatRelative/index.js": 160,
+	"./be/_lib/localize/index.js": 161,
+	"./be/_lib/match/index.js": 162,
+	"./be/index.js": 684,
+	"./bg/_lib/formatDistance/index.js": 163,
+	"./bg/_lib/formatLong/index.js": 164,
+	"./bg/_lib/formatRelative/index.js": 165,
+	"./bg/_lib/localize/index.js": 166,
+	"./bg/_lib/match/index.js": 167,
+	"./bg/index.js": 685,
+	"./bn/_lib/formatDistance/index.js": 168,
+	"./bn/_lib/formatLong/index.js": 169,
+	"./bn/_lib/formatRelative/index.js": 170,
+	"./bn/_lib/localize/index.js": 64,
+	"./bn/_lib/match/index.js": 171,
+	"./bn/index.js": 686,
+	"./bs/_lib/formatDistance/index.js": 172,
+	"./bs/_lib/formatLong/index.js": 173,
+	"./bs/_lib/formatRelative/index.js": 174,
+	"./bs/_lib/localize/index.js": 175,
+	"./bs/_lib/match/index.js": 176,
+	"./bs/index.js": 687,
+	"./ca/_lib/formatDistance/index.js": 177,
+	"./ca/_lib/formatLong/index.js": 178,
+	"./ca/_lib/formatRelative/index.js": 179,
+	"./ca/_lib/localize/index.js": 180,
+	"./ca/_lib/match/index.js": 181,
+	"./ca/index.js": 688,
+	"./cs/_lib/formatDistance/index.js": 182,
+	"./cs/_lib/formatLong/index.js": 183,
+	"./cs/_lib/formatRelative/index.js": 184,
+	"./cs/_lib/localize/index.js": 185,
+	"./cs/_lib/match/index.js": 186,
+	"./cs/index.js": 689,
+	"./cy/_lib/formatDistance/index.js": 187,
+	"./cy/_lib/formatLong/index.js": 188,
+	"./cy/_lib/formatRelative/index.js": 189,
+	"./cy/_lib/localize/index.js": 190,
+	"./cy/_lib/match/index.js": 191,
+	"./cy/index.js": 690,
+	"./da/_lib/formatDistance/index.js": 192,
+	"./da/_lib/formatLong/index.js": 193,
+	"./da/_lib/formatRelative/index.js": 194,
+	"./da/_lib/localize/index.js": 195,
+	"./da/_lib/match/index.js": 196,
+	"./da/index.js": 691,
+	"./de-AT/_lib/localize/index.js": 197,
+	"./de-AT/index.js": 692,
+	"./de/_lib/formatDistance/index.js": 65,
+	"./de/_lib/formatLong/index.js": 66,
+	"./de/_lib/formatRelative/index.js": 67,
+	"./de/_lib/localize/index.js": 198,
+	"./de/_lib/match/index.js": 68,
+	"./de/index.js": 693,
+	"./el/_lib/formatDistance/index.js": 199,
+	"./el/_lib/formatLong/index.js": 200,
+	"./el/_lib/formatRelative/index.js": 201,
+	"./el/_lib/localize/index.js": 202,
+	"./el/_lib/match/index.js": 203,
+	"./el/index.js": 694,
+	"./en-AU/_lib/formatLong/index.js": 204,
+	"./en-AU/index.js": 695,
+	"./en-CA/_lib/formatDistance/index.js": 205,
+	"./en-CA/_lib/formatLong/index.js": 206,
+	"./en-CA/index.js": 696,
+	"./en-GB/_lib/formatLong/index.js": 207,
+	"./en-GB/index.js": 697,
+	"./en-IN/_lib/formatLong/index.js": 208,
+	"./en-IN/index.js": 698,
+	"./en-NZ/_lib/formatLong/index.js": 209,
+	"./en-NZ/index.js": 699,
+	"./en-US/_lib/formatDistance/index.js": 22,
+	"./en-US/_lib/formatLong/index.js": 210,
+	"./en-US/_lib/formatRelative/index.js": 15,
+	"./en-US/_lib/localize/index.js": 16,
+	"./en-US/_lib/match/index.js": 17,
+	"./en-US/index.js": 700,
+	"./en-ZA/_lib/formatLong/index.js": 211,
+	"./en-ZA/index.js": 701,
+	"./eo/_lib/formatDistance/index.js": 212,
+	"./eo/_lib/formatLong/index.js": 213,
+	"./eo/_lib/formatRelative/index.js": 214,
+	"./eo/_lib/localize/index.js": 215,
+	"./eo/_lib/match/index.js": 216,
+	"./eo/index.js": 702,
+	"./es/_lib/formatDistance/index.js": 217,
+	"./es/_lib/formatLong/index.js": 218,
+	"./es/_lib/formatRelative/index.js": 219,
+	"./es/_lib/localize/index.js": 220,
+	"./es/_lib/match/index.js": 221,
+	"./es/index.js": 703,
+	"./et/_lib/formatDistance/index.js": 222,
+	"./et/_lib/formatLong/index.js": 223,
+	"./et/_lib/formatRelative/index.js": 224,
+	"./et/_lib/localize/index.js": 225,
+	"./et/_lib/match/index.js": 226,
+	"./et/index.js": 704,
+	"./eu/_lib/formatDistance/index.js": 227,
+	"./eu/_lib/formatLong/index.js": 228,
+	"./eu/_lib/formatRelative/index.js": 229,
+	"./eu/_lib/localize/index.js": 230,
+	"./eu/_lib/match/index.js": 231,
+	"./eu/index.js": 705,
+	"./fa-IR/_lib/formatDistance/index.js": 232,
+	"./fa-IR/_lib/formatLong/index.js": 233,
+	"./fa-IR/_lib/formatRelative/index.js": 234,
+	"./fa-IR/_lib/localize/index.js": 235,
+	"./fa-IR/_lib/match/index.js": 236,
+	"./fa-IR/index.js": 706,
+	"./fi/_lib/formatDistance/index.js": 237,
+	"./fi/_lib/formatLong/index.js": 238,
+	"./fi/_lib/formatRelative/index.js": 239,
+	"./fi/_lib/localize/index.js": 240,
+	"./fi/_lib/match/index.js": 241,
+	"./fi/index.js": 707,
+	"./fr-CA/_lib/formatLong/index.js": 242,
+	"./fr-CA/index.js": 708,
+	"./fr-CH/_lib/formatDistance/index.js": 243,
+	"./fr-CH/_lib/formatLong/index.js": 244,
+	"./fr-CH/_lib/formatRelative/index.js": 245,
+	"./fr-CH/_lib/formatters/index.js": 709,
+	"./fr-CH/_lib/localize/index.js": 246,
+	"./fr-CH/_lib/match/index.js": 247,
+	"./fr-CH/index.js": 710,
+	"./fr/_lib/formatDistance/index.js": 69,
+	"./fr/_lib/formatLong/index.js": 248,
+	"./fr/_lib/formatRelative/index.js": 70,
+	"./fr/_lib/formatters/index.js": 711,
+	"./fr/_lib/localize/index.js": 71,
+	"./fr/_lib/match/index.js": 72,
+	"./fr/index.js": 712,
+	"./gd/_lib/formatDistance/index.js": 249,
+	"./gd/_lib/formatLong/index.js": 250,
+	"./gd/_lib/formatRelative/index.js": 251,
+	"./gd/_lib/localize/index.js": 252,
+	"./gd/_lib/match/index.js": 253,
+	"./gd/index.js": 713,
+	"./gl/_lib/formatDistance/index.js": 254,
+	"./gl/_lib/formatLong/index.js": 255,
+	"./gl/_lib/formatRelative/index.js": 256,
+	"./gl/_lib/localize/index.js": 257,
+	"./gl/_lib/match/index.js": 258,
+	"./gl/index.js": 714,
+	"./gu/_lib/formatDistance/index.js": 259,
+	"./gu/_lib/formatLong/index.js": 260,
+	"./gu/_lib/formatRelative/index.js": 261,
+	"./gu/_lib/localize/index.js": 262,
+	"./gu/_lib/match/index.js": 263,
+	"./gu/index.js": 715,
+	"./he/_lib/formatDistance/index.js": 264,
+	"./he/_lib/formatLong/index.js": 265,
+	"./he/_lib/formatRelative/index.js": 266,
+	"./he/_lib/localize/index.js": 267,
+	"./he/_lib/match/index.js": 268,
+	"./he/index.js": 716,
+	"./hi/_lib/formatDistance/index.js": 269,
+	"./hi/_lib/formatLong/index.js": 270,
+	"./hi/_lib/formatRelative/index.js": 271,
+	"./hi/_lib/localize/index.js": 44,
+	"./hi/_lib/match/index.js": 272,
+	"./hi/index.js": 717,
+	"./hr/_lib/formatDistance/index.js": 273,
+	"./hr/_lib/formatLong/index.js": 274,
+	"./hr/_lib/formatRelative/index.js": 275,
+	"./hr/_lib/localize/index.js": 276,
+	"./hr/_lib/match/index.js": 277,
+	"./hr/index.js": 718,
+	"./ht/_lib/formatDistance/index.js": 278,
+	"./ht/_lib/formatLong/index.js": 279,
+	"./ht/_lib/formatRelative/index.js": 280,
+	"./ht/_lib/formatters/index.js": 719,
+	"./ht/_lib/localize/index.js": 281,
+	"./ht/_lib/match/index.js": 282,
+	"./ht/index.js": 720,
+	"./hu/_lib/formatDistance/index.js": 283,
+	"./hu/_lib/formatLong/index.js": 284,
+	"./hu/_lib/formatRelative/index.js": 285,
+	"./hu/_lib/localize/index.js": 286,
+	"./hu/_lib/match/index.js": 287,
+	"./hu/index.js": 721,
+	"./hy/_lib/formatDistance/index.js": 288,
+	"./hy/_lib/formatLong/index.js": 289,
+	"./hy/_lib/formatRelative/index.js": 290,
+	"./hy/_lib/localize/index.js": 291,
+	"./hy/_lib/match/index.js": 292,
+	"./hy/index.js": 722,
+	"./id/_lib/formatDistance/index.js": 293,
+	"./id/_lib/formatLong/index.js": 294,
+	"./id/_lib/formatRelative/index.js": 295,
+	"./id/_lib/localize/index.js": 296,
+	"./id/_lib/match/index.js": 297,
+	"./id/index.js": 723,
+	"./is/_lib/formatDistance/index.js": 298,
+	"./is/_lib/formatLong/index.js": 299,
+	"./is/_lib/formatRelative/index.js": 300,
+	"./is/_lib/localize/index.js": 301,
+	"./is/_lib/match/index.js": 302,
+	"./is/index.js": 724,
+	"./it/_lib/formatDistance/index.js": 303,
+	"./it/_lib/formatLong/index.js": 304,
+	"./it/_lib/formatRelative/index.js": 305,
+	"./it/_lib/localize/index.js": 306,
+	"./it/_lib/match/index.js": 307,
+	"./it/index.js": 725,
+	"./ja-Hira/_lib/formatDistance/index.js": 308,
+	"./ja-Hira/_lib/formatLong/index.js": 309,
+	"./ja-Hira/_lib/formatRelative/index.js": 310,
+	"./ja-Hira/_lib/localize/index.js": 311,
+	"./ja-Hira/_lib/match/index.js": 312,
+	"./ja-Hira/index.js": 726,
+	"./ja/_lib/formatDistance/index.js": 313,
+	"./ja/_lib/formatLong/index.js": 314,
+	"./ja/_lib/formatRelative/index.js": 315,
+	"./ja/_lib/localize/index.js": 316,
+	"./ja/_lib/match/index.js": 317,
+	"./ja/index.js": 727,
+	"./ka/_lib/formatDistance/index.js": 318,
+	"./ka/_lib/formatLong/index.js": 319,
+	"./ka/_lib/formatRelative/index.js": 320,
+	"./ka/_lib/localize/index.js": 321,
+	"./ka/_lib/match/index.js": 322,
+	"./ka/index.js": 728,
+	"./kk/_lib/formatDistance/index.js": 323,
+	"./kk/_lib/formatLong/index.js": 324,
+	"./kk/_lib/formatRelative/index.js": 325,
+	"./kk/_lib/localize/index.js": 326,
+	"./kk/_lib/match/index.js": 327,
+	"./kk/index.js": 729,
+	"./kn/_lib/formatDistance/index.js": 328,
+	"./kn/_lib/formatLong/index.js": 329,
+	"./kn/_lib/formatRelative/index.js": 330,
+	"./kn/_lib/localize/index.js": 331,
+	"./kn/_lib/match/index.js": 332,
+	"./kn/index.js": 730,
+	"./ko/_lib/formatDistance/index.js": 333,
+	"./ko/_lib/formatLong/index.js": 334,
+	"./ko/_lib/formatRelative/index.js": 335,
+	"./ko/_lib/localize/index.js": 336,
+	"./ko/_lib/match/index.js": 337,
+	"./ko/index.js": 731,
+	"./lb/_lib/formatDistance/index.js": 338,
+	"./lb/_lib/formatLong/index.js": 339,
+	"./lb/_lib/formatRelative/index.js": 340,
+	"./lb/_lib/localize/index.js": 341,
+	"./lb/_lib/match/index.js": 342,
+	"./lb/index.js": 732,
+	"./lt/_lib/formatDistance/index.js": 343,
+	"./lt/_lib/formatLong/index.js": 344,
+	"./lt/_lib/formatRelative/index.js": 345,
+	"./lt/_lib/localize/index.js": 346,
+	"./lt/_lib/match/index.js": 347,
+	"./lt/index.js": 733,
+	"./lv/_lib/formatDistance/index.js": 348,
+	"./lv/_lib/formatLong/index.js": 349,
+	"./lv/_lib/formatRelative/index.js": 350,
+	"./lv/_lib/localize/index.js": 351,
+	"./lv/_lib/match/index.js": 352,
+	"./lv/index.js": 734,
+	"./mk/_lib/formatDistance/index.js": 353,
+	"./mk/_lib/formatLong/index.js": 354,
+	"./mk/_lib/formatRelative/index.js": 355,
+	"./mk/_lib/localize/index.js": 356,
+	"./mk/_lib/match/index.js": 357,
+	"./mk/index.js": 735,
+	"./mn/_lib/formatDistance/index.js": 358,
+	"./mn/_lib/formatLong/index.js": 359,
+	"./mn/_lib/formatRelative/index.js": 360,
+	"./mn/_lib/localize/index.js": 361,
+	"./mn/_lib/match/index.js": 362,
+	"./mn/index.js": 736,
+	"./ms/_lib/formatDistance/index.js": 363,
+	"./ms/_lib/formatLong/index.js": 364,
+	"./ms/_lib/formatRelative/index.js": 365,
+	"./ms/_lib/localize/index.js": 366,
+	"./ms/_lib/match/index.js": 367,
+	"./ms/index.js": 737,
+	"./mt/_lib/formatDistance/index.js": 368,
+	"./mt/_lib/formatLong/index.js": 369,
+	"./mt/_lib/formatRelative/index.js": 370,
+	"./mt/_lib/localize/index.js": 371,
+	"./mt/_lib/match/index.js": 372,
+	"./mt/index.js": 738,
+	"./nb/_lib/formatDistance/index.js": 373,
+	"./nb/_lib/formatLong/index.js": 374,
+	"./nb/_lib/formatRelative/index.js": 375,
+	"./nb/_lib/localize/index.js": 376,
+	"./nb/_lib/match/index.js": 377,
+	"./nb/index.js": 739,
+	"./nl-BE/_lib/formatDistance/index.js": 378,
+	"./nl-BE/_lib/formatLong/index.js": 379,
+	"./nl-BE/_lib/formatRelative/index.js": 380,
+	"./nl-BE/_lib/localize/index.js": 381,
+	"./nl-BE/_lib/match/index.js": 382,
+	"./nl-BE/index.js": 740,
+	"./nl/_lib/formatDistance/index.js": 383,
+	"./nl/_lib/formatLong/index.js": 384,
+	"./nl/_lib/formatRelative/index.js": 385,
+	"./nl/_lib/localize/index.js": 386,
+	"./nl/_lib/match/index.js": 387,
+	"./nl/index.js": 741,
+	"./nn/_lib/formatDistance/index.js": 388,
+	"./nn/_lib/formatLong/index.js": 389,
+	"./nn/_lib/formatRelative/index.js": 390,
+	"./nn/_lib/localize/index.js": 391,
+	"./nn/_lib/match/index.js": 392,
+	"./nn/index.js": 742,
+	"./pl/_lib/formatDistance/index.js": 393,
+	"./pl/_lib/formatLong/index.js": 394,
+	"./pl/_lib/formatRelative/index.js": 395,
+	"./pl/_lib/localize/index.js": 396,
+	"./pl/_lib/match/index.js": 397,
+	"./pl/index.js": 743,
+	"./pt-BR/_lib/formatDistance/index.js": 398,
+	"./pt-BR/_lib/formatLong/index.js": 399,
+	"./pt-BR/_lib/formatRelative/index.js": 400,
+	"./pt-BR/_lib/localize/index.js": 401,
+	"./pt-BR/_lib/match/index.js": 402,
+	"./pt-BR/index.js": 744,
+	"./pt/_lib/formatDistance/index.js": 403,
+	"./pt/_lib/formatLong/index.js": 404,
+	"./pt/_lib/formatRelative/index.js": 405,
+	"./pt/_lib/localize/index.js": 406,
+	"./pt/_lib/match/index.js": 407,
+	"./pt/index.js": 745,
+	"./ro/_lib/formatDistance/index.js": 408,
+	"./ro/_lib/formatLong/index.js": 409,
+	"./ro/_lib/formatRelative/index.js": 410,
+	"./ro/_lib/localize/index.js": 411,
+	"./ro/_lib/match/index.js": 412,
+	"./ro/index.js": 746,
+	"./ru/_lib/formatDistance/index.js": 413,
+	"./ru/_lib/formatLong/index.js": 414,
+	"./ru/_lib/formatRelative/index.js": 415,
+	"./ru/_lib/localize/index.js": 416,
+	"./ru/_lib/match/index.js": 417,
+	"./ru/index.js": 747,
+	"./sk/_lib/formatDistance/index.js": 418,
+	"./sk/_lib/formatLong/index.js": 419,
+	"./sk/_lib/formatRelative/index.js": 420,
+	"./sk/_lib/localize/index.js": 421,
+	"./sk/_lib/match/index.js": 422,
+	"./sk/index.js": 748,
+	"./sl/_lib/formatDistance/index.js": 423,
+	"./sl/_lib/formatLong/index.js": 424,
+	"./sl/_lib/formatRelative/index.js": 425,
+	"./sl/_lib/localize/index.js": 426,
+	"./sl/_lib/match/index.js": 427,
+	"./sl/index.js": 749,
+	"./sq/_lib/formatDistance/index.js": 428,
+	"./sq/_lib/formatLong/index.js": 429,
+	"./sq/_lib/formatRelative/index.js": 430,
+	"./sq/_lib/localize/index.js": 431,
+	"./sq/_lib/match/index.js": 432,
+	"./sq/index.js": 750,
+	"./sr-Latn/_lib/formatDistance/index.js": 433,
+	"./sr-Latn/_lib/formatLong/index.js": 434,
+	"./sr-Latn/_lib/formatRelative/index.js": 435,
+	"./sr-Latn/_lib/localize/index.js": 436,
+	"./sr-Latn/_lib/match/index.js": 437,
+	"./sr-Latn/index.js": 751,
+	"./sr/_lib/formatDistance/index.js": 438,
+	"./sr/_lib/formatLong/index.js": 439,
+	"./sr/_lib/formatRelative/index.js": 440,
+	"./sr/_lib/localize/index.js": 441,
+	"./sr/_lib/match/index.js": 442,
+	"./sr/index.js": 752,
+	"./sv/_lib/formatDistance/index.js": 443,
+	"./sv/_lib/formatLong/index.js": 444,
+	"./sv/_lib/formatRelative/index.js": 445,
+	"./sv/_lib/localize/index.js": 446,
+	"./sv/_lib/match/index.js": 447,
+	"./sv/index.js": 753,
+	"./ta/_lib/formatDistance/index.js": 448,
+	"./ta/_lib/formatLong/index.js": 449,
+	"./ta/_lib/formatRelative/index.js": 450,
+	"./ta/_lib/localize/index.js": 451,
+	"./ta/_lib/match/index.js": 452,
+	"./ta/index.js": 754,
+	"./te/_lib/formatDistance/index.js": 453,
+	"./te/_lib/formatLong/index.js": 454,
+	"./te/_lib/formatRelative/index.js": 455,
+	"./te/_lib/localize/index.js": 456,
+	"./te/_lib/match/index.js": 457,
+	"./te/index.js": 755,
+	"./th/_lib/formatDistance/index.js": 458,
+	"./th/_lib/formatLong/index.js": 459,
+	"./th/_lib/formatRelative/index.js": 460,
+	"./th/_lib/localize/index.js": 461,
+	"./th/_lib/match/index.js": 462,
+	"./th/index.js": 756,
+	"./tr/_lib/formatDistance/index.js": 463,
+	"./tr/_lib/formatLong/index.js": 464,
+	"./tr/_lib/formatRelative/index.js": 465,
+	"./tr/_lib/localize/index.js": 466,
+	"./tr/_lib/match/index.js": 467,
+	"./tr/index.js": 757,
+	"./ug/_lib/formatDistance/index.js": 468,
+	"./ug/_lib/formatLong/index.js": 469,
+	"./ug/_lib/formatRelative/index.js": 470,
+	"./ug/_lib/localize/index.js": 471,
+	"./ug/_lib/match/index.js": 472,
+	"./ug/index.js": 758,
+	"./uk/_lib/formatDistance/index.js": 473,
+	"./uk/_lib/formatLong/index.js": 474,
+	"./uk/_lib/formatRelative/index.js": 475,
+	"./uk/_lib/localize/index.js": 476,
+	"./uk/_lib/match/index.js": 477,
+	"./uk/index.js": 759,
+	"./uz/_lib/formatDistance/index.js": 478,
+	"./uz/_lib/formatLong/index.js": 479,
+	"./uz/_lib/formatRelative/index.js": 480,
+	"./uz/_lib/localize/index.js": 481,
+	"./uz/_lib/match/index.js": 482,
+	"./uz/index.js": 760,
+	"./vi/_lib/formatDistance/index.js": 483,
+	"./vi/_lib/formatLong/index.js": 484,
+	"./vi/_lib/formatRelative/index.js": 485,
+	"./vi/_lib/localize/index.js": 486,
+	"./vi/_lib/match/index.js": 487,
+	"./vi/index.js": 761,
+	"./zh-CN/_lib/formatDistance/index.js": 488,
+	"./zh-CN/_lib/formatLong/index.js": 489,
+	"./zh-CN/_lib/formatRelative/index.js": 490,
+	"./zh-CN/_lib/localize/index.js": 491,
+	"./zh-CN/_lib/match/index.js": 492,
+	"./zh-CN/index.js": 762,
+	"./zh-TW/_lib/formatDistance/index.js": 493,
+	"./zh-TW/_lib/formatLong/index.js": 494,
+	"./zh-TW/_lib/formatRelative/index.js": 495,
+	"./zh-TW/_lib/localize/index.js": 496,
+	"./zh-TW/_lib/match/index.js": 497,
+	"./zh-TW/index.js": 763
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -2431,10 +2704,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 24;
+webpackContext.id = 26;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2513,7 +2786,7 @@ function addMonths(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2555,13 +2828,13 @@ function addMilliseconds(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfISOWeekYear;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -2603,12 +2876,12 @@ function startOfISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameDay;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -2643,13 +2916,33 @@ function isSameDay(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 29 */
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getRoundingMethod;
+var roundingMap = {
+  ceil: Math.ceil,
+  round: Math.round,
+  floor: Math.floor,
+  trunc: function (value) {
+    return value < 0 ? Math.ceil(value) : Math.floor(value);
+  } // Math.trunc is not supported by IE
+
+};
+var defaultRoundingMethod = 'trunc';
+function getRoundingMethod(method) {
+  return method ? roundingMap[method] : roundingMap[defaultRoundingMethod];
+}
+
+/***/ }),
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subMilliseconds;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -2684,7 +2977,7 @@ function subMilliseconds(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2714,7 +3007,7 @@ var BooleanParse = function BooleanParse(val) {
 };
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2753,7 +3046,7 @@ function isWeekend(dirtyDate) {
 }
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2793,13 +3086,13 @@ function startOfDay(dirtyDate) {
 }
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addWeeks;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addDays_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addDays_index_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -2835,7 +3128,7 @@ function addWeeks(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 34 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2871,24 +3164,22 @@ function addWeeks(dirtyDate, dirtyAmount) {
  * //=> 1100
  */
 
-function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
+function differenceInMilliseconds(dateLeft, dateRight) {
   Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var dateLeft = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateLeft);
-  var dateRight = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDateRight);
-  return dateLeft.getTime() - dateRight.getTime();
+  return Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dateLeft).getTime() - Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dateRight).getTime();
 }
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInMonths;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarMonths_index_js__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarMonths_index_js__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isLastDayOfMonth_index_js__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isLastDayOfMonth_index_js__ = __webpack_require__(90);
 
 
 
@@ -2900,7 +3191,7 @@ function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
  * @summary Get the number of full months between the given dates.
  *
  * @description
- * Get the number of full months between the given dates.
+ * Get the number of full months between the given dates using trunc as a default rounding method.
  *
  * ### v2.0.0 breaking changes:
  *
@@ -2913,7 +3204,7 @@ function differenceInMilliseconds(dirtyDateLeft, dirtyDateRight) {
  *
  * @example
  * // How many full months are between 31 January 2014 and 1 September 2014?
- * var result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
+ * const result = differenceInMonths(new Date(2014, 8, 1), new Date(2014, 0, 31))
  * //=> 7
  */
 
@@ -2951,7 +3242,7 @@ function differenceInMonths(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2992,7 +3283,7 @@ function startOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 37 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3015,7 +3306,7 @@ function startOfUTCISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 38 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3049,7 +3340,87 @@ function startOfUTCWeek(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 39 */
+/* 42 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getDay;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+/**
+ * @name getDay
+ * @category Weekday Helpers
+ * @summary Get the day of the week of the given date.
+ *
+ * @description
+ * Get the day of the week of the given date.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {Date|Number} date - the given date
+ * @returns {0|1|2|3|4|5|6} the day of week, 0 represents Sunday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Which day of the week is 29 February 2012?
+ * const result = getDay(new Date(2012, 1, 29))
+ * //=> 3
+ */
+
+function getDay(dirtyDate) {
+  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var date = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
+  var day = date.getDay();
+  return day;
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = subDays;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+
+/**
+ * @name subDays
+ * @category Day Helpers
+ * @summary Subtract the specified number of days from the given date.
+ *
+ * @description
+ * Subtract the specified number of days from the given date.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {Date|Number} date - the date to be changed
+ * @param {Number} amount - the amount of days to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
+ * @returns {Date} the new date with the days subtracted
+ * @throws {TypeError} 2 arguments required
+ *
+ * @example
+ * // Subtract 10 days from 1 September 2014:
+ * const result = subDays(new Date(2014, 8, 1), 10)
+ * //=> Fri Aug 22 2014 00:00:00
+ */
+
+function subDays(dirtyDate, dirtyAmount) {
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var amount = Object(__WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__["a" /* default */])(dirtyAmount);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__addDays_index_js__["a" /* default */])(dirtyDate, -amount);
+}
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3088,32 +3459,32 @@ var numberValues = {
     '८': '8',
     '९': '9',
     '०': '0'
-  } // CLDR #1585 - #1592
+  }
+}; // CLDR #1585 - #1592
 
-};
 var eraValues = {
   narrow: ['ईसा-पूर्व', 'ईस्वी'],
   abbreviated: ['ईसा-पूर्व', 'ईस्वी'],
-  wide: ['ईसा-पूर्व', 'ईसवी सन'] // CLDR #1593 - #1616
+  wide: ['ईसा-पूर्व', 'ईसवी सन']
+}; // CLDR #1593 - #1616
 
-};
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['ति1', 'ति2', 'ति3', 'ति4'],
-  wide: ['पहली तिमाही', 'दूसरी तिमाही', 'तीसरी तिमाही', 'चौथी तिमाही'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
-  // https://www.unicode.org/cldr/charts/32/summary/hi.html
-  // CLDR #1617 - #1688
+  wide: ['पहली तिमाही', 'दूसरी तिमाही', 'तीसरी तिमाही', 'चौथी तिमाही']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
+// https://www.unicode.org/cldr/charts/32/summary/hi.html
+// CLDR #1617 - #1688
 
-};
 var monthValues = {
   narrow: ['ज', 'फ़', 'मा', 'अ', 'मई', 'जू', 'जु', 'अग', 'सि', 'अक्तू', 'न', 'दि'],
   abbreviated: ['जन', 'फ़र', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्तू', 'नव', 'दिस'],
-  wide: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्तूबर', 'नवंबर', 'दिसंबर'] // CLDR #1689 - #1744
+  wide: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्तूबर', 'नवंबर', 'दिसंबर']
+}; // CLDR #1689 - #1744
 
-};
 var dayValues = {
   narrow: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
   short: ['र', 'सो', 'मं', 'बु', 'गु', 'शु', 'श'],
@@ -3253,7 +3624,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 40 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3261,8 +3632,8 @@ module.exports = exports.default;
 /* unused harmony export deepMerge */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return detectSupportsPassive; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return newDate; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__type__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__type__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns__ = __webpack_require__(18);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
@@ -3393,7 +3764,7 @@ var newDate = function newDate(date, format) {
 };
 
 /***/ }),
-/* 41 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3430,13 +3801,13 @@ function isSunday(dirtyDate) {
 }
 
 /***/ }),
-/* 42 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addHours;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3472,13 +3843,13 @@ function addHours(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 43 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addMinutes;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3514,13 +3885,13 @@ function addMinutes(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 44 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addQuarters;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3556,13 +3927,13 @@ function addQuarters(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 45 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInDays;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarDays_index_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarDays_index_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3653,7 +4024,7 @@ function differenceInDays(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 46 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3693,7 +4064,7 @@ function endOfDay(dirtyDate) {
 }
 
 /***/ }),
-/* 47 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3735,13 +4106,15 @@ function endOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 48 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInSeconds;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__ = __webpack_require__(31);
+
 
 
 /**
@@ -3758,6 +4131,8 @@ function endOfMonth(dirtyDate) {
  *
  * @param {Date|Number} dateLeft - the later date
  * @param {Date|Number} dateRight - the earlier date
+ * @param {Object} [options] - an object with options.
+ * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
  * @returns {Number} the number of seconds
  * @throws {TypeError} 2 arguments required
  *
@@ -3771,14 +4146,14 @@ function endOfMonth(dirtyDate) {
  * //=> 12
  */
 
-function differenceInSeconds(dirtyDateLeft, dirtyDateRight) {
+function differenceInSeconds(dateLeft, dateRight, options) {
   Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__["a" /* default */])(dirtyDateLeft, dirtyDateRight) / 1000;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__["a" /* default */])(dateLeft, dateRight) / 1000;
+  return Object(__WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__["a" /* getRoundingMethod */])(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
 }
 
 /***/ }),
-/* 49 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3818,7 +4193,7 @@ function startOfMinute(dirtyDate) {
 }
 
 /***/ }),
-/* 50 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3861,14 +4236,14 @@ function startOfQuarter(dirtyDate) {
 }
 
 /***/ }),
-/* 51 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = eachWeekendOfInterval;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachDayOfInterval_index_js__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isSunday_index_js__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isWeekend_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachDayOfInterval_index_js__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isSunday_index_js__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isWeekend_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -3921,7 +4296,7 @@ function eachWeekendOfInterval(interval) {
 }
 
 /***/ }),
-/* 52 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3963,14 +4338,14 @@ function startOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 53 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -4011,54 +4386,16 @@ function getUTCWeekYear(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = getDay;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-/**
- * @name getDay
- * @category Weekday Helpers
- * @summary Get the day of the week of the given date.
- *
- * @description
- * Get the day of the week of the given date.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {Date|Number} date - the given date
- * @returns {0|1|2|3|4|5|6} the day of week, 0 represents Sunday
- * @throws {TypeError} 1 argument required
- *
- * @example
- * // Which day of the week is 29 February 2012?
- * const result = getDay(new Date(2012, 1, 29))
- * //=> 3
- */
-
-function getDay(dirtyDate) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  var date = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
-  var day = date.getDay();
-  return day;
-}
-
-/***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfWeekYear;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getWeekYear_index_js__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeek_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getWeekYear_index_js__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeek_index_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 
@@ -4093,20 +4430,19 @@ function getDay(dirtyDate) {
  *
  * @example
  * // The start of an a week-numbering year for 2 July 2005 with default settings:
- * var result = startOfWeekYear(new Date(2005, 6, 2))
+ * const result = startOfWeekYear(new Date(2005, 6, 2))
  * //=> Sun Dec 26 2004 00:00:00
  *
  * @example
  * // The start of a week-numbering year for 2 July 2005
  * // if Monday is the first day of week
  * // and 4 January is always in the first week of the year:
- * var result = startOfWeekYear(new Date(2005, 6, 2), {
+ * const result = startOfWeekYear(new Date(2005, 6, 2), {
  *   weekStartsOn: 1,
  *   firstWeekContainsDate: 4
  * })
  * //=> Mon Jan 03 2005 00:00:00
  */
-
 function startOfWeekYear(dirtyDate, dirtyOptions) {
   Object(__WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
   var options = dirtyOptions || {};
@@ -4123,53 +4459,12 @@ function startOfWeekYear(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 56 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = subDays;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-
-/**
- * @name subDays
- * @category Day Helpers
- * @summary Subtract the specified number of days from the given date.
- *
- * @description
- * Subtract the specified number of days from the given date.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {Date|Number} date - the date to be changed
- * @param {Number} amount - the amount of days to be subtracted. Positive decimals will be rounded using `Math.floor`, decimals less than zero will be rounded using `Math.ceil`.
- * @returns {Date} the new date with the days subtracted
- * @throws {TypeError} 2 arguments required
- *
- * @example
- * // Subtract 10 days from 1 September 2014:
- * const result = subDays(new Date(2014, 8, 1), 10)
- * //=> Fri Aug 22 2014 00:00:00
- */
-
-function subDays(dirtyDate, dirtyAmount) {
-  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var amount = Object(__WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__["a" /* default */])(dirtyAmount);
-  return Object(__WEBPACK_IMPORTED_MODULE_1__addDays_index_js__["a" /* default */])(dirtyDate, -amount);
-}
-
-/***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameWeek;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -4216,14 +4511,14 @@ function isSameWeek(dirtyDateLeft, dirtyDateRight, dirtyOptions) {
 }
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setMonth;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getDaysInMonth_index_js__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getDaysInMonth_index_js__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -4269,7 +4564,7 @@ function setMonth(dirtyDate, dirtyMonth) {
 }
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4459,7 +4754,7 @@ var EventEmitter = function () {
 /* harmony default export */ __webpack_exports__["a"] = (EventEmitter);
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4479,7 +4774,7 @@ function requiredArgs(required, args) {
 module.exports = exports.default;
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4708,7 +5003,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4717,179 +5012,178 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = formatDistance;
+exports.default = void 0;
 var formatDistanceLocale = {
   lessThanXSeconds: {
     standalone: {
-      one: 'weniger als eine Sekunde',
+      one: 'weniger als 1 Sekunde',
       other: 'weniger als {{count}} Sekunden'
     },
     withPreposition: {
-      one: 'weniger als einer Sekunde',
+      one: 'weniger als 1 Sekunde',
       other: 'weniger als {{count}} Sekunden'
     }
   },
   xSeconds: {
     standalone: {
-      one: 'eine Sekunde',
+      one: '1 Sekunde',
       other: '{{count}} Sekunden'
     },
     withPreposition: {
-      one: 'einer Sekunde',
+      one: '1 Sekunde',
       other: '{{count}} Sekunden'
     }
   },
   halfAMinute: {
-    standalone: 'eine halbe Minute',
-    withPreposition: 'einer halben Minute'
+    standalone: 'halbe Minute',
+    withPreposition: 'halben Minute'
   },
   lessThanXMinutes: {
     standalone: {
-      one: 'weniger als eine Minute',
+      one: 'weniger als 1 Minute',
       other: 'weniger als {{count}} Minuten'
     },
     withPreposition: {
-      one: 'weniger als einer Minute',
+      one: 'weniger als 1 Minute',
       other: 'weniger als {{count}} Minuten'
     }
   },
   xMinutes: {
     standalone: {
-      one: 'eine Minute',
+      one: '1 Minute',
       other: '{{count}} Minuten'
     },
     withPreposition: {
-      one: 'einer Minute',
+      one: '1 Minute',
       other: '{{count}} Minuten'
     }
   },
   aboutXHours: {
     standalone: {
-      one: 'etwa eine Stunde',
+      one: 'etwa 1 Stunde',
       other: 'etwa {{count}} Stunden'
     },
     withPreposition: {
-      one: 'etwa einer Stunde',
+      one: 'etwa 1 Stunde',
       other: 'etwa {{count}} Stunden'
     }
   },
   xHours: {
     standalone: {
-      one: 'eine Stunde',
+      one: '1 Stunde',
       other: '{{count}} Stunden'
     },
     withPreposition: {
-      one: 'einer Stunde',
+      one: '1 Stunde',
       other: '{{count}} Stunden'
     }
   },
   xDays: {
     standalone: {
-      one: 'ein Tag',
+      one: '1 Tag',
       other: '{{count}} Tage'
     },
     withPreposition: {
-      one: 'einem Tag',
+      one: '1 Tag',
       other: '{{count}} Tagen'
     }
   },
   aboutXWeeks: {
     standalone: {
-      one: 'etwa ein Woche',
+      one: 'etwa 1 Woche',
       other: 'etwa {{count}} Wochen'
     },
     withPreposition: {
-      one: 'etwa einem Woche',
+      one: 'etwa 1 Woche',
       other: 'etwa {{count}} Wochen'
     }
   },
   xWeeks: {
     standalone: {
-      one: 'ein Woche',
+      one: '1 Woche',
       other: '{{count}} Wochen'
     },
     withPreposition: {
-      one: 'einem Woche',
+      one: '1 Woche',
       other: '{{count}} Wochen'
     }
   },
   aboutXMonths: {
     standalone: {
-      one: 'etwa ein Monat',
+      one: 'etwa 1 Monat',
       other: 'etwa {{count}} Monate'
     },
     withPreposition: {
-      one: 'etwa einem Monat',
+      one: 'etwa 1 Monat',
       other: 'etwa {{count}} Monaten'
     }
   },
   xMonths: {
     standalone: {
-      one: 'ein Monat',
+      one: '1 Monat',
       other: '{{count}} Monate'
     },
     withPreposition: {
-      one: 'einem Monat',
+      one: '1 Monat',
       other: '{{count}} Monaten'
     }
   },
   aboutXYears: {
     standalone: {
-      one: 'etwa ein Jahr',
+      one: 'etwa 1 Jahr',
       other: 'etwa {{count}} Jahre'
     },
     withPreposition: {
-      one: 'etwa einem Jahr',
+      one: 'etwa 1 Jahr',
       other: 'etwa {{count}} Jahren'
     }
   },
   xYears: {
     standalone: {
-      one: 'ein Jahr',
+      one: '1 Jahr',
       other: '{{count}} Jahre'
     },
     withPreposition: {
-      one: 'einem Jahr',
+      one: '1 Jahr',
       other: '{{count}} Jahren'
     }
   },
   overXYears: {
     standalone: {
-      one: 'mehr als ein Jahr',
+      one: 'mehr als 1 Jahr',
       other: 'mehr als {{count}} Jahre'
     },
     withPreposition: {
-      one: 'mehr als einem Jahr',
+      one: 'mehr als 1 Jahr',
       other: 'mehr als {{count}} Jahren'
     }
   },
   almostXYears: {
     standalone: {
-      one: 'fast ein Jahr',
+      one: 'fast 1 Jahr',
       other: 'fast {{count}} Jahre'
     },
     withPreposition: {
-      one: 'fast einem Jahr',
+      one: 'fast 1 Jahr',
       other: 'fast {{count}} Jahren'
     }
   }
 };
 
-function formatDistance(token, count, options) {
-  options = options || {};
-  var usageGroup = options.addSuffix ? formatDistanceLocale[token].withPreposition : formatDistanceLocale[token].standalone;
+var formatDistance = function (token, count, options) {
   var result;
+  var tokenValue = options !== null && options !== void 0 && options.addSuffix ? formatDistanceLocale[token].withPreposition : formatDistanceLocale[token].standalone;
 
-  if (typeof usageGroup === 'string') {
-    result = usageGroup;
+  if (typeof tokenValue === 'string') {
+    result = tokenValue;
   } else if (count === 1) {
-    result = usageGroup.one;
+    result = tokenValue.one;
   } else {
-    result = usageGroup.other.replace('{{count}}', count);
+    result = tokenValue.other.replace('{{count}}', String(count));
   }
 
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
+  if (options !== null && options !== void 0 && options.addSuffix) {
+    if (options.comparison && options.comparison > 0) {
       return 'in ' + result;
     } else {
       return 'vor ' + result;
@@ -4897,12 +5191,14 @@ function formatDistance(token, count, options) {
   }
 
   return result;
-}
+};
 
+var _default = formatDistance;
+exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4923,7 +5219,7 @@ var dateFormats = {
   // Montag, 7. Januar 2018
   long: 'do MMMM y',
   // 7. Januar 2018
-  medium: 'do MMM. y',
+  medium: 'do MMM y',
   // 7. Jan. 2018
   short: 'dd.MM.y' // 07.01.2018
 
@@ -4959,7 +5255,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4968,7 +5264,7 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = formatRelative;
+exports.default = void 0;
 var formatRelativeLocale = {
   lastWeek: "'letzten' eeee 'um' p",
   yesterday: "'gestern um' p",
@@ -4978,14 +5274,16 @@ var formatRelativeLocale = {
   other: 'P'
 };
 
-function formatRelative(token, _date, _baseDate, _options) {
+var formatRelative = function (token, _date, _baseDate, _options) {
   return formatRelativeLocale[token];
-}
+};
 
+var _default = formatRelative;
+exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4996,9 +5294,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(5));
+var _index = _interopRequireDefault(__webpack_require__(4));
 
-var _index2 = _interopRequireDefault(__webpack_require__(4));
+var _index2 = _interopRequireDefault(__webpack_require__(5));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5022,12 +5320,12 @@ var parseQuarterPatterns = {
 };
 var matchMonthPatterns = {
   narrow: /^[jfmasond]/i,
-  abbreviated: /^(jan|feb|mär|apr|mai|jun|jul|aug|sep|okt|nov|dez)/i,
+  abbreviated: /^(j[aä]n|feb|mär[z]?|apr|mai|jun[i]?|jul[i]?|aug|sep|okt|nov|dez)\.?/i,
   wide: /^(januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)/i
 };
 var parseMonthPatterns = {
   narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
-  any: [/^ja/i, /^f/i, /^mär/i, /^ap/i, /^mai/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
+  any: [/^j[aä]/i, /^f/i, /^mär/i, /^ap/i, /^mai/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
 };
 var matchDayPatterns = {
   narrow: /^[smdmf]/i,
@@ -5058,20 +5356,20 @@ var parseDayPeriodPatterns = {
   }
 };
 var match = {
-  ordinalNumber: (0, _index.default)({
+  ordinalNumber: (0, _index2.default)({
     matchPattern: matchOrdinalNumberPattern,
     parsePattern: parseOrdinalNumberPattern,
     valueCallback: function (value) {
-      return parseInt(value, 10);
+      return parseInt(value);
     }
   }),
-  era: (0, _index2.default)({
+  era: (0, _index.default)({
     matchPatterns: matchEraPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseEraPatterns,
     defaultParseWidth: 'any'
   }),
-  quarter: (0, _index2.default)({
+  quarter: (0, _index.default)({
     matchPatterns: matchQuarterPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseQuarterPatterns,
@@ -5080,19 +5378,19 @@ var match = {
       return index + 1;
     }
   }),
-  month: (0, _index2.default)({
+  month: (0, _index.default)({
     matchPatterns: matchMonthPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseMonthPatterns,
     defaultParseWidth: 'any'
   }),
-  day: (0, _index2.default)({
+  day: (0, _index.default)({
     matchPatterns: matchDayPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseDayPatterns,
     defaultParseWidth: 'any'
   }),
-  dayPeriod: (0, _index2.default)({
+  dayPeriod: (0, _index.default)({
     matchPatterns: matchDayPeriodPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseDayPeriodPatterns,
@@ -5104,7 +5402,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5204,7 +5502,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5230,7 +5528,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5357,7 +5655,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5474,17 +5772,17 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addBusinessDays;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isWeekend_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isWeekend_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isSunday_index_js__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__isSaturday_index_js__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__isSunday_index_js__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__isSaturday_index_js__ = __webpack_require__(74);
 
 
 
@@ -5544,7 +5842,7 @@ function addBusinessDays(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5581,14 +5879,14 @@ function isSaturday(dirtyDate) {
 }
 
 /***/ }),
-/* 72 */
+/* 75 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addISOWeekYears;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getISOWeekYear_index_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setISOWeekYear_index_js__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getISOWeekYear_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setISOWeekYear_index_js__ = __webpack_require__(76);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5631,15 +5929,15 @@ function addISOWeekYears(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 73 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setISOWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfISOWeekYear_index_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInCalendarDays_index_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfISOWeekYear_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInCalendarDays_index_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5691,13 +5989,13 @@ function setISOWeekYear(dirtyDate, dirtyISOWeekYear) {
 }
 
 /***/ }),
-/* 74 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addSeconds;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMilliseconds_index_js__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5732,13 +6030,13 @@ function addSeconds(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 75 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addYears;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5773,12 +6071,210 @@ function addYears(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 76 */
+/* 79 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = max;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+/**
+ * @name max
+ * @category Common Helpers
+ * @summary Return the latest of the given dates.
+ *
+ * @description
+ * Return the latest of the given dates.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * - `max` function now accepts an array of dates rather than spread arguments.
+ *
+ *   ```javascript
+ *   // Before v2.0.0
+ *   var date1 = new Date(1989, 6, 10)
+ *   var date2 = new Date(1987, 1, 11)
+ *   var maxDate = max(date1, date2)
+ *
+ *   // v2.0.0 onward:
+ *   var dates = [new Date(1989, 6, 10), new Date(1987, 1, 11)]
+ *   var maxDate = max(dates)
+ *   ```
+ *
+ * @param {Date[]|Number[]} datesArray - the dates to compare
+ * @returns {Date} the latest of the dates
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Which of these dates is the latest?
+ * var result = max([
+ *   new Date(1989, 6, 10),
+ *   new Date(1987, 1, 11),
+ *   new Date(1995, 6, 2),
+ *   new Date(1990, 0, 1)
+ * ])
+ * //=> Sun Jul 02 1995 00:00:00
+ */
+
+function max(dirtyDatesArray) {
+  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var datesArray; // `dirtyDatesArray` is Array, Set or Map, or object with custom `forEach` method
+
+  if (dirtyDatesArray && typeof dirtyDatesArray.forEach === 'function') {
+    datesArray = dirtyDatesArray; // If `dirtyDatesArray` is Array-like Object, convert to Array.
+  } else if (typeof dirtyDatesArray === 'object' && dirtyDatesArray !== null) {
+    datesArray = Array.prototype.slice.call(dirtyDatesArray);
+  } else {
+    // `dirtyDatesArray` is non-iterable, return Invalid Date
+    return new Date(NaN);
+  }
+
+  var result;
+  datesArray.forEach(function (dirtyDate) {
+    var currentDate = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
+
+    if (result === undefined || result < currentDate || isNaN(Number(currentDate))) {
+      result = currentDate;
+    }
+  });
+  return result || new Date(NaN);
+}
+
+/***/ }),
+/* 80 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = min;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+/**
+ * @name min
+ * @category Common Helpers
+ * @summary Returns the earliest of the given dates.
+ *
+ * @description
+ * Returns the earliest of the given dates.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * - `min` function now accepts an array of dates rather than spread arguments.
+ *
+ *   ```javascript
+ *   // Before v2.0.0
+ *   const date1 = new Date(1989, 6, 10)
+ *   const date2 = new Date(1987, 1, 11)
+ *   const minDate = min(date1, date2)
+ *
+ *   // v2.0.0 onward:
+ *   const dates = [new Date(1989, 6, 10), new Date(1987, 1, 11)]
+ *   const minDate = min(dates)
+ *   ```
+ *
+ * @param {Date[]|Number[]} datesArray - the dates to compare
+ * @returns {Date} - the earliest of the dates
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Which of these dates is the earliest?
+ * const result = min([
+ *   new Date(1989, 6, 10),
+ *   new Date(1987, 1, 11),
+ *   new Date(1995, 6, 2),
+ *   new Date(1990, 0, 1)
+ * ])
+ * //=> Wed Feb 11 1987 00:00:00
+ */
+
+function min(dirtyDatesArray) {
+  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var datesArray; // `dirtyDatesArray` is Array, Set or Map, or object with custom `forEach` method
+
+  if (dirtyDatesArray && typeof dirtyDatesArray.forEach === 'function') {
+    datesArray = dirtyDatesArray; // If `dirtyDatesArray` is Array-like Object, convert to Array.
+  } else if (typeof dirtyDatesArray === 'object' && dirtyDatesArray !== null) {
+    datesArray = Array.prototype.slice.call(dirtyDatesArray);
+  } else {
+    // `dirtyDatesArray` is non-iterable, return Invalid Date
+    return new Date(NaN);
+  }
+
+  var result;
+  datesArray.forEach(function (dirtyDate) {
+    var currentDate = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
+
+    if (result === undefined || result > currentDate || isNaN(currentDate.getDate())) {
+      result = currentDate;
+    }
+  });
+  return result || new Date(NaN);
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = isDate;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+/**
+ * @name isDate
+ * @category Common Helpers
+ * @summary Is the given value a date?
+ *
+ * @description
+ * Returns true if the given value is an instance of Date. The function works for dates transferred across iframes.
+ *
+ * ### v2.0.0 breaking changes:
+ *
+ * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
+ *
+ * @param {*} value - the value to check
+ * @returns {boolean} true if the given value is a date
+ * @throws {TypeError} 1 arguments required
+ *
+ * @example
+ * // For a valid date:
+ * const result = isDate(new Date())
+ * //=> true
+ *
+ * @example
+ * // For an invalid date:
+ * const result = isDate(new Date(NaN))
+ * //=> true
+ *
+ * @example
+ * // For some value:
+ * const result = isDate('2014-02-31')
+ * //=> false
+ *
+ * @example
+ * // For an object:
+ * const result = isDate({})
+ * //=> false
+ */
+
+function isDate(value) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return value instanceof Date || typeof value === 'object' && Object.prototype.toString.call(value) === '[object Date]';
+}
+
+/***/ }),
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInCalendarISOWeekYears;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5821,7 +6317,7 @@ function differenceInCalendarISOWeekYears(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 77 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5866,7 +6362,7 @@ function differenceInCalendarMonths(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 78 */
+/* 84 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5905,13 +6401,13 @@ function getQuarter(dirtyDate) {
 }
 
 /***/ }),
-/* 79 */
+/* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInCalendarWeeks;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -5970,7 +6466,7 @@ function differenceInCalendarWeeks(dirtyDateLeft, dirtyDateRight, dirtyOptions) 
 }
 
 /***/ }),
-/* 80 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6013,16 +6509,19 @@ function differenceInCalendarYears(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 81 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInHours;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_index_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMilliseconds_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_roundingMethods_index_js__ = __webpack_require__(31);
 
 
-var MILLISECONDS_IN_HOUR = 3600000;
+
+
 /**
  * @name differenceInHours
  * @category Hour Helpers
@@ -6037,32 +6536,34 @@ var MILLISECONDS_IN_HOUR = 3600000;
  *
  * @param {Date|Number} dateLeft - the later date
  * @param {Date|Number} dateRight - the earlier date
+ * @param {Object} [options] - an object with options.
+ * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
  * @returns {Number} the number of hours
  * @throws {TypeError} 2 arguments required
  *
  * @example
  * // How many hours are between 2 July 2014 06:50:00 and 2 July 2014 19:00:00?
- * var result = differenceInHours(
+ * const result = differenceInHours(
  *   new Date(2014, 6, 2, 19, 0),
  *   new Date(2014, 6, 2, 6, 50)
  * )
  * //=> 12
  */
 
-function differenceInHours(dirtyDateLeft, dirtyDateRight) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__["a" /* default */])(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_HOUR;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+function differenceInHours(dateLeft, dateRight, options) {
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_1__differenceInMilliseconds_index_js__["a" /* default */])(dateLeft, dateRight) / __WEBPACK_IMPORTED_MODULE_0__constants_index_js__["b" /* millisecondsInHour */];
+  return Object(__WEBPACK_IMPORTED_MODULE_3__lib_roundingMethods_index_js__["a" /* getRoundingMethod */])(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
 }
 
 /***/ }),
-/* 82 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subISOWeekYears;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addISOWeekYears_index_js__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addISOWeekYears_index_js__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -6104,16 +6605,19 @@ function subISOWeekYears(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 83 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInMinutes;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_index_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMilliseconds_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_roundingMethods_index_js__ = __webpack_require__(31);
 
 
-var MILLISECONDS_IN_MINUTE = 60000;
+
+
 /**
  * @name differenceInMinutes
  * @category Minute Helpers
@@ -6128,41 +6632,43 @@ var MILLISECONDS_IN_MINUTE = 60000;
  *
  * @param {Date|Number} dateLeft - the later date
  * @param {Date|Number} dateRight - the earlier date
+ * @param {Object} [options] - an object with options.
+ * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
  * @returns {Number} the number of minutes
  * @throws {TypeError} 2 arguments required
  *
  * @example
  * // How many minutes are between 2 July 2014 12:07:59 and 2 July 2014 12:20:00?
- * var result = differenceInMinutes(
+ * const result = differenceInMinutes(
  *   new Date(2014, 6, 2, 12, 20, 0),
  *   new Date(2014, 6, 2, 12, 7, 59)
  * )
  * //=> 12
  *
  * @example
- * // How many minutes are from 10:01:59 to 10:00:00
- * var result = differenceInMinutes(
+ * // How many minutes are between 10:01:59 and 10:00:00
+ * const result = differenceInMinutes(
  *   new Date(2000, 0, 1, 10, 0, 0),
  *   new Date(2000, 0, 1, 10, 1, 59)
  * )
  * //=> -1
  */
 
-function differenceInMinutes(dirtyDateLeft, dirtyDateRight) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMilliseconds_index_js__["a" /* default */])(dirtyDateLeft, dirtyDateRight) / MILLISECONDS_IN_MINUTE;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+function differenceInMinutes(dateLeft, dateRight, options) {
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_1__differenceInMilliseconds_index_js__["a" /* default */])(dateLeft, dateRight) / __WEBPACK_IMPORTED_MODULE_0__constants_index_js__["c" /* millisecondsInMinute */];
+  return Object(__WEBPACK_IMPORTED_MODULE_3__lib_roundingMethods_index_js__["a" /* getRoundingMethod */])(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
 }
 
 /***/ }),
-/* 84 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isLastDayOfMonth;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__endOfDay_index_js__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfMonth_index_js__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__endOfDay_index_js__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfMonth_index_js__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -6197,14 +6703,14 @@ function isLastDayOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 85 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = differenceInYears;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarYears_index_js__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarYears_index_js__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -6252,7 +6758,7 @@ function differenceInYears(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 86 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6350,7 +6856,7 @@ function eachDayOfInterval(dirtyInterval, options) {
 }
 
 /***/ }),
-/* 87 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6392,7 +6898,7 @@ function endOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 88 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6456,19 +6962,19 @@ function endOfWeek(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 89 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = format;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en_US_index_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__subMilliseconds_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_en_US_index_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__subMilliseconds_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_format_formatters_index_js__ = __webpack_require__(516);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_format_longFormatters_index_js__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_protectedTokens_index_js__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_format_formatters_index_js__ = __webpack_require__(539);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_format_longFormatters_index_js__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_protectedTokens_index_js__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -6587,28 +7093,28 @@ var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
  * | Day of week (formatting)        | E..EEE  | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 | EEEEE   | M, T, W, T, F, S, S               |       |
- * |                                 | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 | EEEEEE  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | ISO day of week (formatting)    | i       | 1, 2, 3, ..., 7                   | 7     |
  * |                                 | io      | 1st, 2nd, ..., 7th                | 7     |
  * |                                 | ii      | 01, 02, ..., 07                   | 7     |
  * |                                 | iii     | Mon, Tue, Wed, ..., Sun           | 7     |
  * |                                 | iiii    | Monday, Tuesday, ..., Sunday      | 2,7   |
  * |                                 | iiiii   | M, T, W, T, F, S, S               | 7     |
- * |                                 | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 7     |
+ * |                                 | iiiiii  | Mo, Tu, We, Th, Fr, Sa, Su        | 7     |
  * | Local day of week (formatting)  | e       | 2, 3, 4, ..., 1                   |       |
  * |                                 | eo      | 2nd, 3rd, ..., 1st                | 7     |
  * |                                 | ee      | 02, 03, ..., 01                   |       |
  * |                                 | eee     | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 | eeeee   | M, T, W, T, F, S, S               |       |
- * |                                 | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 | eeeeee  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | Local day of week (stand-alone) | c       | 2, 3, 4, ..., 1                   |       |
  * |                                 | co      | 2nd, 3rd, ..., 1st                | 7     |
  * |                                 | cc      | 02, 03, ..., 01                   |       |
  * |                                 | ccc     | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 | ccccc   | M, T, W, T, F, S, S               |       |
- * |                                 | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 | cccccc  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | AM, PM                          | a..aa   | AM, PM                            |       |
  * |                                 | aaa     | am, pm                            |       |
  * |                                 | aaaa    | a.m., p.m.                        | 2     |
@@ -6906,11 +7412,11 @@ function cleanEscapedString(input) {
 }
 
 /***/ }),
-/* 90 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addLeadingZeros_index_js__ = __webpack_require__(25);
 
 /*
  * |     | Unit                           |     | Unit                           |
@@ -6997,14 +7503,14 @@ var formatters = {
 /* harmony default export */ __webpack_exports__["a"] = (formatters);
 
 /***/ }),
-/* 91 */
+/* 97 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCISOWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCISOWeekYear_index_js__ = __webpack_require__(518);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCISOWeekYear_index_js__ = __webpack_require__(541);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7024,13 +7530,13 @@ function getUTCISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 92 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCISOWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7060,14 +7566,14 @@ function getUTCISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 93 */
+/* 99 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getUTCWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCWeek_index_js__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeekYear_index_js__ = __webpack_require__(519);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCWeek_index_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeekYear_index_js__ = __webpack_require__(542);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7087,7 +7593,7 @@ function getUTCWeek(dirtyDate, options) {
 }
 
 /***/ }),
-/* 94 */
+/* 100 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7189,7 +7695,7 @@ var longFormatters = {
 /* harmony default export */ __webpack_exports__["a"] = (longFormatters);
 
 /***/ }),
-/* 95 */
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7217,18 +7723,18 @@ function throwProtectedError(token, format, input) {
 }
 
 /***/ }),
-/* 96 */
+/* 102 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatDistance;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMonths_index_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInSeconds_index_js__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__locale_en_US_index_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInMonths_index_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInSeconds_index_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__locale_en_US_index_js__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_cloneObject_index_js__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_cloneObject_index_js__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7445,19 +7951,19 @@ function formatDistance(dirtyDate, dirtyBaseDate) {
 }
 
 /***/ }),
-/* 97 */
+/* 103 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = cloneObject;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__assign_index_js__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__assign_index_js__ = __webpack_require__(104);
 
 function cloneObject(dirtyObject) {
   return Object(__WEBPACK_IMPORTED_MODULE_0__assign_index_js__["a" /* default */])({}, dirtyObject);
 }
 
 /***/ }),
-/* 98 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7470,7 +7976,7 @@ function assign(target, dirtyObject) {
   dirtyObject = dirtyObject || {};
 
   for (var property in dirtyObject) {
-    if (dirtyObject.hasOwnProperty(property)) {
+    if (Object.prototype.hasOwnProperty.call(dirtyObject, property)) {
       target[property] = dirtyObject[property];
     }
   }
@@ -7479,16 +7985,16 @@ function assign(target, dirtyObject) {
 }
 
 /***/ }),
-/* 99 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = formatDistanceStrict;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__compareAsc_index_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__compareAsc_index_js__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_cloneObject_index_js__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__locale_en_US_index_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_cloneObject_index_js__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__locale_en_US_index_js__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7744,7 +8250,7 @@ function formatDistanceStrict(dirtyDate, dirtyBaseDate) {
 }
 
 /***/ }),
-/* 100 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7783,7 +8289,7 @@ function getDate(dirtyDate) {
 }
 
 /***/ }),
-/* 101 */
+/* 107 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7826,7 +8332,7 @@ function getDaysInMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 102 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7865,7 +8371,7 @@ function isLeapYear(dirtyDate) {
 }
 
 /***/ }),
-/* 103 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7912,14 +8418,14 @@ function getISODay(dirtyDate) {
 }
 
 /***/ }),
-/* 104 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getISOWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfISOWeekYear_index_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfISOWeekYear_index_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -7961,7 +8467,7 @@ function getISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 105 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8000,13 +8506,13 @@ function getTime(dirtyDate) {
 }
 
 /***/ }),
-/* 106 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getWeek;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -8068,12 +8574,12 @@ function getWeek(dirtyDate, options) {
 }
 
 /***/ }),
-/* 107 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = getWeekYear;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfWeek_index_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
@@ -8158,7 +8664,7 @@ function getWeekYear(dirtyDate, options) {
 }
 
 /***/ }),
-/* 108 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8200,17 +8706,15 @@ function lastDayOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 109 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = sub;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__subDays_index_js__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subMonths_index_js__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__ = __webpack_require__(6);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__subDays_index_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subMonths_index_js__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__ = __webpack_require__(6);
 
 
 
@@ -8255,18 +8759,18 @@ function lastDayOfMonth(dirtyDate) {
  * //=> Mon Sep 1 2014 10:19:50
  */
 
-function sub(dirtyDate, duration) {
-  Object(__WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+function sub(date, duration) {
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
   if (!duration || typeof duration !== 'object') return new Date(NaN);
-  var years = 'years' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.years) : 0;
-  var months = 'months' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.months) : 0;
-  var weeks = 'weeks' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.weeks) : 0;
-  var days = 'days' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.days) : 0;
-  var hours = 'hours' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.hours) : 0;
-  var minutes = 'minutes' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.minutes) : 0;
-  var seconds = 'seconds' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.seconds) : 0; // Subtract years and months
+  var years = duration.years ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.years) : 0;
+  var months = duration.months ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.months) : 0;
+  var weeks = duration.weeks ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.weeks) : 0;
+  var days = duration.days ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.days) : 0;
+  var hours = duration.hours ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.hours) : 0;
+  var minutes = duration.minutes ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.minutes) : 0;
+  var seconds = duration.seconds ? Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(duration.seconds) : 0; // Subtract years and months
 
-  var dateWithoutMonths = Object(__WEBPACK_IMPORTED_MODULE_1__subMonths_index_js__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_2__toDate_index_js__["a" /* default */])(dirtyDate), months + years * 12); // Subtract weeks and days
+  var dateWithoutMonths = Object(__WEBPACK_IMPORTED_MODULE_1__subMonths_index_js__["a" /* default */])(date, months + years * 12); // Subtract weeks and days
 
   var dateWithoutDays = Object(__WEBPACK_IMPORTED_MODULE_0__subDays_index_js__["a" /* default */])(dateWithoutMonths, days + weeks * 7); // Subtract hours, minutes and seconds
 
@@ -8278,13 +8782,13 @@ function sub(dirtyDate, duration) {
 }
 
 /***/ }),
-/* 110 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subMonths;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -8319,20 +8823,20 @@ function subMonths(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 111 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = parse;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en_US_index_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subMilliseconds_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en_US_index_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subMilliseconds_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_assign_index_js__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_format_longFormatters_index_js__ = __webpack_require__(94);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_protectedTokens_index_js__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_assign_index_js__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_format_longFormatters_index_js__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_protectedTokens_index_js__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_parsers_index_js__ = __webpack_require__(555);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_parsers_index_js__ = __webpack_require__(580);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -8461,28 +8965,28 @@ var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
  * | Day of week (formatting)        |  90 | E..EEE  | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 |     | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | EEEEE   | M, T, W, T, F, S, S               |       |
- * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | ISO day of week (formatting)    |  90 | i       | 1, 2, 3, ..., 7                   | 5     |
  * |                                 |     | io      | 1st, 2nd, ..., 7th                | 5     |
  * |                                 |     | ii      | 01, 02, ..., 07                   | 5     |
  * |                                 |     | iii     | Mon, Tue, Wed, ..., Sun           | 5     |
  * |                                 |     | iiii    | Monday, Tuesday, ..., Sunday      | 2,5   |
  * |                                 |     | iiiii   | M, T, W, T, F, S, S               | 5     |
- * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 5     |
+ * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Sa, Su        | 5     |
  * | Local day of week (formatting)  |  90 | e       | 2, 3, 4, ..., 1                   |       |
  * |                                 |     | eo      | 2nd, 3rd, ..., 1st                | 5     |
  * |                                 |     | ee      | 02, 03, ..., 01                   |       |
  * |                                 |     | eee     | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 |     | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | eeeee   | M, T, W, T, F, S, S               |       |
- * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | Local day of week (stand-alone) |  90 | c       | 2, 3, 4, ..., 1                   |       |
  * |                                 |     | co      | 2nd, 3rd, ..., 1st                | 5     |
  * |                                 |     | cc      | 02, 03, ..., 01                   |       |
  * |                                 |     | ccc     | Mon, Tue, Wed, ..., Sun           |       |
  * |                                 |     | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | ccccc   | M, T, W, T, F, S, S               |       |
- * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | AM, PM                          |  80 | a..aaa  | AM, PM                            |       |
  * |                                 |     | aaaa    | a.m., p.m.                        | 2     |
  * |                                 |     | aaaaa   | a, p                              |       |
@@ -8721,9 +9225,9 @@ function parse(dirtyDateString, dirtyFormatString, dirtyReferenceDate, dirtyOpti
   var subFnOptions = {
     firstWeekContainsDate: firstWeekContainsDate,
     weekStartsOn: weekStartsOn,
-    locale: locale // If timezone isn't specified, it will be set to the system timezone
+    locale: locale
+  }; // If timezone isn't specified, it will be set to the system timezone
 
-  };
   var setters = [{
     priority: TIMEZONE_UNIT_PRIORITY,
     subPriority: -1,
@@ -8887,12 +9391,12 @@ function cleanEscapedString(input) {
 }
 
 /***/ }),
-/* 112 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameHour;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfHour_index_js__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfHour_index_js__ = __webpack_require__(119);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -8927,7 +9431,7 @@ function isSameHour(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 113 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8967,12 +9471,12 @@ function startOfHour(dirtyDate) {
 }
 
 /***/ }),
-/* 114 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameISOWeek;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameWeek_index_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameWeek_index_js__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -9009,12 +9513,12 @@ function isSameISOWeek(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 115 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameMinute;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfMinute_index_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfMinute_index_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -9053,7 +9557,7 @@ function isSameMinute(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 116 */
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9093,12 +9597,12 @@ function isSameMonth(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 117 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameQuarter;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfQuarter_index_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfQuarter_index_js__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -9133,12 +9637,12 @@ function isSameQuarter(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 118 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isSameSecond;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfSecond_index_js__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfSecond_index_js__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -9177,7 +9681,7 @@ function isSameSecond(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 119 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9217,7 +9721,7 @@ function startOfSecond(dirtyDate) {
 }
 
 /***/ }),
-/* 120 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9257,7 +9761,7 @@ function isSameYear(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 121 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9321,7 +9825,7 @@ function lastDayOfWeek(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 122 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9421,7 +9925,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 123 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9473,7 +9977,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 124 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9499,7 +10003,7 @@ function formatRelative(token) {
 module.exports = exports.default;
 
 /***/ }),
-/* 125 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9651,7 +10155,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 126 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9767,7 +10271,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 127 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9901,7 +10405,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 128 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9953,7 +10457,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 129 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9979,7 +10483,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 130 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10115,7 +10619,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 131 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10233,7 +10737,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 132 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10367,7 +10871,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 133 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10419,7 +10923,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 134 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10445,7 +10949,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 135 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10581,7 +11085,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 136 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10699,7 +11203,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 137 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10833,7 +11337,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 138 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10885,7 +11389,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 139 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10911,7 +11415,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 140 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11047,7 +11551,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 141 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11165,7 +11669,479 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 142 */
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var formatDistanceLocale = {
+  lessThanXSeconds: {
+    one: 'أقل من ثانية',
+    two: 'أقل من زوز ثواني',
+    threeToTen: 'أقل من {{count}} ثواني',
+    other: 'أقل من {{count}} ثانية'
+  },
+  xSeconds: {
+    one: 'ثانية',
+    two: 'زوز ثواني',
+    threeToTen: '{{count}} ثواني',
+    other: '{{count}} ثانية'
+  },
+  halfAMinute: 'نص دقيقة',
+  lessThanXMinutes: {
+    one: 'أقل من دقيقة',
+    two: 'أقل من دقيقتين',
+    threeToTen: 'أقل من {{count}} دقايق',
+    other: 'أقل من {{count}} دقيقة'
+  },
+  xMinutes: {
+    one: 'دقيقة',
+    two: 'دقيقتين',
+    threeToTen: '{{count}} دقايق',
+    other: '{{count}} دقيقة'
+  },
+  aboutXHours: {
+    one: 'ساعة تقريب',
+    two: 'ساعتين تقريب',
+    threeToTen: '{{count}} سوايع تقريب',
+    other: '{{count}} ساعة تقريب'
+  },
+  xHours: {
+    one: 'ساعة',
+    two: 'ساعتين',
+    threeToTen: '{{count}} سوايع',
+    other: '{{count}} ساعة'
+  },
+  xDays: {
+    one: 'نهار',
+    two: 'نهارين',
+    threeToTen: '{{count}} أيام',
+    other: '{{count}} يوم'
+  },
+  aboutXWeeks: {
+    one: 'جمعة تقريب',
+    two: 'جمعتين تقريب',
+    threeToTen: '{{count}} جماع تقريب',
+    other: '{{count}} جمعة تقريب'
+  },
+  xWeeks: {
+    one: 'جمعة',
+    two: 'جمعتين',
+    threeToTen: '{{count}} جماع',
+    other: '{{count}} جمعة'
+  },
+  aboutXMonths: {
+    one: 'شهر تقريب',
+    two: 'شهرين تقريب',
+    threeToTen: '{{count}} أشهرة تقريب',
+    other: '{{count}} شهر تقريب'
+  },
+  xMonths: {
+    one: 'شهر',
+    two: 'شهرين',
+    threeToTen: '{{count}} أشهرة',
+    other: '{{count}} شهر'
+  },
+  aboutXYears: {
+    one: 'عام تقريب',
+    two: 'عامين تقريب',
+    threeToTen: '{{count}} أعوام تقريب',
+    other: '{{count}} عام تقريب'
+  },
+  xYears: {
+    one: 'عام',
+    two: 'عامين',
+    threeToTen: '{{count}} أعوام',
+    other: '{{count}} عام'
+  },
+  overXYears: {
+    one: 'أكثر من عام',
+    two: 'أكثر من عامين',
+    threeToTen: 'أكثر من {{count}} أعوام',
+    other: 'أكثر من {{count}} عام'
+  },
+  almostXYears: {
+    one: 'عام تقريب',
+    two: 'عامين تقريب',
+    threeToTen: '{{count}} أعوام تقريب',
+    other: '{{count}} عام تقريب'
+  }
+};
+
+var formatDistance = function (token, count, options) {
+  var usageGroup = formatDistanceLocale[token];
+  var result;
+
+  if (typeof usageGroup === 'string') {
+    result = usageGroup;
+  } else if (count === 1) {
+    result = usageGroup.one;
+  } else if (count === 2) {
+    result = usageGroup.two;
+  } else if (count <= 10) {
+    result = usageGroup.threeToTen.replace('{{count}}', String(count));
+  } else {
+    result = usageGroup.other.replace('{{count}}', String(count));
+  }
+
+  if (options !== null && options !== void 0 && options.addSuffix) {
+    if (options.comparison && options.comparison > 0) {
+      return 'في ' + result;
+    } else {
+      return 'عندو ' + result;
+    }
+  }
+
+  return result;
+};
+
+var _default = formatDistance;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(2));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dateFormats = {
+  full: 'EEEE، do MMMM y',
+  long: 'do MMMM y',
+  medium: 'd MMM y',
+  short: 'dd/MM/yyyy'
+};
+var timeFormats = {
+  full: 'HH:mm:ss',
+  long: 'HH:mm:ss',
+  medium: 'HH:mm:ss',
+  short: 'HH:mm'
+};
+var dateTimeFormats = {
+  full: "{{date}} 'مع' {{time}}",
+  long: "{{date}} 'مع' {{time}}",
+  medium: '{{date}}, {{time}}',
+  short: '{{date}}, {{time}}'
+};
+var formatLong = {
+  date: (0, _index.default)({
+    formats: dateFormats,
+    defaultWidth: 'full'
+  }),
+  time: (0, _index.default)({
+    formats: timeFormats,
+    defaultWidth: 'full'
+  }),
+  dateTime: (0, _index.default)({
+    formats: dateTimeFormats,
+    defaultWidth: 'full'
+  })
+};
+var _default = formatLong;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var formatRelativeLocale = {
+  lastWeek: "eeee 'إلي فات مع' p",
+  yesterday: "'البارح مع' p",
+  today: "'اليوم مع' p",
+  tomorrow: "'غدوة مع' p",
+  nextWeek: "eeee 'الجمعة الجاية مع' p 'نهار'",
+  other: 'P'
+};
+
+var formatRelative = function (token) {
+  return formatRelativeLocale[token];
+};
+
+var _default = formatRelative;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var eraValues = {
+  narrow: ['ق', 'ب'],
+  abbreviated: ['ق.م.', 'ب.م.'],
+  wide: ['قبل الميلاد', 'بعد الميلاد']
+};
+var quarterValues = {
+  narrow: ['1', '2', '3', '4'],
+  abbreviated: ['ر1', 'ر2', 'ر3', 'ر4'],
+  wide: ['الربع الأول', 'الربع الثاني', 'الربع الثالث', 'الربع الرابع']
+};
+var monthValues = {
+  narrow: ['د', 'ن', 'أ', 'س', 'أ', 'ج', 'ج', 'م', 'أ', 'م', 'ف', 'ج'],
+  abbreviated: ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+  wide: ['جانفي', 'فيفري', 'مارس', 'أفريل', 'ماي', 'جوان', 'جويلية', 'أوت', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+};
+var dayValues = {
+  narrow: ['ح', 'ن', 'ث', 'ر', 'خ', 'ج', 'س'],
+  short: ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+  abbreviated: ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'],
+  wide: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+};
+var dayPeriodValues = {
+  narrow: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'الصباح',
+    noon: 'القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'العشية',
+    night: 'الليل',
+    midnight: 'نص الليل'
+  },
+  abbreviated: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'الصباح',
+    noon: 'القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'العشية',
+    night: 'الليل',
+    midnight: 'نص الليل'
+  },
+  wide: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'الصباح',
+    noon: 'القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'العشية',
+    night: 'الليل',
+    midnight: 'نص الليل'
+  }
+};
+var formattingDayPeriodValues = {
+  narrow: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'في الصباح',
+    noon: 'في القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'في العشية',
+    night: 'في الليل',
+    midnight: 'نص الليل'
+  },
+  abbreviated: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'في الصباح',
+    noon: 'في القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'في العشية',
+    night: 'في الليل',
+    midnight: 'نص الليل'
+  },
+  wide: {
+    am: 'ص',
+    pm: 'ع',
+    morning: 'في الصباح',
+    noon: 'في القايلة',
+    afternoon: 'بعد القايلة',
+    evening: 'في العشية',
+    night: 'في الليل',
+    midnight: 'نص الليل'
+  }
+};
+
+var ordinalNumber = function (num) {
+  return String(num);
+};
+
+var localize = {
+  ordinalNumber: ordinalNumber,
+  era: (0, _index.default)({
+    values: eraValues,
+    defaultWidth: 'wide'
+  }),
+  quarter: (0, _index.default)({
+    values: quarterValues,
+    defaultWidth: 'wide',
+    argumentCallback: function (quarter) {
+      return quarter - 1;
+    }
+  }),
+  month: (0, _index.default)({
+    values: monthValues,
+    defaultWidth: 'wide'
+  }),
+  day: (0, _index.default)({
+    values: dayValues,
+    defaultWidth: 'wide'
+  }),
+  dayPeriod: (0, _index.default)({
+    values: dayPeriodValues,
+    defaultWidth: 'wide',
+    formattingValues: formattingDayPeriodValues,
+    defaultFormattingWidth: 'wide'
+  })
+};
+var _default = localize;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(5));
+
+var _index2 = _interopRequireDefault(__webpack_require__(4));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i;
+var parseOrdinalNumberPattern = /\d+/i;
+var matchEraPatterns = {
+  narrow: /[قب]/,
+  abbreviated: /[قب]\.م\./,
+  wide: /(قبل|بعد) الميلاد/
+};
+var parseEraPatterns = {
+  any: [/قبل/, /بعد/]
+};
+var matchQuarterPatterns = {
+  narrow: /^[1234]/i,
+  abbreviated: /ر[1234]/,
+  wide: /الربع (الأول|الثاني|الثالث|الرابع)/
+};
+var parseQuarterPatterns = {
+  any: [/1/i, /2/i, /3/i, /4/i]
+};
+var matchMonthPatterns = {
+  narrow: /^[جفمأسند]/,
+  abbreviated: /^(جانفي|فيفري|مارس|أفريل|ماي|جوان|جويلية|أوت|سبتمبر|أكتوبر|نوفمبر|ديسمبر)/,
+  wide: /^(جانفي|فيفري|مارس|أفريل|ماي|جوان|جويلية|أوت|سبتمبر|أكتوبر|نوفمبر|ديسمبر)/
+};
+var parseMonthPatterns = {
+  narrow: [/^ج/i, /^ف/i, /^م/i, /^أ/i, /^م/i, /^ج/i, /^ج/i, /^أ/i, /^س/i, /^أ/i, /^ن/i, /^د/i],
+  any: [/^جانفي/i, /^فيفري/i, /^مارس/i, /^أفريل/i, /^ماي/i, /^جوان/i, /^جويلية/i, /^أوت/i, /^سبتمبر/i, /^أكتوبر/i, /^نوفمبر/i, /^ديسمبر/i]
+};
+var matchDayPatterns = {
+  narrow: /^[حنثرخجس]/i,
+  short: /^(أحد|اثنين|ثلاثاء|أربعاء|خميس|جمعة|سبت)/i,
+  abbreviated: /^(أحد|اثنين|ثلاثاء|أربعاء|خميس|جمعة|سبت)/i,
+  wide: /^(الأحد|الاثنين|الثلاثاء|الأربعاء|الخميس|الجمعة|السبت)/i
+};
+var parseDayPatterns = {
+  narrow: [/^ح/i, /^ن/i, /^ث/i, /^ر/i, /^خ/i, /^ج/i, /^س/i],
+  wide: [/^الأحد/i, /^الاثنين/i, /^الثلاثاء/i, /^الأربعاء/i, /^الخميس/i, /^الجمعة/i, /^السبت/i],
+  any: [/^أح/i, /^اث/i, /^ث/i, /^أر/i, /^خ/i, /^ج/i, /^س/i]
+};
+var matchDayPeriodPatterns = {
+  narrow: /^(ص|ع|ن ل|ل|(في|مع) (صباح|قايلة|عشية|ليل))/,
+  any: /^([صع]|نص الليل|قايلة|(في|مع) (صباح|قايلة|عشية|ليل))/
+};
+var parseDayPeriodPatterns = {
+  any: {
+    am: /^ص/,
+    pm: /^ع/,
+    midnight: /نص الليل/,
+    noon: /قايلة/,
+    afternoon: /بعد القايلة/,
+    morning: /صباح/,
+    evening: /عشية/,
+    night: /ليل/
+  }
+};
+var match = {
+  ordinalNumber: (0, _index.default)({
+    matchPattern: matchOrdinalNumberPattern,
+    parsePattern: parseOrdinalNumberPattern,
+    valueCallback: function (value) {
+      return parseInt(value, 10);
+    }
+  }),
+  era: (0, _index2.default)({
+    matchPatterns: matchEraPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseEraPatterns,
+    defaultParseWidth: 'any'
+  }),
+  quarter: (0, _index2.default)({
+    matchPatterns: matchQuarterPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseQuarterPatterns,
+    defaultParseWidth: 'any',
+    valueCallback: function (index) {
+      return index + 1;
+    }
+  }),
+  month: (0, _index2.default)({
+    matchPatterns: matchMonthPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseMonthPatterns,
+    defaultParseWidth: 'any'
+  }),
+  day: (0, _index2.default)({
+    matchPatterns: matchDayPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseDayPatterns,
+    defaultParseWidth: 'any'
+  }),
+  dayPeriod: (0, _index2.default)({
+    matchPatterns: matchDayPeriodPatterns,
+    defaultMatchWidth: 'any',
+    parsePatterns: parseDayPeriodPatterns,
+    defaultParseWidth: 'any'
+  })
+};
+var _default = match;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11265,7 +12241,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 143 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11317,7 +12293,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 144 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11343,7 +12319,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 145 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11519,7 +12495,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 146 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11639,7 +12615,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 147 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11897,7 +12873,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 148 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11946,7 +12922,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 149 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11957,7 +12933,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12040,7 +13016,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 150 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12210,7 +13186,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 151 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12328,7 +13304,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 152 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12428,7 +13404,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 153 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12477,7 +13453,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 154 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12488,7 +13464,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12579,7 +13555,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 155 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12703,7 +13679,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 156 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12817,7 +13793,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 157 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12828,7 +13804,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatDistance;
 
-var _index = _interopRequireDefault(__webpack_require__(61));
+var _index = _interopRequireDefault(__webpack_require__(64));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12922,7 +13898,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 158 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12974,7 +13950,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 159 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13000,7 +13976,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 160 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13121,7 +14097,571 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 161 */
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = formatDistance;
+var formatDistanceLocale = {
+  lessThanXSeconds: {
+    one: {
+      standalone: 'manje od 1 sekunde',
+      withPrepositionAgo: 'manje od 1 sekunde',
+      withPrepositionIn: 'manje od 1 sekundu'
+    },
+    dual: 'manje od {{count}} sekunde',
+    other: 'manje od {{count}} sekundi'
+  },
+  xSeconds: {
+    one: {
+      standalone: '1 sekunda',
+      withPrepositionAgo: '1 sekunde',
+      withPrepositionIn: '1 sekundu'
+    },
+    dual: '{{count}} sekunde',
+    other: '{{count}} sekundi'
+  },
+  halfAMinute: 'pola minute',
+  lessThanXMinutes: {
+    one: {
+      standalone: 'manje od 1 minute',
+      withPrepositionAgo: 'manje od 1 minute',
+      withPrepositionIn: 'manje od 1 minutu'
+    },
+    dual: 'manje od {{count}} minute',
+    other: 'manje od {{count}} minuta'
+  },
+  xMinutes: {
+    one: {
+      standalone: '1 minuta',
+      withPrepositionAgo: '1 minute',
+      withPrepositionIn: '1 minutu'
+    },
+    dual: '{{count}} minute',
+    other: '{{count}} minuta'
+  },
+  aboutXHours: {
+    one: {
+      standalone: 'oko 1 sat',
+      withPrepositionAgo: 'oko 1 sat',
+      withPrepositionIn: 'oko 1 sat'
+    },
+    dual: 'oko {{count}} sata',
+    other: 'oko {{count}} sati'
+  },
+  xHours: {
+    one: {
+      standalone: '1 sat',
+      withPrepositionAgo: '1 sat',
+      withPrepositionIn: '1 sat'
+    },
+    dual: '{{count}} sata',
+    other: '{{count}} sati'
+  },
+  xDays: {
+    one: {
+      standalone: '1 dan',
+      withPrepositionAgo: '1 dan',
+      withPrepositionIn: '1 dan'
+    },
+    dual: '{{count}} dana',
+    other: '{{count}} dana'
+  },
+  aboutXWeeks: {
+    one: {
+      standalone: 'oko 1 sedmicu',
+      withPrepositionAgo: 'oko 1 sedmicu',
+      withPrepositionIn: 'oko 1 sedmicu'
+    },
+    dual: 'oko {{count}} sedmice',
+    other: 'oko {{count}} sedmice'
+  },
+  xWeeks: {
+    one: {
+      standalone: '1 sedmicu',
+      withPrepositionAgo: '1 sedmicu',
+      withPrepositionIn: '1 sedmicu'
+    },
+    dual: '{{count}} sedmice',
+    other: '{{count}} sedmice'
+  },
+  aboutXMonths: {
+    one: {
+      standalone: 'oko 1 mjesec',
+      withPrepositionAgo: 'oko 1 mjesec',
+      withPrepositionIn: 'oko 1 mjesec'
+    },
+    dual: 'oko {{count}} mjeseca',
+    other: 'oko {{count}} mjeseci'
+  },
+  xMonths: {
+    one: {
+      standalone: '1 mjesec',
+      withPrepositionAgo: '1 mjesec',
+      withPrepositionIn: '1 mjesec'
+    },
+    dual: '{{count}} mjeseca',
+    other: '{{count}} mjeseci'
+  },
+  aboutXYears: {
+    one: {
+      standalone: 'oko 1 godinu',
+      withPrepositionAgo: 'oko 1 godinu',
+      withPrepositionIn: 'oko 1 godinu'
+    },
+    dual: 'oko {{count}} godine',
+    other: 'oko {{count}} godina'
+  },
+  xYears: {
+    one: {
+      standalone: '1 godina',
+      withPrepositionAgo: '1 godine',
+      withPrepositionIn: '1 godinu'
+    },
+    dual: '{{count}} godine',
+    other: '{{count}} godina'
+  },
+  overXYears: {
+    one: {
+      standalone: 'preko 1 godinu',
+      withPrepositionAgo: 'preko 1 godinu',
+      withPrepositionIn: 'preko 1 godinu'
+    },
+    dual: 'preko {{count}} godine',
+    other: 'preko {{count}} godina'
+  },
+  almostXYears: {
+    one: {
+      standalone: 'gotovo 1 godinu',
+      withPrepositionAgo: 'gotovo 1 godinu',
+      withPrepositionIn: 'gotovo 1 godinu'
+    },
+    dual: 'gotovo {{count}} godine',
+    other: 'gotovo {{count}} godina'
+  }
+};
+
+function formatDistance(token, count, options) {
+  options = options || {};
+  var result;
+
+  if (typeof formatDistanceLocale[token] === 'string') {
+    result = formatDistanceLocale[token];
+  } else if (count === 1) {
+    if (options.addSuffix) {
+      if (options.comparison > 0) {
+        result = formatDistanceLocale[token].one.withPrepositionIn;
+      } else {
+        result = formatDistanceLocale[token].one.withPrepositionAgo;
+      }
+    } else {
+      result = formatDistanceLocale[token].one.standalone;
+    }
+  } else if (count % 10 > 1 && count % 10 < 5 && // if last digit is between 2 and 4
+  String(count).substr(-2, 1) !== '1' // unless the 2nd to last digit is "1"
+  ) {
+      result = formatDistanceLocale[token].dual.replace('{{count}}', count);
+    } else {
+    result = formatDistanceLocale[token].other.replace('{{count}}', count);
+  }
+
+  if (options.addSuffix) {
+    if (options.comparison > 0) {
+      return 'za ' + result;
+    } else {
+      return 'prije ' + result;
+    }
+  }
+
+  return result;
+}
+
+module.exports = exports.default;
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(2));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dateFormats = {
+  full: 'EEEE, d. MMMM yyyy.',
+  long: 'd. MMMM yyyy.',
+  medium: 'd. MMM yy.',
+  short: 'dd. MM. yy.'
+};
+var timeFormats = {
+  full: 'HH:mm:ss (zzzz)',
+  long: 'HH:mm:ss z',
+  medium: 'HH:mm:ss',
+  short: 'HH:mm'
+};
+var dateTimeFormats = {
+  full: "{{date}} 'u' {{time}}",
+  long: "{{date}} 'u' {{time}}",
+  medium: '{{date}} {{time}}',
+  short: '{{date}} {{time}}'
+};
+var formatLong = {
+  date: (0, _index.default)({
+    formats: dateFormats,
+    defaultWidth: 'full'
+  }),
+  time: (0, _index.default)({
+    formats: timeFormats,
+    defaultWidth: 'full'
+  }),
+  dateTime: (0, _index.default)({
+    formats: dateTimeFormats,
+    defaultWidth: 'full'
+  })
+};
+var _default = formatLong;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 174 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = formatRelative;
+var formatRelativeLocale = {
+  lastWeek: function (date) {
+    var day = date.getUTCDay();
+
+    switch (day) {
+      case 0:
+        return "'prošle nedjelje u' p";
+
+      case 3:
+        return "'prošle srijede u' p";
+
+      case 6:
+        return "'prošle subote u' p";
+
+      default:
+        return "'prošli' EEEE 'u' p";
+    }
+  },
+  yesterday: "'juče u' p",
+  today: "'danas u' p",
+  tomorrow: "'sutra u' p",
+  nextWeek: function (date) {
+    var day = date.getUTCDay();
+
+    switch (day) {
+      case 0:
+        return "'sljedeće nedjelje u' p";
+
+      case 3:
+        return "'sljedeću srijedu u' p";
+
+      case 6:
+        return "'sljedeću subotu u' p";
+
+      default:
+        return "'sljedeći' EEEE 'u' p";
+    }
+  },
+  other: 'P'
+};
+
+function formatRelative(token, date, _baseDate, _options) {
+  var format = formatRelativeLocale[token];
+
+  if (typeof format === 'function') {
+    return format(date);
+  }
+
+  return format;
+}
+
+module.exports = exports.default;
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ordinalNumber(dirtyNumber) {
+  var number = Number(dirtyNumber);
+  return String(number).concat('.');
+}
+
+var eraValues = {
+  narrow: ['pr.n.e.', 'AD'],
+  abbreviated: ['pr. Hr.', 'po. Hr.'],
+  wide: ['Prije Hrista', 'Poslije Hrista']
+};
+var monthValues = {
+  narrow: ['1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.', '10.', '11.', '12.'],
+  abbreviated: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'],
+  wide: ['januar', 'februar', 'mart', 'april', 'maj', 'juni', 'juli', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar']
+};
+var formattingMonthValues = {
+  narrow: ['1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.', '10.', '11.', '12.'],
+  abbreviated: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'avg', 'sep', 'okt', 'nov', 'dec'],
+  wide: ['januar', 'februar', 'mart', 'april', 'maj', 'juni', 'juli', 'avgust', 'septembar', 'oktobar', 'novembar', 'decembar']
+};
+var quarterValues = {
+  narrow: ['1.', '2.', '3.', '4.'],
+  abbreviated: ['1. kv.', '2. kv.', '3. kv.', '4. kv.'],
+  wide: ['1. kvartal', '2. kvartal', '3. kvartal', '4. kvartal']
+};
+var dayValues = {
+  narrow: ['N', 'P', 'U', 'S', 'Č', 'P', 'S'],
+  short: ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'],
+  abbreviated: ['ned', 'pon', 'uto', 'sre', 'čet', 'pet', 'sub'],
+  wide: ['nedjelja', 'ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak', 'subota']
+};
+var formattingDayPeriodValues = {
+  narrow: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'popodne',
+    evening: 'uveče',
+    night: 'noću'
+  },
+  abbreviated: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'popodne',
+    evening: 'uveče',
+    night: 'noću'
+  },
+  wide: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'poslije podne',
+    evening: 'uveče',
+    night: 'noću'
+  }
+};
+var dayPeriodValues = {
+  narrow: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'popodne',
+    evening: 'uveče',
+    night: 'noću'
+  },
+  abbreviated: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'popodne',
+    evening: 'uveče',
+    night: 'noću'
+  },
+  wide: {
+    am: 'AM',
+    pm: 'PM',
+    midnight: 'ponoć',
+    noon: 'podne',
+    morning: 'ujutru',
+    afternoon: 'poslije podne',
+    evening: 'uveče',
+    night: 'noću'
+  }
+};
+var localize = {
+  ordinalNumber: ordinalNumber,
+  era: (0, _index.default)({
+    values: eraValues,
+    defaultWidth: 'wide'
+  }),
+  quarter: (0, _index.default)({
+    values: quarterValues,
+    defaultWidth: 'wide',
+    argumentCallback: function (quarter) {
+      return Number(quarter) - 1;
+    }
+  }),
+  month: (0, _index.default)({
+    values: monthValues,
+    defaultWidth: 'wide',
+    formattingValues: formattingMonthValues,
+    defaultFormattingWidth: 'wide'
+  }),
+  day: (0, _index.default)({
+    values: dayValues,
+    defaultWidth: 'wide'
+  }),
+  dayPeriod: (0, _index.default)({
+    values: dayPeriodValues,
+    defaultWidth: 'wide',
+    formattingValues: formattingDayPeriodValues,
+    defaultFormattingWidth: 'wide'
+  })
+};
+var _default = localize;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 176 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(4));
+
+var _index2 = _interopRequireDefault(__webpack_require__(5));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var matchOrdinalNumberPattern = /^(\d+)\./i;
+var parseOrdinalNumberPattern = /\d+/i;
+var matchEraPatterns = {
+  narrow: /^(pr\.n\.e\.|AD)/i,
+  abbreviated: /^(pr\.\s?Hr\.|po\.\s?Hr\.)/i,
+  wide: /^(Prije Hrista|prije nove ere|Poslije Hrista|nova era)/i
+};
+var parseEraPatterns = {
+  any: [/^pr/i, /^(po|nova)/i]
+};
+var matchQuarterPatterns = {
+  narrow: /^[1234]/i,
+  abbreviated: /^[1234]\.\s?kv\.?/i,
+  wide: /^[1234]\. kvartal/i
+};
+var parseQuarterPatterns = {
+  any: [/1/i, /2/i, /3/i, /4/i]
+};
+var matchMonthPatterns = {
+  narrow: /^(10|11|12|[123456789])\./i,
+  abbreviated: /^(jan|feb|mar|apr|maj|jun|jul|avg|sep|okt|nov|dec)/i,
+  wide: /^((januar|januara)|(februar|februara)|(mart|marta)|(april|aprila)|(maj|maja)|(juni|juna)|(juli|jula)|(avgust|avgusta)|(septembar|septembra)|(oktobar|oktobra)|(novembar|novembra)|(decembar|decembra))/i
+};
+var parseMonthPatterns = {
+  narrow: [/(10|11|12|[123456789])/i],
+  any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^maj/i, /^jun/i, /^jul/i, /^avg/i, /^s/i, /^o/i, /^n/i, /^d/i]
+};
+var matchDayPatterns = {
+  narrow: /^[npusčc]/i,
+  short: /^(ned|pon|uto|sre|(čet|cet)|pet|sub)/i,
+  abbreviated: /^(ned|pon|uto|sre|(čet|cet)|pet|sub)/i,
+  wide: /^(nedjelja|ponedjeljak|utorak|srijeda|(četvrtak|cetvrtak)|petak|subota)/i
+};
+var parseDayPatterns = {
+  narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
+  any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
+};
+var matchDayPeriodPatterns = {
+  any: /^(am|pm|ponoc|ponoć|(po)?podne|uvece|uveče|noću|poslije podne|ujutru)/i
+};
+var parseDayPeriodPatterns = {
+  any: {
+    am: /^a/i,
+    pm: /^p/i,
+    midnight: /^pono/i,
+    noon: /^pod/i,
+    morning: /jutro/i,
+    afternoon: /(poslije\s|po)+podne/i,
+    evening: /(uvece|uveče)/i,
+    night: /(nocu|noću)/i
+  }
+};
+var match = {
+  ordinalNumber: (0, _index2.default)({
+    matchPattern: matchOrdinalNumberPattern,
+    parsePattern: parseOrdinalNumberPattern,
+    valueCallback: function (value) {
+      return parseInt(value, 10);
+    }
+  }),
+  era: (0, _index.default)({
+    matchPatterns: matchEraPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseEraPatterns,
+    defaultParseWidth: 'any'
+  }),
+  quarter: (0, _index.default)({
+    matchPatterns: matchQuarterPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseQuarterPatterns,
+    defaultParseWidth: 'any',
+    valueCallback: function (index) {
+      return index + 1;
+    }
+  }),
+  month: (0, _index.default)({
+    matchPatterns: matchMonthPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseMonthPatterns,
+    defaultParseWidth: 'any'
+  }),
+  day: (0, _index.default)({
+    matchPatterns: matchDayPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseDayPatterns,
+    defaultParseWidth: 'any'
+  }),
+  dayPeriod: (0, _index.default)({
+    matchPatterns: matchDayPeriodPatterns,
+    defaultMatchWidth: 'any',
+    parsePatterns: parseDayPeriodPatterns,
+    defaultParseWidth: 'any'
+  })
+};
+var _default = match;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13237,7 +14777,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 162 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13289,7 +14829,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 163 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13327,7 +14867,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 164 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13361,14 +14901,14 @@ var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['T1', 'T2', 'T3', 'T4'],
   wide: ['1r trimestre', '2n trimestre', '3r trimestre', '4t trimestre']
-  /**
-   * Dins d'un text convé fer servir la forma sencera dels mesos, ja que sempre és més clar el mot sencer que l'abreviatura, encara que aquesta sigui força coneguda.
-   * Cal reservar, doncs, les abreviatures per a les llistes o classificacions, els gràfics, les taules o quadres estadístics, els textos publicitaris, etc.
-   *
-   * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?input_cercar=abreviacions+mesos&action=Principal&method=detall_completa&numPagina=1&idHit=8402&database=FITXES_PUB&tipusFont=Fitxes%20de%20l%27Optimot&idFont=8402&titol=abreviatures%20dels%20mesos%20de%20l%27any&numeroResultat=5&clickLink=detall&tipusCerca=cerca.fitxes
-   */
-
 };
+/**
+ * Dins d'un text convé fer servir la forma sencera dels mesos, ja que sempre és més clar el mot sencer que l'abreviatura, encara que aquesta sigui força coneguda.
+ * Cal reservar, doncs, les abreviatures per a les llistes o classificacions, els gràfics, les taules o quadres estadístics, els textos publicitaris, etc.
+ *
+ * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?input_cercar=abreviacions+mesos&action=Principal&method=detall_completa&numPagina=1&idHit=8402&database=FITXES_PUB&tipusFont=Fitxes%20de%20l%27Optimot&idFont=8402&titol=abreviatures%20dels%20mesos%20de%20l%27any&numeroResultat=5&clickLink=detall&tipusCerca=cerca.fitxes
+ */
+
 var monthValues = {
   narrow: ['GN', 'FB', 'MÇ', 'AB', 'MG', 'JN', 'JL', 'AG', 'ST', 'OC', 'NV', 'DS'],
 
@@ -13379,29 +14919,29 @@ var monthValues = {
    */
   abbreviated: ['gen.', 'febr.', 'març', 'abr.', 'maig', 'juny', 'jul.', 'ag.', 'set.', 'oct.', 'nov.', 'des.'],
   wide: ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre']
-  /**
-   * Les abreviatures dels dies de la setmana comencen totes amb la lletra d.
-   * Tot seguit porten la consonant següent a la i, excepte en el cas de dimarts, dimecres i diumenge, en què aquesta consonant és la m i, per tant, hi podria haver confusió.
-   * Per evitar-ho, s'ha substituït la m per una t (en el cas de dimarts), una c (en el cas de dimecres) i una g (en el cas de diumenge), respectivament.
-   *
-   * Seguint la norma general d'ús de les abreviatures, les dels dies de la setmana sempre porten punt final.
-   * Igualment, van amb la primera lletra en majúscula quan la paraula sencera també hi aniria.
-   * En canvi, van amb la primera lletra en minúscula quan la inicial de la paraula sencera també hi aniria.
-   *
-   * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?input_cercar=abreviatures+dies&action=Principal&method=detall_completa&numPagina=1&idHit=8387&database=FITXES_PUB&tipusFont=Fitxes%20de%20l%27Optimot&idFont=8387&titol=abreviatures%20dels%20dies%20de%20la%20setmana&numeroResultat=1&clickLink=detall&tipusCerca=cerca.tot
-   */
-
 };
+/**
+ * Les abreviatures dels dies de la setmana comencen totes amb la lletra d.
+ * Tot seguit porten la consonant següent a la i, excepte en el cas de dimarts, dimecres i diumenge, en què aquesta consonant és la m i, per tant, hi podria haver confusió.
+ * Per evitar-ho, s'ha substituït la m per una t (en el cas de dimarts), una c (en el cas de dimecres) i una g (en el cas de diumenge), respectivament.
+ *
+ * Seguint la norma general d'ús de les abreviatures, les dels dies de la setmana sempre porten punt final.
+ * Igualment, van amb la primera lletra en majúscula quan la paraula sencera també hi aniria.
+ * En canvi, van amb la primera lletra en minúscula quan la inicial de la paraula sencera també hi aniria.
+ *
+ * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?input_cercar=abreviatures+dies&action=Principal&method=detall_completa&numPagina=1&idHit=8387&database=FITXES_PUB&tipusFont=Fitxes%20de%20l%27Optimot&idFont=8387&titol=abreviatures%20dels%20dies%20de%20la%20setmana&numeroResultat=1&clickLink=detall&tipusCerca=cerca.tot
+ */
+
 var dayValues = {
   narrow: ['dg.', 'dl.', 'dt.', 'dm.', 'dj.', 'dv.', 'ds.'],
   short: ['dg.', 'dl.', 'dt.', 'dm.', 'dj.', 'dv.', 'ds.'],
   abbreviated: ['dg.', 'dl.', 'dt.', 'dm.', 'dj.', 'dv.', 'ds.'],
   wide: ['diumenge', 'dilluns', 'dimarts', 'dimecres', 'dijous', 'divendres', 'dissabte']
-  /**
-   * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?action=Principal&method=detall&input_cercar=parts+del+dia&numPagina=1&database=FITXES_PUB&idFont=12801&idHit=12801&tipusFont=Fitxes+de+l%27Optimot&numeroResultat=1&databases_avansada=&categories_avansada=&clickLink=detall&titol=Nom+de+les+parts+del+dia&tematica=&tipusCerca=cerca.fitxes
-   */
-
 };
+/**
+ * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/index.html?action=Principal&method=detall&input_cercar=parts+del+dia&numPagina=1&database=FITXES_PUB&idFont=12801&idHit=12801&tipusFont=Fitxes+de+l%27Optimot&numeroResultat=1&databases_avansada=&categories_avansada=&clickLink=detall&titol=Nom+de+les+parts+del+dia&tematica=&tipusCerca=cerca.fitxes
+ */
+
 var dayPeriodValues = {
   narrow: {
     am: 'am',
@@ -13465,17 +15005,16 @@ var formattingDayPeriodValues = {
     evening: 'del vespre',
     night: 'de la nit'
   }
-  /**
-   * Quan van en singular, els nombres ordinals es representen, en forma d’abreviatura, amb la xifra seguida de l’última lletra del mot desplegat.
-   * És optatiu posar punt després de la lletra.
-   *
-   * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/pdf/abrevia.pdf#page=18
-   *
-   * @param {Number} dirtyNumber
-   * @param {Object} [_dirtyOptions]
-   */
-
 };
+/**
+ * Quan van en singular, els nombres ordinals es representen, en forma d’abreviatura, amb la xifra seguida de l’última lletra del mot desplegat.
+ * És optatiu posar punt després de la lletra.
+ *
+ * Reference: https://aplicacions.llengua.gencat.cat/llc/AppJava/pdf/abrevia.pdf#page=18
+ *
+ * @param {Number} dirtyNumber
+ * @param {Object} [_dirtyOptions]
+ */
 
 function ordinalNumber(dirtyNumber, _dirtyOptions) {
   var number = Number(dirtyNumber);
@@ -13533,7 +15072,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 165 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13655,7 +15194,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 166 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13668,36 +15207,36 @@ exports.default = formatDistance;
 var formatDistanceLocale = {
   lessThanXSeconds: {
     one: {
-      regular: 'méně než vteřina',
-      past: 'před méně než vteřinou',
-      future: 'za méně než vteřinu'
+      regular: 'méně než sekunda',
+      past: 'před méně než sekundou',
+      future: 'za méně než sekundu'
     },
     few: {
-      regular: 'méně než {{count}} vteřiny',
-      past: 'před méně než {{count}} vteřinami',
-      future: 'za méně než {{count}} vteřiny'
+      regular: 'méně než {{count}} sekundy',
+      past: 'před méně než {{count}} sekundami',
+      future: 'za méně než {{count}} sekundy'
     },
     many: {
-      regular: 'méně než {{count}} vteřin',
-      past: 'před méně než {{count}} vteřinami',
-      future: 'za méně než {{count}} vteřin'
+      regular: 'méně než {{count}} sekund',
+      past: 'před méně než {{count}} sekundami',
+      future: 'za méně než {{count}} sekund'
     }
   },
   xSeconds: {
     one: {
-      regular: 'vteřina',
-      past: 'před vteřinou',
-      future: 'za vteřinu'
+      regular: 'sekunda',
+      past: 'před sekundou',
+      future: 'za sekundu'
     },
     few: {
-      regular: '{{count}} vteřiny',
-      past: 'před {{count}} vteřinami',
-      future: 'za {{count}} vteřiny'
+      regular: '{{count}} sekundy',
+      past: 'před {{count}} sekundami',
+      future: 'za {{count}} sekundy'
     },
     many: {
-      regular: '{{count}} vteřin',
-      past: 'před {{count}} vteřinami',
-      future: 'za {{count}} vteřin'
+      regular: '{{count}} sekund',
+      past: 'před {{count}} sekundami',
+      future: 'za {{count}} sekund'
     }
   },
   halfAMinute: {
@@ -13965,7 +15504,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 167 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14017,7 +15556,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 168 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14053,7 +15592,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 169 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14199,7 +15738,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 170 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14315,7 +15854,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 171 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14428,7 +15967,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 172 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14480,7 +16019,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 173 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14506,7 +16045,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 174 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14529,12 +16068,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Ch1', 'Ch2', 'Ch3', 'Ch4'],
-  wide: ['Chwarter 1af', '2ail chwarter', '3ydd chwarter', '4ydd chwarter'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['Chwarter 1af', '2ail chwarter', '3ydd chwarter', '4ydd chwarter']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['I', 'Ch', 'Ma', 'E', 'Mi', 'Me', 'G', 'A', 'Md', 'H', 'T', 'Rh'],
   abbreviated: ['Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gor', 'Aws', 'Med', 'Hyd', 'Tach', 'Rhag'],
@@ -14690,7 +16229,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 175 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14809,7 +16348,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 176 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14909,7 +16448,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 177 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14961,7 +16500,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 178 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14987,7 +16526,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 179 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15015,11 +16554,11 @@ var quarterValues = {
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['jan.', 'feb.', 'mar.', 'apr.', 'maj', 'jun.', 'jul.', 'aug.', 'sep.', 'okt.', 'nov.', 'dec.'],
-  wide: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'] // Note that 'Days - abbreviated - Formatting' has periods at the end.
-  // https://www.unicode.org/cldr/charts/32/summary/da.html#1760
-  // This makes grammatical sense in danish, as most abbreviations have periods.
+  wide: ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december']
+}; // Note that 'Days - abbreviated - Formatting' has periods at the end.
+// https://www.unicode.org/cldr/charts/32/summary/da.html#1760
+// This makes grammatical sense in danish, as most abbreviations have periods.
 
-};
 var dayValues = {
   narrow: ['S', 'M', 'T', 'O', 'T', 'F', 'L'],
   short: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
@@ -15129,7 +16668,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 180 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15246,7 +16785,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 181 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15269,24 +16808,30 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal'] // Note: in German, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
+}; // Note: in German, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jän', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
   wide: ['Jänner', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+}; // https://st.unicode.org/cldr-apps/v#/de_AT/Gregorian/
+
+var formattingMonthValues = {
+  narrow: monthValues.narrow,
+  abbreviated: ['Jän.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'],
+  wide: monthValues.wide
 };
 var dayValues = {
   narrow: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
   short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   abbreviated: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
-  wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'] // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
+  wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+}; // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'vm.',
@@ -15352,10 +16897,10 @@ var formattingDayPeriodValues = {
   }
 };
 
-function ordinalNumber(dirtyNumber, _dirtyOptions) {
+var ordinalNumber = function (dirtyNumber, _dirtyOptions) {
   var number = Number(dirtyNumber);
   return number + '.';
-}
+};
 
 var localize = {
   ordinalNumber: ordinalNumber,
@@ -15367,11 +16912,12 @@ var localize = {
     values: quarterValues,
     defaultWidth: 'wide',
     argumentCallback: function (quarter) {
-      return Number(quarter) - 1;
+      return quarter - 1;
     }
   }),
   month: (0, _index.default)({
     values: monthValues,
+    formattingValues: formattingMonthValues,
     defaultWidth: 'wide'
   }),
   day: (0, _index.default)({
@@ -15390,7 +16936,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 182 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15413,24 +16959,30 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal'] // Note: in German, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1. Quartal', '2. Quartal', '3. Quartal', '4. Quartal']
+}; // Note: in German, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
   wide: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+}; // https://st.unicode.org/cldr-apps/v#/de/Gregorian/
+
+var formattingMonthValues = {
+  narrow: monthValues.narrow,
+  abbreviated: ['Jan.', 'Feb.', 'März', 'Apr.', 'Mai', 'Juni', 'Juli', 'Aug.', 'Sep.', 'Okt.', 'Nov.', 'Dez.'],
+  wide: monthValues.wide
 };
 var dayValues = {
   narrow: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
   short: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   abbreviated: ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'],
-  wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'] // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
+  wide: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+}; // https://www.unicode.org/cldr/charts/32/summary/de.html#1881
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'vm.',
@@ -15496,10 +17048,10 @@ var formattingDayPeriodValues = {
   }
 };
 
-function ordinalNumber(dirtyNumber, _dirtyOptions) {
+var ordinalNumber = function (dirtyNumber) {
   var number = Number(dirtyNumber);
   return number + '.';
-}
+};
 
 var localize = {
   ordinalNumber: ordinalNumber,
@@ -15511,11 +17063,12 @@ var localize = {
     values: quarterValues,
     defaultWidth: 'wide',
     argumentCallback: function (quarter) {
-      return Number(quarter) - 1;
+      return quarter - 1;
     }
   }),
   month: (0, _index.default)({
     values: monthValues,
+    formattingValues: formattingMonthValues,
     defaultWidth: 'wide'
   }),
   day: (0, _index.default)({
@@ -15534,7 +17087,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 183 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15634,7 +17187,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 184 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15686,7 +17239,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 185 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15723,7 +17276,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 186 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15846,7 +17399,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 187 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15963,7 +17516,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 188 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16015,7 +17568,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 189 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16024,7 +17577,7 @@ module.exports = exports.default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = formatDistance;
+exports.default = void 0;
 var formatDistanceLocale = {
   lessThanXSeconds: {
     one: 'less than a second',
@@ -16089,20 +17642,20 @@ var formatDistanceLocale = {
   }
 };
 
-function formatDistance(token, count, options) {
-  options = options || {};
+var formatDistance = function (token, count, options) {
   var result;
+  var tokenValue = formatDistanceLocale[token];
 
-  if (typeof formatDistanceLocale[token] === 'string') {
-    result = formatDistanceLocale[token];
+  if (typeof tokenValue === 'string') {
+    result = tokenValue;
   } else if (count === 1) {
-    result = formatDistanceLocale[token].one;
+    result = tokenValue.one;
   } else {
-    result = formatDistanceLocale[token].other.replace('{{count}}', count);
+    result = tokenValue.other.replace('{{count}}', count.toString());
   }
 
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
+  if (options !== null && options !== void 0 && options.addSuffix) {
+    if (options.comparison && options.comparison > 0) {
       return 'in ' + result;
     } else {
       return result + ' ago';
@@ -16110,12 +17663,14 @@ function formatDistance(token, count, options) {
   }
 
   return result;
-}
+};
 
+var _default = formatDistance;
+exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 190 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16167,7 +17722,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 191 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16219,7 +17774,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 192 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16271,7 +17826,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 193 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16323,7 +17878,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 194 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16375,7 +17930,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 195 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16427,7 +17982,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 196 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16527,7 +18082,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 197 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16576,7 +18131,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 198 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16602,7 +18157,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 199 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16707,7 +18262,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 200 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16825,7 +18380,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 201 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16925,7 +18480,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 202 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16977,7 +18532,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 203 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17015,7 +18570,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 204 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17154,7 +18709,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 205 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17272,7 +18827,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 206 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17466,7 +19021,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 207 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17518,7 +19073,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 208 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17544,7 +19099,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 209 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17684,7 +19239,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 210 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17799,7 +19354,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 211 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17899,7 +19454,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 212 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17951,7 +19506,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 213 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17989,7 +19544,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 214 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18128,7 +19683,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 215 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18259,7 +19814,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 216 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18359,7 +19914,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 217 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18411,7 +19966,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 218 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18437,7 +19992,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 219 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18460,12 +20015,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['س‌م1', 'س‌م2', 'س‌م3', 'س‌م4'],
-  wide: ['سه‌ماهه 1', 'سه‌ماهه 2', 'سه‌ماهه 3', 'سه‌ماهه 4'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['سه‌ماهه 1', 'سه‌ماهه 2', 'سه‌ماهه 3', 'سه‌ماهه 4']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['ژ', 'ف', 'م', 'آ', 'م', 'ج', 'ج', 'آ', 'س', 'ا', 'ن', 'د'],
   abbreviated: ['ژانـ', 'فور', 'مارس', 'آپر', 'می', 'جون', 'جولـ', 'آگو', 'سپتـ', 'اکتـ', 'نوامـ', 'دسامـ'],
@@ -18579,7 +20134,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 220 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18697,7 +20252,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 221 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18840,7 +20395,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 222 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18892,7 +20447,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 223 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18918,7 +20473,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 224 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19040,7 +20595,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 225 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19157,7 +20712,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 226 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19209,7 +20764,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 227 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19309,7 +20864,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 228 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19361,7 +20916,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 229 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19387,7 +20942,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 230 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19514,7 +21069,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 231 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19631,7 +21186,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 232 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19683,7 +21238,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 233 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19797,7 +21352,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 234 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19849,7 +21404,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 235 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19876,7 +21431,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 236 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19899,12 +21454,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['C1', 'C2', 'C3', 'C4'],
-  wide: ["a' chiad chairteal", 'an dàrna cairteal', 'an treas cairteal', 'an ceathramh cairteal'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ["a' chiad chairteal", 'an dàrna cairteal', 'an treas cairteal', 'an ceathramh cairteal']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['F', 'G', 'M', 'G', 'C', 'Ò', 'I', 'L', 'S', 'D', 'S', 'D'],
   abbreviated: ['Faoi', 'Gear', 'Màrt', 'Gibl', 'Cèit', 'Ògmh', 'Iuch', 'Lùn', 'Sult', 'Dàmh', 'Samh', 'Dùbh'],
@@ -20044,7 +21599,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 237 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20161,7 +21716,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 238 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20261,7 +21816,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 239 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20313,7 +21868,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 240 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20351,7 +21906,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 241 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20490,7 +22045,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 242 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20608,7 +22163,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 243 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20711,7 +22266,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 244 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20776,7 +22331,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 245 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20808,7 +22363,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 246 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20828,28 +22383,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var eraValues = {
   narrow: ['ઈસપૂ', 'ઈસ'],
   abbreviated: ['ઈ.સ.પૂર્વે', 'ઈ.સ.'],
-  wide: ['ઈસવીસન પૂર્વે', 'ઈસવીસન'] // https://www.unicode.org/cldr/charts/32/summary/gu.html
-  // #1631 - #1654
+  wide: ['ઈસવીસન પૂર્વે', 'ઈસવીસન']
+}; // https://www.unicode.org/cldr/charts/32/summary/gu.html
+// #1631 - #1654
 
-};
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1લો ત્રિમાસ', '2જો ત્રિમાસ', '3જો ત્રિમાસ', '4થો ત્રિમાસ'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
-  // https://www.unicode.org/cldr/charts/32/summary/gu.html
-  // #1655 - #1726
+  wide: ['1લો ત્રિમાસ', '2જો ત્રિમાસ', '3જો ત્રિમાસ', '4થો ત્રિમાસ']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
+// https://www.unicode.org/cldr/charts/32/summary/gu.html
+// #1655 - #1726
 
-};
 var monthValues = {
   narrow: ['જા', 'ફે', 'મા', 'એ', 'મે', 'જૂ', 'જુ', 'ઓ', 'સ', 'ઓ', 'ન', 'ડિ'],
   abbreviated: ['જાન્યુ', 'ફેબ્રુ', 'માર્ચ', 'એપ્રિલ', 'મે', 'જૂન', 'જુલાઈ', 'ઑગસ્ટ', 'સપ્ટે', 'ઓક્ટો', 'નવે', 'ડિસે'],
-  wide: ['જાન્યુઆરી', 'ફેબ્રુઆરી', 'માર્ચ', 'એપ્રિલ', 'મે', 'જૂન', 'જુલાઇ', 'ઓગસ્ટ', 'સપ્ટેમ્બર', 'ઓક્ટોબર', 'નવેમ્બર', 'ડિસેમ્બર'] // https://www.unicode.org/cldr/charts/32/summary/gu.html
-  // #1727 - #1768
+  wide: ['જાન્યુઆરી', 'ફેબ્રુઆરી', 'માર્ચ', 'એપ્રિલ', 'મે', 'જૂન', 'જુલાઇ', 'ઓગસ્ટ', 'સપ્ટેમ્બર', 'ઓક્ટોબર', 'નવેમ્બર', 'ડિસેમ્બર']
+}; // https://www.unicode.org/cldr/charts/32/summary/gu.html
+// #1727 - #1768
 
-};
 var dayValues = {
   narrow: ['ર', 'સો', 'મં', 'બુ', 'ગુ', 'શુ', 'શ'],
   short: ['ર', 'સો', 'મં', 'બુ', 'ગુ', 'શુ', 'શ'],
@@ -20868,10 +22423,10 @@ var dayValues = {
   /* Friday */
   , 'શનિવાર'
   /* Saturday */
-  ] // https://www.unicode.org/cldr/charts/32/summary/gu.html
-  // #1783 - #1824
+  ]
+}; // https://www.unicode.org/cldr/charts/32/summary/gu.html
+// #1783 - #1824
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'AM',
@@ -20975,7 +22530,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 247 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21011,6 +22566,7 @@ var parseQuarterPatterns = {
   any: [/1/i, /2/i, /3/i, /4/i]
 };
 var matchMonthPatterns = {
+  // eslint-disable-next-line no-misleading-character-class
   narrow: /^[જાફેમાએમેજૂજુઓસઓનડિ]/i,
   abbreviated: /^(જાન્યુ|ફેબ્રુ|માર્ચ|એપ્રિલ|મે|જૂન|જુલાઈ|ઑગસ્ટ|સપ્ટે|ઓક્ટો|નવે|ડિસે)/i,
   wide: /^(જાન્યુઆરી|ફેબ્રુઆરી|માર્ચ|એપ્રિલ|મે|જૂન|જુલાઇ|ઓગસ્ટ|સપ્ટેમ્બર|ઓક્ટોબર|નવેમ્બર|ડિસેમ્બર)/i
@@ -21092,7 +22648,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 248 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21222,7 +22778,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 249 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21274,7 +22830,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 250 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21300,7 +22856,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 251 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21447,7 +23003,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 252 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21566,7 +23122,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 253 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21577,7 +23133,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatDistance;
 
-var _index = _interopRequireDefault(__webpack_require__(39));
+var _index = _interopRequireDefault(__webpack_require__(44));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21678,7 +23234,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 254 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21742,7 +23298,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 255 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21768,7 +23324,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 256 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21783,7 +23339,7 @@ var _index = _interopRequireDefault(__webpack_require__(5));
 
 var _index2 = _interopRequireDefault(__webpack_require__(4));
 
-var _index3 = _interopRequireDefault(__webpack_require__(39));
+var _index3 = _interopRequireDefault(__webpack_require__(44));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21806,6 +23362,7 @@ var parseQuarterPatterns = {
   any: [/1/i, /2/i, /3/i, /4/i]
 };
 var matchMonthPatterns = {
+  // eslint-disable-next-line no-misleading-character-class
   narrow: /^[जफ़माअप्मईजूनजुअगसिअक्तनदि]/i,
   abbreviated: /^(जन|फ़र|मार्च|अप्|मई|जून|जुल|अग|सित|अक्तू|नव|दिस)/i,
   wide: /^(जनवरी|फ़रवरी|मार्च|अप्रैल|मई|जून|जुलाई|अगस्त|सितंबर|अक्तूबर|नवंबर|दिसंबर)/i
@@ -21815,6 +23372,7 @@ var parseMonthPatterns = {
   any: [/^जन/i, /^फ़/i, /^मा/i, /^अप्/i, /^मई/i, /^जू/i, /^जु/i, /^अग/i, /^सि/i, /^अक्तू/i, /^नव/i, /^दिस/i]
 };
 var matchDayPatterns = {
+  // eslint-disable-next-line no-misleading-character-class
   narrow: /^[रविसोममंगलबुधगुरुशुक्रशनि]/i,
   short: /^(रवि|सोम|मंगल|बुध|गुरु|शुक्र|शनि)/i,
   abbreviated: /^(रवि|सोम|मंगल|बुध|गुरु|शुक्र|शनि)/i,
@@ -21885,7 +23443,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 257 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22072,7 +23630,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 258 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22124,7 +23682,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 259 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22188,7 +23746,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 260 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22333,7 +23891,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 261 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22450,7 +24008,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 262 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22550,7 +24108,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 263 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22602,7 +24160,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 264 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22628,7 +24186,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 265 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22755,7 +24313,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 266 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22872,7 +24430,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 267 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22968,7 +24526,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 268 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23020,7 +24578,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 269 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23061,7 +24619,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 270 */
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23173,7 +24731,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 271 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23291,7 +24849,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 272 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23391,7 +24949,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 273 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23443,7 +25001,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 274 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23469,7 +25027,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 275 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23625,7 +25183,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 276 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23744,7 +25302,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 277 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23844,7 +25402,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 278 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23896,7 +25454,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 279 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23922,7 +25480,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 280 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23947,12 +25505,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['K1', 'K2', 'K3', 'K4'],
-  wide: ['Kuartal ke-1', 'Kuartal ke-2', 'Kuartal ke-3', 'Kuartal ke-4'] // Note: in Indonesian, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['Kuartal ke-1', 'Kuartal ke-2', 'Kuartal ke-3', 'Kuartal ke-4']
+}; // Note: in Indonesian, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'],
@@ -24071,7 +25629,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 281 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24188,7 +25746,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 282 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24288,7 +25846,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 283 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24340,7 +25898,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 284 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24366,7 +25924,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 285 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24505,7 +26063,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 286 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24622,7 +26180,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 287 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24722,7 +26280,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 288 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24774,7 +26332,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 289 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24785,7 +26343,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24853,7 +26411,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 290 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24992,7 +26550,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 291 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25109,7 +26667,490 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 292 */
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = formatDistance;
+var formatDistanceLocale = {
+  lessThanXSeconds: {
+    one: '1びょうみまん',
+    other: '{{count}}びょうみまん',
+    oneWithSuffix: 'やく1びょう',
+    otherWithSuffix: 'やく{{count}}びょう'
+  },
+  xSeconds: {
+    one: '1びょう',
+    other: '{{count}}びょう'
+  },
+  halfAMinute: '30びょう',
+  lessThanXMinutes: {
+    one: '1ぷんみまん',
+    other: '{{count}}ふんみまん',
+    oneWithSuffix: 'やく1ぷん',
+    otherWithSuffix: 'やく{{count}}ふん'
+  },
+  xMinutes: {
+    one: '1ぷん',
+    other: '{{count}}ふん'
+  },
+  aboutXHours: {
+    one: 'やく1じかん',
+    other: 'やく{{count}}じかん'
+  },
+  xHours: {
+    one: '1じかん',
+    other: '{{count}}じかん'
+  },
+  xDays: {
+    one: '1にち',
+    other: '{{count}}にち'
+  },
+  aboutXWeeks: {
+    one: 'やく1しゅうかん',
+    other: 'やく{{count}}しゅうかん'
+  },
+  xWeeks: {
+    one: '1しゅうかん',
+    other: '{{count}}しゅうかん'
+  },
+  aboutXMonths: {
+    one: 'やく1かげつ',
+    other: 'やく{{count}}かげつ'
+  },
+  xMonths: {
+    one: '1かげつ',
+    other: '{{count}}かげつ'
+  },
+  aboutXYears: {
+    one: 'やく1ねん',
+    other: 'やく{{count}}ねん'
+  },
+  xYears: {
+    one: '1ねん',
+    other: '{{count}}ねん'
+  },
+  overXYears: {
+    one: '1ねんいじょう',
+    other: '{{count}}ねんいじょう'
+  },
+  almostXYears: {
+    one: '1ねんちかく',
+    other: '{{count}}ねんちかく'
+  }
+};
+
+function formatDistance(token, count, options) {
+  options = options || {};
+  var result;
+
+  if (typeof formatDistanceLocale[token] === 'string') {
+    result = formatDistanceLocale[token];
+  } else if (count === 1) {
+    if (options.addSuffix && formatDistanceLocale[token].oneWithSuffix) {
+      result = formatDistanceLocale[token].oneWithSuffix;
+    } else {
+      result = formatDistanceLocale[token].one;
+    }
+  } else {
+    if (options.addSuffix && formatDistanceLocale[token].otherWithSuffix) {
+      result = formatDistanceLocale[token].otherWithSuffix.replace('{{count}}', count);
+    } else {
+      result = formatDistanceLocale[token].other.replace('{{count}}', count);
+    }
+  }
+
+  if (options.addSuffix) {
+    if (options.comparison > 0) {
+      return result + 'あと';
+    } else {
+      return result + 'まえ';
+    }
+  }
+
+  return result;
+}
+
+module.exports = exports.default;
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(2));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var dateFormats = {
+  full: 'yねんMがつdにちEEEE',
+  long: 'yねんMがつdにち',
+  medium: 'y/MM/dd',
+  short: 'y/MM/dd'
+};
+var timeFormats = {
+  full: 'Hじmmふんssびょう zzzz',
+  long: 'H:mm:ss z',
+  medium: 'H:mm:ss',
+  short: 'H:mm'
+};
+var dateTimeFormats = {
+  full: '{{date}} {{time}}',
+  long: '{{date}} {{time}}',
+  medium: '{{date}} {{time}}',
+  short: '{{date}} {{time}}'
+};
+var formatLong = {
+  date: (0, _index.default)({
+    formats: dateFormats,
+    defaultWidth: 'full'
+  }),
+  time: (0, _index.default)({
+    formats: timeFormats,
+    defaultWidth: 'full'
+  }),
+  dateTime: (0, _index.default)({
+    formats: dateTimeFormats,
+    defaultWidth: 'full'
+  })
+};
+var _default = formatLong;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = formatRelative;
+var formatRelativeLocale = {
+  lastWeek: 'せんしゅうのeeeeのp',
+  yesterday: 'きのうのp',
+  today: 'きょうのp',
+  tomorrow: 'あしたのp',
+  nextWeek: 'よくしゅうのeeeeのp',
+  other: 'P'
+};
+
+function formatRelative(token, _date, _baseDate, _options) {
+  return formatRelativeLocale[token];
+}
+
+module.exports = exports.default;
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(3));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var eraValues = {
+  narrow: ['BC', 'AC'],
+  abbreviated: ['きげんぜん', 'せいれき'],
+  wide: ['きげんぜん', 'せいれき']
+};
+var quarterValues = {
+  narrow: ['1', '2', '3', '4'],
+  abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
+  wide: ['だい1しはんき', 'だい2しはんき', 'だい3しはんき', 'だい4しはんき']
+};
+var monthValues = {
+  narrow: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+  abbreviated: ['1がつ', '2がつ', '3がつ', '4がつ', '5がつ', '6がつ', '7がつ', '8がつ', '9がつ', '10がつ', '11がつ', '12がつ'],
+  wide: ['1がつ', '2がつ', '3がつ', '4がつ', '5がつ', '6がつ', '7がつ', '8がつ', '9がつ', '10がつ', '11がつ', '12がつ']
+};
+var dayValues = {
+  narrow: ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'],
+  short: ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'],
+  abbreviated: ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'],
+  wide: ['にちようび', 'げつようび', 'かようび', 'すいようび', 'もくようび', 'きんようび', 'どようび']
+};
+var dayPeriodValues = {
+  narrow: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  },
+  abbreviated: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  },
+  wide: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  }
+};
+var formattingDayPeriodValues = {
+  narrow: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  },
+  abbreviated: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  },
+  wide: {
+    am: 'ごぜん',
+    pm: 'ごご',
+    midnight: 'しんや',
+    noon: 'しょうご',
+    morning: 'あさ',
+    afternoon: 'ごご',
+    evening: 'よる',
+    night: 'しんや'
+  }
+};
+
+function ordinalNumber(dirtyNumber, dirtyOptions) {
+  var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
+  // if they are different for different grammatical genders,
+  // use `options.unit`:
+  //
+  //   var options = dirtyOptions || {}
+  //   var unit = String(options.unit)
+  //
+  // where `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+  // 'day', 'hour', 'minute', 'second'
+
+  var options = dirtyOptions || {};
+  var unit = String(options.unit);
+
+  switch (unit) {
+    case 'year':
+      return "".concat(number, "\u306D\u3093");
+
+    case 'quarter':
+      return "\u3060\u3044".concat(number, "\u3057\u306F\u3093\u304D");
+
+    case 'month':
+      return "".concat(number, "\u304C\u3064");
+
+    case 'week':
+      return "\u3060\u3044".concat(number, "\u3057\u3085\u3046");
+
+    case 'date':
+      return "".concat(number, "\u306B\u3061");
+
+    case 'hour':
+      return "".concat(number, "\u3058");
+
+    case 'minute':
+      return "".concat(number, "\u3075\u3093");
+
+    case 'second':
+      return "".concat(number, "\u3073\u3087\u3046");
+
+    default:
+      return "".concat(number);
+  }
+}
+
+var localize = {
+  ordinalNumber: ordinalNumber,
+  era: (0, _index.default)({
+    values: eraValues,
+    defaultWidth: 'wide'
+  }),
+  quarter: (0, _index.default)({
+    values: quarterValues,
+    defaultWidth: 'wide',
+    argumentCallback: function (quarter) {
+      return Number(quarter) - 1;
+    }
+  }),
+  month: (0, _index.default)({
+    values: monthValues,
+    defaultWidth: 'wide'
+  }),
+  day: (0, _index.default)({
+    values: dayValues,
+    defaultWidth: 'wide'
+  }),
+  dayPeriod: (0, _index.default)({
+    values: dayPeriodValues,
+    defaultWidth: 'wide',
+    formattingValues: formattingDayPeriodValues,
+    defaultFormattingWidth: 'wide'
+  })
+};
+var _default = localize;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(5));
+
+var _index2 = _interopRequireDefault(__webpack_require__(4));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var matchOrdinalNumberPattern = /^だ?い?\d+(ねん|しはんき|がつ|しゅう|にち|じ|ふん|びょう)?/i;
+var parseOrdinalNumberPattern = /\d+/i;
+var matchEraPatterns = {
+  narrow: /^(B\.?C\.?|A\.?D\.?)/i,
+  abbreviated: /^(きげん[前後]|せいれき)/i,
+  wide: /^(きげん[前後]|せいれき)/i
+};
+var parseEraPatterns = {
+  narrow: [/^B/i, /^A/i],
+  any: [/^(きげんぜん)/i, /^(せいれき|きげんご)/i]
+};
+var matchQuarterPatterns = {
+  narrow: /^[1234]/i,
+  abbreviated: /^Q[1234]/i,
+  wide: /^だい[1234一二三四１２３４]しはんき/i
+};
+var parseQuarterPatterns = {
+  any: [/(1|一|１)/i, /(2|二|２)/i, /(3|三|３)/i, /(4|四|４)/i]
+};
+var matchMonthPatterns = {
+  narrow: /^([123456789]|1[012])/,
+  abbreviated: /^([123456789]|1[012])がつ/i,
+  wide: /^([123456789]|1[012])がつ/i
+};
+var parseMonthPatterns = {
+  any: [/^1\D/, /^2/, /^3/, /^4/, /^5/, /^6/, /^7/, /^8/, /^9/, /^10/, /^11/, /^12/]
+};
+var matchDayPatterns = {
+  narrow: /^(にち|げつ|か|すい|もく|きん|ど)/,
+  short: /^(にち|げつ|か|すい|もく|きん|ど)/,
+  abbreviated: /^(にち|げつ|か|すい|もく|きん|ど)/,
+  wide: /^(にち|げつ|か|すい|もく|きん|ど)ようび/
+};
+var parseDayPatterns = {
+  any: [/^にち/, /^げつ/, /^か/, /^すい/, /^もく/, /^きん/, /^ど/]
+};
+var matchDayPeriodPatterns = {
+  any: /^(AM|PM|ごぜん|ごご|しょうご|しんや|まよなか|よる|あさ)/i
+};
+var parseDayPeriodPatterns = {
+  any: {
+    am: /^(A|ごぜん)/i,
+    pm: /^(P|ごご)/i,
+    midnight: /^しんや|まよなか/i,
+    noon: /^しょうご/i,
+    morning: /^あさ/i,
+    afternoon: /^ごご/i,
+    evening: /^よる/i,
+    night: /^しんや/i
+  }
+};
+var match = {
+  ordinalNumber: (0, _index.default)({
+    matchPattern: matchOrdinalNumberPattern,
+    parsePattern: parseOrdinalNumberPattern,
+    valueCallback: function (value) {
+      return parseInt(value, 10);
+    }
+  }),
+  era: (0, _index2.default)({
+    matchPatterns: matchEraPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseEraPatterns,
+    defaultParseWidth: 'any'
+  }),
+  quarter: (0, _index2.default)({
+    matchPatterns: matchQuarterPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseQuarterPatterns,
+    defaultParseWidth: 'any',
+    valueCallback: function (index) {
+      return index + 1;
+    }
+  }),
+  month: (0, _index2.default)({
+    matchPatterns: matchMonthPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseMonthPatterns,
+    defaultParseWidth: 'any'
+  }),
+  day: (0, _index2.default)({
+    matchPatterns: matchDayPatterns,
+    defaultMatchWidth: 'wide',
+    parsePatterns: parseDayPatterns,
+    defaultParseWidth: 'any'
+  }),
+  dayPeriod: (0, _index2.default)({
+    matchPatterns: matchDayPeriodPatterns,
+    defaultMatchWidth: 'any',
+    parsePatterns: parseDayPeriodPatterns,
+    defaultParseWidth: 'any'
+  })
+};
+var _default = match;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25221,7 +27262,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 293 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25273,7 +27314,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 294 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25299,7 +27340,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 295 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25414,15 +27455,34 @@ function ordinalNumber(dirtyNumber, dirtyOptions) {
   var options = dirtyOptions || {};
   var unit = String(options.unit);
 
-  if (unit === 'date') {
-    return number + '日';
-  }
+  switch (unit) {
+    case 'year':
+      return "".concat(number, "\u5E74");
 
-  if (unit === 'year') {
-    return number + '年';
-  }
+    case 'quarter':
+      return "\u7B2C".concat(number, "\u56DB\u534A\u671F");
 
-  return number;
+    case 'month':
+      return "".concat(number, "\u6708");
+
+    case 'week':
+      return "\u7B2C".concat(number, "\u9031");
+
+    case 'date':
+      return "".concat(number, "\u65E5");
+
+    case 'hour':
+      return "".concat(number, "\u6642");
+
+    case 'minute':
+      return "".concat(number, "\u5206");
+
+    case 'second':
+      return "".concat(number, "\u79D2");
+
+    default:
+      return "".concat(number);
+  }
 }
 
 var localize = {
@@ -25458,7 +27518,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 296 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25475,7 +27535,7 @@ var _index2 = _interopRequireDefault(__webpack_require__(4));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var matchOrdinalNumberPattern = /^第?\d+(日)?(年)?/i;
+var matchOrdinalNumberPattern = /^第?\d+(年|四半期|月|週|日|時|分|秒)?/i;
 var parseOrdinalNumberPattern = /\d+/i;
 var matchEraPatterns = {
   narrow: /^(B\.?C\.?|A\.?D\.?)/i,
@@ -25573,7 +27633,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 297 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25686,7 +27746,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 298 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25738,7 +27798,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 299 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25764,7 +27824,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 300 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25787,12 +27847,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['1-ლი კვ', '2-ე კვ', '3-ე კვ', '4-ე კვ'],
-  wide: ['1-ლი კვარტალი', '2-ე კვარტალი', '3-ე კვარტალი', '4-ე კვარტალი'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1-ლი კვარტალი', '2-ე კვარტალი', '3-ე კვარტალი', '4-ე კვარტალი']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['ია', 'თე', 'მა', 'აპ', 'მს', 'ვნ', 'ვლ', 'აგ', 'სე', 'ოქ', 'ნო', 'დე'],
   abbreviated: ['იან', 'თებ', 'მარ', 'აპრ', 'მაი', 'ივნ', 'ივლ', 'აგვ', 'სექ', 'ოქტ', 'ნოე', 'დეკ'],
@@ -25920,7 +27980,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 301 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26031,7 +28091,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 302 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26272,7 +28332,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 303 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26321,7 +28381,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 304 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26332,7 +28392,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26391,7 +28451,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 305 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26541,7 +28601,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 306 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26660,7 +28720,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 307 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26866,7 +28926,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 308 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26931,7 +28991,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 309 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26957,7 +29017,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 310 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26985,22 +29045,22 @@ var quarterValues = {
   abbreviated: ['ತ್ರೈ 1', 'ತ್ರೈ 2', 'ತ್ರೈ 3', 'ತ್ರೈ 4'],
   // CLDR #1630 - #1638
   wide: ['1ನೇ ತ್ರೈಮಾಸಿಕ', '2ನೇ ತ್ರೈಮಾಸಿಕ', '3ನೇ ತ್ರೈಮಾಸಿಕ', '4ನೇ ತ್ರೈಮಾಸಿಕ'] // CLDR #1622 - #1629
-  // CLDR #1646 - #1717
 
-};
+}; // CLDR #1646 - #1717
+
 var monthValues = {
   narrow: ['ಜ', 'ಫೆ', 'ಮಾ', 'ಏ', 'ಮೇ', 'ಜೂ', 'ಜು', 'ಆ', 'ಸೆ', 'ಅ', 'ನ', 'ಡಿ'],
   abbreviated: ['ಜನ', 'ಫೆಬ್ರ', 'ಮಾರ್ಚ್', 'ಏಪ್ರಿ', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗ', 'ಸೆಪ್ಟೆಂ', 'ಅಕ್ಟೋ', 'ನವೆಂ', 'ಡಿಸೆಂ'],
-  wide: ['ಜನವರಿ', 'ಫೆಬ್ರವರಿ', 'ಮಾರ್ಚ್', 'ಏಪ್ರಿಲ್', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗಸ್ಟ್', 'ಸೆಪ್ಟೆಂಬರ್', 'ಅಕ್ಟೋಬರ್', 'ನವೆಂಬರ್', 'ಡಿಸೆಂಬರ್'] // CLDR #1718 - #1773
+  wide: ['ಜನವರಿ', 'ಫೆಬ್ರವರಿ', 'ಮಾರ್ಚ್', 'ಏಪ್ರಿಲ್', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗಸ್ಟ್', 'ಸೆಪ್ಟೆಂಬರ್', 'ಅಕ್ಟೋಬರ್', 'ನವೆಂಬರ್', 'ಡಿಸೆಂಬರ್']
+}; // CLDR #1718 - #1773
 
-};
 var dayValues = {
   narrow: ['ಭಾ', 'ಸೋ', 'ಮಂ', 'ಬು', 'ಗು', 'ಶು', 'ಶ'],
   short: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'],
   abbreviated: ['ಭಾನು', 'ಸೋಮ', 'ಮಂಗಳ', 'ಬುಧ', 'ಗುರು', 'ಶುಕ್ರ', 'ಶನಿ'],
-  wide: ['ಭಾನುವಾರ', 'ಸೋಮವಾರ', 'ಮಂಗಳವಾರ', 'ಬುಧವಾರ', 'ಗುರುವಾರ', 'ಶುಕ್ರವಾರ', 'ಶನಿವಾರ'] // CLDR #1774 - #1815
+  wide: ['ಭಾನುವಾರ', 'ಸೋಮವಾರ', 'ಮಂಗಳವಾರ', 'ಬುಧವಾರ', 'ಗುರುವಾರ', 'ಶುಕ್ರವಾರ', 'ಶನಿವಾರ']
+}; // CLDR #1774 - #1815
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'ಪೂರ್ವಾಹ್ನ',
@@ -27104,7 +29164,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 311 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27221,7 +29281,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 312 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27321,7 +29381,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 313 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27373,7 +29433,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 314 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27399,7 +29459,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 315 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27551,7 +29611,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 316 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27665,7 +29725,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 317 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27883,7 +29943,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 318 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27940,7 +30000,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 319 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27983,7 +30043,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 320 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28122,7 +30182,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 321 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28241,7 +30301,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 322 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28402,7 +30462,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 323 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28454,7 +30514,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 324 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28480,7 +30540,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 325 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28641,7 +30701,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 326 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28771,7 +30831,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 327 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28891,7 +30951,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 328 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28943,7 +31003,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 329 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28954,7 +31014,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28995,7 +31055,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 330 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29155,7 +31215,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 331 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29275,7 +31335,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 332 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29375,7 +31435,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 333 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29424,7 +31484,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 334 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29435,7 +31495,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29530,7 +31590,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 335 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29630,7 +31690,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 336 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29744,7 +31804,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 337 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29892,7 +31952,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 338 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29944,7 +32004,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 339 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29970,7 +32030,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 340 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29993,12 +32053,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['I', 'II', 'III', 'IV'],
   abbreviated: ['I улирал', 'II улирал', 'III улирал', 'IV улирал'],
-  wide: ['1-р улирал', '2-р улирал', '3-р улирал', '4-р улирал'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1-р улирал', '2-р улирал', '3-р улирал', '4-р улирал']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'],
   abbreviated: ['1-р сар', '2-р сар', '3-р сар', '4-р сар', '5-р сар', '6-р сар', '7-р сар', '8-р сар', '9-р сар', '10-р сар', '11-р сар', '12-р сар'],
@@ -30103,7 +32163,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 341 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30220,7 +32280,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 342 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30320,7 +32380,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 343 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30372,7 +32432,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 344 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30398,7 +32458,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 345 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30423,12 +32483,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['S1', 'S2', 'S3', 'S4'],
-  wide: ['Suku pertama', 'Suku kedua', 'Suku ketiga', 'Suku keempat'] // Note: in Malay, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['Suku pertama', 'Suku kedua', 'Suku ketiga', 'Suku keempat']
+}; // Note: in Malay, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'O', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogo', 'Sep', 'Okt', 'Nov', 'Dis'],
@@ -30547,7 +32607,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 346 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30664,7 +32724,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 347 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30771,7 +32831,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 348 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30823,7 +32883,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 349 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30849,7 +32909,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 350 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30988,7 +33048,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 351 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31105,7 +33165,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 352 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31178,23 +33238,16 @@ var formatDistanceLocale = {
     plural: 'nesten {{count}} år'
   }
 };
-var wordMapping = ['null', 'en', 'to', 'tre', 'fire', 'fem', 'seks', 'sju', 'åtte', 'ni', 'ti', 'elleve', 'tolv'];
 
 function formatDistance(token, count, options) {
-  options = options || {
-    onlyNumeric: false
-  };
+  options = options || {};
   var translation = formatDistanceLocale[token];
   var result;
 
   if (typeof translation === 'string') {
     result = translation;
   } else if (count === 0 || count > 1) {
-    if (options.onlyNumeric) {
-      result = translation.plural.replace('{{count}}', count);
-    } else {
-      result = translation.plural.replace('{{count}}', count < 13 ? wordMapping[count] : count);
-    }
+    result = translation.plural.replace('{{count}}', count);
   } else {
     result = translation.singular;
   }
@@ -31213,7 +33266,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 353 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31265,7 +33318,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 354 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31291,7 +33344,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 355 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31396,7 +33449,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 356 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31512,7 +33565,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 357 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31612,7 +33665,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 358 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31631,7 +33684,7 @@ var dateFormats = {
   full: 'EEEE d MMMM y',
   long: 'd MMMM y',
   medium: 'd MMM y',
-  short: 'dd-MM-y'
+  short: 'dd.MM.y'
 };
 var timeFormats = {
   full: 'HH:mm:ss zzzz',
@@ -31664,7 +33717,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 359 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31690,7 +33743,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 360 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31795,7 +33848,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 361 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31911,7 +33964,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 362 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32011,7 +34064,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 363 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32063,7 +34116,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 364 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32089,7 +34142,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 365 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32194,7 +34247,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 366 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32310,7 +34363,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 367 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32418,7 +34471,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 368 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32470,7 +34523,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 369 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32496,7 +34549,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 370 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32601,7 +34654,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 371 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32717,7 +34770,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 372 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32884,7 +34937,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 373 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32936,7 +34989,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 374 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32947,7 +35000,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33019,7 +35072,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 375 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33172,7 +35225,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 376 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33301,7 +35354,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 377 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33401,7 +35454,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 378 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33453,7 +35506,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 379 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33489,7 +35542,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 380 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33635,7 +35688,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 381 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33754,7 +35807,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 382 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33854,7 +35907,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 383 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33906,7 +35959,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 384 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33932,7 +35985,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 385 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34070,7 +36123,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 386 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34188,7 +36241,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 387 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34288,7 +36341,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 388 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34340,7 +36393,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 389 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34366,7 +36419,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 390 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34505,7 +36558,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 391 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34623,7 +36676,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 392 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34865,7 +36918,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 393 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34881,8 +36934,8 @@ var _index = _interopRequireDefault(__webpack_require__(2));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var dateFormats = {
-  full: "EEEE, do MMMM y 'г.'",
-  long: "do MMMM y 'г.'",
+  full: "EEEE, d MMMM y 'г.'",
+  long: "d MMMM y 'г.'",
   medium: "d MMM y 'г.'",
   short: 'dd.MM.y'
 };
@@ -34914,7 +36967,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 394 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34925,7 +36978,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35019,7 +37072,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 395 */
+/* 416 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35176,7 +37229,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 396 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35294,7 +37347,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 397 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35523,7 +37576,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 398 */
+/* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35543,16 +37596,16 @@ var dateFormats = {
   full: 'EEEE d. MMMM y',
   long: 'd. MMMM y',
   medium: 'd. M. y',
-  short: 'd. M. y' // https://www.unicode.org/cldr/charts/32/summary/sk.html?hide#2149
+  short: 'd. M. y'
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html?hide#2149
 
-};
 var timeFormats = {
   full: 'H:mm:ss zzzz',
   long: 'H:mm:ss z',
   medium: 'H:mm:ss',
-  short: 'H:mm' // https://www.unicode.org/cldr/charts/32/summary/sk.html?hide#1994
+  short: 'H:mm'
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html?hide#1994
 
-};
 var dateTimeFormats = {
   full: '{{date}}, {{time}}',
   long: '{{date}}, {{time}}',
@@ -35578,7 +37631,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 399 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35589,7 +37642,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35641,7 +37694,7 @@ function nextWeek(day) {
     case 6
     /* Sat */
     :
-      return "'budúcu' " + weekday + " 'o' p";
+      return "'budúcu " + weekday + " o' p";
 
     default:
       return "'budúci' eeee 'o' p";
@@ -35686,7 +37739,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 400 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35705,15 +37758,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var eraValues = {
   narrow: ['pred Kr.', 'po Kr.'],
   abbreviated: ['pred Kr.', 'po Kr.'],
-  wide: ['pred Kristom', 'po Kristovi'] // https://www.unicode.org/cldr/charts/32/summary/sk.html#1780
+  wide: ['pred Kristom', 'po Kristovi']
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html#1780
 
-};
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1. štvrťrok', '2. štvrťrok', '3. štvrťrok', '4. štvrťrok'] // https://www.unicode.org/cldr/charts/32/summary/sk.html#1804
+  wide: ['1. štvrťrok', '2. štvrťrok', '3. štvrťrok', '4. štvrťrok']
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html#1804
 
-};
 var monthValues = {
   narrow: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'],
   abbreviated: ['jan', 'feb', 'mar', 'apr', 'máj', 'jún', 'júl', 'aug', 'sep', 'okt', 'nov', 'dec'],
@@ -35722,16 +37775,16 @@ var monthValues = {
 var formattingMonthValues = {
   narrow: ['j', 'f', 'm', 'a', 'm', 'j', 'j', 'a', 's', 'o', 'n', 'd'],
   abbreviated: ['jan', 'feb', 'mar', 'apr', 'máj', 'jún', 'júl', 'aug', 'sep', 'okt', 'nov', 'dec'],
-  wide: ['januára', 'februára', 'marca', 'apríla', 'mája', 'júna', 'júla', 'augusta', 'septembra', 'októbra', 'novembra', 'decembra'] // https://www.unicode.org/cldr/charts/32/summary/sk.html#1876
+  wide: ['januára', 'februára', 'marca', 'apríla', 'mája', 'júna', 'júla', 'augusta', 'septembra', 'októbra', 'novembra', 'decembra']
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html#1876
 
-};
 var dayValues = {
   narrow: ['n', 'p', 'u', 's', 'š', 'p', 's'],
   short: ['ne', 'po', 'ut', 'st', 'št', 'pi', 'so'],
   abbreviated: ['ne', 'po', 'ut', 'st', 'št', 'pi', 'so'],
-  wide: ['nedeľa', 'pondelok', 'utorok', 'streda', 'štvrtok', 'piatok', 'sobota'] // https://www.unicode.org/cldr/charts/32/summary/sk.html#1932
+  wide: ['nedeľa', 'pondelok', 'utorok', 'streda', 'štvrtok', 'piatok', 'sobota']
+}; // https://www.unicode.org/cldr/charts/32/summary/sk.html#1932
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'AM',
@@ -35837,7 +37890,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 401 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35955,7 +38008,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 402 */
+/* 423 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36266,7 +38319,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 403 */
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36318,7 +38371,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 404 */
+/* 425 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36382,7 +38435,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 405 */
+/* 426 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36520,7 +38573,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 406 */
+/* 427 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36647,7 +38700,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 407 */
+/* 428 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36747,7 +38800,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 408 */
+/* 429 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36799,7 +38852,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 409 */
+/* 430 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36825,7 +38878,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 410 */
+/* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36848,12 +38901,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['4-mujori I', '4-mujori II', '4-mujori III', '4-mujori IV'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['4-mujori I', '4-mujori II', '4-mujori III', '4-mujori IV']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'S', 'M', 'P', 'M', 'Q', 'K', 'G', 'S', 'T', 'N', 'D'],
   abbreviated: ['Jan', 'Shk', 'Mar', 'Pri', 'Maj', 'Qer', 'Kor', 'Gus', 'Sht', 'Tet', 'Nën', 'Dhj'],
@@ -36982,7 +39035,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 411 */
+/* 432 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37099,7 +39152,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 412 */
+/* 433 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37286,7 +39339,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 413 */
+/* 434 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37338,7 +39391,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 414 */
+/* 435 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37402,7 +39455,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 415 */
+/* 436 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37547,7 +39600,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 416 */
+/* 437 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37663,7 +39716,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 417 */
+/* 438 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37850,7 +39903,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 418 */
+/* 439 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37902,7 +39955,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 419 */
+/* 440 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37966,7 +40019,7 @@ function formatRelative(token, date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 420 */
+/* 441 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38111,7 +40164,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 421 */
+/* 442 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38227,7 +40280,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 422 */
+/* 443 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38335,7 +40388,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 423 */
+/* 444 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38387,7 +40440,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 424 */
+/* 445 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38413,7 +40466,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 425 */
+/* 446 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38447,9 +40500,9 @@ var dayValues = {
   narrow: ['S', 'M', 'T', 'O', 'T', 'F', 'L'],
   short: ['sö', 'må', 'ti', 'on', 'to', 'fr', 'lö'],
   abbreviated: ['sön', 'mån', 'tis', 'ons', 'tors', 'fre', 'lör'],
-  wide: ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'] // https://www.unicode.org/cldr/charts/32/summary/sv.html#1888
+  wide: ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag']
+}; // https://www.unicode.org/cldr/charts/32/summary/sv.html#1888
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'fm',
@@ -38563,7 +40616,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 426 */
+/* 447 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38678,7 +40731,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 427 */
+/* 448 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38906,7 +40959,7 @@ function formatDistance(token, count) {
 module.exports = exports.default;
 
 /***/ }),
-/* 428 */
+/* 449 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38927,9 +40980,9 @@ var dateFormats = {
   full: 'EEEE, d MMMM, y',
   long: 'd MMMM, y',
   medium: 'd MMM, y',
-  short: 'd/M/yy' // CLDR #1850 - #1853
+  short: 'd/M/yy'
+}; // CLDR #1850 - #1853
 
-};
 var timeFormats = {
   full: 'a h:mm:ss zzzz',
   long: 'a h:mm:ss z',
@@ -38961,7 +41014,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 429 */
+/* 450 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38987,7 +41040,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 430 */
+/* 451 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39053,9 +41106,9 @@ var dayValues = {
   'வியாழன்', // Thursday
   'வெள்ளி', // Friday
   'சனி' // Saturday
-  ] // CLDR #1780 - #1845
+  ]
+}; // CLDR #1780 - #1845
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'மு.ப',
@@ -39086,9 +41139,9 @@ var dayPeriodValues = {
     afternoon: 'மதியம்',
     evening: 'மாலை',
     night: 'இரவு'
-  } // CLDR #1780 - #1845
+  }
+}; // CLDR #1780 - #1845
 
-};
 var formattingDayPeriodValues = {
   narrow: {
     am: 'மு.ப',
@@ -39181,7 +41234,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 431 */
+/* 452 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39299,7 +41352,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 432 */
+/* 453 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39501,7 +41554,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 433 */
+/* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39522,16 +41575,16 @@ var dateFormats = {
   full: 'd, MMMM y, EEEE',
   long: 'd MMMM, y',
   medium: 'd MMM, y',
-  short: 'dd-MM-yy' // CLDR #1807 - #1811
+  short: 'dd-MM-yy'
+}; // CLDR #1807 - #1811
 
-};
 var timeFormats = {
   full: 'h:mm:ss a zzzz',
   long: 'h:mm:ss a z',
   medium: 'h:mm:ss a',
-  short: 'h:mm a' // CLDR #1815 - #1818
+  short: 'h:mm a'
+}; // CLDR #1815 - #1818
 
-};
 var dateTimeFormats = {
   full: "{{date}} {{time}}'కి'",
   long: "{{date}} {{time}}'కి'",
@@ -39557,7 +41610,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 434 */
+/* 455 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39589,7 +41642,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 435 */
+/* 456 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39610,28 +41663,28 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var eraValues = {
   narrow: ['క్రీ.పూ.', 'క్రీ.శ.'],
   abbreviated: ['క్రీ.పూ.', 'క్రీ.శ.'],
-  wide: ['క్రీస్తు పూర్వం', 'క్రీస్తుశకం'] // CLDR #1613 - #1628
+  wide: ['క్రీస్తు పూర్వం', 'క్రీస్తుశకం']
+}; // CLDR #1613 - #1628
 
-};
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['త్రై1', 'త్రై2', 'త్రై3', 'త్రై4'],
-  wide: ['1వ త్రైమాసికం', '2వ త్రైమాసికం', '3వ త్రైమాసికం', '4వ త్రైమాసికం'] // CLDR #1637 - #1708
+  wide: ['1వ త్రైమాసికం', '2వ త్రైమాసికం', '3వ త్రైమాసికం', '4వ త్రైమాసికం']
+}; // CLDR #1637 - #1708
 
-};
 var monthValues = {
   narrow: ['జ', 'ఫి', 'మా', 'ఏ', 'మే', 'జూ', 'జు', 'ఆ', 'సె', 'అ', 'న', 'డి'],
   abbreviated: ['జన', 'ఫిబ్ర', 'మార్చి', 'ఏప్రి', 'మే', 'జూన్', 'జులై', 'ఆగ', 'సెప్టెం', 'అక్టో', 'నవం', 'డిసెం'],
-  wide: ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జులై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'] // CLDR #1709 - #1764
+  wide: ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జులై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్']
+}; // CLDR #1709 - #1764
 
-};
 var dayValues = {
   narrow: ['ఆ', 'సో', 'మ', 'బు', 'గు', 'శు', 'శ'],
   short: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'],
   abbreviated: ['ఆది', 'సోమ', 'మంగళ', 'బుధ', 'గురు', 'శుక్ర', 'శని'],
-  wide: ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం'] // CLDR #1767 - #1806
+  wide: ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం']
+}; // CLDR #1767 - #1806
 
-};
 var dayPeriodValues = {
   narrow: {
     am: 'పూర్వాహ్నం',
@@ -39735,7 +41788,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 436 */
+/* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39852,7 +41905,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 437 */
+/* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39956,7 +42009,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 438 */
+/* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40008,7 +42061,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 439 */
+/* 460 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40034,7 +42087,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 440 */
+/* 461 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40173,7 +42226,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 441 */
+/* 462 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40289,7 +42342,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 442 */
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40389,7 +42442,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 443 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40441,7 +42494,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 444 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40467,7 +42520,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 445 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40606,7 +42659,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 446 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40726,7 +42779,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 447 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40826,7 +42879,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 448 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40878,7 +42931,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 449 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40904,7 +42957,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 450 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40927,12 +42980,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['1', '2', '3', '4'],
-  wide: ['بىرىنجى چارەك', 'ئىككىنجى چارەك', 'ئۈچىنجى چارەك', 'تۆتىنجى چارەك'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['بىرىنجى چارەك', 'ئىككىنجى چارەك', 'ئۈچىنجى چارەك', 'تۆتىنجى چارەك']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['ي', 'ف', 'م', 'ا', 'م', 'ى', 'ى', 'ا', 'س', 'ۆ', 'ن', 'د'],
   abbreviated: ['يانۋار', 'فېۋىرال', 'مارت', 'ئاپرىل', 'ماي', 'ئىيۇن', 'ئىيول', 'ئاۋغۇست', 'سىنتەبىر', 'ئۆكتەبىر', 'نويابىر', 'دىكابىر'],
@@ -41046,7 +43099,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 451 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41081,6 +43134,7 @@ var parseQuarterPatterns = {
   any: [/1/i, /2/i, /3/i, /4/i]
 };
 var matchMonthPatterns = {
+  // eslint-disable-next-line no-misleading-character-class
   narrow: /^[يفمئامئ‍ئاسۆند]/i,
   abbreviated: /^(يانۋار|فېۋىرال|مارت|ئاپرىل|ماي|ئىيۇن|ئىيول|ئاۋغۇست|سىنتەبىر|ئۆكتەبىر|نويابىر|دىكابىر)/i,
   wide: /^(يانۋار|فېۋىرال|مارت|ئاپرىل|ماي|ئىيۇن|ئىيول|ئاۋغۇست|سىنتەبىر|ئۆكتەبىر|نويابىر|دىكابىر)/i
@@ -41162,7 +43216,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 452 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41404,7 +43458,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 453 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41456,7 +43510,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 454 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41467,7 +43521,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41550,7 +43604,7 @@ function formatRelative(token, date, baseDate, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 455 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41712,7 +43766,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 456 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41830,7 +43884,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 457 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41930,7 +43984,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 458 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41979,7 +44033,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 459 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42005,7 +44059,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 460 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42028,12 +44082,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['CH.1', 'CH.2', 'CH.3', 'CH.4'],
-  wide: ['1-chi chorak', '2-chi chorak', '3-chi chorak', '4-chi chorak'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1-chi chorak', '2-chi chorak', '3-chi chorak', '4-chi chorak']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['Y', 'F', 'M', 'A', 'M', 'I', 'I', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'],
@@ -42157,7 +44211,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 461 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42274,7 +44328,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 462 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42374,7 +44428,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 463 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42432,7 +44486,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 464 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42458,7 +44512,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 465 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42489,18 +44543,18 @@ var formattingQuarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
   // I notice many news outlet use this "quý II/2018"
-  wide: ['quý I', 'quý II', 'quý III', 'quý IV'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['quý I', 'quý II', 'quý III', 'quý IV']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
   abbreviated: ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'],
-  wide: ['Tháng Một', 'Tháng Hai', 'Tháng Ba', 'Tháng Tư', 'Tháng Năm', 'Tháng Sáu', 'Tháng Bảy', 'Tháng Tám', 'Tháng Chín', 'Tháng Mười', 'Tháng Mười Một', 'Tháng Mười Hai'] // In Vietnamese date formatting, month number less than 10 expected to have leading zero
+  wide: ['Tháng Một', 'Tháng Hai', 'Tháng Ba', 'Tháng Tư', 'Tháng Năm', 'Tháng Sáu', 'Tháng Bảy', 'Tháng Tám', 'Tháng Chín', 'Tháng Mười', 'Tháng Mười Một', 'Tháng Mười Hai']
+}; // In Vietnamese date formatting, month number less than 10 expected to have leading zero
 
-};
 var formattingMonthValues = {
   narrow: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
   abbreviated: ['thg 1', 'thg 2', 'thg 3', 'thg 4', 'thg 5', 'thg 6', 'thg 7', 'thg 8', 'thg 9', 'thg 10', 'thg 11', 'thg 12'],
@@ -42510,12 +44564,12 @@ var dayValues = {
   narrow: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
   short: ['CN', 'Th 2', 'Th 3', 'Th 4', 'Th 5', 'Th 6', 'Th 7'],
   abbreviated: ['CN', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
-  wide: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'] // Vietnamese are used to AM/PM borrowing from English, hence `narrow` and
-  // `abbreviated` are just like English but I'm leaving the `wide`
-  // format being localized with abbreviations found in some systems (SÁng / CHiều);
-  // however, personally, I don't think `Chiều` sounds appropriate for `PM`
+  wide: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy']
+}; // Vietnamese are used to AM/PM borrowing from English, hence `narrow` and
+// `abbreviated` are just like English but I'm leaving the `wide`
+// format being localized with abbreviations found in some systems (SÁng / CHiều);
+// however, personally, I don't think `Chiều` sounds appropriate for `PM`
 
-};
 var dayPeriodValues = {
   // narrow date period is extremely rare in Vietnamese
   // I used abbreviated form for noon, morning and afternoon
@@ -42581,17 +44635,16 @@ var formattingDayPeriodValues = {
     afternoon: 'vào buổi chiều',
     evening: 'vào buổi tối',
     night: 'vào ban đêm'
-  } // If ordinal numbers depend on context, for example,
-  // if they are different for different grammatical genders,
-  // use `options.unit`:
-  //
-  //   var options = dirtyOptions || {}
-  //   var unit = String(options.unit)
-  //
-  // where `unit` can be 'month', 'quarter', 'week', 'isoWeek', 'dayOfYear',
-  // 'dayOfMonth' or 'dayOfWeek'
-
-};
+  }
+}; // If ordinal numbers depend on context, for example,
+// if they are different for different grammatical genders,
+// use `options.unit`:
+//
+//   var options = dirtyOptions || {}
+//   var unit = String(options.unit)
+//
+// where `unit` can be 'month', 'quarter', 'week', 'isoWeek', 'dayOfYear',
+// 'dayOfMonth' or 'dayOfWeek'
 
 function ordinalNumber(dirtyNumber, dirtyOptions) {
   var options = dirtyOptions || {};
@@ -42697,7 +44750,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 466 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42822,7 +44875,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 467 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42922,7 +44975,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 468 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42974,7 +45027,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 469 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42985,7 +45038,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 
-var _index = _interopRequireDefault(__webpack_require__(7));
+var _index = _interopRequireDefault(__webpack_require__(8));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -43023,7 +45076,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 470 */
+/* 491 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43189,7 +45242,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 471 */
+/* 492 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43304,7 +45357,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 472 */
+/* 493 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43345,12 +45398,12 @@ var formatDistanceLocale = {
     other: '{{count}} 天'
   },
   aboutXWeeks: {
-    one: '大約 1 个星期',
-    other: '大約 {{count}} 个星期'
+    one: '大約 1 個星期',
+    other: '大約 {{count}} 個星期'
   },
   xWeeks: {
-    one: '1 个星期',
-    other: '{{count}} 个星期'
+    one: '1 個星期',
+    other: '{{count}} 個星期'
   },
   aboutXMonths: {
     one: '大約 1 個月',
@@ -43404,7 +45457,7 @@ function formatDistance(token, count, options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 473 */
+/* 494 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43456,7 +45509,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 474 */
+/* 495 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43467,11 +45520,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = formatRelative;
 var formatRelativeLocale = {
-  lastWeek: "'上個' eeee p",
+  lastWeek: "'上個'eeee p",
   yesterday: "'昨天' p",
   today: "'今天' p",
   tomorrow: "'明天' p",
-  nextWeek: "'下個' eeee p",
+  nextWeek: "'下個'eeee p",
   other: 'P'
 };
 
@@ -43482,7 +45535,7 @@ function formatRelative(token, _date, _baseDate, _options) {
 module.exports = exports.default;
 
 /***/ }),
-/* 475 */
+/* 496 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43648,7 +45701,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 476 */
+/* 497 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43763,21 +45816,21 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 477 */
+/* 498 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__datePicker__ = __webpack_require__(623);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__timePicker__ = __webpack_require__(716);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__defaultOptions__ = __webpack_require__(719);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates__ = __webpack_require__(720);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_header__ = __webpack_require__(721);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__templates_footer__ = __webpack_require__(722);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_index__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__datePicker__ = __webpack_require__(668);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__timePicker__ = __webpack_require__(764);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__defaultOptions__ = __webpack_require__(767);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates__ = __webpack_require__(768);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_header__ = __webpack_require__(769);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__templates_footer__ = __webpack_require__(770);
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -44156,7 +46209,7 @@ var bulmaCalendar = function (_EventEmitter) {
         value: function refresh() {
 
             this._ui.header.start.day.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.start, 'dd', { locale: this.locale }) : '--';
-            this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.start, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
+            this._ui.header.start.month.innerHTML = this.datePicker.start ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.start, this.options.formats.header, { locale: this.locale }) : '';
 
             if (this.datePicker.start) {
                 this._ui.header.start.weekday.classList.remove('is-hidden');
@@ -44179,7 +46232,7 @@ var bulmaCalendar = function (_EventEmitter) {
 
                 this._ui.header.end.day.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.end, 'dd', { locale: this.locale }) : '--';
 
-                this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.end, this.options.headerMonthYearFromat, { locale: this.locale }) : '';
+                this._ui.header.end.month.innerHTML = this.options.isRange && this.datePicker.end ? __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this.datePicker.end, this.options.formats.header, { locale: this.locale }) : '';
 
                 if (this.datePicker.end) {
                     this._ui.header.end.weekday.classList.remove('is-hidden');
@@ -44629,10 +46682,10 @@ var bulmaCalendar = function (_EventEmitter) {
         key: 'lang',
         set: function set(lang) {
             try {
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } catch (e) {
                 lang = 'en-US';
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } finally {
                 this._lang = lang;
                 this.datePicker.lang = lang;
@@ -44862,13 +46915,13 @@ var bulmaCalendar = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["default"] = (bulmaCalendar);
 
 /***/ }),
-/* 478 */
+/* 499 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__ = __webpack_require__(6);
@@ -44893,7 +46946,7 @@ var bulmaCalendar = function (_EventEmitter) {
  * |----------------|------------------------------------|
  * | years          | Amount of years to be added        |
  * | months         | Amount of months to be added       |
- * | weeks          | Amount of weeks to be added       |
+ * | weeks          | Amount of weeks to be added        |
  * | days           | Amount of days to be added         |
  * | hours          | Amount of hours to be added        |
  * | minutes        | Amount of minutes to be added      |
@@ -44920,13 +46973,13 @@ var bulmaCalendar = function (_EventEmitter) {
 function add(dirtyDate, duration) {
   Object(__WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
   if (!duration || typeof duration !== 'object') return new Date(NaN);
-  var years = 'years' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.years) : 0;
-  var months = 'months' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.months) : 0;
-  var weeks = 'weeks' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.weeks) : 0;
-  var days = 'days' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.days) : 0;
-  var hours = 'hours' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.hours) : 0;
-  var minutes = 'minutes' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.minutes) : 0;
-  var seconds = 'seconds' in duration ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.seconds) : 0; // Add years and months
+  var years = duration.years ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.years) : 0;
+  var months = duration.months ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.months) : 0;
+  var weeks = duration.weeks ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.weeks) : 0;
+  var days = duration.days ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.days) : 0;
+  var hours = duration.hours ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.hours) : 0;
+  var minutes = duration.minutes ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.minutes) : 0;
+  var seconds = duration.seconds ? Object(__WEBPACK_IMPORTED_MODULE_4__lib_toInteger_index_js__["a" /* default */])(duration.seconds) : 0; // Add years and months
 
   var date = Object(__WEBPACK_IMPORTED_MODULE_2__toDate_index_js__["a" /* default */])(dirtyDate);
   var dateWithMonths = months || years ? Object(__WEBPACK_IMPORTED_MODULE_1__addMonths_index_js__["a" /* default */])(date, months + years * 12) : date; // Add weeks and days
@@ -44941,7 +46994,7 @@ function add(dirtyDate, duration) {
 }
 
 /***/ }),
-/* 479 */
+/* 500 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45064,7 +47117,53 @@ function areIntervalsOverlapping(dirtyIntervalLeft, dirtyIntervalRight) {
 }
 
 /***/ }),
-/* 480 */
+/* 501 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__max_index_js__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__min_index_js__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
+
+
+/**
+ * @name clamp
+ * @category Interval Helpers
+ * @summary Return a date bounded by the start and the end of the given interval
+ *
+ * @description
+ * Clamps a date to the lower bound with the start of the interval and the upper
+ * bound with the end of the interval.
+ *
+ * - When the date is less than the start of the interval, the start is returned.
+ * - When the date is greater than the end of the interval, the end is returned.
+ * - Otherwise the date is returned.
+ *
+ * @example
+ * // What is Mar, 21, 2021 bounded to an interval starting at Mar, 22, 2021 and ending at Apr, 01, 2021
+ * const result = clamp(new Date(2021, 2, 21), {
+ *   start: new Date(2021, 2, 22),
+ *   end: new Date(2021, 3, 1),
+ * })
+ * //=> Mon Mar 22 2021 00:00:00
+ *
+ * @param {Date | Number} date - the date to be bounded
+ * @param {Interval} interval - the interval to bound to
+ * @returns {Date} the date bounded by the start and the end of the interval
+ * @throws {TypeError} 2 arguments required
+ */
+
+function clamp(date, _ref) {
+  var start = _ref.start,
+      end = _ref.end;
+  Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__min_index_js__["a" /* default */])([Object(__WEBPACK_IMPORTED_MODULE_0__max_index_js__["a" /* default */])([date, start]), end]);
+}
+
+/***/ }),
+/* 502 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45146,7 +47245,7 @@ function closestIndexTo(dirtyDateToCompare, dirtyDatesArray) {
 }
 
 /***/ }),
-/* 481 */
+/* 503 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45226,7 +47325,7 @@ function closestTo(dirtyDateToCompare, dirtyDatesArray) {
 }
 
 /***/ }),
-/* 482 */
+/* 504 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45288,17 +47387,57 @@ function compareDesc(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 483 */
+/* 505 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isWeekend_index_js__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name daysToWeeks
+ * @category Conversion Helpers
+ * @summary Convert days to weeks.
+ *
+ * @description
+ * Convert a number of days to a full number of weeks.
+ *
+ * @param {number} days - number of days to be converted
+ *
+ * @returns {number} the number of days converted in weeks
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 14 days to weeks:
+ * const result = daysToWeeks(14)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = daysToWeeks(13)
+ * //=> 1
+ */
+
+function daysToWeeks(days) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var weeks = days / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["a" /* daysInWeek */];
+  return Math.floor(weeks);
+}
+
+/***/ }),
+/* 506 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isWeekend_index_js__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInCalendarDays_index_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__isSameDay_index_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInCalendarDays_index_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__isSameDay_index_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -45356,13 +47495,13 @@ function differenceInBusinessDays(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 484 */
+/* 507 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -45409,12 +47548,12 @@ function differenceInCalendarISOWeeks(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 485 */
+/* 508 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getQuarter_index_js__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getQuarter_index_js__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -45456,15 +47595,15 @@ function differenceInCalendarQuarters(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 486 */
+/* 509 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarISOWeekYears_index_js__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__subISOWeekYears_index_js__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInCalendarISOWeekYears_index_js__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__compareAsc_index_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__subISOWeekYears_index_js__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -45521,22 +47660,24 @@ function differenceInISOWeekYears(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 487 */
+/* 510 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__ = __webpack_require__(31);
+
 
 
 /**
  * @name differenceInQuarters
  * @category Quarter Helpers
- * @summary Get the number of full quarters between the given dates.
+ * @summary Get the number of quarters between the given dates.
  *
  * @description
- * Get the number of full quarters between the given dates.
+ * Get the number of quarters between the given dates.
  *
  * ### v2.0.0 breaking changes:
  *
@@ -45544,29 +47685,33 @@ function differenceInISOWeekYears(dirtyDateLeft, dirtyDateRight) {
  *
  * @param {Date|Number} dateLeft - the later date
  * @param {Date|Number} dateRight - the earlier date
+ * @param {Object} [options] - an object with options.
+ * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
  * @returns {Number} the number of full quarters
  * @throws {TypeError} 2 arguments required
  *
  * @example
  * // How many full quarters are between 31 December 2013 and 2 July 2014?
- * var result = differenceInQuarters(new Date(2014, 6, 2), new Date(2013, 11, 31))
+ * const result = differenceInQuarters(new Date(2014, 6, 2), new Date(2013, 11, 31))
  * //=> 2
  */
 
-function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
+function differenceInQuarters(dateLeft, dateRight, options) {
   Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__["a" /* default */])(dirtyDateLeft, dirtyDateRight) / 3;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInMonths_index_js__["a" /* default */])(dateLeft, dateRight) / 3;
+  return Object(__WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__["a" /* getRoundingMethod */])(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
 }
 
 /***/ }),
-/* 488 */
+/* 511 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInDays_index_js__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInDays_index_js__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__ = __webpack_require__(31);
+
 
 
 /**
@@ -45576,7 +47721,7 @@ function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
  *
  * @description
  * Get the number of full weeks between two dates. Fractional weeks are
- * truncated towards zero.
+ * truncated towards zero by default.
  *
  * One "full week" is the distance between a local time in one day to the same
  * local time 7 days earlier or later. A full week can sometimes be less than
@@ -45592,6 +47737,8 @@ function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
  *
  * @param {Date|Number} dateLeft - the later date
  * @param {Date|Number} dateRight - the earlier date
+ * @param {Object} [options] - an object with options.
+ * @param {String} [options.roundingMethod='trunc'] - a rounding method (`ceil`, `floor`, `round` or `trunc`)
  * @returns {Number} the number of full weeks
  * @throws {TypeError} 2 arguments required
  *
@@ -45613,19 +47760,19 @@ function differenceInQuarters(dirtyDateLeft, dirtyDateRight) {
  * //=> 8
  */
 
-function differenceInWeeks(dirtyDateLeft, dirtyDateRight) {
+function differenceInWeeks(dateLeft, dateRight, options) {
   Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInDays_index_js__["a" /* default */])(dirtyDateLeft, dirtyDateRight) / 7;
-  return diff > 0 ? Math.floor(diff) : Math.ceil(diff);
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInDays_index_js__["a" /* default */])(dateLeft, dateRight) / 7;
+  return Object(__WEBPACK_IMPORTED_MODULE_2__lib_roundingMethods_index_js__["a" /* getRoundingMethod */])(options === null || options === void 0 ? void 0 : options.roundingMethod)(diff);
 }
 
 /***/ }),
-/* 489 */
+/* 512 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addHours_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addHours_index_js__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -45689,14 +47836,14 @@ function eachHourOfInterval(dirtyInterval, options) {
 }
 
 /***/ }),
-/* 490 */
+/* 513 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addMinutes_index_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addMinutes_index_js__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMinute_index_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMinute_index_js__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -45758,7 +47905,7 @@ function eachMinuteOfInterval(interval, options) {
 }
 
 /***/ }),
-/* 491 */
+/* 514 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -45823,13 +47970,13 @@ function eachMonthOfInterval(dirtyInterval) {
 }
 
 /***/ }),
-/* 492 */
+/* 515 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addQuarters_index_js__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfQuarter_index_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addQuarters_index_js__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfQuarter_index_js__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -45889,13 +48036,13 @@ function eachQuarterOfInterval(dirtyInterval) {
 }
 
 /***/ }),
-/* 493 */
+/* 516 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addWeeks_index_js__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeek_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addWeeks_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeek_index_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -45973,14 +48120,14 @@ function eachWeekOfInterval(dirtyInterval, options) {
 }
 
 /***/ }),
-/* 494 */
+/* 517 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachWeekendOfInterval_index_js__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfMonth_index_js__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfMonth_index_js__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachWeekendOfInterval_index_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfMonth_index_js__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfMonth_index_js__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -46026,14 +48173,14 @@ function eachWeekendOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 495 */
+/* 518 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachWeekendOfInterval_index_js__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfYear_index_js__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfYear_index_js__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__eachWeekendOfInterval_index_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfYear_index_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__endOfYear_index_js__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -46076,7 +48223,7 @@ function eachWeekendOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 496 */
+/* 519 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46101,7 +48248,7 @@ function eachWeekendOfYear(dirtyDate) {
  *
  * @example
  * // Each year between 6 February 2014 and 10 August 2017:
- * var result = eachYearOfInterval({
+ * const result = eachYearOfInterval({
  *   start: new Date(2014, 1, 6),
  *   end: new Date(2017, 7, 10)
  * })
@@ -46138,7 +48285,7 @@ function eachYearOfInterval(dirtyInterval) {
 }
 
 /***/ }),
-/* 497 */
+/* 520 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46183,7 +48330,7 @@ function endOfDecade(dirtyDate) {
 }
 
 /***/ }),
-/* 498 */
+/* 521 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46223,12 +48370,12 @@ function endOfHour(dirtyDate) {
 }
 
 /***/ }),
-/* 499 */
+/* 522 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endOfWeek_index_js__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endOfWeek_index_js__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -46265,13 +48412,13 @@ function endOfISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 500 */
+/* 523 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -46319,7 +48466,7 @@ function endOfISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 501 */
+/* 524 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46359,7 +48506,7 @@ function endOfMinute(dirtyDate) {
 }
 
 /***/ }),
-/* 502 */
+/* 525 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46402,7 +48549,7 @@ function endOfQuarter(dirtyDate) {
 }
 
 /***/ }),
-/* 503 */
+/* 526 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46442,12 +48589,12 @@ function endOfSecond(dirtyDate) {
 }
 
 /***/ }),
-/* 504 */
+/* 527 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = endOfToday;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endOfDay_index_js__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__endOfDay_index_js__ = __webpack_require__(51);
 
 /**
  * @name endOfToday
@@ -46478,7 +48625,7 @@ function endOfToday() {
 }
 
 /***/ }),
-/* 505 */
+/* 528 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46518,7 +48665,7 @@ function endOfTomorrow() {
 }
 
 /***/ }),
-/* 506 */
+/* 529 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46558,11 +48705,10 @@ function endOfYesterday() {
 }
 
 /***/ }),
-/* 507 */
+/* 530 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = formatDistance;
 var formatDistanceLocale = {
   lessThanXSeconds: {
     one: 'less than a second',
@@ -46626,20 +48772,21 @@ var formatDistanceLocale = {
     other: 'almost {{count}} years'
   }
 };
-function formatDistance(token, count, options) {
-  options = options || {};
-  var result;
 
-  if (typeof formatDistanceLocale[token] === 'string') {
-    result = formatDistanceLocale[token];
+var formatDistance = function (token, count, options) {
+  var result;
+  var tokenValue = formatDistanceLocale[token];
+
+  if (typeof tokenValue === 'string') {
+    result = tokenValue;
   } else if (count === 1) {
-    result = formatDistanceLocale[token].one;
+    result = tokenValue.one;
   } else {
-    result = formatDistanceLocale[token].other.replace('{{count}}', count);
+    result = tokenValue.other.replace('{{count}}', count.toString());
   }
 
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
+  if (options !== null && options !== void 0 && options.addSuffix) {
+    if (options.comparison && options.comparison > 0) {
       return 'in ' + result;
     } else {
       return result + ' ago';
@@ -46647,14 +48794,16 @@ function formatDistance(token, count, options) {
   }
 
   return result;
-}
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (formatDistance);
 
 /***/ }),
-/* 508 */
+/* 531 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildFormatLongFn_index_js__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildFormatLongFn_index_js__ = __webpack_require__(532);
 
 var dateFormats = {
   full: 'EEEE, MMMM do, y',
@@ -46691,14 +48840,15 @@ var formatLong = {
 /* harmony default export */ __webpack_exports__["a"] = (formatLong);
 
 /***/ }),
-/* 509 */
+/* 532 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = buildFormatLongFn;
 function buildFormatLongFn(args) {
-  return function (dirtyOptions) {
-    var options = dirtyOptions || {};
+  return function () {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    // TODO: Remove String()
     var width = options.width ? String(options.width) : args.defaultWidth;
     var format = args.formats[width] || args.formats[args.defaultWidth];
     return format;
@@ -46706,11 +48856,10 @@ function buildFormatLongFn(args) {
 }
 
 /***/ }),
-/* 510 */
+/* 533 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = formatRelative;
 var formatRelativeLocale = {
   lastWeek: "'last' eeee 'at' p",
   yesterday: "'yesterday at' p",
@@ -46719,16 +48868,19 @@ var formatRelativeLocale = {
   nextWeek: "eeee 'at' p",
   other: 'P'
 };
-function formatRelative(token, _date, _baseDate, _options) {
+
+var formatRelative = function (token, _date, _baseDate, _options) {
   return formatRelativeLocale[token];
-}
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (formatRelative);
 
 /***/ }),
-/* 511 */
+/* 534 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildLocalizeFn_index_js__ = __webpack_require__(512);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildLocalizeFn_index_js__ = __webpack_require__(535);
 
 var eraValues = {
   narrow: ['B', 'A'],
@@ -46738,12 +48890,12 @@ var eraValues = {
 var quarterValues = {
   narrow: ['1', '2', '3', '4'],
   abbreviated: ['Q1', 'Q2', 'Q3', 'Q4'],
-  wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter'] // Note: in English, the names of days of the week and months are capitalized.
-  // If you are making a new locale based on this one, check if the same is true for the language you're working on.
-  // Generally, formatted dates should look like they are in the middle of a sentence,
-  // e.g. in Spanish language the weekdays and months should be in the lowercase.
+  wide: ['1st quarter', '2nd quarter', '3rd quarter', '4th quarter']
+}; // Note: in English, the names of days of the week and months are capitalized.
+// If you are making a new locale based on this one, check if the same is true for the language you're working on.
+// Generally, formatted dates should look like they are in the middle of a sentence,
+// e.g. in Spanish language the weekdays and months should be in the lowercase.
 
-};
 var monthValues = {
   narrow: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
   abbreviated: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -46820,16 +48972,13 @@ var formattingDayPeriodValues = {
   }
 };
 
-function ordinalNumber(dirtyNumber, _dirtyOptions) {
+var ordinalNumber = function (dirtyNumber, _options) {
   var number = Number(dirtyNumber); // If ordinal numbers depend on context, for example,
   // if they are different for different grammatical genders,
-  // use `options.unit`:
+  // use `options.unit`.
   //
-  //   var options = dirtyOptions || {}
-  //   var unit = String(options.unit)
-  //
-  // where `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
-  // 'day', 'hour', 'minute', 'second'
+  // `unit` can be 'year', 'quarter', 'month', 'week', 'date', 'dayOfYear',
+  // 'day', 'hour', 'minute', 'second'.
 
   var rem100 = number % 100;
 
@@ -46847,7 +48996,7 @@ function ordinalNumber(dirtyNumber, _dirtyOptions) {
   }
 
   return number + 'th';
-}
+};
 
 var localize = {
   ordinalNumber: ordinalNumber,
@@ -46859,7 +49008,7 @@ var localize = {
     values: quarterValues,
     defaultWidth: 'wide',
     argumentCallback: function (quarter) {
-      return Number(quarter) - 1;
+      return quarter - 1;
     }
   }),
   month: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildLocalizeFn_index_js__["a" /* default */])({
@@ -46880,7 +49029,7 @@ var localize = {
 /* harmony default export */ __webpack_exports__["a"] = (localize);
 
 /***/ }),
-/* 512 */
+/* 535 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46903,18 +49052,19 @@ function buildLocalizeFn(args) {
       valuesArray = args.values[_width] || args.values[_defaultWidth];
     }
 
-    var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
+    var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex; // @ts-ignore: For some reason TypeScript just don't want to match it, no matter how hard we try. I challange you to try to remove it!
+
     return valuesArray[index];
   };
 }
 
 /***/ }),
-/* 513 */
+/* 536 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildMatchPatternFn_index_js__ = __webpack_require__(514);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__ = __webpack_require__(515);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_buildMatchPatternFn_index_js__ = __webpack_require__(538);
 
 
 var matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i;
@@ -46971,20 +49121,20 @@ var parseDayPeriodPatterns = {
   }
 };
 var match = {
-  ordinalNumber: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchPatternFn_index_js__["a" /* default */])({
+  ordinalNumber: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchPatternFn_index_js__["a" /* default */])({
     matchPattern: matchOrdinalNumberPattern,
     parsePattern: parseOrdinalNumberPattern,
     valueCallback: function (value) {
       return parseInt(value, 10);
     }
   }),
-  era: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__["a" /* default */])({
+  era: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__["a" /* default */])({
     matchPatterns: matchEraPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseEraPatterns,
     defaultParseWidth: 'any'
   }),
-  quarter: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__["a" /* default */])({
+  quarter: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__["a" /* default */])({
     matchPatterns: matchQuarterPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseQuarterPatterns,
@@ -46993,19 +49143,19 @@ var match = {
       return index + 1;
     }
   }),
-  month: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__["a" /* default */])({
+  month: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__["a" /* default */])({
     matchPatterns: matchMonthPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseMonthPatterns,
     defaultParseWidth: 'any'
   }),
-  day: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__["a" /* default */])({
+  day: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__["a" /* default */])({
     matchPatterns: matchDayPatterns,
     defaultMatchWidth: 'wide',
     parsePatterns: parseDayPatterns,
     defaultParseWidth: 'any'
   }),
-  dayPeriod: Object(__WEBPACK_IMPORTED_MODULE_1__lib_buildMatchFn_index_js__["a" /* default */])({
+  dayPeriod: Object(__WEBPACK_IMPORTED_MODULE_0__lib_buildMatchFn_index_js__["a" /* default */])({
     matchPatterns: matchDayPeriodPatterns,
     defaultMatchWidth: 'any',
     parsePatterns: parseDayPeriodPatterns,
@@ -47015,47 +49165,14 @@ var match = {
 /* harmony default export */ __webpack_exports__["a"] = (match);
 
 /***/ }),
-/* 514 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = buildMatchPatternFn;
-function buildMatchPatternFn(args) {
-  return function (dirtyString, dirtyOptions) {
-    var string = String(dirtyString);
-    var options = dirtyOptions || {};
-    var matchResult = string.match(args.matchPattern);
-
-    if (!matchResult) {
-      return null;
-    }
-
-    var matchedString = matchResult[0];
-    var parseResult = string.match(args.parsePattern);
-
-    if (!parseResult) {
-      return null;
-    }
-
-    var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-    value = options.valueCallback ? options.valueCallback(value) : value;
-    return {
-      value: value,
-      rest: string.slice(matchedString.length)
-    };
-  };
-}
-
-/***/ }),
-/* 515 */
+/* 537 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = buildMatchFn;
 function buildMatchFn(args) {
-  return function (dirtyString, dirtyOptions) {
-    var string = String(dirtyString);
-    var options = dirtyOptions || {};
+  return function (string) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var width = options.width;
     var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
     var matchResult = string.match(matchPattern);
@@ -47066,23 +49183,18 @@ function buildMatchFn(args) {
 
     var matchedString = matchResult[0];
     var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
+    var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function (pattern) {
+      return pattern.test(matchedString);
+    }) : findKey(parsePatterns, function (pattern) {
+      return pattern.test(matchedString);
+    });
     var value;
-
-    if (Object.prototype.toString.call(parsePatterns) === '[object Array]') {
-      value = findIndex(parsePatterns, function (pattern) {
-        return pattern.test(matchedString);
-      });
-    } else {
-      value = findKey(parsePatterns, function (pattern) {
-        return pattern.test(matchedString);
-      });
-    }
-
-    value = args.valueCallback ? args.valueCallback(value) : value;
+    value = args.valueCallback ? args.valueCallback(key) : key;
     value = options.valueCallback ? options.valueCallback(value) : value;
+    var rest = string.slice(matchedString.length);
     return {
       value: value,
-      rest: string.slice(matchedString.length)
+      rest: rest
     };
   };
 }
@@ -47093,6 +49205,8 @@ function findKey(object, predicate) {
       return key;
     }
   }
+
+  return undefined;
 }
 
 function findIndex(array, predicate) {
@@ -47101,20 +49215,46 @@ function findIndex(array, predicate) {
       return key;
     }
   }
+
+  return undefined;
 }
 
 /***/ }),
-/* 516 */
+/* 538 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lightFormatters_index_js__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_getUTCDayOfYear_index_js__ = __webpack_require__(517);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_getUTCISOWeek_index_js__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_getUTCISOWeekYear_index_js__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_getUTCWeek_index_js__ = __webpack_require__(93);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getUTCWeekYear_index_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony export (immutable) */ __webpack_exports__["a"] = buildMatchPatternFn;
+function buildMatchPatternFn(args) {
+  return function (string) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var matchResult = string.match(args.matchPattern);
+    if (!matchResult) return null;
+    var matchedString = matchResult[0];
+    var parseResult = string.match(args.parsePattern);
+    if (!parseResult) return null;
+    var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
+    value = options.valueCallback ? options.valueCallback(value) : value;
+    var rest = string.slice(matchedString.length);
+    return {
+      value: value,
+      rest: rest
+    };
+  };
+}
+
+/***/ }),
+/* 539 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lightFormatters_index_js__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_getUTCDayOfYear_index_js__ = __webpack_require__(540);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_getUTCISOWeek_index_js__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_getUTCISOWeekYear_index_js__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_getUTCWeek_index_js__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getUTCWeekYear_index_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__addLeadingZeros_index_js__ = __webpack_require__(25);
 
 
 
@@ -47131,53 +49271,53 @@ var dayPeriodEnum = {
   afternoon: 'afternoon',
   evening: 'evening',
   night: 'night'
-  /*
-   * |     | Unit                           |     | Unit                           |
-   * |-----|--------------------------------|-----|--------------------------------|
-   * |  a  | AM, PM                         |  A* | Milliseconds in day            |
-   * |  b  | AM, PM, noon, midnight         |  B  | Flexible day period            |
-   * |  c  | Stand-alone local day of week  |  C* | Localized hour w/ day period   |
-   * |  d  | Day of month                   |  D  | Day of year                    |
-   * |  e  | Local day of week              |  E  | Day of week                    |
-   * |  f  |                                |  F* | Day of week in month           |
-   * |  g* | Modified Julian day            |  G  | Era                            |
-   * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
-   * |  i! | ISO day of week                |  I! | ISO week of year               |
-   * |  j* | Localized hour w/ day period   |  J* | Localized hour w/o day period  |
-   * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
-   * |  l* | (deprecated)                   |  L  | Stand-alone month              |
-   * |  m  | Minute                         |  M  | Month                          |
-   * |  n  |                                |  N  |                                |
-   * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
-   * |  p! | Long localized time            |  P! | Long localized date            |
-   * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
-   * |  r* | Related Gregorian year         |  R! | ISO week-numbering year        |
-   * |  s  | Second                         |  S  | Fraction of second             |
-   * |  t! | Seconds timestamp              |  T! | Milliseconds timestamp         |
-   * |  u  | Extended year                  |  U* | Cyclic year                    |
-   * |  v* | Timezone (generic non-locat.)  |  V* | Timezone (location)            |
-   * |  w  | Local week of year             |  W* | Week of month                  |
-   * |  x  | Timezone (ISO-8601 w/o Z)      |  X  | Timezone (ISO-8601)            |
-   * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
-   * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
-   *
-   * Letters marked by * are not implemented but reserved by Unicode standard.
-   *
-   * Letters marked by ! are non-standard, but implemented by date-fns:
-   * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
-   * - `i` is ISO day of week. For `i` and `ii` is returns numeric ISO week days,
-   *   i.e. 7 for Sunday, 1 for Monday, etc.
-   * - `I` is ISO week of year, as opposed to `w` which is local week of year.
-   * - `R` is ISO week-numbering year, as opposed to `Y` which is local week-numbering year.
-   *   `R` is supposed to be used in conjunction with `I` and `i`
-   *   for universal ISO week-numbering date, whereas
-   *   `Y` is supposed to be used in conjunction with `w` and `e`
-   *   for week-numbering date specific to the locale.
-   * - `P` is long localized date format
-   * - `p` is long localized time format
-   */
-
 };
+/*
+ * |     | Unit                           |     | Unit                           |
+ * |-----|--------------------------------|-----|--------------------------------|
+ * |  a  | AM, PM                         |  A* | Milliseconds in day            |
+ * |  b  | AM, PM, noon, midnight         |  B  | Flexible day period            |
+ * |  c  | Stand-alone local day of week  |  C* | Localized hour w/ day period   |
+ * |  d  | Day of month                   |  D  | Day of year                    |
+ * |  e  | Local day of week              |  E  | Day of week                    |
+ * |  f  |                                |  F* | Day of week in month           |
+ * |  g* | Modified Julian day            |  G  | Era                            |
+ * |  h  | Hour [1-12]                    |  H  | Hour [0-23]                    |
+ * |  i! | ISO day of week                |  I! | ISO week of year               |
+ * |  j* | Localized hour w/ day period   |  J* | Localized hour w/o day period  |
+ * |  k  | Hour [1-24]                    |  K  | Hour [0-11]                    |
+ * |  l* | (deprecated)                   |  L  | Stand-alone month              |
+ * |  m  | Minute                         |  M  | Month                          |
+ * |  n  |                                |  N  |                                |
+ * |  o! | Ordinal number modifier        |  O  | Timezone (GMT)                 |
+ * |  p! | Long localized time            |  P! | Long localized date            |
+ * |  q  | Stand-alone quarter            |  Q  | Quarter                        |
+ * |  r* | Related Gregorian year         |  R! | ISO week-numbering year        |
+ * |  s  | Second                         |  S  | Fraction of second             |
+ * |  t! | Seconds timestamp              |  T! | Milliseconds timestamp         |
+ * |  u  | Extended year                  |  U* | Cyclic year                    |
+ * |  v* | Timezone (generic non-locat.)  |  V* | Timezone (location)            |
+ * |  w  | Local week of year             |  W* | Week of month                  |
+ * |  x  | Timezone (ISO-8601 w/o Z)      |  X  | Timezone (ISO-8601)            |
+ * |  y  | Year (abs)                     |  Y  | Local week-numbering year      |
+ * |  z  | Timezone (specific non-locat.) |  Z* | Timezone (aliases)             |
+ *
+ * Letters marked by * are not implemented but reserved by Unicode standard.
+ *
+ * Letters marked by ! are non-standard, but implemented by date-fns:
+ * - `o` modifies the previous token to turn it into an ordinal (see `format` docs)
+ * - `i` is ISO day of week. For `i` and `ii` is returns numeric ISO week days,
+ *   i.e. 7 for Sunday, 1 for Monday, etc.
+ * - `I` is ISO week of year, as opposed to `w` which is local week of year.
+ * - `R` is ISO week-numbering year, as opposed to `Y` which is local week-numbering year.
+ *   `R` is supposed to be used in conjunction with `I` and `i`
+ *   for universal ISO week-numbering date, whereas
+ *   `Y` is supposed to be used in conjunction with `w` and `e`
+ *   for week-numbering date specific to the locale.
+ * - `P` is long localized date format
+ * - `p` is long localized time format
+ */
+
 var formatters = {
   // Era
   G: function (date, token, localize) {
@@ -47983,7 +50123,7 @@ function formatTimezone(offset, dirtyDelimiter) {
 /* harmony default export */ __webpack_exports__["a"] = (formatters);
 
 /***/ }),
-/* 517 */
+/* 540 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48007,13 +50147,13 @@ function getUTCDayOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 518 */
+/* 541 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfUTCISOWeekYear;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getUTCISOWeekYear_index_js__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getUTCISOWeekYear_index_js__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfUTCISOWeek_index_js__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48031,14 +50171,14 @@ function startOfUTCISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 519 */
+/* 542 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfUTCWeekYear;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getUTCWeekYear_index_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getUTCWeekYear_index_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfUTCWeek_index_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48062,12 +50202,12 @@ function startOfUTCWeekYear(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 520 */
+/* 543 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDistance_index_js__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDistance_index_js__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48183,12 +50323,12 @@ function formatDistanceToNow(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 521 */
+/* 544 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDistanceStrict_index_js__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__formatDistanceStrict_index_js__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48273,12 +50413,12 @@ function formatDistanceToNowStrict(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 522 */
+/* 545 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en_US_index_js__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_en_US_index_js__ = __webpack_require__(24);
 
 var defaultFormat = ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds'];
 /**
@@ -48365,14 +50505,14 @@ function formatDuration(duration, options) {
 }
 
 /***/ }),
-/* 523 */
+/* 546 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(25);
 
 
 
@@ -48482,14 +50622,14 @@ function formatISO(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 524 */
+/* 547 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(25);
 
 
 
@@ -48582,7 +50722,7 @@ function formatISO9075(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 525 */
+/* 548 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48605,7 +50745,7 @@ function formatISO9075(dirtyDate, dirtyOptions) {
  *
  * @example
  * // Format the given duration as ISO 8601 string
- * formatISODuration({
+ * const result = formatISODuration({
  *   years: 39,
  *   months: 2,
  *   days: 20,
@@ -48635,15 +50775,16 @@ function formatISODuration(duration) {
 }
 
 /***/ }),
-/* 526 */
+/* 549 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__ = __webpack_require__(6);
+
 
 
 
@@ -48679,7 +50820,6 @@ function formatISODuration(duration) {
  * const result = formatRFC3339(new Date(2019, 8, 18, 19, 0, 52, 234), { fractionDigits: 3 })
  * //=> '2019-09-18T19:00:52.234Z'
  */
-
 function formatRFC3339(dirtyDate, dirtyOptions) {
   if (arguments.length < 1) {
     throw new TypeError("1 arguments required, but only ".concat(arguments.length, " present"));
@@ -48691,8 +50831,10 @@ function formatRFC3339(dirtyDate, dirtyOptions) {
     throw new RangeError('Invalid time value');
   }
 
-  var options = dirtyOptions || {};
-  var fractionDigits = options.fractionDigits == null ? 0 : Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(options.fractionDigits); // Test if fractionDigits is between 0 and 3 _and_ is not NaN
+  var _ref = dirtyOptions || {},
+      _ref$fractionDigits = _ref.fractionDigits,
+      fractionDigits = _ref$fractionDigits === void 0 ? 0 : _ref$fractionDigits; // Test if fractionDigits is between 0 and 3 _and_ is not NaN
+
 
   if (!(fractionDigits >= 0 && fractionDigits <= 3)) {
     throw new RangeError('fractionDigits must be between 0 and 3 inclusively');
@@ -48730,14 +50872,14 @@ function formatRFC3339(dirtyDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 527 */
+/* 550 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_addLeadingZeros_index_js__ = __webpack_require__(25);
 
 
 
@@ -48786,17 +50928,17 @@ function formatRFC7231(dirtyDate) {
 }
 
 /***/ }),
-/* 528 */
+/* 551 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__format_index_js__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__locale_en_US_index_js__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__subMilliseconds_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__format_index_js__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__locale_en_US_index_js__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__subMilliseconds_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48840,6 +50982,11 @@ function formatRFC7231(dirtyDate) {
  * @throws {RangeError} `options.locale` must contain `localize` property
  * @throws {RangeError} `options.locale` must contain `formatLong` property
  * @throws {RangeError} `options.locale` must contain `formatRelative` property
+ *
+ * @example
+ * // Represent the date of 6 days ago in words relative to the given base date. In this example, today is Wednesday
+ * const result = formatRelative(addDays(new Date(), -6), new Date())
+ * //=> "last Thursday at 12:45 AM"
  */
 function formatRelative(dirtyDate, dirtyBaseDate, dirtyOptions) {
   Object(__WEBPACK_IMPORTED_MODULE_6__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
@@ -48901,7 +51048,7 @@ function formatRelative(dirtyDate, dirtyBaseDate, dirtyOptions) {
 }
 
 /***/ }),
-/* 529 */
+/* 552 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48918,19 +51065,19 @@ function formatRelative(dirtyDate, dirtyBaseDate, dirtyOptions) {
  * @summary Create a date from a Unix timestamp.
  *
  * @description
- * Create a date from a Unix timestamp.
+ * Create a date from a Unix timestamp (in seconds). Decimal values will be discarded.
  *
  * ### v2.0.0 breaking changes:
  *
  * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
  *
- * @param {Number} unixTime - the given Unix timestamp
+ * @param {Number} unixTime - the given Unix timestamp (in seconds)
  * @returns {Date} the date
  * @throws {TypeError} 1 argument required
  *
  * @example
  * // Create the date 29 February 2012 11:45:05:
- * var result = fromUnixTime(1330515905)
+ * const result = fromUnixTime(1330515905)
  * //=> Wed Feb 29 2012 11:45:05
  */
 
@@ -48941,14 +51088,14 @@ function fromUnixTime(dirtyUnixTime) {
 }
 
 /***/ }),
-/* 530 */
+/* 553 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfYear_index_js__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInCalendarDays_index_js__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfYear_index_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInCalendarDays_index_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -48985,13 +51132,13 @@ function getDayOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 531 */
+/* 554 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isLeapYear_index_js__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isLeapYear_index_js__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49030,7 +51177,7 @@ function getDaysInYear(dirtyDate) {
 }
 
 /***/ }),
-/* 532 */
+/* 555 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49070,7 +51217,7 @@ function getDecade(dirtyDate) {
 }
 
 /***/ }),
-/* 533 */
+/* 556 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49109,13 +51256,13 @@ function getHours(dirtyDate) {
 }
 
 /***/ }),
-/* 534 */
+/* 557 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfISOWeekYear_index_js__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfISOWeekYear_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49157,7 +51304,7 @@ function getISOWeeksInYear(dirtyDate) {
 }
 
 /***/ }),
-/* 535 */
+/* 558 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49196,7 +51343,7 @@ function getMilliseconds(dirtyDate) {
 }
 
 /***/ }),
-/* 536 */
+/* 559 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49235,7 +51382,7 @@ function getMinutes(dirtyDate) {
 }
 
 /***/ }),
-/* 537 */
+/* 560 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49274,7 +51421,7 @@ function getMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 538 */
+/* 561 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49376,7 +51523,7 @@ function getOverlappingDaysInIntervals(dirtyIntervalLeft, dirtyIntervalRight) {
 }
 
 /***/ }),
-/* 539 */
+/* 562 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49415,12 +51562,12 @@ function getSeconds(dirtyDate) {
 }
 
 /***/ }),
-/* 540 */
+/* 563 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getTime_index_js__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getTime_index_js__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49452,14 +51599,14 @@ function getUnixTime(dirtyDate) {
 }
 
 /***/ }),
-/* 541 */
+/* 564 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getDate_index_js__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getDate_index_js__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getDay_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -49531,14 +51678,14 @@ function getWeekOfMonth(date, dirtyOptions) {
 }
 
 /***/ }),
-/* 542 */
+/* 565 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarWeeks_index_js__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lastDayOfMonth_index_js__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarWeeks_index_js__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lastDayOfMonth_index_js__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__startOfMonth_index_js__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -49582,7 +51729,7 @@ function getWeeksInMonth(date, options) {
 }
 
 /***/ }),
-/* 543 */
+/* 566 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49621,22 +51768,124 @@ function getYear(dirtyDate) {
 }
 
 /***/ }),
-/* 544 */
+/* 567 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInYears_index_js__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInMonths_index_js__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInDays_index_js__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__differenceInHours_index_js__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__differenceInMinutes_index_js__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__differenceInSeconds_index_js__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__isValid_index_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name hoursToMilliseconds
+ * @category  Conversion Helpers
+ * @summary Convert hours to milliseconds.
+ *
+ * @description
+ * Convert a number of hours to a full number of milliseconds.
+ *
+ * @param {number} hours - number of hours to be converted
+ *
+ * @returns {number} the number of hours converted to milliseconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 hours to milliseconds:
+ * const result = hoursToMilliseconds(2)
+ * //=> 7200000
+ */
+
+function hoursToMilliseconds(hours) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(hours * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["b" /* millisecondsInHour */]);
+}
+
+/***/ }),
+/* 568 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name hoursToMinutes
+ * @category Conversion Helpers
+ * @summary Convert hours to minutes.
+ *
+ * @description
+ * Convert a number of hours to a full number of minutes.
+ *
+ * @param {number} hours - number of hours to be converted
+ *
+ * @returns {number} the number of hours converted in minutes
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 hours to minutes:
+ * const result = hoursToMinutes(2)
+ * //=> 120
+ */
+
+function hoursToMinutes(hours) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(hours * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["e" /* minutesInHour */]);
+}
+
+/***/ }),
+/* 569 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name hoursToSeconds
+ * @category Conversion Helpers
+ * @summary Convert hours to seconds.
+ *
+ * @description
+ * Convert a number of hours to a full number of seconds.
+ *
+ * @param {number} hours - number of hours to be converted
+ *
+ * @returns {number} the number of hours converted in seconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 hours to seconds:
+ * const result = hoursToSeconds(2)
+ * //=> 7200
+ */
+
+function hoursToSeconds(hours) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(hours * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["i" /* secondsInHour */]);
+}
+
+/***/ }),
+/* 570 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compareAsc_index_js__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__differenceInYears_index_js__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__differenceInMonths_index_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__differenceInDays_index_js__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__differenceInHours_index_js__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__differenceInMinutes_index_js__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__differenceInSeconds_index_js__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__isValid_index_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_requiredArgs_index_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__sub_index_js__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__sub_index_js__ = __webpack_require__(115);
 
 
 
@@ -49721,7 +51970,7 @@ function intervalToDuration(_ref) {
 }
 
 /***/ }),
-/* 545 */
+/* 571 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49819,7 +52068,7 @@ function isFormatOptions(opts) {
 }
 
 /***/ }),
-/* 546 */
+/* 572 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49859,7 +52108,7 @@ function isAfter(dirtyDate, dirtyDateToCompare) {
 }
 
 /***/ }),
-/* 547 */
+/* 573 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49899,57 +52148,7 @@ function isBefore(dirtyDate, dirtyDateToCompare) {
 }
 
 /***/ }),
-/* 548 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-/**
- * @name isDate
- * @category Common Helpers
- * @summary Is the given value a date?
- *
- * @description
- * Returns true if the given value is an instance of Date. The function works for dates transferred across iframes.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * @param {*} value - the value to check
- * @returns {boolean} true if the given value is a date
- * @throws {TypeError} 1 arguments required
- *
- * @example
- * // For a valid date:
- * const result = isDate(new Date())
- * //=> true
- *
- * @example
- * // For an invalid date:
- * const result = isDate(new Date(NaN))
- * //=> true
- *
- * @example
- * // For some value:
- * const result = isDate('2014-02-31')
- * //=> false
- *
- * @example
- * // For an object:
- * const result = isDate({})
- * //=> false
- */
-
-function isDate(value) {
-  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  return value instanceof Date || typeof value === 'object' && Object.prototype.toString.call(value) === '[object Date]';
-}
-
-/***/ }),
-/* 549 */
+/* 574 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49992,7 +52191,7 @@ function isEqual(dirtyLeftDate, dirtyRightDate) {
 }
 
 /***/ }),
-/* 550 */
+/* 575 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50031,7 +52230,7 @@ function isExists(year, month, day) {
 }
 
 /***/ }),
-/* 551 */
+/* 576 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50068,7 +52267,7 @@ function isFirstDayOfMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 552 */
+/* 577 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50105,7 +52304,7 @@ function isFriday(dirtyDate) {
 }
 
 /***/ }),
-/* 553 */
+/* 578 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50146,14 +52345,15 @@ function isFuture(dirtyDate) {
 }
 
 /***/ }),
-/* 554 */
+/* 579 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parse_index_js__ = __webpack_require__(111);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parse_index_js__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isValid_index_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 
@@ -50255,28 +52455,28 @@ function isFuture(dirtyDate) {
  * | Day of week (formatting)        |  90 | E..EEE  | Mon, Tue, Wed, ..., Su            |       |
  * |                                 |     | EEEE    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | EEEEE   | M, T, W, T, F, S, S               |       |
- * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | EEEEEE  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | ISO day of week (formatting)    |  90 | i       | 1, 2, 3, ..., 7                   | 5     |
  * |                                 |     | io      | 1st, 2nd, ..., 7th                | 5     |
  * |                                 |     | ii      | 01, 02, ..., 07                   | 5     |
  * |                                 |     | iii     | Mon, Tue, Wed, ..., Su            | 5     |
  * |                                 |     | iiii    | Monday, Tuesday, ..., Sunday      | 2,5   |
  * |                                 |     | iiiii   | M, T, W, T, F, S, S               | 5     |
- * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Su, Sa        | 5     |
+ * |                                 |     | iiiiii  | Mo, Tu, We, Th, Fr, Sa, Su        | 5     |
  * | Local day of week (formatting)  |  90 | e       | 2, 3, 4, ..., 1                   |       |
  * |                                 |     | eo      | 2nd, 3rd, ..., 1st                | 5     |
  * |                                 |     | ee      | 02, 03, ..., 01                   |       |
  * |                                 |     | eee     | Mon, Tue, Wed, ..., Su            |       |
  * |                                 |     | eeee    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | eeeee   | M, T, W, T, F, S, S               |       |
- * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | eeeeee  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | Local day of week (stand-alone) |  90 | c       | 2, 3, 4, ..., 1                   |       |
  * |                                 |     | co      | 2nd, 3rd, ..., 1st                | 5     |
  * |                                 |     | cc      | 02, 03, ..., 01                   |       |
  * |                                 |     | ccc     | Mon, Tue, Wed, ..., Su            |       |
  * |                                 |     | cccc    | Monday, Tuesday, ..., Sunday      | 2     |
  * |                                 |     | ccccc   | M, T, W, T, F, S, S               |       |
- * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Su, Sa        |       |
+ * |                                 |     | cccccc  | Mo, Tu, We, Th, Fr, Sa, Su        |       |
  * | AM, PM                          |  80 | a..aaa  | AM, PM                            |       |
  * |                                 |     | aaaa    | a.m., p.m.                        | 2     |
  * |                                 |     | aaaaa   | a, p                              |       |
@@ -50449,24 +52649,23 @@ function isFuture(dirtyDate) {
  * })
  * //=> true
  */
-
-function isMatch(dateString, formatString, dirtyOptions) {
+function isMatch(dateString, formatString, options) {
   Object(__WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  return Object(__WEBPACK_IMPORTED_MODULE_1__isValid_index_js__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__parse_index_js__["a" /* default */])(dateString, formatString, new Date(), dirtyOptions));
+  return Object(__WEBPACK_IMPORTED_MODULE_1__isValid_index_js__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__parse_index_js__["a" /* default */])(dateString, formatString, new Date(), options));
 }
 
 /***/ }),
-/* 555 */
+/* 580 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getUTCWeekYear_index_js__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_setUTCDay_index_js__ = __webpack_require__(556);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_setUTCISODay_index_js__ = __webpack_require__(557);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_setUTCISOWeek_index_js__ = __webpack_require__(558);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_setUTCWeek_index_js__ = __webpack_require__(559);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_startOfUTCISOWeek_index_js__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_startOfUTCWeek_index_js__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_getUTCWeekYear_index_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_setUTCDay_index_js__ = __webpack_require__(581);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_setUTCISODay_index_js__ = __webpack_require__(582);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_setUTCISOWeek_index_js__ = __webpack_require__(583);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_setUTCWeek_index_js__ = __webpack_require__(584);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_startOfUTCISOWeek_index_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_startOfUTCWeek_index_js__ = __webpack_require__(41);
 
 
 
@@ -51972,7 +54171,7 @@ var parsers = {
 /* harmony default export */ __webpack_exports__["a"] = (parsers);
 
 /***/ }),
-/* 556 */
+/* 581 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52008,7 +54207,7 @@ function setUTCDay(dirtyDate, dirtyDay, dirtyOptions) {
 }
 
 /***/ }),
-/* 557 */
+/* 582 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52040,14 +54239,14 @@ function setUTCISODay(dirtyDate, dirtyDay) {
 }
 
 /***/ }),
-/* 558 */
+/* 583 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setUTCISOWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getUTCISOWeek_index_js__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getUTCISOWeek_index_js__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52065,14 +54264,14 @@ function setUTCISOWeek(dirtyDate, dirtyISOWeek) {
 }
 
 /***/ }),
-/* 559 */
+/* 584 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = setUTCWeek;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getUTCWeek_index_js__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getUTCWeek_index_js__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52090,7 +54289,7 @@ function setUTCWeek(dirtyDate, dirtyWeek, options) {
 }
 
 /***/ }),
-/* 560 */
+/* 585 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52127,7 +54326,7 @@ function isMonday(date) {
 }
 
 /***/ }),
-/* 561 */
+/* 586 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52168,12 +54367,12 @@ function isPast(dirtyDate) {
 }
 
 /***/ }),
-/* 562 */
+/* 587 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfISOWeekYear_index_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfISOWeekYear_index_js__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52215,12 +54414,12 @@ function isSameISOWeekYear(dirtyDateLeft, dirtyDateRight) {
 }
 
 /***/ }),
-/* 563 */
+/* 588 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameHour_index_js__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameHour_index_js__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52257,12 +54456,12 @@ function isThisHour(dirtyDate) {
 }
 
 /***/ }),
-/* 564 */
+/* 589 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameISOWeek_index_js__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameISOWeek_index_js__ = __webpack_require__(120);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52300,12 +54499,12 @@ function isThisISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 565 */
+/* 590 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameMinute_index_js__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameMinute_index_js__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52342,12 +54541,12 @@ function isThisMinute(dirtyDate) {
 }
 
 /***/ }),
-/* 566 */
+/* 591 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameMonth_index_js__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameMonth_index_js__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52383,12 +54582,12 @@ function isThisMonth(dirtyDate) {
 }
 
 /***/ }),
-/* 567 */
+/* 592 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameQuarter_index_js__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameQuarter_index_js__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52424,12 +54623,12 @@ function isThisQuarter(dirtyDate) {
 }
 
 /***/ }),
-/* 568 */
+/* 593 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameSecond_index_js__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameSecond_index_js__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52466,12 +54665,12 @@ function isThisSecond(dirtyDate) {
 }
 
 /***/ }),
-/* 569 */
+/* 594 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameWeek_index_js__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameWeek_index_js__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52517,12 +54716,12 @@ function isThisWeek(dirtyDate, options) {
 }
 
 /***/ }),
-/* 570 */
+/* 595 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameYear_index_js__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameYear_index_js__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52558,7 +54757,7 @@ function isThisYear(dirtyDate) {
 }
 
 /***/ }),
-/* 571 */
+/* 596 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52595,12 +54794,12 @@ function isThursday(dirtyDate) {
 }
 
 /***/ }),
-/* 572 */
+/* 597 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = isToday;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameDay_index_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameDay_index_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52636,13 +54835,13 @@ function isToday(dirtyDate) {
 }
 
 /***/ }),
-/* 573 */
+/* 598 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isSameDay_index_js__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__isSameDay_index_js__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52679,7 +54878,7 @@ function isTomorrow(dirtyDate) {
 }
 
 /***/ }),
-/* 574 */
+/* 599 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52716,7 +54915,7 @@ function isTuesday(dirtyDate) {
 }
 
 /***/ }),
-/* 575 */
+/* 600 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52753,7 +54952,7 @@ function isWednesday(dirtyDate) {
 }
 
 /***/ }),
-/* 576 */
+/* 601 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52850,13 +55049,13 @@ function isWithinInterval(dirtyDate, interval) {
 }
 
 /***/ }),
-/* 577 */
+/* 602 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameDay_index_js__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subDays_index_js__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__isSameDay_index_js__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__subDays_index_js__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52893,7 +55092,7 @@ function isYesterday(dirtyDate) {
 }
 
 /***/ }),
-/* 578 */
+/* 603 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52935,12 +55134,12 @@ function lastDayOfDecade(dirtyDate) {
 }
 
 /***/ }),
-/* 579 */
+/* 604 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lastDayOfWeek_index_js__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lastDayOfWeek_index_js__ = __webpack_require__(127);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -52977,13 +55176,13 @@ function lastDayOfISOWeek(dirtyDate) {
 }
 
 /***/ }),
-/* 580 */
+/* 605 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getISOWeekYear_index_js__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfISOWeek_index_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -53031,7 +55230,7 @@ function lastDayOfISOWeekYear(dirtyDate) {
 }
 
 /***/ }),
-/* 581 */
+/* 606 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53077,7 +55276,7 @@ function lastDayOfQuarter(dirtyDate) {
 }
 
 /***/ }),
-/* 582 */
+/* 607 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53119,16 +55318,16 @@ function lastDayOfYear(dirtyDate) {
 }
 
 /***/ }),
-/* 583 */
+/* 608 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_format_lightFormatters_index_js__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isValid_index_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__subMilliseconds_index_js__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_format_lightFormatters_index_js__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_getTimezoneOffsetInMilliseconds_index_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__isValid_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__subMilliseconds_index_js__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -53259,81 +55458,7 @@ function cleanEscapedString(input) {
 }
 
 /***/ }),
-/* 584 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = max;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-/**
- * @name max
- * @category Common Helpers
- * @summary Return the latest of the given dates.
- *
- * @description
- * Return the latest of the given dates.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * - `max` function now accepts an array of dates rather than spread arguments.
- *
- *   ```javascript
- *   // Before v2.0.0
- *   var date1 = new Date(1989, 6, 10)
- *   var date2 = new Date(1987, 1, 11)
- *   var maxDate = max(date1, date2)
- *
- *   // v2.0.0 onward:
- *   var dates = [new Date(1989, 6, 10), new Date(1987, 1, 11)]
- *   var maxDate = max(dates)
- *   ```
- *
- * @param {Date[]|Number[]} datesArray - the dates to compare
- * @returns {Date} the latest of the dates
- * @throws {TypeError} 1 argument required
- *
- * @example
- * // Which of these dates is the latest?
- * var result = max([
- *   new Date(1989, 6, 10),
- *   new Date(1987, 1, 11),
- *   new Date(1995, 6, 2),
- *   new Date(1990, 0, 1)
- * ])
- * //=> Sun Jul 02 1995 00:00:00
- */
-
-function max(dirtyDatesArray) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  var datesArray; // `dirtyDatesArray` is Array, Set or Map, or object with custom `forEach` method
-
-  if (dirtyDatesArray && typeof dirtyDatesArray.forEach === 'function') {
-    datesArray = dirtyDatesArray; // If `dirtyDatesArray` is Array-like Object, convert to Array.
-  } else if (typeof dirtyDatesArray === 'object' && dirtyDatesArray !== null) {
-    datesArray = Array.prototype.slice.call(dirtyDatesArray);
-  } else {
-    // `dirtyDatesArray` is non-iterable, return Invalid Date
-    return new Date(NaN);
-  }
-
-  var result;
-  datesArray.forEach(function (dirtyDate) {
-    var currentDate = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
-
-    if (result === undefined || result < currentDate || isNaN(Number(currentDate))) {
-      result = currentDate;
-    }
-  });
-  return result || new Date(NaN);
-}
-
-/***/ }),
-/* 585 */
+/* 609 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53342,7 +55467,7 @@ function max(dirtyDatesArray) {
 
 // Leap year occures every 4 years, except for years that are divisable by 100 and not divisable by 400.
 // 1 mean year = (365+1/4-1/100+1/400) days = 365.2425 days
-var yearInDays = 365.2425;
+var daysInYear = 365.2425;
 /**
  * @name milliseconds
  * @category Millisecond Helpers
@@ -53383,8 +55508,8 @@ function milliseconds(_ref) {
       seconds = _ref.seconds;
   Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
   var totalDays = 0;
-  if (years) totalDays += years * yearInDays;
-  if (months) totalDays += months * (yearInDays / 12);
+  if (years) totalDays += years * daysInYear;
+  if (months) totalDays += months * (daysInYear / 12);
   if (weeks) totalDays += weeks * 7;
   if (days) totalDays += days;
   var totalSeconds = totalDays * 24 * 60 * 60;
@@ -53395,87 +55520,320 @@ function milliseconds(_ref) {
 }
 
 /***/ }),
-/* 586 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = min;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__ = __webpack_require__(0);
-
-
-/**
- * @name min
- * @category Common Helpers
- * @summary Returns the earliest of the given dates.
- *
- * @description
- * Returns the earliest of the given dates.
- *
- * ### v2.0.0 breaking changes:
- *
- * - [Changes that are common for the whole library](https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#Common-Changes).
- *
- * - `min` function now accepts an array of dates rather than spread arguments.
- *
- *   ```javascript
- *   // Before v2.0.0
- *   const date1 = new Date(1989, 6, 10)
- *   const date2 = new Date(1987, 1, 11)
- *   const minDate = min(date1, date2)
- *
- *   // v2.0.0 onward:
- *   const dates = [new Date(1989, 6, 10), new Date(1987, 1, 11)]
- *   const minDate = min(dates)
- *   ```
- *
- * @param {Date[]|Number[]} datesArray - the dates to compare
- * @returns {Date} - the earliest of the dates
- * @throws {TypeError} 1 argument required
- *
- * @example
- * // Which of these dates is the earliest?
- * const result = min([
- *   new Date(1989, 6, 10),
- *   new Date(1987, 1, 11),
- *   new Date(1995, 6, 2),
- *   new Date(1990, 0, 1)
- * ])
- * //=> Wed Feb 11 1987 00:00:00
- */
-
-function min(dirtyDatesArray) {
-  Object(__WEBPACK_IMPORTED_MODULE_1__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
-  var datesArray; // `dirtyDatesArray` is Array, Set or Map, or object with custom `forEach` method
-
-  if (dirtyDatesArray && typeof dirtyDatesArray.forEach === 'function') {
-    datesArray = dirtyDatesArray; // If `dirtyDatesArray` is Array-like Object, convert to Array.
-  } else if (typeof dirtyDatesArray === 'object' && dirtyDatesArray !== null) {
-    datesArray = Array.prototype.slice.call(dirtyDatesArray);
-  } else {
-    // `dirtyDatesArray` is non-iterable, return Invalid Date
-    return new Date(NaN);
-  }
-
-  var result;
-  datesArray.forEach(function (dirtyDate) {
-    var currentDate = Object(__WEBPACK_IMPORTED_MODULE_0__toDate_index_js__["a" /* default */])(dirtyDate);
-
-    if (result === undefined || result > currentDate || isNaN(currentDate.getDate())) {
-      result = currentDate;
-    }
-  });
-  return result || new Date(NaN);
-}
-
-/***/ }),
-/* 587 */
+/* 610 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name millisecondsToHours
+ * @category Conversion Helpers
+ * @summary Convert milliseconds to hours.
+ *
+ * @description
+ * Convert a number of milliseconds to a full number of hours.
+ *
+ * @param {number} milliseconds - number of milliseconds to be converted
+ *
+ * @returns {number} the number of milliseconds converted in hours
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 7200000 milliseconds to hours:
+ * const result = millisecondsToHours(7200000)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = millisecondsToHours(7199999)
+ * //=> 1
+ */
+
+function millisecondsToHours(milliseconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var hours = milliseconds / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["b" /* millisecondsInHour */];
+  return Math.floor(hours);
+}
+
+/***/ }),
+/* 611 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name millisecondsToMinutes
+ * @category Conversion Helpers
+ * @summary Convert milliseconds to minutes.
+ *
+ * @description
+ * Convert a number of milliseconds to a full number of minutes.
+ *
+ * @param {number} milliseconds - number of milliseconds to be converted.
+ *
+ * @returns {number} the number of milliseconds converted in minutes
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 60000 milliseconds to minutes:
+ * const result = millisecondsToMinutes(60000)
+ * //=> 1
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = millisecondsToMinutes(119999)
+ * //=> 1
+ */
+
+function millisecondsToMinutes(milliseconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var minutes = milliseconds / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["c" /* millisecondsInMinute */];
+  return Math.floor(minutes);
+}
+
+/***/ }),
+/* 612 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name millisecondsToSeconds
+ * @category Conversion Helpers
+ * @summary Convert milliseconds to seconds.
+ *
+ * @description
+ * Convert a number of milliseconds to a full number of seconds.
+ *
+ * @param {number} milliseconds - number of milliseconds to be converted
+ *
+ * @returns {number} the number of milliseconds converted in seconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 1000 miliseconds to seconds:
+ * const result = millisecondsToSeconds(1000)
+ * //=> 1
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = millisecondsToSeconds(1999)
+ * //=> 1
+ */
+
+function millisecondsToSeconds(milliseconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var seconds = milliseconds / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["d" /* millisecondsInSecond */];
+  return Math.floor(seconds);
+}
+
+/***/ }),
+/* 613 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name minutesToHours
+ * @category Conversion Helpers
+ * @summary Convert minutes to hours.
+ *
+ * @description
+ * Convert a number of minutes to a full number of hours.
+ *
+ * @param {number} minutes - number of minutes to be converted
+ *
+ * @returns {number} the number of minutes converted in hours
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 140 minutes to hours:
+ * const result = minutesToHours(120)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = minutesToHours(179)
+ * //=> 2
+ */
+
+function minutesToHours(minutes) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var hours = minutes / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["e" /* minutesInHour */];
+  return Math.floor(hours);
+}
+
+/***/ }),
+/* 614 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name minutesToMilliseconds
+ * @category Conversion Helpers
+ * @summary Convert minutes to milliseconds.
+ *
+ * @description
+ * Convert a number of minutes to a full number of milliseconds.
+ *
+ * @param {number} minutes - number of minutes to be converted
+ *
+ * @returns {number} the number of minutes converted in milliseconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 minutes to milliseconds
+ * const result = minutesToMilliseconds(2)
+ * //=> 120000
+ */
+
+function minutesToMilliseconds(minutes) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(minutes * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["c" /* millisecondsInMinute */]);
+}
+
+/***/ }),
+/* 615 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name minutesToSeconds
+ * @category Conversion Helpers
+ * @summary Convert minutes to seconds.
+ *
+ * @description
+ * Convert a number of minutes to a full number of seconds.
+ *
+ * @param { number } minutes - number of minutes to be converted
+ *
+ * @returns {number} the number of minutes converted in seconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 minutes to seconds
+ * const result = minutesToSeconds(2)
+ * //=> 120
+ */
+
+function minutesToSeconds(minutes) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(minutes * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["j" /* secondsInMinute */]);
+}
+
+/***/ }),
+/* 616 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name monthsToQuarters
+ * @category Conversion Helpers
+ * @summary Convert number of months to quarters.
+ *
+ * @description
+ * Convert a number of months to a full number of quarters.
+ *
+ * @param {number} months - number of months to be converted.
+ *
+ * @returns {number} the number of months converted in quarters
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 6 months to quarters:
+ * const result = monthsToQuarters(6)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = monthsToQuarters(7)
+ * //=> 2
+ */
+
+function monthsToQuarters(months) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var quarters = months / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["f" /* monthsInQuarter */];
+  return Math.floor(quarters);
+}
+
+/***/ }),
+/* 617 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name monthsToYears
+ * @category Conversion Helpers
+ * @summary Convert number of months to years.
+ *
+ * @description
+ * Convert a number of months to a full number of years.
+ *
+ * @param {number} months - number of months to be converted
+ *
+ * @returns {number} the number of months converted in years
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 36 months to years:
+ * const result = monthsToYears(36)
+ * //=> 3
+ *
+ * // It uses floor rounding:
+ * const result = monthsToYears(40)
+ * //=> 3
+ */
+
+function monthsToYears(months) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var years = months / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["g" /* monthsInYear */];
+  return Math.floor(years);
+}
+
+/***/ }),
+/* 618 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53504,13 +55862,13 @@ function nextFriday(date) {
 }
 
 /***/ }),
-/* 588 */
+/* 619 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53539,13 +55897,13 @@ function nextMonday(date) {
 }
 
 /***/ }),
-/* 589 */
+/* 620 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53574,13 +55932,13 @@ function nextSaturday(date) {
 }
 
 /***/ }),
-/* 590 */
+/* 621 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53609,13 +55967,13 @@ function nextSunday(date) {
 }
 
 /***/ }),
-/* 591 */
+/* 622 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53644,13 +56002,13 @@ function nextThursday(date) {
 }
 
 /***/ }),
-/* 592 */
+/* 623 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53679,13 +56037,13 @@ function nextTuesday(date) {
 }
 
 /***/ }),
-/* 593 */
+/* 624 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__nextDay_index_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 
 
@@ -53714,7 +56072,7 @@ function nextWednesday(date) {
 }
 
 /***/ }),
-/* 594 */
+/* 625 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54014,7 +56372,7 @@ function validateTimezone(_hours, minutes) {
 }
 
 /***/ }),
-/* 595 */
+/* 626 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54066,7 +56424,7 @@ function parseJSON(argument) {
 
     if (parts) {
       // Group 8 matches the sign
-      return new Date(Date.UTC(+parts[1], parts[2] - 1, +parts[3], +parts[4] - (parts[9] || 0) * (parts[8] == '-' ? -1 : 1), +parts[5] - (parts[10] || 0) * (parts[8] == '-' ? -1 : 1), +parts[6], +((parts[7] || '0') + '00').substring(0, 3)));
+      return new Date(Date.UTC(+parts[1], +parts[2] - 1, +parts[3], +parts[4] - (+parts[9] || 0) * (parts[8] == '-' ? -1 : 1), +parts[5] - (+parts[10] || 0) * (parts[8] == '-' ? -1 : 1), +parts[6], +((parts[7] || '0') + '00').substring(0, 3)));
     }
 
     return new Date(NaN);
@@ -54076,7 +56434,312 @@ function parseJSON(argument) {
 }
 
 /***/ }),
-/* 596 */
+/* 627 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousFriday
+ * @category Weekday Helpers
+ * @summary When is the previous Friday?
+ *
+ * @description
+ * When is the previous Friday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Friday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Friday before Jun, 19, 2021?
+ * const result = previousFriday(new Date(2021, 5, 19))
+ * //=> Fri June 18 2021 00:00:00
+ */
+
+function previousFriday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 5);
+}
+
+/***/ }),
+/* 628 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousMonday
+ * @category Weekday Helpers
+ * @summary When is the previous Monday?
+ *
+ * @description
+ * When is the previous Monday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Monday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Monday before Jun, 18, 2021?
+ * const result = previousMonday(new Date(2021, 5, 18))
+ * //=> Mon June 14 2021 00:00:00
+ */
+
+function previousMonday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 1);
+}
+
+/***/ }),
+/* 629 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousSaturday
+ * @category Weekday Helpers
+ * @summary When is the previous Saturday?
+ *
+ * @description
+ * When is the previous Saturday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Saturday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Saturday before Jun, 20, 2021?
+ * const result = previousSaturday(new Date(2021, 5, 20))
+ * //=> Sat June 19 2021 00:00:00
+ */
+
+function previousSaturday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 6);
+}
+
+/***/ }),
+/* 630 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousSunday
+ * @category Weekday Helpers
+ * @summary When is the previous Sunday?
+ *
+ * @description
+ * When is the previous Sunday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Sunday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Sunday before Jun, 21, 2021?
+ * const result = previousSunday(new Date(2021, 5, 21))
+ * //=> Sun June 20 2021 00:00:00
+ */
+
+function previousSunday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 0);
+}
+
+/***/ }),
+/* 631 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousThursday
+ * @category Weekday Helpers
+ * @summary When is the previous Thursday?
+ *
+ * @description
+ * When is the previous Thursday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Thursday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Thursday before Jun, 18, 2021?
+ * const result = previousThursday(new Date(2021, 5, 18))
+ * //=> Thu June 17 2021 00:00:00
+ */
+
+function previousThursday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 4);
+}
+
+/***/ }),
+/* 632 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousTuesday
+ * @category Weekday Helpers
+ * @summary When is the previous Tuesday?
+ *
+ * @description
+ * When is the previous Tuesday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Tuesday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Tuesday before Jun, 18, 2021?
+ * const result = previousTuesday(new Date(2021, 5, 18))
+ * //=> Tue June 15 2021 00:00:00
+ */
+
+function previousTuesday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 2);
+}
+
+/***/ }),
+/* 633 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__ = __webpack_require__(14);
+
+
+/**
+ * @name previousWednesday
+ * @category Weekday Helpers
+ * @summary When is the previous Wednesday?
+ *
+ * @description
+ * When is the previous Wednesday?
+ *
+ * @param {Date | number} date - the date to start counting from
+ * @returns {Date} the previous Wednesday
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // When is the previous Wednesday before Jun, 18, 2021?
+ * const result = previousWednesday(new Date(2021, 5, 18))
+ * //=> Wed June 16 2021 00:00:00
+ */
+
+function previousWednesday(date) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Object(__WEBPACK_IMPORTED_MODULE_1__previousDay_index_js__["a" /* default */])(date, 3);
+}
+
+/***/ }),
+/* 634 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name quartersToMonths
+ * @category Conversion Helpers
+ * @summary Convert number of quarters to months.
+ *
+ * @description
+ * Convert a number of quarters to a full number of months.
+ *
+ * @param {number} quarters - number of quarters to be converted
+ *
+ * @returns {number} the number of quarters converted in months
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 quarters to months
+ * const result = quartersToMonths(2)
+ * //=> 6
+ */
+
+function quartersToMonths(quarters) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(quarters * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["f" /* monthsInQuarter */]);
+}
+
+/***/ }),
+/* 635 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name quartersToYears
+ * @category Conversion Helpers
+ * @summary Convert number of quarters to years.
+ *
+ * @description
+ * Convert a number of quarters to a full number of years.
+ *
+ * @param {number} quarters - number of quarters to be converted
+ *
+ * @returns {number} the number of quarters converted in years
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 8 quarters to years
+ * const result = quartersToYears(8)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = quartersToYears(11)
+ * //=> 2
+ */
+
+function quartersToYears(quarters) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var years = quarters / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["h" /* quartersInYear */];
+  return Math.floor(years);
+}
+
+/***/ }),
+/* 636 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54139,13 +56802,127 @@ function roundToNearestMinutes(dirtyDate, options) {
 }
 
 /***/ }),
-/* 597 */
+/* 637 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name secondsToHours
+ * @category Conversion Helpers
+ * @summary Convert seconds to hours.
+ *
+ * @description
+ * Convert a number of seconds to a full number of hours.
+ *
+ * @param {number} seconds - number of seconds to be converted
+ *
+ * @returns {number} the number of seconds converted in hours
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 7200 seconds into hours
+ * const result = secondsToHours(7200)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = secondsToHours(7199)
+ * //=> 1
+ */
+
+function secondsToHours(seconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var hours = seconds / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["i" /* secondsInHour */];
+  return Math.floor(hours);
+}
+
+/***/ }),
+/* 638 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name secondsToMilliseconds
+ * @category Conversion Helpers
+ * @summary Convert seconds to milliseconds.
+ *
+ * @description
+ * Convert a number of seconds to a full number of milliseconds.
+ *
+ * @param {number} seconds - number of seconds to be converted
+ *
+ * @returns {number} the number of seconds converted in milliseconds
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 seconds into milliseconds
+ * const result = secondsToMilliseconds(2)
+ * //=> 2000
+ */
+
+function secondsToMilliseconds(seconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return seconds * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["d" /* millisecondsInSecond */];
+}
+
+/***/ }),
+/* 639 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name secondsToMinutes
+ * @category Conversion Helpers
+ * @summary Convert seconds to minutes.
+ *
+ * @description
+ * Convert a number of seconds to a full number of minutes.
+ *
+ * @param {number} seconds - number of seconds to be converted
+ *
+ * @returns {number} the number of seconds converted in minutes
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 120 seconds into minutes
+ * const result = secondsToMinutes(120)
+ * //=> 2
+ *
+ * @example
+ * // It uses floor rounding:
+ * const result = secondsToMinutes(119)
+ * //=> 1
+ */
+
+function secondsToMinutes(seconds) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  var minutes = seconds / __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["j" /* secondsInMinute */];
+  return Math.floor(minutes);
+}
+
+/***/ }),
+/* 640 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__setMonth_index_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__setMonth_index_js__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
@@ -54236,7 +57013,7 @@ function set(dirtyDate, values) {
 }
 
 /***/ }),
-/* 598 */
+/* 641 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54279,15 +57056,16 @@ function setDate(dirtyDate, dirtyDayOfMonth) {
 }
 
 /***/ }),
-/* 599 */
+/* 642 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__addDays_index_js__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 
@@ -54323,7 +57101,6 @@ function setDate(dirtyDate, dirtyDayOfMonth) {
  * var result = setDay(new Date(2014, 8, 1), 0, { weekStartsOn: 1 })
  * //=> Sun Sep 07 2014 00:00:00
  */
-
 function setDay(dirtyDate, dirtyDay, dirtyOptions) {
   Object(__WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
   var options = dirtyOptions || {};
@@ -54336,18 +57113,18 @@ function setDay(dirtyDate, dirtyDay, dirtyOptions) {
     throw new RangeError('weekStartsOn must be between 0 and 6 inclusively');
   }
 
-  var date = Object(__WEBPACK_IMPORTED_MODULE_1__toDate_index_js__["a" /* default */])(dirtyDate, options);
+  var date = Object(__WEBPACK_IMPORTED_MODULE_1__toDate_index_js__["a" /* default */])(dirtyDate);
   var day = Object(__WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__["a" /* default */])(dirtyDay);
   var currentDay = date.getDay();
   var remainder = day % 7;
   var dayIndex = (remainder + 7) % 7;
   var delta = 7 - weekStartsOn;
   var diff = day < 0 || day > 6 ? day - (currentDay + delta) % 7 : (dayIndex + delta) % 7 - (currentDay + delta) % 7;
-  return Object(__WEBPACK_IMPORTED_MODULE_0__addDays_index_js__["a" /* default */])(date, diff, options);
+  return Object(__WEBPACK_IMPORTED_MODULE_0__addDays_index_js__["a" /* default */])(date, diff);
 }
 
 /***/ }),
-/* 600 */
+/* 643 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54391,7 +57168,7 @@ function setDayOfYear(dirtyDate, dirtyDayOfYear) {
 }
 
 /***/ }),
-/* 601 */
+/* 644 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54434,15 +57211,15 @@ function setHours(dirtyDate, dirtyHours) {
 }
 
 /***/ }),
-/* 602 */
+/* 645 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__getISODay_index_js__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__addDays_index_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__getISODay_index_js__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -54484,14 +57261,14 @@ function setISODay(dirtyDate, dirtyDay) {
 }
 
 /***/ }),
-/* 603 */
+/* 646 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getISOWeek_index_js__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__getISOWeek_index_js__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -54532,7 +57309,7 @@ function setISOWeek(dirtyDate, dirtyISOWeek) {
 }
 
 /***/ }),
-/* 604 */
+/* 647 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54575,7 +57352,7 @@ function setMilliseconds(dirtyDate, dirtyMilliseconds) {
 }
 
 /***/ }),
-/* 605 */
+/* 648 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54605,7 +57382,7 @@ function setMilliseconds(dirtyDate, dirtyMilliseconds) {
  *
  * @example
  * // Set 45 minutes to 1 September 2014 11:30:40:
- * var result = setMinutes(new Date(2014, 8, 1, 11, 30, 40), 45)
+ * const result = setMinutes(new Date(2014, 8, 1, 11, 30, 40), 45)
  * //=> Mon Sep 01 2014 11:45:40
  */
 
@@ -54618,14 +57395,14 @@ function setMinutes(dirtyDate, dirtyMinutes) {
 }
 
 /***/ }),
-/* 606 */
+/* 649 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setMonth_index_js__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__setMonth_index_js__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -54664,7 +57441,7 @@ function setQuarter(dirtyDate, dirtyQuarter) {
 }
 
 /***/ }),
-/* 607 */
+/* 650 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54707,15 +57484,16 @@ function setSeconds(dirtyDate, dirtySeconds) {
 }
 
 /***/ }),
-/* 608 */
+/* 651 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getWeek_index_js__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__getWeek_index_js__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 
@@ -54764,27 +57542,27 @@ function setSeconds(dirtyDate, dirtySeconds) {
  * })
  * //=> Sun Jan 4 2004 00:00:00
  */
-
-function setWeek(dirtyDate, dirtyWeek, dirtyOptions) {
+function setWeek(dirtyDate, dirtyWeek, options) {
   Object(__WEBPACK_IMPORTED_MODULE_3__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
   var date = Object(__WEBPACK_IMPORTED_MODULE_1__toDate_index_js__["a" /* default */])(dirtyDate);
   var week = Object(__WEBPACK_IMPORTED_MODULE_2__lib_toInteger_index_js__["a" /* default */])(dirtyWeek);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__getWeek_index_js__["a" /* default */])(date, dirtyOptions) - week;
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__getWeek_index_js__["a" /* default */])(date, options) - week;
   date.setDate(date.getDate() - diff * 7);
   return date;
 }
 
 /***/ }),
-/* 609 */
+/* 652 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__toDate_index_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__ = __webpack_require__(0);
+
 
 
 
@@ -54835,27 +57613,26 @@ function setWeek(dirtyDate, dirtyWeek, dirtyOptions) {
  * })
  * //=> Sat Jan 01 2005 00:00:00
  */
-
-function setWeekYear(dirtyDate, dirtyWeekYear, dirtyOptions) {
+function setWeekYear(dirtyDate, dirtyWeekYear) {
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   Object(__WEBPACK_IMPORTED_MODULE_4__lib_requiredArgs_index_js__["a" /* default */])(2, arguments);
-  var options = dirtyOptions || {};
   var locale = options.locale;
   var localeFirstWeekContainsDate = locale && locale.options && locale.options.firstWeekContainsDate;
   var defaultFirstWeekContainsDate = localeFirstWeekContainsDate == null ? 1 : Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(localeFirstWeekContainsDate);
   var firstWeekContainsDate = options.firstWeekContainsDate == null ? defaultFirstWeekContainsDate : Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(options.firstWeekContainsDate);
   var date = Object(__WEBPACK_IMPORTED_MODULE_2__toDate_index_js__["a" /* default */])(dirtyDate);
   var weekYear = Object(__WEBPACK_IMPORTED_MODULE_3__lib_toInteger_index_js__["a" /* default */])(dirtyWeekYear);
-  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__["a" /* default */])(date, Object(__WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__["a" /* default */])(date, dirtyOptions));
+  var diff = Object(__WEBPACK_IMPORTED_MODULE_0__differenceInCalendarDays_index_js__["a" /* default */])(date, Object(__WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__["a" /* default */])(date, options));
   var firstWeek = new Date(0);
   firstWeek.setFullYear(weekYear, 0, firstWeekContainsDate);
   firstWeek.setHours(0, 0, 0, 0);
-  date = Object(__WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__["a" /* default */])(firstWeek, dirtyOptions);
+  date = Object(__WEBPACK_IMPORTED_MODULE_1__startOfWeekYear_index_js__["a" /* default */])(firstWeek, options);
   date.setDate(date.getDate() + diff);
   return date;
 }
 
 /***/ }),
-/* 610 */
+/* 653 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54903,7 +57680,7 @@ function setYear(dirtyDate, dirtyYear) {
 }
 
 /***/ }),
-/* 611 */
+/* 654 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -54945,12 +57722,12 @@ function startOfDecade(dirtyDate) {
 }
 
 /***/ }),
-/* 612 */
+/* 655 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = startOfToday;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__startOfDay_index_js__ = __webpack_require__(35);
 
 /**
  * @name startOfToday
@@ -54981,7 +57758,7 @@ function startOfToday() {
 }
 
 /***/ }),
-/* 613 */
+/* 656 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55021,7 +57798,7 @@ function startOfTomorrow() {
 }
 
 /***/ }),
-/* 614 */
+/* 657 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -55061,13 +57838,13 @@ function startOfYesterday() {
 }
 
 /***/ }),
-/* 615 */
+/* 658 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addBusinessDays_index_js__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addBusinessDays_index_js__ = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55098,13 +57875,13 @@ function subBusinessDays(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 616 */
+/* 659 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subHours;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addHours_index_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addHours_index_js__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55139,13 +57916,13 @@ function subHours(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 617 */
+/* 660 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subMinutes;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMinutes_index_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addMinutes_index_js__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55180,13 +57957,13 @@ function subMinutes(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 618 */
+/* 661 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addQuarters_index_js__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addQuarters_index_js__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55221,13 +57998,13 @@ function subQuarters(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 619 */
+/* 662 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addSeconds_index_js__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addSeconds_index_js__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55262,13 +58039,13 @@ function subSeconds(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 620 */
+/* 663 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addWeeks_index_js__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55303,13 +58080,13 @@ function subWeeks(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 621 */
+/* 664 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = subYears;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_toInteger_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addYears_index_js__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addYears_index_js__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_requiredArgs_index_js__ = __webpack_require__(0);
 
 
@@ -55344,43 +58121,122 @@ function subYears(dirtyDate, dirtyAmount) {
 }
 
 /***/ }),
-/* 622 */
+/* 665 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export maxTime */
-/* unused harmony export minTime */
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
 /**
- *  Maximum allowed time.
- *  @constant
- *  @type {number}
- *  @default
- */
-var maxTime = Math.pow(10, 8) * 24 * 60 * 60 * 1000;
-/**
- *  Minimum allowed time.
- *  @constant
- *  @type {number}
- *  @default
+ * @name weeksToDays
+ * @category Conversion Helpers
+ * @summary Convert weeks to days.
+ *
+ * @description
+ * Convert a number of weeks to a full number of days.
+ *
+ * @param {number} weeks - number of weeks to be converted
+ *
+ * @returns {number} the number of weeks converted in days
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 weeks into days
+ * const result = weeksToDays(2)
+ * //=> 14
  */
 
-var minTime = -maxTime;
+function weeksToDays(weeks) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(weeks * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["a" /* daysInWeek */]);
+}
 
 /***/ }),
-/* 623 */
+/* 666 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_datepicker__ = __webpack_require__(624);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_days__ = __webpack_require__(625);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_weekdays__ = __webpack_require__(626);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_months__ = __webpack_require__(627);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_years__ = __webpack_require__(628);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__defaultOptions__ = __webpack_require__(629);
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name yearsToMonths
+ * @category Conversion Helpers
+ * @summary Convert years to months.
+ *
+ * @description
+ * Convert a number of years to a full number of months.
+ *
+ * @param {number} years - number of years to be converted
+ *
+ * @returns {number} the number of years converted in months
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 years into months
+ * const result = yearsToMonths(2)
+ * //=> 24
+ */
+
+function yearsToMonths(years) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(years * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["g" /* monthsInYear */]);
+}
+
+/***/ }),
+/* 667 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_index_js__ = __webpack_require__(7);
+
+
+/**
+ * @name yearsToQuarters
+ * @category Conversion Helpers
+ * @summary Convert years to quarters.
+ *
+ * @description
+ * Convert a number of years to a full number of quarters.
+ *
+ * @param {number} years - number of years to be converted
+ *
+ * @returns {number} the number of years converted in quarters
+ * @throws {TypeError} 1 argument required
+ *
+ * @example
+ * // Convert 2 years to quarters
+ * const result = yearsToQuarters(2)
+ * //=> 8
+ */
+
+function yearsToQuarters(years) {
+  Object(__WEBPACK_IMPORTED_MODULE_0__lib_requiredArgs_index_js__["a" /* default */])(1, arguments);
+  return Math.floor(years * __WEBPACK_IMPORTED_MODULE_1__constants_index_js__["h" /* quartersInYear */]);
+}
+
+/***/ }),
+/* 668 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_datepicker__ = __webpack_require__(669);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__templates_days__ = __webpack_require__(670);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__templates_weekdays__ = __webpack_require__(671);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__templates_months__ = __webpack_require__(672);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__templates_years__ = __webpack_require__(673);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__defaultOptions__ = __webpack_require__(674);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -55746,6 +58602,7 @@ var datePicker = function (_EventEmitter) {
             this._ui.body.months.innerHTML = '';
             this._ui.body.months.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_7__templates_months__["a" /* default */])({
                 months: monthLabels,
+                format: this.options.formats.selectMonth,
                 locale: this.locale
             })));
 
@@ -55767,7 +58624,9 @@ var datePicker = function (_EventEmitter) {
             this._ui.body.years.innerHTML = '';
             this._ui.body.years.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_8__templates_years__["a" /* default */])({
                 visibleDate: this._visibleDate,
-                years: yearLabels
+                years: yearLabels,
+                format: this.options.formats.selectYear,
+                locale: this.locale
             })));
             var years = this._ui.body.years.querySelectorAll('.datepicker-year') || [];
             years.forEach(function (year) {
@@ -55782,12 +58641,12 @@ var datePicker = function (_EventEmitter) {
 
             // the 7 days of the week (Sun-Sat)
             var weekdayLabels = new Array(7).fill(__WEBPACK_IMPORTED_MODULE_2_date_fns__["I" /* startOfWeek */](this._visibleDate, { weekStartsOn: this.options.weekStart })).map(function (d, i) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](__WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](d, i), 'ccc', {
-                    locale: _this2.locale
-                });
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["a" /* addDays */](d, i);
             });
             this._ui.body.dates.appendChild(document.createRange().createContextualFragment(Object(__WEBPACK_IMPORTED_MODULE_6__templates_weekdays__["a" /* default */])({
-                weekdays: weekdayLabels
+                days: weekdayLabels,
+                format: this.options.formats.weekday,
+                locale: this.locale
             })));
 
             if (this.min && __WEBPACK_IMPORTED_MODULE_2_date_fns__["f" /* differenceInCalendarMonths */](this._visibleDate, this.min) === 0) {
@@ -55802,12 +58661,8 @@ var datePicker = function (_EventEmitter) {
                 this._toggleNextButton();
             }
 
-            this._ui.navigation.month.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this._visibleDate, this.options.navigationMonthFormat, {
-                locale: this.locale
-            });
-            this._ui.navigation.year.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this._visibleDate, this.options.navigationYearFormat, {
-                locale: this.locale
-            });
+            this._ui.navigation.month.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this._visibleDate, this.options.formats.navigationMonth, { locale: this.locale });
+            this._ui.navigation.year.innerHTML = __WEBPACK_IMPORTED_MODULE_2_date_fns__["l" /* format */](this._visibleDate, this.options.formats.navigationYear, { locale: this.locale });
 
             this._renderDays();
 
@@ -56206,10 +59061,10 @@ var datePicker = function (_EventEmitter) {
         key: 'lang',
         set: function set(lang) {
             try {
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } catch (e) {
                 lang = 'en-US';
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } finally {
                 this._lang = lang;
                 return this;
@@ -56319,7 +59174,7 @@ var datePicker = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["a"] = (datePicker);
 
 /***/ }),
-/* 624 */
+/* 669 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56328,7 +59183,7 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 625 */
+/* 670 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -56339,74 +59194,83 @@ var datePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 626 */
+/* 671 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(18);
+
+
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
-	return '<div class="datepicker-weekdays">\n\t\t' + data.weekdays.map(function (day) {
-		return '<div class="datepicker-date">' + day + '</div>';
-	}).join('') + '\n\t</div>';
+    return '<div class="datepicker-weekdays">\n        ' + data.days.map(function (day) {
+        return '<div class="datepicker-date">\n            ' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(day, data.format, { locale: data.locale }) + '\n        </div>';
+    }).join('') + '\n    </div>';
 });
 
 /***/ }),
-/* 627 */
+/* 672 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(18);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
     return '' + data.months.map(function (month) {
-        return '\n        <div class="datepicker-month" data-month="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'MM', { locale: data.locale }) + '">\n            ' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'LLL', { locale: data.locale }) + '\n        </div>\n    ';
+        return '\n        <div class="datepicker-month" data-month="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, 'MM', { locale: data.locale }) + '">\n            ' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(month, data.format, { locale: data.locale }) + '\n        </div>\n    ';
     }).join('');
 });
 
 /***/ }),
-/* 628 */
+/* 673 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_date_fns__ = __webpack_require__(18);
 
 
 /* harmony default export */ __webpack_exports__["a"] = (function (data) {
     return '' + data.years.map(function (year) {
-        return '\n        <div class="datepicker-year" data-year="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(year, 'yyyy', { locale: data.locale }) + '">\n            <span class="item">' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(year, 'yyyy', { locale: data.locale }) + '</span>\n        </div>\n    ';
+        return '\n        <div class="datepicker-year" data-year="' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(year, 'yyyy', { locale: data.locale }) + '">\n            <span class="item">' + Object(__WEBPACK_IMPORTED_MODULE_0_date_fns__["l" /* format */])(year, data.format, { locale: data.locale }) + '</span>\n        </div>\n    ';
     }).join('');
 });
 
 /***/ }),
-/* 629 */
+/* 674 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 var defaultOptions = {
-  color: 'primary',
-  isRange: false,
-  allowSameDayRange: true,
-  lang: 'en-US', // internationalization
-  startDate: undefined,
-  endDate: undefined,
-  minDate: null,
-  maxDate: null,
-  disabledDates: [],
-  disabledWeekDays: undefined,
-  highlightedDates: [],
-  weekStart: 0,
-  dateFormat: 'MM/dd/yyyy',
-  navigationMonthFormat: 'MMMM',
-  navigationYearFormat: 'yyyy',
-  enableMonthSwitch: true,
-  enableYearSwitch: true,
-  displayYearsCount: 50
+    color: 'primary',
+    isRange: false,
+    allowSameDayRange: true,
+    lang: 'en-US', // internationalization
+    startDate: undefined,
+    endDate: undefined,
+    minDate: null,
+    maxDate: null,
+    disabledDates: [],
+    disabledWeekDays: undefined,
+    highlightedDates: [],
+    weekStart: 0,
+    dateFormat: 'MM/dd/yyyy',
+    enableMonthSwitch: true,
+    enableYearSwitch: true,
+    displayYearsCount: 50,
+    formats: {
+        header: 'LLLL yyyy',
+        navigationMonth: 'LLLL',
+        navigationYear: 'yyyy',
+        selectMonth: 'LLL',
+        selectYear: 'yyyy',
+        weekday: 'ccc'
+    }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 630 */
+/* 675 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56417,15 +59281,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(122));
+var _index = _interopRequireDefault(__webpack_require__(128));
 
-var _index2 = _interopRequireDefault(__webpack_require__(123));
+var _index2 = _interopRequireDefault(__webpack_require__(129));
 
-var _index3 = _interopRequireDefault(__webpack_require__(124));
+var _index3 = _interopRequireDefault(__webpack_require__(130));
 
-var _index4 = _interopRequireDefault(__webpack_require__(125));
+var _index4 = _interopRequireDefault(__webpack_require__(131));
 
-var _index5 = _interopRequireDefault(__webpack_require__(126));
+var _index5 = _interopRequireDefault(__webpack_require__(132));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56456,7 +59320,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 631 */
+/* 676 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56467,15 +59331,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(127));
+var _index = _interopRequireDefault(__webpack_require__(133));
 
-var _index2 = _interopRequireDefault(__webpack_require__(128));
+var _index2 = _interopRequireDefault(__webpack_require__(134));
 
-var _index3 = _interopRequireDefault(__webpack_require__(129));
+var _index3 = _interopRequireDefault(__webpack_require__(135));
 
-var _index4 = _interopRequireDefault(__webpack_require__(130));
+var _index4 = _interopRequireDefault(__webpack_require__(136));
 
-var _index5 = _interopRequireDefault(__webpack_require__(131));
+var _index5 = _interopRequireDefault(__webpack_require__(137));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56507,7 +59371,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 632 */
+/* 677 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56518,15 +59382,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(132));
+var _index = _interopRequireDefault(__webpack_require__(138));
 
-var _index2 = _interopRequireDefault(__webpack_require__(133));
+var _index2 = _interopRequireDefault(__webpack_require__(139));
 
-var _index3 = _interopRequireDefault(__webpack_require__(134));
+var _index3 = _interopRequireDefault(__webpack_require__(140));
 
-var _index4 = _interopRequireDefault(__webpack_require__(135));
+var _index4 = _interopRequireDefault(__webpack_require__(141));
 
-var _index5 = _interopRequireDefault(__webpack_require__(136));
+var _index5 = _interopRequireDefault(__webpack_require__(142));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56556,7 +59420,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 633 */
+/* 678 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56567,15 +59431,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(137));
+var _index = _interopRequireDefault(__webpack_require__(143));
 
-var _index2 = _interopRequireDefault(__webpack_require__(138));
+var _index2 = _interopRequireDefault(__webpack_require__(144));
 
-var _index3 = _interopRequireDefault(__webpack_require__(139));
+var _index3 = _interopRequireDefault(__webpack_require__(145));
 
-var _index4 = _interopRequireDefault(__webpack_require__(140));
+var _index4 = _interopRequireDefault(__webpack_require__(146));
 
-var _index5 = _interopRequireDefault(__webpack_require__(141));
+var _index5 = _interopRequireDefault(__webpack_require__(147));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56606,7 +59470,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 634 */
+/* 679 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56617,15 +59481,65 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(142));
+var _index = _interopRequireDefault(__webpack_require__(148));
 
-var _index2 = _interopRequireDefault(__webpack_require__(143));
+var _index2 = _interopRequireDefault(__webpack_require__(149));
 
-var _index3 = _interopRequireDefault(__webpack_require__(144));
+var _index3 = _interopRequireDefault(__webpack_require__(150));
 
-var _index4 = _interopRequireDefault(__webpack_require__(145));
+var _index4 = _interopRequireDefault(__webpack_require__(151));
 
-var _index5 = _interopRequireDefault(__webpack_require__(146));
+var _index5 = _interopRequireDefault(__webpack_require__(152));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @type {Locale}
+ * @category Locales
+ * @summary Arabic locale (Tunisian Arabic).
+ * @language Arabic
+ * @iso-639-2 ara
+ * @author Koussay Haj Kacem [@essana3]{@link https://github.com/essana3}
+ */
+var locale = {
+  code: 'ar-TN',
+  formatDistance: _index.default,
+  formatLong: _index2.default,
+  formatRelative: _index3.default,
+  localize: _index4.default,
+  match: _index5.default,
+  options: {
+    weekStartsOn: 1
+    /* Monday */
+    ,
+    firstWeekContainsDate: 1
+  }
+};
+var _default = locale;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 680 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(153));
+
+var _index2 = _interopRequireDefault(__webpack_require__(154));
+
+var _index3 = _interopRequireDefault(__webpack_require__(155));
+
+var _index4 = _interopRequireDefault(__webpack_require__(156));
+
+var _index5 = _interopRequireDefault(__webpack_require__(157));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56653,7 +59567,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 635 */
+/* 681 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56664,11 +59578,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = startOfUTCWeek;
 
-var _index = _interopRequireDefault(__webpack_require__(636));
+var _index = _interopRequireDefault(__webpack_require__(682));
 
-var _index2 = _interopRequireDefault(__webpack_require__(637));
+var _index2 = _interopRequireDefault(__webpack_require__(683));
 
-var _index3 = _interopRequireDefault(__webpack_require__(60));
+var _index3 = _interopRequireDefault(__webpack_require__(63));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56697,7 +59611,7 @@ function startOfUTCWeek(dirtyDate, dirtyOptions) {
 module.exports = exports.default;
 
 /***/ }),
-/* 636 */
+/* 682 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56725,7 +59639,7 @@ function toInteger(dirtyNumber) {
 module.exports = exports.default;
 
 /***/ }),
-/* 637 */
+/* 683 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56736,7 +59650,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = toDate;
 
-var _index = _interopRequireDefault(__webpack_require__(60));
+var _index = _interopRequireDefault(__webpack_require__(63));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56794,7 +59708,7 @@ function toDate(argument) {
 module.exports = exports.default;
 
 /***/ }),
-/* 638 */
+/* 684 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56805,15 +59719,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(147));
+var _index = _interopRequireDefault(__webpack_require__(158));
 
-var _index2 = _interopRequireDefault(__webpack_require__(148));
+var _index2 = _interopRequireDefault(__webpack_require__(159));
 
-var _index3 = _interopRequireDefault(__webpack_require__(149));
+var _index3 = _interopRequireDefault(__webpack_require__(160));
 
-var _index4 = _interopRequireDefault(__webpack_require__(150));
+var _index4 = _interopRequireDefault(__webpack_require__(161));
 
-var _index5 = _interopRequireDefault(__webpack_require__(151));
+var _index5 = _interopRequireDefault(__webpack_require__(162));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56845,7 +59759,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 639 */
+/* 685 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56856,15 +59770,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(152));
+var _index = _interopRequireDefault(__webpack_require__(163));
 
-var _index2 = _interopRequireDefault(__webpack_require__(153));
+var _index2 = _interopRequireDefault(__webpack_require__(164));
 
-var _index3 = _interopRequireDefault(__webpack_require__(154));
+var _index3 = _interopRequireDefault(__webpack_require__(165));
 
-var _index4 = _interopRequireDefault(__webpack_require__(155));
+var _index4 = _interopRequireDefault(__webpack_require__(166));
 
-var _index5 = _interopRequireDefault(__webpack_require__(156));
+var _index5 = _interopRequireDefault(__webpack_require__(167));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56896,7 +59810,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 640 */
+/* 686 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56907,15 +59821,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(157));
+var _index = _interopRequireDefault(__webpack_require__(168));
 
-var _index2 = _interopRequireDefault(__webpack_require__(158));
+var _index2 = _interopRequireDefault(__webpack_require__(169));
 
-var _index3 = _interopRequireDefault(__webpack_require__(159));
+var _index3 = _interopRequireDefault(__webpack_require__(170));
 
-var _index4 = _interopRequireDefault(__webpack_require__(61));
+var _index4 = _interopRequireDefault(__webpack_require__(64));
 
-var _index5 = _interopRequireDefault(__webpack_require__(160));
+var _index5 = _interopRequireDefault(__webpack_require__(171));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56947,7 +59861,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 641 */
+/* 687 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56958,15 +59872,65 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(161));
+var _index = _interopRequireDefault(__webpack_require__(172));
 
-var _index2 = _interopRequireDefault(__webpack_require__(162));
+var _index2 = _interopRequireDefault(__webpack_require__(173));
 
-var _index3 = _interopRequireDefault(__webpack_require__(163));
+var _index3 = _interopRequireDefault(__webpack_require__(174));
 
-var _index4 = _interopRequireDefault(__webpack_require__(164));
+var _index4 = _interopRequireDefault(__webpack_require__(175));
 
-var _index5 = _interopRequireDefault(__webpack_require__(165));
+var _index5 = _interopRequireDefault(__webpack_require__(176));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @type {Locale}
+ * @category Locales
+ * @summary Bosnian locale.
+ * @language Bosnian
+ * @iso-639-2 bos
+ * @author Branislav Lazić [@branislavlazic]{@link https://github.com/branislavlazic}
+ */
+var locale = {
+  code: 'bs',
+  formatDistance: _index.default,
+  formatLong: _index2.default,
+  formatRelative: _index3.default,
+  localize: _index4.default,
+  match: _index5.default,
+  options: {
+    weekStartsOn: 1
+    /* Monday */
+    ,
+    firstWeekContainsDate: 4
+  }
+};
+var _default = locale;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 688 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(177));
+
+var _index2 = _interopRequireDefault(__webpack_require__(178));
+
+var _index3 = _interopRequireDefault(__webpack_require__(179));
+
+var _index4 = _interopRequireDefault(__webpack_require__(180));
+
+var _index5 = _interopRequireDefault(__webpack_require__(181));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56999,7 +59963,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 642 */
+/* 689 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57010,15 +59974,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(166));
+var _index = _interopRequireDefault(__webpack_require__(182));
 
-var _index2 = _interopRequireDefault(__webpack_require__(167));
+var _index2 = _interopRequireDefault(__webpack_require__(183));
 
-var _index3 = _interopRequireDefault(__webpack_require__(168));
+var _index3 = _interopRequireDefault(__webpack_require__(184));
 
-var _index4 = _interopRequireDefault(__webpack_require__(169));
+var _index4 = _interopRequireDefault(__webpack_require__(185));
 
-var _index5 = _interopRequireDefault(__webpack_require__(170));
+var _index5 = _interopRequireDefault(__webpack_require__(186));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57051,7 +60015,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 643 */
+/* 690 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57062,15 +60026,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(171));
+var _index = _interopRequireDefault(__webpack_require__(187));
 
-var _index2 = _interopRequireDefault(__webpack_require__(172));
+var _index2 = _interopRequireDefault(__webpack_require__(188));
 
-var _index3 = _interopRequireDefault(__webpack_require__(173));
+var _index3 = _interopRequireDefault(__webpack_require__(189));
 
-var _index4 = _interopRequireDefault(__webpack_require__(174));
+var _index4 = _interopRequireDefault(__webpack_require__(190));
 
-var _index5 = _interopRequireDefault(__webpack_require__(175));
+var _index5 = _interopRequireDefault(__webpack_require__(191));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57101,7 +60065,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 644 */
+/* 691 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57112,15 +60076,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(176));
+var _index = _interopRequireDefault(__webpack_require__(192));
 
-var _index2 = _interopRequireDefault(__webpack_require__(177));
+var _index2 = _interopRequireDefault(__webpack_require__(193));
 
-var _index3 = _interopRequireDefault(__webpack_require__(178));
+var _index3 = _interopRequireDefault(__webpack_require__(194));
 
-var _index4 = _interopRequireDefault(__webpack_require__(179));
+var _index4 = _interopRequireDefault(__webpack_require__(195));
 
-var _index5 = _interopRequireDefault(__webpack_require__(180));
+var _index5 = _interopRequireDefault(__webpack_require__(196));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57154,7 +60118,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 645 */
+/* 692 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57165,15 +60129,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(62));
+var _index = _interopRequireDefault(__webpack_require__(65));
 
-var _index2 = _interopRequireDefault(__webpack_require__(63));
+var _index2 = _interopRequireDefault(__webpack_require__(66));
 
-var _index3 = _interopRequireDefault(__webpack_require__(64));
+var _index3 = _interopRequireDefault(__webpack_require__(67));
 
-var _index4 = _interopRequireDefault(__webpack_require__(65));
+var _index4 = _interopRequireDefault(__webpack_require__(68));
 
-var _index5 = _interopRequireDefault(__webpack_require__(181));
+var _index5 = _interopRequireDefault(__webpack_require__(197));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57206,7 +60170,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 646 */
+/* 693 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57217,15 +60181,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(62));
+var _index = _interopRequireDefault(__webpack_require__(65));
 
-var _index2 = _interopRequireDefault(__webpack_require__(63));
+var _index2 = _interopRequireDefault(__webpack_require__(66));
 
-var _index3 = _interopRequireDefault(__webpack_require__(64));
+var _index3 = _interopRequireDefault(__webpack_require__(67));
 
-var _index4 = _interopRequireDefault(__webpack_require__(182));
+var _index4 = _interopRequireDefault(__webpack_require__(198));
 
-var _index5 = _interopRequireDefault(__webpack_require__(65));
+var _index5 = _interopRequireDefault(__webpack_require__(68));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57260,7 +60224,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 647 */
+/* 694 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57271,15 +60235,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(183));
+var _index = _interopRequireDefault(__webpack_require__(199));
 
-var _index2 = _interopRequireDefault(__webpack_require__(184));
+var _index2 = _interopRequireDefault(__webpack_require__(200));
 
-var _index3 = _interopRequireDefault(__webpack_require__(185));
+var _index3 = _interopRequireDefault(__webpack_require__(201));
 
-var _index4 = _interopRequireDefault(__webpack_require__(186));
+var _index4 = _interopRequireDefault(__webpack_require__(202));
 
-var _index5 = _interopRequireDefault(__webpack_require__(187));
+var _index5 = _interopRequireDefault(__webpack_require__(203));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57311,7 +60275,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 648 */
+/* 695 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57322,15 +60286,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(188));
+var _index2 = _interopRequireDefault(__webpack_require__(204));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(15));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(16));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(17));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57361,7 +60325,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 649 */
+/* 696 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57372,15 +60336,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(189));
+var _index = _interopRequireDefault(__webpack_require__(15));
 
-var _index2 = _interopRequireDefault(__webpack_require__(190));
+var _index2 = _interopRequireDefault(__webpack_require__(16));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(17));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(205));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(206));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57395,11 +60359,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var locale = {
   code: 'en-CA',
-  formatDistance: _index.default,
-  formatLong: _index2.default,
-  formatRelative: _index3.default,
-  localize: _index4.default,
-  match: _index5.default,
+  formatDistance: _index4.default,
+  formatLong: _index5.default,
+  formatRelative: _index.default,
+  localize: _index2.default,
+  match: _index3.default,
   options: {
     weekStartsOn: 0
     /* Sunday */
@@ -57412,7 +60376,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 650 */
+/* 697 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57423,15 +60387,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(191));
+var _index2 = _interopRequireDefault(__webpack_require__(15));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(16));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(17));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(207));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57446,10 +60410,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var locale = {
   code: 'en-GB',
   formatDistance: _index.default,
-  formatLong: _index2.default,
-  formatRelative: _index3.default,
-  localize: _index4.default,
-  match: _index5.default,
+  formatLong: _index5.default,
+  formatRelative: _index2.default,
+  localize: _index3.default,
+  match: _index4.default,
   options: {
     weekStartsOn: 1
     /* Monday */
@@ -57462,7 +60426,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 651 */
+/* 698 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57473,15 +60437,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(192));
+var _index2 = _interopRequireDefault(__webpack_require__(15));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(16));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(17));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(208));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57496,10 +60460,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var locale = {
   code: 'en-IN',
   formatDistance: _index.default,
-  formatLong: _index2.default,
-  formatRelative: _index3.default,
-  localize: _index4.default,
-  match: _index5.default,
+  formatLong: _index5.default,
+  formatRelative: _index2.default,
+  localize: _index3.default,
+  match: _index4.default,
   options: {
     weekStartsOn: 1,
     // Monday is the first day of the week.
@@ -57512,7 +60476,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 652 */
+/* 699 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57523,15 +60487,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(193));
+var _index2 = _interopRequireDefault(__webpack_require__(15));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(16));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(17));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(209));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57546,10 +60510,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var locale = {
   code: 'en-NZ',
   formatDistance: _index.default,
-  formatLong: _index2.default,
-  formatRelative: _index3.default,
-  localize: _index4.default,
-  match: _index5.default,
+  formatLong: _index5.default,
+  formatRelative: _index2.default,
+  localize: _index3.default,
+  match: _index4.default,
   options: {
     weekStartsOn: 1
     /* Monday */
@@ -57562,7 +60526,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 653 */
+/* 700 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57573,15 +60537,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(194));
+var _index2 = _interopRequireDefault(__webpack_require__(210));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(15));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(16));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(17));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57613,7 +60577,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 654 */
+/* 701 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57624,15 +60588,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(19));
+var _index = _interopRequireDefault(__webpack_require__(22));
 
-var _index2 = _interopRequireDefault(__webpack_require__(195));
+var _index2 = _interopRequireDefault(__webpack_require__(15));
 
-var _index3 = _interopRequireDefault(__webpack_require__(13));
+var _index3 = _interopRequireDefault(__webpack_require__(16));
 
-var _index4 = _interopRequireDefault(__webpack_require__(14));
+var _index4 = _interopRequireDefault(__webpack_require__(17));
 
-var _index5 = _interopRequireDefault(__webpack_require__(15));
+var _index5 = _interopRequireDefault(__webpack_require__(211));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57647,10 +60611,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var locale = {
   code: 'en-ZA',
   formatDistance: _index.default,
-  formatLong: _index2.default,
-  formatRelative: _index3.default,
-  localize: _index4.default,
-  match: _index5.default,
+  formatLong: _index5.default,
+  formatRelative: _index2.default,
+  localize: _index3.default,
+  match: _index4.default,
   options: {
     weekStartsOn: 0,
     // Sunday is the first day of the week.
@@ -57663,7 +60627,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 655 */
+/* 702 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57674,15 +60638,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(196));
+var _index = _interopRequireDefault(__webpack_require__(212));
 
-var _index2 = _interopRequireDefault(__webpack_require__(197));
+var _index2 = _interopRequireDefault(__webpack_require__(213));
 
-var _index3 = _interopRequireDefault(__webpack_require__(198));
+var _index3 = _interopRequireDefault(__webpack_require__(214));
 
-var _index4 = _interopRequireDefault(__webpack_require__(199));
+var _index4 = _interopRequireDefault(__webpack_require__(215));
 
-var _index5 = _interopRequireDefault(__webpack_require__(200));
+var _index5 = _interopRequireDefault(__webpack_require__(216));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57713,7 +60677,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 656 */
+/* 703 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57724,15 +60688,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(201));
+var _index = _interopRequireDefault(__webpack_require__(217));
 
-var _index2 = _interopRequireDefault(__webpack_require__(202));
+var _index2 = _interopRequireDefault(__webpack_require__(218));
 
-var _index3 = _interopRequireDefault(__webpack_require__(203));
+var _index3 = _interopRequireDefault(__webpack_require__(219));
 
-var _index4 = _interopRequireDefault(__webpack_require__(204));
+var _index4 = _interopRequireDefault(__webpack_require__(220));
 
-var _index5 = _interopRequireDefault(__webpack_require__(205));
+var _index5 = _interopRequireDefault(__webpack_require__(221));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57767,7 +60731,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 657 */
+/* 704 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57778,15 +60742,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(206));
+var _index = _interopRequireDefault(__webpack_require__(222));
 
-var _index2 = _interopRequireDefault(__webpack_require__(207));
+var _index2 = _interopRequireDefault(__webpack_require__(223));
 
-var _index3 = _interopRequireDefault(__webpack_require__(208));
+var _index3 = _interopRequireDefault(__webpack_require__(224));
 
-var _index4 = _interopRequireDefault(__webpack_require__(209));
+var _index4 = _interopRequireDefault(__webpack_require__(225));
 
-var _index5 = _interopRequireDefault(__webpack_require__(210));
+var _index5 = _interopRequireDefault(__webpack_require__(226));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57817,7 +60781,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 658 */
+/* 705 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57828,15 +60792,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(211));
+var _index = _interopRequireDefault(__webpack_require__(227));
 
-var _index2 = _interopRequireDefault(__webpack_require__(212));
+var _index2 = _interopRequireDefault(__webpack_require__(228));
 
-var _index3 = _interopRequireDefault(__webpack_require__(213));
+var _index3 = _interopRequireDefault(__webpack_require__(229));
 
-var _index4 = _interopRequireDefault(__webpack_require__(214));
+var _index4 = _interopRequireDefault(__webpack_require__(230));
 
-var _index5 = _interopRequireDefault(__webpack_require__(215));
+var _index5 = _interopRequireDefault(__webpack_require__(231));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57867,7 +60831,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 659 */
+/* 706 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57878,15 +60842,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(216));
+var _index = _interopRequireDefault(__webpack_require__(232));
 
-var _index2 = _interopRequireDefault(__webpack_require__(217));
+var _index2 = _interopRequireDefault(__webpack_require__(233));
 
-var _index3 = _interopRequireDefault(__webpack_require__(218));
+var _index3 = _interopRequireDefault(__webpack_require__(234));
 
-var _index4 = _interopRequireDefault(__webpack_require__(219));
+var _index4 = _interopRequireDefault(__webpack_require__(235));
 
-var _index5 = _interopRequireDefault(__webpack_require__(220));
+var _index5 = _interopRequireDefault(__webpack_require__(236));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57917,7 +60881,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 660 */
+/* 707 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57928,15 +60892,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(221));
+var _index = _interopRequireDefault(__webpack_require__(237));
 
-var _index2 = _interopRequireDefault(__webpack_require__(222));
+var _index2 = _interopRequireDefault(__webpack_require__(238));
 
-var _index3 = _interopRequireDefault(__webpack_require__(223));
+var _index3 = _interopRequireDefault(__webpack_require__(239));
 
-var _index4 = _interopRequireDefault(__webpack_require__(224));
+var _index4 = _interopRequireDefault(__webpack_require__(240));
 
-var _index5 = _interopRequireDefault(__webpack_require__(225));
+var _index5 = _interopRequireDefault(__webpack_require__(241));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -57969,7 +60933,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 661 */
+/* 708 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57980,15 +60944,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(66));
+var _index = _interopRequireDefault(__webpack_require__(69));
 
-var _index2 = _interopRequireDefault(__webpack_require__(67));
+var _index2 = _interopRequireDefault(__webpack_require__(70));
 
-var _index3 = _interopRequireDefault(__webpack_require__(68));
+var _index3 = _interopRequireDefault(__webpack_require__(71));
 
-var _index4 = _interopRequireDefault(__webpack_require__(69));
+var _index4 = _interopRequireDefault(__webpack_require__(72));
 
-var _index5 = _interopRequireDefault(__webpack_require__(226));
+var _index5 = _interopRequireDefault(__webpack_require__(242));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58025,7 +60989,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 662 */
+/* 709 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58054,7 +61018,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 663 */
+/* 710 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58065,15 +61029,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(227));
+var _index = _interopRequireDefault(__webpack_require__(243));
 
-var _index2 = _interopRequireDefault(__webpack_require__(228));
+var _index2 = _interopRequireDefault(__webpack_require__(244));
 
-var _index3 = _interopRequireDefault(__webpack_require__(229));
+var _index3 = _interopRequireDefault(__webpack_require__(245));
 
-var _index4 = _interopRequireDefault(__webpack_require__(230));
+var _index4 = _interopRequireDefault(__webpack_require__(246));
 
-var _index5 = _interopRequireDefault(__webpack_require__(231));
+var _index5 = _interopRequireDefault(__webpack_require__(247));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58107,7 +61071,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 664 */
+/* 711 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58136,7 +61100,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 665 */
+/* 712 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58147,15 +61111,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(66));
+var _index = _interopRequireDefault(__webpack_require__(69));
 
-var _index2 = _interopRequireDefault(__webpack_require__(232));
+var _index2 = _interopRequireDefault(__webpack_require__(248));
 
-var _index3 = _interopRequireDefault(__webpack_require__(67));
+var _index3 = _interopRequireDefault(__webpack_require__(70));
 
-var _index4 = _interopRequireDefault(__webpack_require__(68));
+var _index4 = _interopRequireDefault(__webpack_require__(71));
 
-var _index5 = _interopRequireDefault(__webpack_require__(69));
+var _index5 = _interopRequireDefault(__webpack_require__(72));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58187,7 +61151,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 666 */
+/* 713 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58198,15 +61162,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(233));
+var _index = _interopRequireDefault(__webpack_require__(249));
 
-var _index2 = _interopRequireDefault(__webpack_require__(234));
+var _index2 = _interopRequireDefault(__webpack_require__(250));
 
-var _index3 = _interopRequireDefault(__webpack_require__(235));
+var _index3 = _interopRequireDefault(__webpack_require__(251));
 
-var _index4 = _interopRequireDefault(__webpack_require__(236));
+var _index4 = _interopRequireDefault(__webpack_require__(252));
 
-var _index5 = _interopRequireDefault(__webpack_require__(237));
+var _index5 = _interopRequireDefault(__webpack_require__(253));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58237,7 +61201,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 667 */
+/* 714 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58248,15 +61212,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(238));
+var _index = _interopRequireDefault(__webpack_require__(254));
 
-var _index2 = _interopRequireDefault(__webpack_require__(239));
+var _index2 = _interopRequireDefault(__webpack_require__(255));
 
-var _index3 = _interopRequireDefault(__webpack_require__(240));
+var _index3 = _interopRequireDefault(__webpack_require__(256));
 
-var _index4 = _interopRequireDefault(__webpack_require__(241));
+var _index4 = _interopRequireDefault(__webpack_require__(257));
 
-var _index5 = _interopRequireDefault(__webpack_require__(242));
+var _index5 = _interopRequireDefault(__webpack_require__(258));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58288,7 +61252,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 668 */
+/* 715 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58299,15 +61263,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(243));
+var _index = _interopRequireDefault(__webpack_require__(259));
 
-var _index2 = _interopRequireDefault(__webpack_require__(244));
+var _index2 = _interopRequireDefault(__webpack_require__(260));
 
-var _index3 = _interopRequireDefault(__webpack_require__(245));
+var _index3 = _interopRequireDefault(__webpack_require__(261));
 
-var _index4 = _interopRequireDefault(__webpack_require__(246));
+var _index4 = _interopRequireDefault(__webpack_require__(262));
 
-var _index5 = _interopRequireDefault(__webpack_require__(247));
+var _index5 = _interopRequireDefault(__webpack_require__(263));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58338,7 +61302,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 669 */
+/* 716 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58349,15 +61313,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(248));
+var _index = _interopRequireDefault(__webpack_require__(264));
 
-var _index2 = _interopRequireDefault(__webpack_require__(249));
+var _index2 = _interopRequireDefault(__webpack_require__(265));
 
-var _index3 = _interopRequireDefault(__webpack_require__(250));
+var _index3 = _interopRequireDefault(__webpack_require__(266));
 
-var _index4 = _interopRequireDefault(__webpack_require__(251));
+var _index4 = _interopRequireDefault(__webpack_require__(267));
 
-var _index5 = _interopRequireDefault(__webpack_require__(252));
+var _index5 = _interopRequireDefault(__webpack_require__(268));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58388,7 +61352,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 670 */
+/* 717 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58399,15 +61363,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(253));
+var _index = _interopRequireDefault(__webpack_require__(269));
 
-var _index2 = _interopRequireDefault(__webpack_require__(254));
+var _index2 = _interopRequireDefault(__webpack_require__(270));
 
-var _index3 = _interopRequireDefault(__webpack_require__(255));
+var _index3 = _interopRequireDefault(__webpack_require__(271));
 
-var _index4 = _interopRequireDefault(__webpack_require__(39));
+var _index4 = _interopRequireDefault(__webpack_require__(44));
 
-var _index5 = _interopRequireDefault(__webpack_require__(256));
+var _index5 = _interopRequireDefault(__webpack_require__(272));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58438,7 +61402,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 671 */
+/* 718 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58449,15 +61413,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(257));
+var _index = _interopRequireDefault(__webpack_require__(273));
 
-var _index2 = _interopRequireDefault(__webpack_require__(258));
+var _index2 = _interopRequireDefault(__webpack_require__(274));
 
-var _index3 = _interopRequireDefault(__webpack_require__(259));
+var _index3 = _interopRequireDefault(__webpack_require__(275));
 
-var _index4 = _interopRequireDefault(__webpack_require__(260));
+var _index4 = _interopRequireDefault(__webpack_require__(276));
 
-var _index5 = _interopRequireDefault(__webpack_require__(261));
+var _index5 = _interopRequireDefault(__webpack_require__(277));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58490,7 +61454,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 672 */
+/* 719 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58519,7 +61483,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 673 */
+/* 720 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58530,15 +61494,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(262));
+var _index = _interopRequireDefault(__webpack_require__(278));
 
-var _index2 = _interopRequireDefault(__webpack_require__(263));
+var _index2 = _interopRequireDefault(__webpack_require__(279));
 
-var _index3 = _interopRequireDefault(__webpack_require__(264));
+var _index3 = _interopRequireDefault(__webpack_require__(280));
 
-var _index4 = _interopRequireDefault(__webpack_require__(265));
+var _index4 = _interopRequireDefault(__webpack_require__(281));
 
-var _index5 = _interopRequireDefault(__webpack_require__(266));
+var _index5 = _interopRequireDefault(__webpack_require__(282));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58570,7 +61534,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 674 */
+/* 721 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58581,15 +61545,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(267));
+var _index = _interopRequireDefault(__webpack_require__(283));
 
-var _index2 = _interopRequireDefault(__webpack_require__(268));
+var _index2 = _interopRequireDefault(__webpack_require__(284));
 
-var _index3 = _interopRequireDefault(__webpack_require__(269));
+var _index3 = _interopRequireDefault(__webpack_require__(285));
 
-var _index4 = _interopRequireDefault(__webpack_require__(270));
+var _index4 = _interopRequireDefault(__webpack_require__(286));
 
-var _index5 = _interopRequireDefault(__webpack_require__(271));
+var _index5 = _interopRequireDefault(__webpack_require__(287));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58625,7 +61589,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 675 */
+/* 722 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58636,15 +61600,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(272));
+var _index = _interopRequireDefault(__webpack_require__(288));
 
-var _index2 = _interopRequireDefault(__webpack_require__(273));
+var _index2 = _interopRequireDefault(__webpack_require__(289));
 
-var _index3 = _interopRequireDefault(__webpack_require__(274));
+var _index3 = _interopRequireDefault(__webpack_require__(290));
 
-var _index4 = _interopRequireDefault(__webpack_require__(275));
+var _index4 = _interopRequireDefault(__webpack_require__(291));
 
-var _index5 = _interopRequireDefault(__webpack_require__(276));
+var _index5 = _interopRequireDefault(__webpack_require__(292));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58675,7 +61639,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 676 */
+/* 723 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58686,15 +61650,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(277));
+var _index = _interopRequireDefault(__webpack_require__(293));
 
-var _index2 = _interopRequireDefault(__webpack_require__(278));
+var _index2 = _interopRequireDefault(__webpack_require__(294));
 
-var _index3 = _interopRequireDefault(__webpack_require__(279));
+var _index3 = _interopRequireDefault(__webpack_require__(295));
 
-var _index4 = _interopRequireDefault(__webpack_require__(280));
+var _index4 = _interopRequireDefault(__webpack_require__(296));
 
-var _index5 = _interopRequireDefault(__webpack_require__(281));
+var _index5 = _interopRequireDefault(__webpack_require__(297));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58728,7 +61692,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 677 */
+/* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58739,15 +61703,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(282));
+var _index = _interopRequireDefault(__webpack_require__(298));
 
-var _index2 = _interopRequireDefault(__webpack_require__(283));
+var _index2 = _interopRequireDefault(__webpack_require__(299));
 
-var _index3 = _interopRequireDefault(__webpack_require__(284));
+var _index3 = _interopRequireDefault(__webpack_require__(300));
 
-var _index4 = _interopRequireDefault(__webpack_require__(285));
+var _index4 = _interopRequireDefault(__webpack_require__(301));
 
-var _index5 = _interopRequireDefault(__webpack_require__(286));
+var _index5 = _interopRequireDefault(__webpack_require__(302));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58779,7 +61743,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 678 */
+/* 725 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58790,15 +61754,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(287));
+var _index = _interopRequireDefault(__webpack_require__(303));
 
-var _index2 = _interopRequireDefault(__webpack_require__(288));
+var _index2 = _interopRequireDefault(__webpack_require__(304));
 
-var _index3 = _interopRequireDefault(__webpack_require__(289));
+var _index3 = _interopRequireDefault(__webpack_require__(305));
 
-var _index4 = _interopRequireDefault(__webpack_require__(290));
+var _index4 = _interopRequireDefault(__webpack_require__(306));
 
-var _index5 = _interopRequireDefault(__webpack_require__(291));
+var _index5 = _interopRequireDefault(__webpack_require__(307));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58831,7 +61795,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 679 */
+/* 726 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58842,15 +61806,65 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(292));
+var _index = _interopRequireDefault(__webpack_require__(308));
 
-var _index2 = _interopRequireDefault(__webpack_require__(293));
+var _index2 = _interopRequireDefault(__webpack_require__(309));
 
-var _index3 = _interopRequireDefault(__webpack_require__(294));
+var _index3 = _interopRequireDefault(__webpack_require__(310));
 
-var _index4 = _interopRequireDefault(__webpack_require__(295));
+var _index4 = _interopRequireDefault(__webpack_require__(311));
 
-var _index5 = _interopRequireDefault(__webpack_require__(296));
+var _index5 = _interopRequireDefault(__webpack_require__(312));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @type {Locale}
+ * @category Locales
+ * @summary Japanese (Hiragana) locale.
+ * @language Japanese (Hiragana)
+ * @iso-639-2 jpn
+ * @author Eri Hiramatsu [@Eritutteo]{@link https://github.com/Eritutteo}
+ */
+var locale = {
+  code: 'ja-Hira',
+  formatDistance: _index.default,
+  formatLong: _index2.default,
+  formatRelative: _index3.default,
+  localize: _index4.default,
+  match: _index5.default,
+  options: {
+    weekStartsOn: 0
+    /* Sunday */
+    ,
+    firstWeekContainsDate: 1
+  }
+};
+var _default = locale;
+exports.default = _default;
+module.exports = exports.default;
+
+/***/ }),
+/* 727 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _index = _interopRequireDefault(__webpack_require__(313));
+
+var _index2 = _interopRequireDefault(__webpack_require__(314));
+
+var _index3 = _interopRequireDefault(__webpack_require__(315));
+
+var _index4 = _interopRequireDefault(__webpack_require__(316));
+
+var _index5 = _interopRequireDefault(__webpack_require__(317));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58885,7 +61899,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 680 */
+/* 728 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58896,15 +61910,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(297));
+var _index = _interopRequireDefault(__webpack_require__(318));
 
-var _index2 = _interopRequireDefault(__webpack_require__(298));
+var _index2 = _interopRequireDefault(__webpack_require__(319));
 
-var _index3 = _interopRequireDefault(__webpack_require__(299));
+var _index3 = _interopRequireDefault(__webpack_require__(320));
 
-var _index4 = _interopRequireDefault(__webpack_require__(300));
+var _index4 = _interopRequireDefault(__webpack_require__(321));
 
-var _index5 = _interopRequireDefault(__webpack_require__(301));
+var _index5 = _interopRequireDefault(__webpack_require__(322));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58936,7 +61950,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 681 */
+/* 729 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58947,15 +61961,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(302));
+var _index = _interopRequireDefault(__webpack_require__(323));
 
-var _index2 = _interopRequireDefault(__webpack_require__(303));
+var _index2 = _interopRequireDefault(__webpack_require__(324));
 
-var _index3 = _interopRequireDefault(__webpack_require__(304));
+var _index3 = _interopRequireDefault(__webpack_require__(325));
 
-var _index4 = _interopRequireDefault(__webpack_require__(305));
+var _index4 = _interopRequireDefault(__webpack_require__(326));
 
-var _index5 = _interopRequireDefault(__webpack_require__(306));
+var _index5 = _interopRequireDefault(__webpack_require__(327));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58986,7 +62000,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 682 */
+/* 730 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58997,15 +62011,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(307));
+var _index = _interopRequireDefault(__webpack_require__(328));
 
-var _index2 = _interopRequireDefault(__webpack_require__(308));
+var _index2 = _interopRequireDefault(__webpack_require__(329));
 
-var _index3 = _interopRequireDefault(__webpack_require__(309));
+var _index3 = _interopRequireDefault(__webpack_require__(330));
 
-var _index4 = _interopRequireDefault(__webpack_require__(310));
+var _index4 = _interopRequireDefault(__webpack_require__(331));
 
-var _index5 = _interopRequireDefault(__webpack_require__(311));
+var _index5 = _interopRequireDefault(__webpack_require__(332));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59036,7 +62050,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 683 */
+/* 731 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59047,15 +62061,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(312));
+var _index = _interopRequireDefault(__webpack_require__(333));
 
-var _index2 = _interopRequireDefault(__webpack_require__(313));
+var _index2 = _interopRequireDefault(__webpack_require__(334));
 
-var _index3 = _interopRequireDefault(__webpack_require__(314));
+var _index3 = _interopRequireDefault(__webpack_require__(335));
 
-var _index4 = _interopRequireDefault(__webpack_require__(315));
+var _index4 = _interopRequireDefault(__webpack_require__(336));
 
-var _index5 = _interopRequireDefault(__webpack_require__(316));
+var _index5 = _interopRequireDefault(__webpack_require__(337));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59088,7 +62102,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 684 */
+/* 732 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59099,15 +62113,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(317));
+var _index = _interopRequireDefault(__webpack_require__(338));
 
-var _index2 = _interopRequireDefault(__webpack_require__(318));
+var _index2 = _interopRequireDefault(__webpack_require__(339));
 
-var _index3 = _interopRequireDefault(__webpack_require__(319));
+var _index3 = _interopRequireDefault(__webpack_require__(340));
 
-var _index4 = _interopRequireDefault(__webpack_require__(320));
+var _index4 = _interopRequireDefault(__webpack_require__(341));
 
-var _index5 = _interopRequireDefault(__webpack_require__(321));
+var _index5 = _interopRequireDefault(__webpack_require__(342));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59138,7 +62152,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 685 */
+/* 733 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59149,15 +62163,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(322));
+var _index = _interopRequireDefault(__webpack_require__(343));
 
-var _index2 = _interopRequireDefault(__webpack_require__(323));
+var _index2 = _interopRequireDefault(__webpack_require__(344));
 
-var _index3 = _interopRequireDefault(__webpack_require__(324));
+var _index3 = _interopRequireDefault(__webpack_require__(345));
 
-var _index4 = _interopRequireDefault(__webpack_require__(325));
+var _index4 = _interopRequireDefault(__webpack_require__(346));
 
-var _index5 = _interopRequireDefault(__webpack_require__(326));
+var _index5 = _interopRequireDefault(__webpack_require__(347));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59192,7 +62206,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 686 */
+/* 734 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59203,15 +62217,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(327));
+var _index = _interopRequireDefault(__webpack_require__(348));
 
-var _index2 = _interopRequireDefault(__webpack_require__(328));
+var _index2 = _interopRequireDefault(__webpack_require__(349));
 
-var _index3 = _interopRequireDefault(__webpack_require__(329));
+var _index3 = _interopRequireDefault(__webpack_require__(350));
 
-var _index4 = _interopRequireDefault(__webpack_require__(330));
+var _index4 = _interopRequireDefault(__webpack_require__(351));
 
-var _index5 = _interopRequireDefault(__webpack_require__(331));
+var _index5 = _interopRequireDefault(__webpack_require__(352));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59242,7 +62256,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 687 */
+/* 735 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59253,15 +62267,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(332));
+var _index = _interopRequireDefault(__webpack_require__(353));
 
-var _index2 = _interopRequireDefault(__webpack_require__(333));
+var _index2 = _interopRequireDefault(__webpack_require__(354));
 
-var _index3 = _interopRequireDefault(__webpack_require__(334));
+var _index3 = _interopRequireDefault(__webpack_require__(355));
 
-var _index4 = _interopRequireDefault(__webpack_require__(335));
+var _index4 = _interopRequireDefault(__webpack_require__(356));
 
-var _index5 = _interopRequireDefault(__webpack_require__(336));
+var _index5 = _interopRequireDefault(__webpack_require__(357));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59293,7 +62307,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 688 */
+/* 736 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59304,15 +62318,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(337));
+var _index = _interopRequireDefault(__webpack_require__(358));
 
-var _index2 = _interopRequireDefault(__webpack_require__(338));
+var _index2 = _interopRequireDefault(__webpack_require__(359));
 
-var _index3 = _interopRequireDefault(__webpack_require__(339));
+var _index3 = _interopRequireDefault(__webpack_require__(360));
 
-var _index4 = _interopRequireDefault(__webpack_require__(340));
+var _index4 = _interopRequireDefault(__webpack_require__(361));
 
-var _index5 = _interopRequireDefault(__webpack_require__(341));
+var _index5 = _interopRequireDefault(__webpack_require__(362));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59343,7 +62357,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 689 */
+/* 737 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59354,15 +62368,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(342));
+var _index = _interopRequireDefault(__webpack_require__(363));
 
-var _index2 = _interopRequireDefault(__webpack_require__(343));
+var _index2 = _interopRequireDefault(__webpack_require__(364));
 
-var _index3 = _interopRequireDefault(__webpack_require__(344));
+var _index3 = _interopRequireDefault(__webpack_require__(365));
 
-var _index4 = _interopRequireDefault(__webpack_require__(345));
+var _index4 = _interopRequireDefault(__webpack_require__(366));
 
-var _index5 = _interopRequireDefault(__webpack_require__(346));
+var _index5 = _interopRequireDefault(__webpack_require__(367));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59393,7 +62407,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 690 */
+/* 738 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59404,15 +62418,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(347));
+var _index = _interopRequireDefault(__webpack_require__(368));
 
-var _index2 = _interopRequireDefault(__webpack_require__(348));
+var _index2 = _interopRequireDefault(__webpack_require__(369));
 
-var _index3 = _interopRequireDefault(__webpack_require__(349));
+var _index3 = _interopRequireDefault(__webpack_require__(370));
 
-var _index4 = _interopRequireDefault(__webpack_require__(350));
+var _index4 = _interopRequireDefault(__webpack_require__(371));
 
-var _index5 = _interopRequireDefault(__webpack_require__(351));
+var _index5 = _interopRequireDefault(__webpack_require__(372));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59444,7 +62458,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 691 */
+/* 739 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59455,15 +62469,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(352));
+var _index = _interopRequireDefault(__webpack_require__(373));
 
-var _index2 = _interopRequireDefault(__webpack_require__(353));
+var _index2 = _interopRequireDefault(__webpack_require__(374));
 
-var _index3 = _interopRequireDefault(__webpack_require__(354));
+var _index3 = _interopRequireDefault(__webpack_require__(375));
 
-var _index4 = _interopRequireDefault(__webpack_require__(355));
+var _index4 = _interopRequireDefault(__webpack_require__(376));
 
-var _index5 = _interopRequireDefault(__webpack_require__(356));
+var _index5 = _interopRequireDefault(__webpack_require__(377));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59496,7 +62510,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 692 */
+/* 740 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59507,15 +62521,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(357));
+var _index = _interopRequireDefault(__webpack_require__(378));
 
-var _index2 = _interopRequireDefault(__webpack_require__(358));
+var _index2 = _interopRequireDefault(__webpack_require__(379));
 
-var _index3 = _interopRequireDefault(__webpack_require__(359));
+var _index3 = _interopRequireDefault(__webpack_require__(380));
 
-var _index4 = _interopRequireDefault(__webpack_require__(360));
+var _index4 = _interopRequireDefault(__webpack_require__(381));
 
-var _index5 = _interopRequireDefault(__webpack_require__(361));
+var _index5 = _interopRequireDefault(__webpack_require__(382));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59549,7 +62563,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 693 */
+/* 741 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59560,15 +62574,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(362));
+var _index = _interopRequireDefault(__webpack_require__(383));
 
-var _index2 = _interopRequireDefault(__webpack_require__(363));
+var _index2 = _interopRequireDefault(__webpack_require__(384));
 
-var _index3 = _interopRequireDefault(__webpack_require__(364));
+var _index3 = _interopRequireDefault(__webpack_require__(385));
 
-var _index4 = _interopRequireDefault(__webpack_require__(365));
+var _index4 = _interopRequireDefault(__webpack_require__(386));
 
-var _index5 = _interopRequireDefault(__webpack_require__(366));
+var _index5 = _interopRequireDefault(__webpack_require__(387));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59604,7 +62618,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 694 */
+/* 742 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59615,15 +62629,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(367));
+var _index = _interopRequireDefault(__webpack_require__(388));
 
-var _index2 = _interopRequireDefault(__webpack_require__(368));
+var _index2 = _interopRequireDefault(__webpack_require__(389));
 
-var _index3 = _interopRequireDefault(__webpack_require__(369));
+var _index3 = _interopRequireDefault(__webpack_require__(390));
 
-var _index4 = _interopRequireDefault(__webpack_require__(370));
+var _index4 = _interopRequireDefault(__webpack_require__(391));
 
-var _index5 = _interopRequireDefault(__webpack_require__(371));
+var _index5 = _interopRequireDefault(__webpack_require__(392));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59654,7 +62668,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 695 */
+/* 743 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59665,15 +62679,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(372));
+var _index = _interopRequireDefault(__webpack_require__(393));
 
-var _index2 = _interopRequireDefault(__webpack_require__(373));
+var _index2 = _interopRequireDefault(__webpack_require__(394));
 
-var _index3 = _interopRequireDefault(__webpack_require__(374));
+var _index3 = _interopRequireDefault(__webpack_require__(395));
 
-var _index4 = _interopRequireDefault(__webpack_require__(375));
+var _index4 = _interopRequireDefault(__webpack_require__(396));
 
-var _index5 = _interopRequireDefault(__webpack_require__(376));
+var _index5 = _interopRequireDefault(__webpack_require__(397));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59707,7 +62721,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 696 */
+/* 744 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59718,15 +62732,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(377));
+var _index = _interopRequireDefault(__webpack_require__(398));
 
-var _index2 = _interopRequireDefault(__webpack_require__(378));
+var _index2 = _interopRequireDefault(__webpack_require__(399));
 
-var _index3 = _interopRequireDefault(__webpack_require__(379));
+var _index3 = _interopRequireDefault(__webpack_require__(400));
 
-var _index4 = _interopRequireDefault(__webpack_require__(380));
+var _index4 = _interopRequireDefault(__webpack_require__(401));
 
-var _index5 = _interopRequireDefault(__webpack_require__(381));
+var _index5 = _interopRequireDefault(__webpack_require__(402));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59758,7 +62772,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 697 */
+/* 745 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59769,15 +62783,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(382));
+var _index = _interopRequireDefault(__webpack_require__(403));
 
-var _index2 = _interopRequireDefault(__webpack_require__(383));
+var _index2 = _interopRequireDefault(__webpack_require__(404));
 
-var _index3 = _interopRequireDefault(__webpack_require__(384));
+var _index3 = _interopRequireDefault(__webpack_require__(405));
 
-var _index4 = _interopRequireDefault(__webpack_require__(385));
+var _index4 = _interopRequireDefault(__webpack_require__(406));
 
-var _index5 = _interopRequireDefault(__webpack_require__(386));
+var _index5 = _interopRequireDefault(__webpack_require__(407));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59809,7 +62823,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 698 */
+/* 746 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59820,15 +62834,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(387));
+var _index = _interopRequireDefault(__webpack_require__(408));
 
-var _index2 = _interopRequireDefault(__webpack_require__(388));
+var _index2 = _interopRequireDefault(__webpack_require__(409));
 
-var _index3 = _interopRequireDefault(__webpack_require__(389));
+var _index3 = _interopRequireDefault(__webpack_require__(410));
 
-var _index4 = _interopRequireDefault(__webpack_require__(390));
+var _index4 = _interopRequireDefault(__webpack_require__(411));
 
-var _index5 = _interopRequireDefault(__webpack_require__(391));
+var _index5 = _interopRequireDefault(__webpack_require__(412));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59861,7 +62875,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 699 */
+/* 747 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59872,15 +62886,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(392));
+var _index = _interopRequireDefault(__webpack_require__(413));
 
-var _index2 = _interopRequireDefault(__webpack_require__(393));
+var _index2 = _interopRequireDefault(__webpack_require__(414));
 
-var _index3 = _interopRequireDefault(__webpack_require__(394));
+var _index3 = _interopRequireDefault(__webpack_require__(415));
 
-var _index4 = _interopRequireDefault(__webpack_require__(395));
+var _index4 = _interopRequireDefault(__webpack_require__(416));
 
-var _index5 = _interopRequireDefault(__webpack_require__(396));
+var _index5 = _interopRequireDefault(__webpack_require__(417));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59912,7 +62926,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 700 */
+/* 748 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59923,15 +62937,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(397));
+var _index = _interopRequireDefault(__webpack_require__(418));
 
-var _index2 = _interopRequireDefault(__webpack_require__(398));
+var _index2 = _interopRequireDefault(__webpack_require__(419));
 
-var _index3 = _interopRequireDefault(__webpack_require__(399));
+var _index3 = _interopRequireDefault(__webpack_require__(420));
 
-var _index4 = _interopRequireDefault(__webpack_require__(400));
+var _index4 = _interopRequireDefault(__webpack_require__(421));
 
-var _index5 = _interopRequireDefault(__webpack_require__(401));
+var _index5 = _interopRequireDefault(__webpack_require__(422));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59962,7 +62976,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 701 */
+/* 749 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59973,15 +62987,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(402));
+var _index = _interopRequireDefault(__webpack_require__(423));
 
-var _index2 = _interopRequireDefault(__webpack_require__(403));
+var _index2 = _interopRequireDefault(__webpack_require__(424));
 
-var _index3 = _interopRequireDefault(__webpack_require__(404));
+var _index3 = _interopRequireDefault(__webpack_require__(425));
 
-var _index4 = _interopRequireDefault(__webpack_require__(405));
+var _index4 = _interopRequireDefault(__webpack_require__(426));
 
-var _index5 = _interopRequireDefault(__webpack_require__(406));
+var _index5 = _interopRequireDefault(__webpack_require__(427));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60013,7 +63027,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 702 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60024,15 +63038,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(407));
+var _index = _interopRequireDefault(__webpack_require__(428));
 
-var _index2 = _interopRequireDefault(__webpack_require__(408));
+var _index2 = _interopRequireDefault(__webpack_require__(429));
 
-var _index3 = _interopRequireDefault(__webpack_require__(409));
+var _index3 = _interopRequireDefault(__webpack_require__(430));
 
-var _index4 = _interopRequireDefault(__webpack_require__(410));
+var _index4 = _interopRequireDefault(__webpack_require__(431));
 
-var _index5 = _interopRequireDefault(__webpack_require__(411));
+var _index5 = _interopRequireDefault(__webpack_require__(432));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60063,7 +63077,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 703 */
+/* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60074,15 +63088,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(412));
+var _index = _interopRequireDefault(__webpack_require__(433));
 
-var _index2 = _interopRequireDefault(__webpack_require__(413));
+var _index2 = _interopRequireDefault(__webpack_require__(434));
 
-var _index3 = _interopRequireDefault(__webpack_require__(414));
+var _index3 = _interopRequireDefault(__webpack_require__(435));
 
-var _index4 = _interopRequireDefault(__webpack_require__(415));
+var _index4 = _interopRequireDefault(__webpack_require__(436));
 
-var _index5 = _interopRequireDefault(__webpack_require__(416));
+var _index5 = _interopRequireDefault(__webpack_require__(437));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60113,7 +63127,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 704 */
+/* 752 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60124,15 +63138,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(417));
+var _index = _interopRequireDefault(__webpack_require__(438));
 
-var _index2 = _interopRequireDefault(__webpack_require__(418));
+var _index2 = _interopRequireDefault(__webpack_require__(439));
 
-var _index3 = _interopRequireDefault(__webpack_require__(419));
+var _index3 = _interopRequireDefault(__webpack_require__(440));
 
-var _index4 = _interopRequireDefault(__webpack_require__(420));
+var _index4 = _interopRequireDefault(__webpack_require__(441));
 
-var _index5 = _interopRequireDefault(__webpack_require__(421));
+var _index5 = _interopRequireDefault(__webpack_require__(442));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60163,7 +63177,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 705 */
+/* 753 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60174,15 +63188,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(422));
+var _index = _interopRequireDefault(__webpack_require__(443));
 
-var _index2 = _interopRequireDefault(__webpack_require__(423));
+var _index2 = _interopRequireDefault(__webpack_require__(444));
 
-var _index3 = _interopRequireDefault(__webpack_require__(424));
+var _index3 = _interopRequireDefault(__webpack_require__(445));
 
-var _index4 = _interopRequireDefault(__webpack_require__(425));
+var _index4 = _interopRequireDefault(__webpack_require__(446));
 
-var _index5 = _interopRequireDefault(__webpack_require__(426));
+var _index5 = _interopRequireDefault(__webpack_require__(447));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60215,7 +63229,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 706 */
+/* 754 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60226,15 +63240,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(427));
+var _index = _interopRequireDefault(__webpack_require__(448));
 
-var _index2 = _interopRequireDefault(__webpack_require__(428));
+var _index2 = _interopRequireDefault(__webpack_require__(449));
 
-var _index3 = _interopRequireDefault(__webpack_require__(429));
+var _index3 = _interopRequireDefault(__webpack_require__(450));
 
-var _index4 = _interopRequireDefault(__webpack_require__(430));
+var _index4 = _interopRequireDefault(__webpack_require__(451));
 
-var _index5 = _interopRequireDefault(__webpack_require__(431));
+var _index5 = _interopRequireDefault(__webpack_require__(452));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60265,7 +63279,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 707 */
+/* 755 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60276,15 +63290,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(432));
+var _index = _interopRequireDefault(__webpack_require__(453));
 
-var _index2 = _interopRequireDefault(__webpack_require__(433));
+var _index2 = _interopRequireDefault(__webpack_require__(454));
 
-var _index3 = _interopRequireDefault(__webpack_require__(434));
+var _index3 = _interopRequireDefault(__webpack_require__(455));
 
-var _index4 = _interopRequireDefault(__webpack_require__(435));
+var _index4 = _interopRequireDefault(__webpack_require__(456));
 
-var _index5 = _interopRequireDefault(__webpack_require__(436));
+var _index5 = _interopRequireDefault(__webpack_require__(457));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60315,7 +63329,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 708 */
+/* 756 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60326,15 +63340,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(437));
+var _index = _interopRequireDefault(__webpack_require__(458));
 
-var _index2 = _interopRequireDefault(__webpack_require__(438));
+var _index2 = _interopRequireDefault(__webpack_require__(459));
 
-var _index3 = _interopRequireDefault(__webpack_require__(439));
+var _index3 = _interopRequireDefault(__webpack_require__(460));
 
-var _index4 = _interopRequireDefault(__webpack_require__(440));
+var _index4 = _interopRequireDefault(__webpack_require__(461));
 
-var _index5 = _interopRequireDefault(__webpack_require__(441));
+var _index5 = _interopRequireDefault(__webpack_require__(462));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60367,7 +63381,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 709 */
+/* 757 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60378,15 +63392,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(442));
+var _index = _interopRequireDefault(__webpack_require__(463));
 
-var _index2 = _interopRequireDefault(__webpack_require__(443));
+var _index2 = _interopRequireDefault(__webpack_require__(464));
 
-var _index3 = _interopRequireDefault(__webpack_require__(444));
+var _index3 = _interopRequireDefault(__webpack_require__(465));
 
-var _index4 = _interopRequireDefault(__webpack_require__(445));
+var _index4 = _interopRequireDefault(__webpack_require__(466));
 
-var _index5 = _interopRequireDefault(__webpack_require__(446));
+var _index5 = _interopRequireDefault(__webpack_require__(467));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60422,7 +63436,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 710 */
+/* 758 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60433,15 +63447,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(447));
+var _index = _interopRequireDefault(__webpack_require__(468));
 
-var _index2 = _interopRequireDefault(__webpack_require__(448));
+var _index2 = _interopRequireDefault(__webpack_require__(469));
 
-var _index3 = _interopRequireDefault(__webpack_require__(449));
+var _index3 = _interopRequireDefault(__webpack_require__(470));
 
-var _index4 = _interopRequireDefault(__webpack_require__(450));
+var _index4 = _interopRequireDefault(__webpack_require__(471));
 
-var _index5 = _interopRequireDefault(__webpack_require__(451));
+var _index5 = _interopRequireDefault(__webpack_require__(472));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60472,7 +63486,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 711 */
+/* 759 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60483,15 +63497,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(452));
+var _index = _interopRequireDefault(__webpack_require__(473));
 
-var _index2 = _interopRequireDefault(__webpack_require__(453));
+var _index2 = _interopRequireDefault(__webpack_require__(474));
 
-var _index3 = _interopRequireDefault(__webpack_require__(454));
+var _index3 = _interopRequireDefault(__webpack_require__(475));
 
-var _index4 = _interopRequireDefault(__webpack_require__(455));
+var _index4 = _interopRequireDefault(__webpack_require__(476));
 
-var _index5 = _interopRequireDefault(__webpack_require__(456));
+var _index5 = _interopRequireDefault(__webpack_require__(477));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60523,7 +63537,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 712 */
+/* 760 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60534,15 +63548,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(457));
+var _index = _interopRequireDefault(__webpack_require__(478));
 
-var _index2 = _interopRequireDefault(__webpack_require__(458));
+var _index2 = _interopRequireDefault(__webpack_require__(479));
 
-var _index3 = _interopRequireDefault(__webpack_require__(459));
+var _index3 = _interopRequireDefault(__webpack_require__(480));
 
-var _index4 = _interopRequireDefault(__webpack_require__(460));
+var _index4 = _interopRequireDefault(__webpack_require__(481));
 
-var _index5 = _interopRequireDefault(__webpack_require__(461));
+var _index5 = _interopRequireDefault(__webpack_require__(482));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60573,7 +63587,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 713 */
+/* 761 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60584,15 +63598,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(462));
+var _index = _interopRequireDefault(__webpack_require__(483));
 
-var _index2 = _interopRequireDefault(__webpack_require__(463));
+var _index2 = _interopRequireDefault(__webpack_require__(484));
 
-var _index3 = _interopRequireDefault(__webpack_require__(464));
+var _index3 = _interopRequireDefault(__webpack_require__(485));
 
-var _index4 = _interopRequireDefault(__webpack_require__(465));
+var _index4 = _interopRequireDefault(__webpack_require__(486));
 
-var _index5 = _interopRequireDefault(__webpack_require__(466));
+var _index5 = _interopRequireDefault(__webpack_require__(487));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60626,7 +63640,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 714 */
+/* 762 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60637,15 +63651,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(467));
+var _index = _interopRequireDefault(__webpack_require__(488));
 
-var _index2 = _interopRequireDefault(__webpack_require__(468));
+var _index2 = _interopRequireDefault(__webpack_require__(489));
 
-var _index3 = _interopRequireDefault(__webpack_require__(469));
+var _index3 = _interopRequireDefault(__webpack_require__(490));
 
-var _index4 = _interopRequireDefault(__webpack_require__(470));
+var _index4 = _interopRequireDefault(__webpack_require__(491));
 
-var _index5 = _interopRequireDefault(__webpack_require__(471));
+var _index5 = _interopRequireDefault(__webpack_require__(492));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60680,7 +63694,7 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 715 */
+/* 763 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60691,15 +63705,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _index = _interopRequireDefault(__webpack_require__(472));
+var _index = _interopRequireDefault(__webpack_require__(493));
 
-var _index2 = _interopRequireDefault(__webpack_require__(473));
+var _index2 = _interopRequireDefault(__webpack_require__(494));
 
-var _index3 = _interopRequireDefault(__webpack_require__(474));
+var _index3 = _interopRequireDefault(__webpack_require__(495));
 
-var _index4 = _interopRequireDefault(__webpack_require__(475));
+var _index4 = _interopRequireDefault(__webpack_require__(496));
 
-var _index5 = _interopRequireDefault(__webpack_require__(476));
+var _index5 = _interopRequireDefault(__webpack_require__(497));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -60732,16 +63746,16 @@ exports.default = _default;
 module.exports = exports.default;
 
 /***/ }),
-/* 716 */
+/* 764 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(717);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(718);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_date_fns__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_events__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_timepicker__ = __webpack_require__(765);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__defaultOptions__ = __webpack_require__(766);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -61383,10 +64397,10 @@ var timePicker = function (_EventEmitter) {
         key: 'lang',
         set: function set(lang) {
             try {
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } catch (e) {
                 lang = 'en-US';
-                this._locale = __webpack_require__(24)("./" + lang + '/index.js');
+                this._locale = __webpack_require__(26)("./" + lang + '/index.js');
             } finally {
                 this._lang = lang;
                 return this;
@@ -61496,7 +64510,7 @@ var timePicker = function (_EventEmitter) {
 /* harmony default export */ __webpack_exports__["a"] = (timePicker);
 
 /***/ }),
-/* 717 */
+/* 765 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61505,7 +64519,7 @@ var timePicker = function (_EventEmitter) {
 });
 
 /***/ }),
-/* 718 */
+/* 766 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61525,67 +64539,72 @@ var defaultOptions = {
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 719 */
+/* 767 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 var defaultOptions = {
-  type: undefined,
-  color: 'primary',
-  isRange: false,
-  allowSameDayRange: true,
-  lang: navigator.language || 'en-US', // internationalization
-  dateFormat: 'MM/dd/yyyy',
-  timeFormat: 'HH:mm',
-  navigationMonthFormat: 'LLLL',
-  navigationYearFormat: 'yyyy',
-  headerMonthYearFromat: 'LLLL yyyy',
-  displayMode: 'default',
-  editTimeManually: false,
-  position: 'auto',
-  showHeader: true,
-  headerPosition: 'top',
-  showFooter: true,
-  showButtons: true,
-  showTodayButton: true,
-  showClearButton: true,
-  cancelLabel: 'Cancel',
-  clearLabel: 'Clear',
-  todayLabel: 'Today',
-  nowLabel: 'Now',
-  validateLabel: 'Validate',
-  enableMonthSwitch: true,
-  enableYearSwitch: true,
-  startDate: undefined,
-  endDate: undefined,
-  minDate: null,
-  maxDate: null,
-  disabledDates: [],
-  disabledWeekDays: undefined,
-  highlightedDates: [],
-  weekStart: 0,
-  startTime: undefined,
-  endTime: undefined,
-  minuteSteps: 5,
-  labelFrom: '',
-  labelTo: '',
-  closeOnOverlayClick: true,
-  closeOnSelect: true,
-  toggleOnInputClick: true,
-  onReady: null,
-  onValidate: null,
-  icons: {
-    previous: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>\n    </svg>',
-    next: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>\n    </svg>',
-    time: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path fill="currentcolor" d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z"/>\n\t      <path fill="currentcolor" d="M30,6c-0.552,0-1,0.447-1,1v23H14c-0.552,0-1,0.447-1,1s0.448,1,1,1h16c0.552,0,1-0.447,1-1V7C31,6.447,30.552,6,30,6z"/>\n      </g>\n    </svg>',
-    date: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path d="M57,4h-7V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H19V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H3C2.447,4,2,4.447,2,5v11v43c0,0.553,0.447,1,1,1h54c0.553,0,1-0.447,1-1V16V5C58,4.447,57.553,4,57,4z M43,2h5v3v3h-5V5V2z M12,2h5v3v3h-5V5V2z M4,6h6v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h22v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h6v9H4V6zM4,58V17h52v41H4z"/>\n        <path d="M38,23h-7h-2h-7h-2h-9v9v2v7v2v9h9h2h7h2h7h2h9v-9v-2v-7v-2v-9h-9H38z M31,25h7v7h-7V25z M38,41h-7v-7h7V41z M22,34h7v7h-7V34z M22,25h7v7h-7V25z M13,25h7v7h-7V25z M13,34h7v7h-7V34z M20,50h-7v-7h7V50z M29,50h-7v-7h7V50z M38,50h-7v-7h7V50z M47,50h-7v-7h7V50z M47,41h-7v-7h7V41z M47,25v7h-7v-7H47z"/>\n      </g>\n    </svg>'
-  }
+    type: undefined,
+    color: 'primary',
+    isRange: false,
+    allowSameDayRange: true,
+    lang: navigator.language || 'en-US', // internationalization
+    dateFormat: 'MM/dd/yyyy',
+    timeFormat: 'HH:mm',
+    displayMode: 'default',
+    editTimeManually: false,
+    position: 'auto',
+    showHeader: true,
+    headerPosition: 'top',
+    showFooter: true,
+    showButtons: true,
+    showTodayButton: true,
+    showClearButton: true,
+    cancelLabel: 'Cancel',
+    clearLabel: 'Clear',
+    todayLabel: 'Today',
+    nowLabel: 'Now',
+    validateLabel: 'Validate',
+    enableMonthSwitch: true,
+    enableYearSwitch: true,
+    startDate: undefined,
+    endDate: undefined,
+    minDate: null,
+    maxDate: null,
+    disabledDates: [],
+    disabledWeekDays: undefined,
+    highlightedDates: [],
+    weekStart: 0,
+    startTime: undefined,
+    endTime: undefined,
+    minuteSteps: 5,
+    labelFrom: '',
+    labelTo: '',
+    closeOnOverlayClick: true,
+    closeOnSelect: true,
+    toggleOnInputClick: true,
+    onReady: null,
+    onValidate: null,
+    formats: {
+        header: 'LLLL yyyy',
+        navigationMonth: 'LLLL',
+        navigationYear: 'yyyy',
+        selectMonth: 'LLL',
+        selectYear: 'yyyy',
+        weekday: 'ccc'
+    },
+    icons: {
+        previous: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="45.63,75.8 0.375,38.087 45.63,0.375 "/>\n    </svg>',
+        next: '<svg viewBox="0 0 50 80" xml:space="preserve">\n      <polyline fill="none" stroke-width=".5em" stroke-linecap="round" stroke-linejoin="round" points="0.375,0.375 45.63,38.087 0.375,75.8 "/>\n    </svg>',
+        time: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path fill="currentcolor" d="M30,0C13.458,0,0,13.458,0,30s13.458,30,30,30s30-13.458,30-30S46.542,0,30,0z M30,58C14.561,58,2,45.439,2,30S14.561,2,30,2s28,12.561,28,28S45.439,58,30,58z"/>\n\t      <path fill="currentcolor" d="M30,6c-0.552,0-1,0.447-1,1v23H14c-0.552,0-1,0.447-1,1s0.448,1,1,1h16c0.552,0,1-0.447,1-1V7C31,6.447,30.552,6,30,6z"/>\n      </g>\n    </svg>',
+        date: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 60 60" xml:space="preserve">\n      <g>\n        <path d="M57,4h-7V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H19V1c0-0.553-0.447-1-1-1h-7c-0.553,0-1,0.447-1,1v3H3C2.447,4,2,4.447,2,5v11v43c0,0.553,0.447,1,1,1h54c0.553,0,1-0.447,1-1V16V5C58,4.447,57.553,4,57,4z M43,2h5v3v3h-5V5V2z M12,2h5v3v3h-5V5V2z M4,6h6v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h22v3c0,0.553,0.447,1,1,1h7c0.553,0,1-0.447,1-1V6h6v9H4V6zM4,58V17h52v41H4z"/>\n        <path d="M38,23h-7h-2h-7h-2h-9v9v2v7v2v9h9h2h7h2h7h2h9v-9v-2v-7v-2v-9h-9H38z M31,25h7v7h-7V25z M38,41h-7v-7h7V41z M22,34h7v7h-7V34z M22,25h7v7h-7V25z M13,25h7v7h-7V25z M13,34h7v7h-7V34z M20,50h-7v-7h7V50z M29,50h-7v-7h7V50z M38,50h-7v-7h7V50z M47,50h-7v-7h7V50z M47,41h-7v-7h7V41z M47,25v7h-7v-7H47z"/>\n      </g>\n    </svg>'
+    }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (defaultOptions);
 
 /***/ }),
-/* 720 */
+/* 768 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61594,7 +64613,7 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 721 */
+/* 769 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -61603,7 +64622,7 @@ var defaultOptions = {
 });
 
 /***/ }),
-/* 722 */
+/* 770 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

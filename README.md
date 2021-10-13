@@ -60,8 +60,6 @@ var defaultOptions = {
     highlightedDates: [],
     weekStart: 0,
     dateFormat: 'MM/dd/yyyy',
-    navigationMonthFormat: 'MMMM',
-    navigationYearFormat: 'yyyy',
     enableMonthSwitch: true,
     enableYearSwitch: true,
     displayYearsCount: 50,
