@@ -692,10 +692,16 @@ export default class bulmaCalendar extends EventEmitter {
     /**
      * Destroy datePicker
      * @method destroy
-     * @return {[type]} [description]
      */
     destroy() {
-        this._ui.wrapper.remove();
+
+        document.getElementById(this.id).remove();
+
+        this.datePicker = null;
+        this.timePicker = null;
+
+        this._ui = null;
+
     }
 
     /****************************************************

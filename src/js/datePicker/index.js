@@ -564,7 +564,13 @@ export default class datePicker extends EventEmitter {
             end:   this.options.isRange ? utils.newDate(this.options.endDate, this.format, 'yyyy-MM-dd') : undefined,
         };
 
-        this._visibleDate = this._isValidDate(this.start) ? this.start : this._isValidDate(today, this.min, this.max) ? today : this.min;
+        // set visible date on start or today
+        this._visibleDate = this._isValidDate(this.start) ? this.start : today;
+
+        // check if visible date is in the valid min/max range and adjust if necessary
+        if (!this._isValidDate(this._visibleDate, this.min, this.max)) {
+            this._visibleDate = this.min ? this.min : this.max;
+        }
 
         this._build();
         this._bindEvents();
