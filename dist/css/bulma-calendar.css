@@ -532,14 +532,14 @@
           .datetimepicker .timepicker .timepicker-start .timepicker-minutes .timepicker-input.is-input .timepicker-input-number,
           .datetimepicker .timepicker .timepicker-end .timepicker-hours .timepicker-input.is-input .timepicker-input-number,
           .datetimepicker .timepicker .timepicker-end .timepicker-minutes .timepicker-input.is-input .timepicker-input-number {
-            visability: hidden;
+            visibility: hidden;
             opacity: 0;
             transition: opacity 100ms ease-in; }
           .datetimepicker .timepicker .timepicker-start .timepicker-hours .timepicker-input.is-input input,
           .datetimepicker .timepicker .timepicker-start .timepicker-minutes .timepicker-input.is-input input,
           .datetimepicker .timepicker .timepicker-end .timepicker-hours .timepicker-input.is-input input,
           .datetimepicker .timepicker .timepicker-end .timepicker-minutes .timepicker-input.is-input input {
-            visability: visible;
+            visibility: visible;
             opacity: 1;
             transition: opacity 100ms ease-in; }
           .datetimepicker .timepicker .timepicker-start .timepicker-hours .timepicker-input input,
@@ -564,7 +564,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        visability: visible;
+        visibility: visible;
         opacity: 1;
         transition: opacity 1000ms ease-in;
         font-weight: 300; }
