@@ -4,7 +4,7 @@
   "main": "dist/js/bulma-calendar.js",
   "style": "dist/css/bulma-calendar.min.css",
   "sass": "src/sass/index.sass",
-  "version": "6.1.15",
+  "version": "6.1.16",
   "scripts": {
     "commit": "git-cz",
     "travis-deploy-once": "travis-deploy-once",
