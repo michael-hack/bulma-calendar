@@ -27,6 +27,9 @@
     "date picker"
   ],
   "author": "Wikiki <wikiki@protonmail.com> (https://creativebulma.net/author/wikiki)",
+  "contributors": [
+    "Michael Hack <info@michael-hack.de> (https://www.michael-hack.de)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Wikiki/bulma-calendar/issues"

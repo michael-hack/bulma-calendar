@@ -46879,7 +46879,7 @@ var bulmaCalendar = function (_EventEmitter) {
     }, {
         key: 'timeFormat',
         set: function set(timeFormat) {
-            this.timePicker.dateFormat = timeFormat;
+            this.timePicker.timeFormat = timeFormat;
             return this;
         }
 
