@@ -279,7 +279,7 @@ export default class bulmaCalendar extends EventEmitter {
 
     // Set timeFormat (set to HH:MM:SS by default)
     set timeFormat(timeFormat) {
-        this.timePicker.dateFormat = timeFormat;
+        this.timePicker.timeFormat = timeFormat;
         return this;
     }
 
