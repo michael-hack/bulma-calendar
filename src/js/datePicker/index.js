@@ -299,7 +299,7 @@ export default class datePicker extends EventEmitter {
     disableDate(date = undefined) {
         if (!Array.isArray(this.disabledDates)) return;
         const index = this.disabledDates.findIndex((disableDate) => dateFns.isEqual(disableDate, date));
-        if (index > -1) {
+        if (index == -1) {
             this.disabledDates.push(date);
         }
     }
