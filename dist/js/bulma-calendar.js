@@ -58457,7 +58457,7 @@ var datePicker = function (_EventEmitter) {
             var index = this.disabledDates.findIndex(function (disableDate) {
                 return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disableDate, date);
             });
-            if (index > -1) {
+            if (index === -1) {
                 this.disabledDates.push(date);
             }
         }
@@ -58483,7 +58483,7 @@ var datePicker = function (_EventEmitter) {
             var index = this.highlightedDates.findIndex(function (highlightDate) {
                 return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](highlightDate, date);
             });
-            if (index > -1) {
+            if (index === -1) {
                 this.highlightedDates.push(date);
             }
         }
@@ -58501,9 +58501,9 @@ var datePicker = function (_EventEmitter) {
         key: 'disableWeekDay',
         value: function disableWeekDay(day) {
             var index = this.disabledWeekDays.findIndex(function (disabledWeekDay) {
-                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disabledWeekDay, date);
+                return __WEBPACK_IMPORTED_MODULE_2_date_fns__["t" /* isEqual */](disabledWeekDay, day);
             });
-            if (index > -1) {
+            if (index === -1) {
                 this.disabledWeekDays.push(day);
             }
         }

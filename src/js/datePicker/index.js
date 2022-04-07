@@ -299,7 +299,7 @@ export default class datePicker extends EventEmitter {
     disableDate(date = undefined) {
         if (!Array.isArray(this.disabledDates)) return;
         const index = this.disabledDates.findIndex((disableDate) => dateFns.isEqual(disableDate, date));
-        if (index == -1) {
+        if (index === -1) {
             this.disabledDates.push(date);
         }
     }
@@ -315,7 +315,7 @@ export default class datePicker extends EventEmitter {
     unhighlightDate(date = undefined) {
         if (!Array.isArray(this.highlightedDates)) return;
         const index = this.highlightedDates.findIndex((highlightDate) => dateFns.isEqual(highlightDate, date));
-        if (index > -1) {
+        if (index === -1) {
             this.highlightedDates.push(date);
         }
     }
@@ -328,8 +328,8 @@ export default class datePicker extends EventEmitter {
     }
 
     disableWeekDay(day) {
-        const index = this.disabledWeekDays.findIndex((disabledWeekDay) => dateFns.isEqual(disabledWeekDay, date));
-        if (index > -1) {
+        const index = this.disabledWeekDays.findIndex((disabledWeekDay) => dateFns.isEqual(disabledWeekDay, day));
+        if (index === -1) {
             this.disabledWeekDays.push(day);
         }
     }
