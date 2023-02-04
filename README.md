@@ -1,6 +1,16 @@
 # bulma-calendar
 Bulma's extension to display a calendar. It can be used on page as large calendar with apointments or in modal/popup for datepicker.
 
+# Installation/Development
+- Install ruby version 2.6.10 from [Ruby 2.6.10](https://mirror.sjtu.edu.cn/github-release/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.6.10-1/rubyinstaller-devkit-2.6.10-1-x64.exe)
+- Make sure to run ridk install in the end of Ruby install
+- Then run `gem install bundler`
+- Then run `bundler install` from working dir
+- Then make sure you are using node version 8 (nvm install 8)
+- Then run `npm install` from working folder
+- Then run `npm install -g gulp-cli` to install gulp
+- Then to start the live site, run `gulp demo`
+
 [![npm](https://img.shields.io/npm/v/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
 [![npm](https://img.shields.io/npm/dm/bulma-calendar.svg)](https://www.npmjs.com/package/bulma-calendar)
 [![Build Status](https://travis-ci.org/Wikiki/bulma-calendar.svg?branch=master)](https://travis-ci.org/Wikiki/bulma-calendar)
