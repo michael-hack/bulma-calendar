@@ -68,4 +68,4 @@ var defaultOptions = {
 
 # Documentation & Demo
 
-You can find the full Documentation and a demo [here](https://doc.mh-s.de/bulma-calendar)
+You can find the full Documentation and a demo [here](https://bulma-calendar.onrender.com)
