@@ -68,7 +68,6 @@
     "gulp-uglify": "^3.0.0",
     "jekyll": "^3.0.0-beta1",
     "jest": "^23.1.0",
-    "node-sass-tilde-importer": "^1.0.2",
     "regenerator-runtime": "^0.11.1",
     "sass": "^1.58.3",
     "semantic-release": "^17.2.3",
