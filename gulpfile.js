@@ -16,10 +16,12 @@ const log = require('fancy-log');
 const nop = require('gulp-nop');
 const postcss = require('gulp-postcss');
 const run = require('gulp-run');
-const sass = require('gulp-sass');
-const sass_import = require('node-sass-tilde-importer');
 const uglify = require('gulp-uglify');
 const minifycss = require('gulp-minify-css');
+
+const gulpSass = require('gulp-sass');
+const dartSass = require('sass');
+const sass = gulpSass(dartSass);
 
 /**
  * ----------------------------------------
@@ -76,7 +78,6 @@ gulp.task('build:styles', function () {
       .src(config.sass.dependencies.concat([config.sass.source + config.sass.input]))
       .pipe(concat(config.sass.output.filename + '.sass'))
       .pipe(sass({
-        importer: sass_import,
         style: config.sass.output.format,
         trace: true,
         loadPath: [config.sass.source],
