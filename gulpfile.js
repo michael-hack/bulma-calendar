@@ -132,6 +132,7 @@ gulp.task('build:scripts', function () {
           libraryTarget: config.javascript.output.format,
           libraryExport: 'default'
         },
+        mode: 'production',
         module: {
           rules: [{
             test: /\.(js|jsx)$/,
@@ -141,7 +142,10 @@ gulp.task('build:scripts', function () {
               babelrc: './babelrc'
             }
           }, ],
-        }
+        },
+        performance: {
+          hints: false,
+        },
       }), webpack)
 
       .pipe(concat(config.javascript.output.filename + '.js'))

@@ -25,61 +25,28 @@
   cursor: not-allowed;
 }
 
-@-webkit-keyframes decrement-prev {
-  from {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-}
-
 @keyframes decrement-prev {
   from {
     opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-}
-@-webkit-keyframes decrement-next {
-  from {
-    opacity: 0;
-    -webkit-transform: translateY(-50px);
-            transform: translateY(-50px);
+    transform: translateY(0);
   }
 }
 @keyframes decrement-next {
   from {
     opacity: 0;
-    -webkit-transform: translateY(-50px);
-            transform: translateY(-50px);
-  }
-}
-@-webkit-keyframes increment-prev {
-  from {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
+    transform: translateY(-50px);
   }
 }
 @keyframes increment-prev {
   from {
     opacity: 1;
-    -webkit-transform: translateY(0);
-            transform: translateY(0);
-  }
-}
-@-webkit-keyframes increment-next {
-  from {
-    opacity: 0;
-    -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(0);
   }
 }
 @keyframes increment-next {
   from {
     opacity: 0;
-    -webkit-transform: translateY(50px);
-            transform: translateY(50px);
+    transform: translateY(50px);
   }
 }
 .datetimepicker {
@@ -332,8 +299,7 @@
   vertical-align: middle;
   white-space: nowrap;
   width: 2.2rem;
-  -webkit-animation: bounce-button-in 0.45s 0s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-          animation: bounce-button-in 0.45s 0s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: bounce-button-in 0.45s 0s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
   background: transparent;
@@ -663,34 +629,26 @@
 .datetimepicker .timepicker .timepicker-start .timepicker-input-number.is-increment-hide,
 .datetimepicker .timepicker .timepicker-end .timepicker-input-number.is-increment-hide {
   opacity: 0;
-  -webkit-transform: translateY(-50px);
-          transform: translateY(-50px);
-  -webkit-animation: increment-prev 100ms ease-in;
-          animation: increment-prev 100ms ease-in;
+  transform: translateY(-50px);
+  animation: increment-prev 100ms ease-in;
 }
 .datetimepicker .timepicker .timepicker-start .timepicker-input-number.is-increment-visible,
 .datetimepicker .timepicker .timepicker-end .timepicker-input-number.is-increment-visible {
   opacity: 1;
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
-  -webkit-animation: increment-next 100ms ease-out;
-          animation: increment-next 100ms ease-out;
+  transform: translateY(0);
+  animation: increment-next 100ms ease-out;
 }
 .datetimepicker .timepicker .timepicker-start .timepicker-input-number.is-decrement-hide,
 .datetimepicker .timepicker .timepicker-end .timepicker-input-number.is-decrement-hide {
   opacity: 0;
-  -webkit-transform: translateY(50px);
-          transform: translateY(50px);
-  -webkit-animation: decrement-prev 100ms ease-in;
-          animation: decrement-prev 100ms ease-in;
+  transform: translateY(50px);
+  animation: decrement-prev 100ms ease-in;
 }
 .datetimepicker .timepicker .timepicker-start .timepicker-input-number.is-decrement-visible,
 .datetimepicker .timepicker .timepicker-end .timepicker-input-number.is-decrement-visible {
   opacity: 1;
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
-  -webkit-animation: decrement-next 100ms ease-out;
-          animation: decrement-next 100ms ease-out;
+  transform: translateY(0);
+  animation: decrement-next 100ms ease-out;
 }
 .datetimepicker .timepicker .timepicker-end {
   margin-left: 1rem;
@@ -701,8 +659,7 @@
   position: absolute;
   top: 50%;
   left: 0;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   height: 50%;
   width: 0.1rem;
   background-color: hsl(0, 0%, 96%);
@@ -720,7 +677,6 @@
   width: 100%;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
 }
 .datetimepicker .timepicker .timepicker-previous:hover,
@@ -1550,8 +1506,7 @@
   cursor: pointer;
   font-weight: 400;
   outline: 0;
-  -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  transform: rotate(45deg);
   font-size: 1.5rem;
   height: 1.75rem;
   margin: 0.4rem 0.2rem 0 0;
