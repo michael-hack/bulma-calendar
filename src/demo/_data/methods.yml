@@ -34,6 +34,15 @@
   returns:
   - type: 'boolean'
     description: 'True if the instance is a range date picker'
+- name: 'isValid()'
+  description: 'Check if current datetime is valid'
+  parameters:
+  - name: 'none'
+    type: ''
+    description: ''
+  returns:
+  - type: 'boolean'
+    description: 'True if start and end datetime is valid'
 - name: 'value()'
   description: 'Get the date picker value as formatted string if no parameter else set the passed value'
   parameters:
