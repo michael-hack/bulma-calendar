@@ -594,6 +594,16 @@ export default class timePicker extends EventEmitter {
         return this.options.isRange;
     }
 
+    isValid() {
+
+        if (this.options.isRange) {
+            return this._isValidTime(this.start) && this._isValidTime(this.end);
+        }
+
+        return this._isValidTime(this.start);
+
+    }
+
     show() {
         if (!this._open) {
             this._ui.container.classList.add('is-active');

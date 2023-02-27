@@ -467,6 +467,15 @@ export default class bulmaCalendar extends EventEmitter {
     }
 
     /**
+     * Returns true if current datetime value is valid.
+     * @method isValid
+     * @return {boolean}
+     */
+    isValid() {
+        return this.datePicker.isValid() && this.timePicker.isValid();
+    }
+
+    /**
      * Get / Set datetimePicker value
      * @param {*} date
      */
@@ -681,7 +690,7 @@ export default class bulmaCalendar extends EventEmitter {
 
         this._refreshInput();
 
-        if (this.options.displayMode !== 'inline') {
+        if (this.options.displayMode !== 'inline' && this.isValid()) {
             this.hide();
         }
 

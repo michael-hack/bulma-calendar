@@ -288,6 +288,16 @@ export default class datePicker extends EventEmitter {
         return this.options.isRange;
     }
 
+    isValid() {
+
+        if (this.options.isRange) {
+            return this._isValidDate(this.start) && this._isValidDate(this.end);
+        }
+
+        return this._isValidDate(this.start);
+
+    }
+
     enableDate(date = undefined) {
         if (!Array.isArray(this.disabledDates)) return;
         const index = this.disabledDates.findIndex((disableDate) => dateFns.isEqual(disableDate, date));
@@ -387,6 +397,8 @@ export default class datePicker extends EventEmitter {
                 if (Array.isArray(value)) {
                     if (value.length)       this.start = utils.newDate(value[0], this.format, 'yyyy-MM-dd');
                     if (value.length === 2) this.end   = utils.newDate(value[1], this.format, 'yyyy-MM-dd');
+                } else {
+                    this._select(value, false);
                 }
 
             } else {
