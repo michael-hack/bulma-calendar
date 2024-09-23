@@ -2,7 +2,7 @@
   "sourceMaps": false,
   "ignore": ["node_modules/**"],
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "modules": false,
       "targets": {
         "browsers": [ ">0.25%", "ie 11"]
@@ -11,7 +11,7 @@
   ],
   "env": {
     "test": {
-      "presets": [["env"]]
+      "presets": ["@babel/preset-env"]
     }
   },
   "plugins": [

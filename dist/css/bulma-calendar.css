@@ -1,28 +1,108 @@
 /* Bulma Utilities */
+:root {
+  --bulma-control-radius: var(--bulma-radius);
+  --bulma-control-radius-small: var(--bulma-radius-small);
+  --bulma-control-border-width: 1px;
+  --bulma-control-height: 2.5em;
+  --bulma-control-line-height: 1.5;
+  --bulma-control-padding-vertical: calc(0.5em - 1px);
+  --bulma-control-padding-horizontal: calc(0.75em - 1px);
+  --bulma-control-size: var(--bulma-size-normal);
+  --bulma-control-focus-shadow-l: 50%;
+}
+
+:root {
+  --bulma-control-radius: var(--bulma-radius);
+  --bulma-control-radius-small: var(--bulma-radius-small);
+  --bulma-control-border-width: 1px;
+  --bulma-control-height: 2.5em;
+  --bulma-control-line-height: 1.5;
+  --bulma-control-padding-vertical: calc(0.5em - 1px);
+  --bulma-control-padding-horizontal: calc(0.75em - 1px);
+  --bulma-control-size: var(--bulma-size-normal);
+  --bulma-control-focus-shadow-l: 50%;
+}
+
+/* Bulma Utilities */
+/* Bulma Utilities */
+:root {
+  --bulma-control-radius: var(--bulma-radius);
+  --bulma-control-radius-small: var(--bulma-radius-small);
+  --bulma-control-border-width: 1px;
+  --bulma-control-height: 2.5em;
+  --bulma-control-line-height: 1.5;
+  --bulma-control-padding-vertical: calc(0.5em - 1px);
+  --bulma-control-padding-horizontal: calc(0.75em - 1px);
+  --bulma-control-size: var(--bulma-size-normal);
+  --bulma-control-focus-shadow-l: 50%;
+}
+
 .datetimepicker-dummy .datetimepicker-dummy-wrapper {
-  -moz-appearance: none;
-  -webkit-appearance: none;
   align-items: center;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-color: transparent;
+  border-style: solid;
+  border-width: var(--bulma-control-border-width);
+  border-radius: var(--bulma-control-radius);
   box-shadow: none;
   display: inline-flex;
-  font-size: 1rem;
-  height: 2.5em;
+  font-size: var(--bulma-control-size);
+  height: var(--bulma-control-height);
   justify-content: flex-start;
-  line-height: 1.5;
-  padding-bottom: calc(0.5em - 1px);
-  padding-left: calc(0.75em - 1px);
-  padding-right: calc(0.75em - 1px);
-  padding-top: calc(0.5em - 1px);
+  line-height: var(--bulma-control-line-height);
+  padding-bottom: var(--bulma-control-padding-vertical);
+  padding-left: var(--bulma-control-padding-horizontal);
+  padding-right: var(--bulma-control-padding-horizontal);
+  padding-top: var(--bulma-control-padding-vertical);
   position: relative;
+  transition-duration: var(--bulma-duration);
+  transition-property: background-color, border-color, box-shadow, color;
   vertical-align: top;
 }
-.datetimepicker-dummy .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy .is-focused.datetimepicker-dummy-wrapper, .datetimepicker-dummy .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy .is-active.datetimepicker-dummy-wrapper {
+
+.datetimepicker-dummy .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy .datetimepicker-dummy-wrapper:focus-visible, .datetimepicker-dummy .datetimepicker-dummy-wrapper:focus-within, .datetimepicker-dummy .is-focused.datetimepicker-dummy-wrapper, .datetimepicker-dummy .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy .is-active.datetimepicker-dummy-wrapper {
   outline: none;
 }
+
 .datetimepicker-dummy [disabled].datetimepicker-dummy-wrapper, fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper, .datetimepicker-dummy fieldset[disabled] .datetimepicker-dummy-wrapper {
   cursor: not-allowed;
+}
+
+.control,
+.input,
+.textarea,
+.select {
+  --bulma-input-h: var(--bulma-scheme-h);
+  --bulma-input-s: var(--bulma-scheme-s);
+  --bulma-input-l: var(--bulma-scheme-main-l);
+  --bulma-input-border-style: solid;
+  --bulma-input-border-width: var(--bulma-control-border-width);
+  --bulma-input-border-l: var(--bulma-border-l);
+  --bulma-input-border-l-delta: 0%;
+  --bulma-input-hover-border-l-delta: var(--bulma-hover-border-l-delta);
+  --bulma-input-active-border-l-delta: var(--bulma-active-border-l-delta);
+  --bulma-input-focus-h: var(--bulma-focus-h);
+  --bulma-input-focus-s: var(--bulma-focus-s);
+  --bulma-input-focus-l: var(--bulma-focus-l);
+  --bulma-input-focus-shadow-size: var(--bulma-focus-shadow-size);
+  --bulma-input-focus-shadow-alpha: var(--bulma-focus-shadow-alpha);
+  --bulma-input-color-l: var(--bulma-text-strong-l);
+  --bulma-input-background-l: var(--bulma-scheme-main-l);
+  --bulma-input-background-l-delta: 0%;
+  --bulma-input-height: var(--bulma-control-height);
+  --bulma-input-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
+  --bulma-input-placeholder-color: hsla(var(--bulma-text-h), var(--bulma-text-s), var(--bulma-text-strong-l), 0.3);
+  --bulma-input-disabled-color: var(--bulma-text-weak);
+  --bulma-input-disabled-background-color: var(--bulma-background);
+  --bulma-input-disabled-border-color: var(--bulma-background);
+  --bulma-input-disabled-placeholder-color: hsla(var(--bulma-text-h), var(--bulma-text-s), var(--bulma-text-weak-l), 0.3);
+  --bulma-input-arrow: var(--bulma-link);
+  --bulma-input-icon-color: var(--bulma-text-light);
+  --bulma-input-icon-hover-color: var(--bulma-text-weak);
+  --bulma-input-icon-focus-color: var(--bulma-link);
+  --bulma-input-radius: var(--bulma-radius);
 }
 
 @keyframes decrement-prev {
@@ -52,14 +132,15 @@
 .datetimepicker {
   transition: width 0.8s cubic-bezier(1, -0.55, 0.2, 1.37), opacity 0.2s ease, visibility 0.2s ease, margin 0.2s ease;
   display: none;
-  background: hsl(0, 0%, 100%);
-  border-radius: 2px;
-  max-width: 320px;
-  z-index: 1;
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
 }
 .datetimepicker.is-active {
   display: block;
+}
+.datetimepicker {
+  background: hsl(221, 14%, 100%);
+  border-radius: 0.25rem;
+  max-width: 320px;
+  z-index: 1;
 }
 .datetimepicker .datetimepicker-header {
   display: flex;
@@ -83,7 +164,7 @@
 .datetimepicker .datetimepicker-header .datetimepicker-selection-from,
 .datetimepicker .datetimepicker-header .datetimepicker-selection-to {
   font-size: 0.65rem;
-  color: hsl(0, 0%, 71%);
+  color: hsl(221, 14%, 71%);
   text-transform: uppercase;
   padding: 0;
 }
@@ -122,7 +203,7 @@
 }
 .datetimepicker .datetimepicker-header .datetimepicker-selection-start .datetimepicker-selection-month,
 .datetimepicker .datetimepicker-header .datetimepicker-selection-end .datetimepicker-selection-month {
-  color: hsl(0, 0%, 29%);
+  color: hsl(221, 14%, 29%);
   text-transform: capitalize;
 }
 .datetimepicker .datetimepicker-header .datetimepicker-selection-start .datetimepicker-selection-weekday,
@@ -181,11 +262,11 @@
   justify-content: center;
   align-items: center;
   padding: 0 1rem;
-  color: hsl(0, 0%, 71%);
+  color: hsl(221, 14%, 71%);
 }
 .datetimepicker .datepicker-nav {
   background: hsl(171, 100%, 41%);
-  color: #fff;
+  color: findColorInvert(hsl(171, 100%, 41%));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -200,7 +281,7 @@
 .datetimepicker .datepicker-nav .datepicker-nav-year {
   text-decoration: none;
   font-size: 1rem;
-  color: #fff;
+  color: findColorInvert(hsl(171, 100%, 41%));
 }
 .datetimepicker .datepicker-nav .datepicker-nav-month:hover,
 .datetimepicker .datepicker-nav .datepicker-nav-year:hover {
@@ -212,25 +293,30 @@
 .datetimepicker .datepicker-nav .datepicker-nav-year {
   font-weight: 700;
 }
-.datetimepicker .datepicker-nav .datepicker-nav-previous, .datetimepicker .datepicker-nav .datepicker-nav-next {
+.datetimepicker .datepicker-nav .datepicker-nav-previous,
+.datetimepicker .datepicker-nav .datepicker-nav-next {
   flex-basis: auto;
   flex-grow: 0;
   flex-shrink: 0;
   text-decoration: none;
-  color: hsl(0, 0%, 100%);
+  color: hsl(221, 14%, 100%);
 }
-.datetimepicker .datepicker-nav .datepicker-nav-previous:hover, .datetimepicker .datepicker-nav .datepicker-nav-next:hover {
+.datetimepicker .datepicker-nav .datepicker-nav-previous:hover,
+.datetimepicker .datepicker-nav .datepicker-nav-next:hover {
   background-color: transparent;
 }
-.datetimepicker .datepicker-nav .datepicker-nav-previous:hover svg, .datetimepicker .datepicker-nav .datepicker-nav-next:hover svg {
+.datetimepicker .datepicker-nav .datepicker-nav-previous:hover svg,
+.datetimepicker .datepicker-nav .datepicker-nav-next:hover svg {
   stroke-width: 1em;
 }
-.datetimepicker .datepicker-nav .datepicker-nav-previous svg, .datetimepicker .datepicker-nav .datepicker-nav-next svg {
+.datetimepicker .datepicker-nav .datepicker-nav-previous svg,
+.datetimepicker .datepicker-nav .datepicker-nav-next svg {
   stroke: currentColor;
   width: 11.25px;
   height: 0.75rem;
 }
 .datetimepicker .datepicker-body {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
   overflow: hidden;
 }
 .datetimepicker .datepicker-body .datepicker-dates {
@@ -255,12 +341,12 @@
   justify-content: space-around;
   padding: 0.3rem 0;
   background: transparent;
-  color: #fff;
+  color: findColorInvert(transparent);
   font-size: 0.75rem;
 }
 .datetimepicker .datepicker-body .datepicker-weekdays .datepicker-date {
   background: transparent !important;
-  color: hsl(0, 0%, 71%);
+  color: hsl(221, 14%, 71%);
   padding: 0.3rem;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days {
@@ -269,7 +355,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 0;
-  color: hsl(0, 0%, 48%);
+  color: hsl(221, 14%, 48%);
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date {
   background: #f5f5f5;
@@ -287,7 +373,7 @@
   background: transparent;
   border: none;
   border-radius: 25091983px;
-  color: hsl(0, 0%, 29%);
+  color: hsl(221, 14%, 29%);
   cursor: pointer;
   height: 2.2rem;
   outline: none;
@@ -307,35 +393,35 @@
   color: hsl(171, 100%, 41%);
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:focus {
-  background: hsl(0, 0%, 100%);
-  border-color: hsl(0, 0%, 100%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(221, 14%, 100%);
+  border-color: hsl(221, 14%, 100%);
+  color: findColorInvert(hsl(221, 14%, 100%));
   text-decoration: none;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
   background: hsl(171, 100%, 41%);
   border-color: hsl(171, 100%, 41%);
   border-radius: 25091983px;
-  color: #fff;
+  color: findColorInvert(hsl(171, 100%, 41%));
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(171, 100%, 41%)) !important;
+  color: findColorInvert(hsl(171, 100%, 41%)) !important;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-highlighted {
   border: 0.1rem solid hsl(171, 100%, 41%);
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  background: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 100%);
   border: 0.1rem solid hsl(171, 100%, 41%);
-  color: rgba(0, 0, 0, 0.7);
+  color: findColorInvert(hsl(221, 14%, 100%));
   text-decoration: none;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.is-current-month {
   background: transparent;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.is-disabled, .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date[disabled] {
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
   background-image: url(data:image/gif;base64,R0lGODlhBQAFAOMAAP/14////93uHt3uHt3uHt3uHv///////////wAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAAALAAAAAAFAAUAAAQL0ACAzpG0YnonNxEAOw==) !important;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.is-disabled .date-item,
@@ -351,7 +437,7 @@
   z-index: 1;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
+  background: findColorInvert(hsl(171, 100%, 41%));
   border: 0.1rem solid hsl(171, 100%, 41%);
   color: hsl(171, 100%, 41%);
   box-shadow: 0 0.2rem 0.2rem rgba(10, 10, 10, 0.1);
@@ -366,11 +452,11 @@
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
   background-color: hsl(171, 100%, 41%);
-  color: #fff;
+  color: findColorInvert(hsl(171, 100%, 41%));
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(171, 100%, 41%)) !important;
+  color: findColorInvert(hsl(171, 100%, 41%)) !important;
 }
 .datetimepicker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range-start.datepicker-range-end .date-item.is-today {
   color: hsl(171, 100%, 41%) !important;
@@ -407,16 +493,16 @@
 .datetimepicker .datepicker-body .datepicker-years .datepicker-year.is-active {
   background: hsl(171, 100%, 41%);
   border-color: hsl(171, 100%, 41%);
-  color: #fff;
+  color: findColorInvert(hsl(171, 100%, 41%));
 }
 .datetimepicker .datepicker-body .datepicker-months .datepicker-month:hover,
 .datetimepicker .datepicker-body .datepicker-months .datepicker-year:hover,
 .datetimepicker .datepicker-body .datepicker-years .datepicker-month:hover,
 .datetimepicker .datepicker-body .datepicker-years .datepicker-year:hover {
   cursor: pointer;
-  background: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 100%);
   border: 0.1rem solid hsl(171, 100%, 41%);
-  color: rgba(0, 0, 0, 0.7);
+  color: findColorInvert(hsl(221, 14%, 100%));
 }
 .datetimepicker .datetimepicker-footer {
   display: flex;
@@ -460,8 +546,8 @@
   max-width: 100%;
 }
 .datetimepicker.is-large .datepicker-body .datepicker-date {
-  border-bottom: 0.1rem solid hsl(0, 0%, 96%);
-  border-right: 0.1rem solid hsl(0, 0%, 96%);
+  border-bottom: 0.1rem solid hsl(221, 14%, 96%);
+  border-right: 0.1rem solid hsl(221, 14%, 96%);
   display: flex;
   flex-direction: column;
   height: 11rem;
@@ -496,9 +582,9 @@
   padding: 0.5rem;
 }
 .datetimepicker.is-large .datepicker-event {
-  background-color: hsl(0, 0%, 48%);
-  border-radius: 2px;
-  color: hsl(0, 0%, 100%);
+  background-color: hsl(221, 14%, 48%);
+  border-radius: 0.25rem;
+  color: hsl(221, 14%, 100%);
   display: block;
   font-size: 1rem;
   margin: 0.2rem auto;
@@ -510,44 +596,41 @@
   white-space: nowrap;
 }
 .datetimepicker.is-large .datepicker-event.is-white {
-  background-color: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 4%);
+  background-color: hsl(221, 14%, 100%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-large .datepicker-event.is-black {
-  background-color: hsl(0, 0%, 4%);
-  color: hsl(0, 0%, 100%);
+  background-color: hsl(221, 14%, 4%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-large .datepicker-event.is-light {
-  background-color: hsl(0, 0%, 96%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-large .datepicker-event.is-dark {
-  background-color: hsl(0, 0%, 21%);
-  color: #fff;
+  background-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 96%);
+}
+.datetimepicker.is-large .datepicker-event.is-text {
+  background-color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-large .datepicker-event.is-primary {
   background-color: hsl(171, 100%, 41%);
-  color: #fff;
 }
 .datetimepicker.is-large .datepicker-event.is-link {
-  background-color: hsl(229, 53%, 53%);
-  color: #fff;
+  background-color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-large .datepicker-event.is-info {
-  background-color: hsl(207, 61%, 53%);
-  color: #fff;
+  background-color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-large .datepicker-event.is-success {
   background-color: hsl(153, 53%, 53%);
-  color: #fff;
 }
 .datetimepicker.is-large .datepicker-event.is-warning {
-  background-color: hsl(44, 100%, 77%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-large .datepicker-event.is-danger {
-  background-color: hsl(348, 86%, 61%);
-  color: #fff;
+  background-color: hsl(348, 100%, 70%);
 }
 .datetimepicker .timepicker {
   display: flex;
@@ -662,14 +745,14 @@
   transform: translateY(-50%);
   height: 50%;
   width: 0.1rem;
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
 }
 .datetimepicker .timepicker .timepicker-previous,
 .datetimepicker .timepicker .timepicker-next {
   font-size: 1rem;
   line-height: 1rem;
   display: block;
-  color: #ADBCDA;
+  color: #adbcda;
   text-align: center;
   margin: 1rem 0 0;
   font-size: 1rem;
@@ -682,7 +765,7 @@
 .datetimepicker .timepicker .timepicker-previous:hover,
 .datetimepicker .timepicker .timepicker-next:hover {
   cursor: pointer;
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
 }
 .datetimepicker .timepicker .timepicker-previous {
   margin: 0 0 1rem;
@@ -697,22 +780,27 @@
 .datetimepicker.is-white .timepicker-input,
 .datetimepicker.is-white .timepicker-input-number,
 .datetimepicker.is-white .timepicker-time-divider {
-  color: hsl(0, 0%, 100%) !important;
+  color: hsl(221, 14%, 100%) !important;
 }
 .datetimepicker.is-black .timepicker-input,
 .datetimepicker.is-black .timepicker-input-number,
 .datetimepicker.is-black .timepicker-time-divider {
-  color: hsl(0, 0%, 4%) !important;
+  color: hsl(221, 14%, 4%) !important;
 }
 .datetimepicker.is-light .timepicker-input,
 .datetimepicker.is-light .timepicker-input-number,
 .datetimepicker.is-light .timepicker-time-divider {
-  color: hsl(0, 0%, 96%) !important;
+  color: hsl(221, 14%, 96%) !important;
 }
 .datetimepicker.is-dark .timepicker-input,
 .datetimepicker.is-dark .timepicker-input-number,
 .datetimepicker.is-dark .timepicker-time-divider {
-  color: hsl(0, 0%, 21%) !important;
+  color: hsl(221, 14%, 21%) !important;
+}
+.datetimepicker.is-text .timepicker-input,
+.datetimepicker.is-text .timepicker-input-number,
+.datetimepicker.is-text .timepicker-time-divider {
+  color: hsl(221, 14%, 29%) !important;
 }
 .datetimepicker.is-primary .timepicker-input,
 .datetimepicker.is-primary .timepicker-input-number,
@@ -722,12 +810,12 @@
 .datetimepicker.is-link .timepicker-input,
 .datetimepicker.is-link .timepicker-input-number,
 .datetimepicker.is-link .timepicker-time-divider {
-  color: hsl(229, 53%, 53%) !important;
+  color: hsl(233, 100%, 63%) !important;
 }
 .datetimepicker.is-info .timepicker-input,
 .datetimepicker.is-info .timepicker-input-number,
 .datetimepicker.is-info .timepicker-time-divider {
-  color: hsl(207, 61%, 53%) !important;
+  color: hsl(198, 100%, 70%) !important;
 }
 .datetimepicker.is-success .timepicker-input,
 .datetimepicker.is-success .timepicker-input-number,
@@ -737,212 +825,245 @@
 .datetimepicker.is-warning .timepicker-input,
 .datetimepicker.is-warning .timepicker-input-number,
 .datetimepicker.is-warning .timepicker-time-divider {
-  color: hsl(44, 100%, 77%) !important;
+  color: hsl(42, 100%, 53%) !important;
 }
 .datetimepicker.is-danger .timepicker-input,
 .datetimepicker.is-danger .timepicker-input-number,
 .datetimepicker.is-danger .timepicker-time-divider {
-  color: hsl(348, 86%, 61%) !important;
+  color: hsl(348, 100%, 70%) !important;
 }
 .datetimepicker.is-black-bis .timepicker-input,
 .datetimepicker.is-black-bis .timepicker-input-number,
 .datetimepicker.is-black-bis .timepicker-time-divider {
-  color: hsl(0, 0%, 7%) !important;
+  color: hsl(221, 14%, 9%) !important;
 }
 .datetimepicker.is-black-ter .timepicker-input,
 .datetimepicker.is-black-ter .timepicker-input-number,
 .datetimepicker.is-black-ter .timepicker-time-divider {
-  color: hsl(0, 0%, 14%) !important;
+  color: hsl(221, 14%, 14%) !important;
 }
 .datetimepicker.is-grey-darker .timepicker-input,
 .datetimepicker.is-grey-darker .timepicker-input-number,
 .datetimepicker.is-grey-darker .timepicker-time-divider {
-  color: hsl(0, 0%, 21%) !important;
+  color: hsl(221, 14%, 21%) !important;
 }
 .datetimepicker.is-grey-dark .timepicker-input,
 .datetimepicker.is-grey-dark .timepicker-input-number,
 .datetimepicker.is-grey-dark .timepicker-time-divider {
-  color: hsl(0, 0%, 29%) !important;
+  color: hsl(221, 14%, 29%) !important;
 }
 .datetimepicker.is-grey .timepicker-input,
 .datetimepicker.is-grey .timepicker-input-number,
 .datetimepicker.is-grey .timepicker-time-divider {
-  color: hsl(0, 0%, 48%) !important;
+  color: hsl(221, 14%, 48%) !important;
 }
 .datetimepicker.is-grey-light .timepicker-input,
 .datetimepicker.is-grey-light .timepicker-input-number,
 .datetimepicker.is-grey-light .timepicker-time-divider {
-  color: hsl(0, 0%, 71%) !important;
+  color: hsl(221, 14%, 71%) !important;
 }
 .datetimepicker.is-grey-lighter .timepicker-input,
 .datetimepicker.is-grey-lighter .timepicker-input-number,
 .datetimepicker.is-grey-lighter .timepicker-time-divider {
-  color: hsl(0, 0%, 86%) !important;
+  color: hsl(221, 14%, 86%) !important;
 }
 .datetimepicker.is-white-ter .timepicker-input,
 .datetimepicker.is-white-ter .timepicker-input-number,
 .datetimepicker.is-white-ter .timepicker-time-divider {
-  color: hsl(0, 0%, 96%) !important;
+  color: hsl(221, 14%, 96%) !important;
 }
 .datetimepicker.is-white-bis .timepicker-input,
 .datetimepicker.is-white-bis .timepicker-input-number,
 .datetimepicker.is-white-bis .timepicker-time-divider {
-  color: hsl(0, 0%, 98%) !important;
+  color: hsl(221, 14%, 98%) !important;
 }
 .datetimepicker.is-white .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 100%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-nav {
-  background: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 4%);
+  background: hsl(221, 14%, 100%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 100%);
-  border-color: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 100%);
+  border-color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 100%);
+  border-color: hsl(221, 14%, 100%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 100%);
+  border-color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 4%);
+  background-color: hsl(221, 14%, 100%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: hsl(0, 0%, 4%) !important;
-  color: hsl(0, 0%, 4%) !important;
+  border-color: hsl(221, 14%, 4%) !important;
+  color: hsl(221, 14%, 4%) !important;
 }
 .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: hsl(0, 0%, 4%);
-  border-color: hsl(0, 0%, 100%);
-  color: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 4%);
+  border-color: hsl(221, 14%, 100%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-black .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 4%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-nav {
-  background: hsl(0, 0%, 4%);
-  color: hsl(0, 0%, 100%);
+  background: hsl(221, 14%, 4%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 4%);
-  border-color: hsl(0, 0%, 4%);
+  background: hsl(221, 14%, 4%);
+  border-color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 4%);
-  color: hsl(0, 0%, 4%);
+  border-color: hsl(221, 14%, 4%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 4%);
+  border-color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 4%);
+  background: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 4%);
+  background: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 4%);
-  color: hsl(0, 0%, 100%);
+  background-color: hsl(221, 14%, 4%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: hsl(0, 0%, 100%) !important;
-  color: hsl(0, 0%, 100%) !important;
+  border-color: hsl(221, 14%, 100%) !important;
+  color: hsl(221, 14%, 100%) !important;
 }
 .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: hsl(0, 0%, 100%);
-  border-color: hsl(0, 0%, 4%);
-  color: hsl(0, 0%, 4%);
+  background: hsl(221, 14%, 100%);
+  border-color: hsl(221, 14%, 4%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker.is-light .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-nav {
-  background: hsl(0, 0%, 96%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 96%);
-  border-color: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
+  border-color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 96%);
-  color: hsl(0, 0%, 96%);
+  border-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 96%);
+  border-color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 96%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  border-color: hsl(221, 14%, 21%) !important;
+  color: hsl(221, 14%, 21%) !important;
 }
 .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: hsl(0, 0%, 96%);
-  color: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 21%);
+  border-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-dark .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-nav {
-  background: hsl(0, 0%, 21%);
-  color: #fff;
+  background: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 21%);
-  border-color: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
+  border-color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 21%);
-  color: hsl(0, 0%, 21%);
+  border-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 21%);
+  border-color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 21%);
-  color: #fff;
+  background-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: hsl(221, 14%, 96%) !important;
+  color: hsl(221, 14%, 96%) !important;
 }
 .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 21%);
-  color: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 96%);
+  border-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 21%);
+}
+.datetimepicker.is-text .datetimepicker-header .datetimepicker-selection-day {
+  color: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-nav {
+  background: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
+  background: hsl(221, 14%, 29%);
+  border-color: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
+  border-color: hsl(221, 14%, 29%);
+  color: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
+  border-color: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
+  background: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
+  background: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
+  background-color: hsl(221, 14%, 29%);
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
+  border-color: !important;
+  color: !important;
+}
+.datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-text .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
+  border-color: hsl(221, 14%, 29%);
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-primary .datetimepicker-header .datetimepicker-selection-day {
   color: hsl(171, 100%, 41%);
 }
 .datetimepicker.is-primary .datepicker-nav {
   background: hsl(171, 100%, 41%);
-  color: #fff;
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
   background: hsl(171, 100%, 41%);
@@ -963,97 +1084,88 @@
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
   background-color: hsl(171, 100%, 41%);
-  color: #fff;
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-primary .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
   border-color: hsl(171, 100%, 41%);
   color: hsl(171, 100%, 41%);
 }
 .datetimepicker.is-link .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(229, 53%, 53%);
+  color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-nav {
-  background: hsl(229, 53%, 53%);
-  color: #fff;
+  background: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(229, 53%, 53%);
-  border-color: hsl(229, 53%, 53%);
+  background: hsl(233, 100%, 63%);
+  border-color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(229, 53%, 53%);
-  color: hsl(229, 53%, 53%);
+  border-color: hsl(233, 100%, 63%);
+  color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(229, 53%, 53%);
+  border-color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(229, 53%, 53%);
+  background: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(229, 53%, 53%);
+  background: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(229, 53%, 53%);
-  color: #fff;
+  background-color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-link .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(229, 53%, 53%);
-  color: hsl(229, 53%, 53%);
+  border-color: hsl(233, 100%, 63%);
+  color: hsl(233, 100%, 63%);
 }
 .datetimepicker.is-info .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(207, 61%, 53%);
+  color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-nav {
-  background: hsl(207, 61%, 53%);
-  color: #fff;
+  background: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(207, 61%, 53%);
-  border-color: hsl(207, 61%, 53%);
+  background: hsl(198, 100%, 70%);
+  border-color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(207, 61%, 53%);
-  color: hsl(207, 61%, 53%);
+  border-color: hsl(198, 100%, 70%);
+  color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(207, 61%, 53%);
+  border-color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(207, 61%, 53%);
+  background: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(207, 61%, 53%);
+  background: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(207, 61%, 53%);
-  color: #fff;
+  background-color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-info .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(207, 61%, 53%);
-  color: hsl(207, 61%, 53%);
+  border-color: hsl(198, 100%, 70%);
+  color: hsl(198, 100%, 70%);
 }
 .datetimepicker.is-success .datetimepicker-header .datetimepicker-selection-day {
   color: hsl(153, 53%, 53%);
 }
 .datetimepicker.is-success .datepicker-nav {
   background: hsl(153, 53%, 53%);
-  color: #fff;
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
   background: hsl(153, 53%, 53%);
@@ -1074,423 +1186,415 @@
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
   background-color: hsl(153, 53%, 53%);
-  color: #fff;
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-success .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
   border-color: hsl(153, 53%, 53%);
   color: hsl(153, 53%, 53%);
 }
 .datetimepicker.is-warning .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(44, 100%, 77%);
+  color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-nav {
-  background: hsl(44, 100%, 77%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(44, 100%, 77%);
-  border-color: hsl(44, 100%, 77%);
+  background: hsl(42, 100%, 53%);
+  border-color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(44, 100%, 77%);
-  color: hsl(44, 100%, 77%);
+  border-color: hsl(42, 100%, 53%);
+  color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(44, 100%, 77%);
+  border-color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(44, 100%, 77%);
+  background: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(44, 100%, 77%);
+  background: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(44, 100%, 77%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-warning .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: hsl(44, 100%, 77%);
-  color: hsl(44, 100%, 77%);
+  border-color: hsl(42, 100%, 53%);
+  color: hsl(42, 100%, 53%);
 }
 .datetimepicker.is-danger .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(348, 86%, 61%);
+  color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-nav {
-  background: hsl(348, 86%, 61%);
-  color: #fff;
+  background: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(348, 86%, 61%);
-  border-color: hsl(348, 86%, 61%);
+  background: hsl(348, 100%, 70%);
+  border-color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(348, 86%, 61%);
-  color: hsl(348, 86%, 61%);
+  border-color: hsl(348, 100%, 70%);
+  color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(348, 86%, 61%);
+  border-color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(348, 86%, 61%);
+  background: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(348, 86%, 61%);
+  background: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(348, 86%, 61%);
-  color: #fff;
+  background-color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: !important;
+  color: !important;
 }
 .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-danger .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(348, 86%, 61%);
-  color: hsl(348, 86%, 61%);
+  border-color: hsl(348, 100%, 70%);
+  color: hsl(348, 100%, 70%);
 }
 .datetimepicker.is-black-bis .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 7%);
+  color: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-nav {
-  background: hsl(0, 0%, 7%);
-  color: #fff;
+  background: hsl(221, 14%, 9%);
+  color: findColorInvert(hsl(221, 14%, 9%));
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 7%);
-  border-color: hsl(0, 0%, 7%);
+  background: hsl(221, 14%, 9%);
+  border-color: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 7%);
-  color: hsl(0, 0%, 7%);
+  border-color: hsl(221, 14%, 9%);
+  color: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 7%);
+  border-color: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 7%);
+  background: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 7%);
+  background: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 7%);
-  color: #fff;
+  background-color: hsl(221, 14%, 9%);
+  color: findColorInvert(hsl(221, 14%, 9%));
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 9%)) !important;
+  color: findColorInvert(hsl(221, 14%, 9%)) !important;
 }
 .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 7%);
-  color: hsl(0, 0%, 7%);
+  background: findColorInvert(hsl(221, 14%, 9%));
+  border-color: hsl(221, 14%, 9%);
+  color: hsl(221, 14%, 9%);
 }
 .datetimepicker.is-black-ter .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 14%);
+  color: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-nav {
-  background: hsl(0, 0%, 14%);
-  color: #fff;
+  background: hsl(221, 14%, 14%);
+  color: findColorInvert(hsl(221, 14%, 14%));
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 14%);
-  border-color: hsl(0, 0%, 14%);
+  background: hsl(221, 14%, 14%);
+  border-color: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 14%);
-  color: hsl(0, 0%, 14%);
+  border-color: hsl(221, 14%, 14%);
+  color: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 14%);
+  border-color: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 14%);
+  background: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 14%);
+  background: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 14%);
-  color: #fff;
+  background-color: hsl(221, 14%, 14%);
+  color: findColorInvert(hsl(221, 14%, 14%));
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 14%)) !important;
+  color: findColorInvert(hsl(221, 14%, 14%)) !important;
 }
 .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-black-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 14%);
-  color: hsl(0, 0%, 14%);
+  background: findColorInvert(hsl(221, 14%, 14%));
+  border-color: hsl(221, 14%, 14%);
+  color: hsl(221, 14%, 14%);
 }
 .datetimepicker.is-grey-darker .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-nav {
-  background: hsl(0, 0%, 21%);
-  color: #fff;
+  background: hsl(221, 14%, 21%);
+  color: findColorInvert(hsl(221, 14%, 21%));
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 21%);
-  border-color: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
+  border-color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 21%);
-  color: hsl(0, 0%, 21%);
+  border-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 21%);
+  border-color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 21%);
+  background: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 21%);
-  color: #fff;
+  background-color: hsl(221, 14%, 21%);
+  color: findColorInvert(hsl(221, 14%, 21%));
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 21%)) !important;
+  color: findColorInvert(hsl(221, 14%, 21%)) !important;
 }
 .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-darker .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 21%);
-  color: hsl(0, 0%, 21%);
+  background: findColorInvert(hsl(221, 14%, 21%));
+  border-color: hsl(221, 14%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker.is-grey-dark .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 29%);
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-nav {
-  background: hsl(0, 0%, 29%);
-  color: #fff;
+  background: hsl(221, 14%, 29%);
+  color: findColorInvert(hsl(221, 14%, 29%));
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 29%);
-  border-color: hsl(0, 0%, 29%);
+  background: hsl(221, 14%, 29%);
+  border-color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 29%);
-  color: hsl(0, 0%, 29%);
+  border-color: hsl(221, 14%, 29%);
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 29%);
+  border-color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 29%);
+  background: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 29%);
+  background: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 29%);
-  color: #fff;
+  background-color: hsl(221, 14%, 29%);
+  color: findColorInvert(hsl(221, 14%, 29%));
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 29%)) !important;
+  color: findColorInvert(hsl(221, 14%, 29%)) !important;
 }
 .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-dark .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 29%);
-  color: hsl(0, 0%, 29%);
+  background: findColorInvert(hsl(221, 14%, 29%));
+  border-color: hsl(221, 14%, 29%);
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker.is-grey .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 48%);
+  color: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-nav {
-  background: hsl(0, 0%, 48%);
-  color: #fff;
+  background: hsl(221, 14%, 48%);
+  color: findColorInvert(hsl(221, 14%, 48%));
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 48%);
-  border-color: hsl(0, 0%, 48%);
+  background: hsl(221, 14%, 48%);
+  border-color: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 48%);
-  color: hsl(0, 0%, 48%);
+  border-color: hsl(221, 14%, 48%);
+  color: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 48%);
+  border-color: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 48%);
+  background: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 48%);
+  background: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 48%);
-  color: #fff;
+  background-color: hsl(221, 14%, 48%);
+  color: findColorInvert(hsl(221, 14%, 48%));
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 48%)) !important;
+  color: findColorInvert(hsl(221, 14%, 48%)) !important;
 }
 .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 48%);
-  color: hsl(0, 0%, 48%);
+  background: findColorInvert(hsl(221, 14%, 48%));
+  border-color: hsl(221, 14%, 48%);
+  color: hsl(221, 14%, 48%);
 }
 .datetimepicker.is-grey-light .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 71%);
+  color: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-nav {
-  background: hsl(0, 0%, 71%);
-  color: #fff;
+  background: hsl(221, 14%, 71%);
+  color: findColorInvert(hsl(221, 14%, 71%));
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 71%);
-  border-color: hsl(0, 0%, 71%);
+  background: hsl(221, 14%, 71%);
+  border-color: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 71%);
-  color: hsl(0, 0%, 71%);
+  border-color: hsl(221, 14%, 71%);
+  color: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 71%);
+  border-color: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 71%);
+  background: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 71%);
+  background: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 71%);
-  color: #fff;
+  background-color: hsl(221, 14%, 71%);
+  color: findColorInvert(hsl(221, 14%, 71%));
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: #fff !important;
-  color: #fff !important;
+  border-color: findColorInvert(hsl(221, 14%, 71%)) !important;
+  color: findColorInvert(hsl(221, 14%, 71%)) !important;
 }
 .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-light .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: #fff;
-  border-color: hsl(0, 0%, 71%);
-  color: hsl(0, 0%, 71%);
+  background: findColorInvert(hsl(221, 14%, 71%));
+  border-color: hsl(221, 14%, 71%);
+  color: hsl(221, 14%, 71%);
 }
 .datetimepicker.is-grey-lighter .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 86%);
+  color: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-nav {
-  background: hsl(0, 0%, 86%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(221, 14%, 86%);
+  color: findColorInvert(hsl(221, 14%, 86%));
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 86%);
-  border-color: hsl(0, 0%, 86%);
+  background: hsl(221, 14%, 86%);
+  border-color: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 86%);
-  color: hsl(0, 0%, 86%);
+  border-color: hsl(221, 14%, 86%);
+  color: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 86%);
+  border-color: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 86%);
+  background: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 86%);
+  background: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 86%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(221, 14%, 86%);
+  color: findColorInvert(hsl(221, 14%, 86%));
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  border-color: findColorInvert(hsl(221, 14%, 86%)) !important;
+  color: findColorInvert(hsl(221, 14%, 86%)) !important;
 }
 .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-grey-lighter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: hsl(0, 0%, 86%);
-  color: hsl(0, 0%, 86%);
+  background: findColorInvert(hsl(221, 14%, 86%));
+  border-color: hsl(221, 14%, 86%);
+  color: hsl(221, 14%, 86%);
 }
 .datetimepicker.is-white-ter .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-nav {
-  background: hsl(0, 0%, 96%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(221, 14%, 96%);
+  color: findColorInvert(hsl(221, 14%, 96%));
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 96%);
-  border-color: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
+  border-color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 96%);
-  color: hsl(0, 0%, 96%);
+  border-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 96%);
+  border-color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 96%);
+  background: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 96%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(221, 14%, 96%);
+  color: findColorInvert(hsl(221, 14%, 96%));
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  border-color: findColorInvert(hsl(221, 14%, 96%)) !important;
+  color: findColorInvert(hsl(221, 14%, 96%)) !important;
 }
 .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white-ter .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: hsl(0, 0%, 96%);
-  color: hsl(0, 0%, 96%);
+  background: findColorInvert(hsl(221, 14%, 96%));
+  border-color: hsl(221, 14%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker.is-white-bis .datetimepicker-header .datetimepicker-selection-day {
-  color: hsl(0, 0%, 98%);
+  color: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-nav {
-  background: hsl(0, 0%, 98%);
-  color: rgba(0, 0, 0, 0.7);
+  background: hsl(221, 14%, 98%);
+  color: findColorInvert(hsl(221, 14%, 98%));
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-active {
-  background: hsl(0, 0%, 98%);
-  border-color: hsl(0, 0%, 98%);
+  background: hsl(221, 14%, 98%);
+  border-color: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item.is-today {
-  border-color: hsl(0, 0%, 98%);
-  color: hsl(0, 0%, 98%);
+  border-color: hsl(221, 14%, 98%);
+  color: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date .date-item:hover {
-  border-color: hsl(0, 0%, 98%);
+  border-color: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range {
-  background: hsl(0, 0%, 98%);
+  background: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range:before, .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range::before {
-  background: hsl(0, 0%, 98%);
+  background: hsl(221, 14%, 98%);
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item {
-  background-color: hsl(0, 0%, 98%);
-  color: rgba(0, 0, 0, 0.7);
+  background-color: hsl(221, 14%, 98%);
+  color: findColorInvert(hsl(221, 14%, 98%));
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range .date-item.is-today {
-  border-color: rgba(0, 0, 0, 0.7) !important;
-  color: rgba(0, 0, 0, 0.7) !important;
+  border-color: findColorInvert(hsl(221, 14%, 98%)) !important;
+  color: findColorInvert(hsl(221, 14%, 98%)) !important;
 }
 .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-start .date-item, .datetimepicker.is-white-bis .datepicker-body .datepicker-dates .datepicker-days .datepicker-date.datepicker-range.datepicker-range-end .date-item {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: hsl(0, 0%, 98%);
-  color: hsl(0, 0%, 98%);
+  background: findColorInvert(hsl(221, 14%, 98%));
+  border-color: hsl(221, 14%, 98%);
+  color: hsl(221, 14%, 98%);
 }
 
 .datetimepicker-dummy {
@@ -1517,54 +1621,57 @@
   width: 1.75rem;
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper {
-  background-color: hsl(0, 0%, 100%);
-  border-color: hsl(0, 0%, 86%);
-  border-radius: 4px;
-  color: hsl(0, 0%, 21%);
-  box-shadow: inset 0 0.0625em 0.125em rgba(10, 10, 10, 0.05);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
   cursor: pointer;
   display: flex;
   flex: 1 100%;
   flex-wrap: nowrap;
   height: 100%;
   max-width: 100%;
+  background-color: hsl(var(--bulma-input-h), var(--bulma-input-s), calc(var(--bulma-input-background-l) + var(--bulma-input-background-l-delta)));
+  border-color: hsl(var(--bulma-input-h), var(--bulma-input-s), calc(var(--bulma-input-border-l) + var(--bulma-input-border-l-delta)));
+  border-radius: var(--bulma-input-radius);
+  color: hsl(var(--bulma-input-h), var(--bulma-input-s), var(--bulma-input-color-l));
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper::-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: var(--bulma-input-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper::-webkit-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: var(--bulma-input-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper:-moz-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: var(--bulma-input-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper:-ms-input-placeholder {
-  color: rgba(54, 54, 54, 0.3);
+  color: var(--bulma-input-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper:hover, .datetimepicker-dummy .datetimepicker-dummy-wrapper.is-hovered {
-  border-color: hsl(0, 0%, 71%);
+  --bulma-input-border-l-delta: var(--bulma-input-hover-border-l-delta);
 }
-.datetimepicker-dummy .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(229, 53%, 53%);
-  box-shadow: 0 0 0 0.125em rgba(72, 95, 199, 0.25);
+.datetimepicker-dummy .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy .datetimepicker-dummy-wrapper.is-active {
+  --bulma-input-border-l-delta: var(--bulma-input-active-border-l-delta);
+}
+.datetimepicker-dummy .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy .datetimepicker-dummy-wrapper:focus-within, .datetimepicker-dummy .datetimepicker-dummy-wrapper.is-focused {
+  border-color: hsl(var(--bulma-input-focus-h), var(--bulma-input-focus-s), var(--bulma-input-focus-l));
+  box-shadow: var(--bulma-input-focus-shadow-size) hsla(var(--bulma-input-focus-h), var(--bulma-input-focus-s), var(--bulma-input-focus-l), var(--bulma-input-focus-shadow-alpha));
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[disabled], fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper {
-  background-color: hsl(0, 0%, 96%);
-  border-color: hsl(0, 0%, 96%);
+  background-color: var(--bulma-input-disabled-background-color);
+  border-color: var(--bulma-input-disabled-border-color);
   box-shadow: none;
-  color: hsl(0, 0%, 48%);
+  color: var(--bulma-input-disabled-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[disabled]::-moz-placeholder, fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper::-moz-placeholder {
-  color: rgba(122, 122, 122, 0.3);
+  color: var(--bulma-input-disabled-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[disabled]::-webkit-input-placeholder, fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper::-webkit-input-placeholder {
-  color: rgba(122, 122, 122, 0.3);
+  color: var(--bulma-input-disabled-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[disabled]:-moz-placeholder, fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper:-moz-placeholder {
-  color: rgba(122, 122, 122, 0.3);
+  color: var(--bulma-input-disabled-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[disabled]:-ms-input-placeholder, fieldset[disabled] .datetimepicker-dummy .datetimepicker-dummy-wrapper:-ms-input-placeholder {
-  color: rgba(122, 122, 122, 0.3);
+  color: var(--bulma-input-disabled-placeholder-color);
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper[readonly] {
   box-shadow: none;
@@ -1580,7 +1687,7 @@
   height: 1.25rem;
 }
 .datetimepicker-dummy .datetimepicker-dummy-wrapper .datetimepicker-dummy-input {
-  color: hsl(0, 0%, 29%);
+  color: hsl(221, 14%, 29%);
   font-size: 1rem;
   text-align: left;
   text-indent: 1rem;
@@ -1602,56 +1709,69 @@
 }
 
 .datetimepicker-dummy.is-white:before, .datetimepicker-dummy.is-white::before {
-  background-color: hsl(0, 0%, 100%);
+  background-color: hsl(221, 14%, 100%);
 }
 .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(0, 0%, 100%);
+  background-color: hsl(221, 14%, 100%);
 }
 .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-white .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(0, 0%, 100%);
-  box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.25);
+  border-color: hsl(221, 14%, 100%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-white .datetimepicker-clear-button {
-  color: hsl(0, 0%, 100%);
+  color: hsl(221, 14%, 100%);
 }
 .datetimepicker-dummy.is-black:before, .datetimepicker-dummy.is-black::before {
-  background-color: hsl(0, 0%, 4%);
+  background-color: hsl(221, 14%, 4%);
 }
 .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(0, 0%, 4%);
+  background-color: hsl(221, 14%, 4%);
 }
 .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-black .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(0, 0%, 4%);
-  box-shadow: 0 0 0 0.125em rgba(10, 10, 10, 0.25);
+  border-color: hsl(221, 14%, 4%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-black .datetimepicker-clear-button {
-  color: hsl(0, 0%, 4%);
+  color: hsl(221, 14%, 4%);
 }
 .datetimepicker-dummy.is-light:before, .datetimepicker-dummy.is-light::before {
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
 }
 .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
 }
 .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-light .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(0, 0%, 96%);
-  box-shadow: 0 0 0 0.125em rgba(245, 245, 245, 0.25);
+  border-color: hsl(221, 14%, 96%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-light .datetimepicker-clear-button {
-  color: hsl(0, 0%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker-dummy.is-dark:before, .datetimepicker-dummy.is-dark::before {
-  background-color: hsl(0, 0%, 21%);
+  background-color: hsl(221, 14%, 21%);
 }
 .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(0, 0%, 21%);
+  background-color: hsl(221, 14%, 21%);
 }
 .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-dark .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(0, 0%, 21%);
-  box-shadow: 0 0 0 0.125em rgba(54, 54, 54, 0.25);
+  border-color: hsl(221, 14%, 21%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-dark .datetimepicker-clear-button {
-  color: hsl(0, 0%, 21%);
+  color: hsl(221, 14%, 21%);
+}
+.datetimepicker-dummy.is-text:before, .datetimepicker-dummy.is-text::before {
+  background-color: hsl(221, 14%, 29%);
+}
+.datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper::before {
+  background-color: hsl(221, 14%, 29%);
+}
+.datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-text .datetimepicker-dummy-wrapper.is-active {
+  border-color: hsl(221, 14%, 29%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
+}
+.datetimepicker-dummy.is-text .datetimepicker-clear-button {
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker-dummy.is-primary:before, .datetimepicker-dummy.is-primary::before {
   background-color: hsl(171, 100%, 41%);
@@ -1661,36 +1781,36 @@
 }
 .datetimepicker-dummy.is-primary .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-primary .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-primary .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-primary .datetimepicker-dummy-wrapper.is-active {
   border-color: hsl(171, 100%, 41%);
-  box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-primary .datetimepicker-clear-button {
   color: hsl(171, 100%, 41%);
 }
 .datetimepicker-dummy.is-link:before, .datetimepicker-dummy.is-link::before {
-  background-color: hsl(229, 53%, 53%);
+  background-color: hsl(233, 100%, 63%);
 }
 .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(229, 53%, 53%);
+  background-color: hsl(233, 100%, 63%);
 }
 .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-link .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(229, 53%, 53%);
-  box-shadow: 0 0 0 0.125em rgba(72, 95, 199, 0.25);
+  border-color: hsl(233, 100%, 63%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-link .datetimepicker-clear-button {
-  color: hsl(229, 53%, 53%);
+  color: hsl(233, 100%, 63%);
 }
 .datetimepicker-dummy.is-info:before, .datetimepicker-dummy.is-info::before {
-  background-color: hsl(207, 61%, 53%);
+  background-color: hsl(198, 100%, 70%);
 }
 .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(207, 61%, 53%);
+  background-color: hsl(198, 100%, 70%);
 }
 .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-info .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(207, 61%, 53%);
-  box-shadow: 0 0 0 0.125em rgba(62, 142, 208, 0.25);
+  border-color: hsl(198, 100%, 70%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-info .datetimepicker-clear-button {
-  color: hsl(207, 61%, 53%);
+  color: hsl(198, 100%, 70%);
 }
 .datetimepicker-dummy.is-success:before, .datetimepicker-dummy.is-success::before {
   background-color: hsl(153, 53%, 53%);
@@ -1700,90 +1820,90 @@
 }
 .datetimepicker-dummy.is-success .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-success .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-success .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-success .datetimepicker-dummy-wrapper.is-active {
   border-color: hsl(153, 53%, 53%);
-  box-shadow: 0 0 0 0.125em rgba(72, 199, 142, 0.25);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-success .datetimepicker-clear-button {
   color: hsl(153, 53%, 53%);
 }
 .datetimepicker-dummy.is-warning:before, .datetimepicker-dummy.is-warning::before {
-  background-color: hsl(44, 100%, 77%);
+  background-color: hsl(42, 100%, 53%);
 }
 .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(44, 100%, 77%);
+  background-color: hsl(42, 100%, 53%);
 }
 .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-warning .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(44, 100%, 77%);
-  box-shadow: 0 0 0 0.125em rgba(255, 224, 138, 0.25);
+  border-color: hsl(42, 100%, 53%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-warning .datetimepicker-clear-button {
-  color: hsl(44, 100%, 77%);
+  color: hsl(42, 100%, 53%);
 }
 .datetimepicker-dummy.is-danger:before, .datetimepicker-dummy.is-danger::before {
-  background-color: hsl(348, 86%, 61%);
+  background-color: hsl(348, 100%, 70%);
 }
 .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper:before, .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper::before {
-  background-color: hsl(348, 86%, 61%);
+  background-color: hsl(348, 100%, 70%);
 }
 .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper:focus, .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper.is-focused, .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper:active, .datetimepicker-dummy.is-danger .datetimepicker-dummy-wrapper.is-active {
-  border-color: hsl(348, 86%, 61%);
-  box-shadow: 0 0 0 0.125em rgba(241, 70, 104, 0.25);
+  border-color: hsl(348, 100%, 70%);
+  box-shadow: inset 0 0.0625em 0.125em hsla(var(--bulma-scheme-h), var(--bulma-scheme-s), var(--bulma-scheme-invert-l), 0.05);
 }
 .datetimepicker-dummy.is-danger .datetimepicker-clear-button {
-  color: hsl(348, 86%, 61%);
+  color: hsl(348, 100%, 70%);
 }
 .datetimepicker-dummy.is-black-bis:before, .datetimepicker-dummy.is-black-bis::before {
-  background-color: hsl(0, 0%, 7%);
+  background-color: hsl(221, 14%, 9%);
 }
 .datetimepicker-dummy.is-black-bis .datetimepicker-clear-button {
-  color: hsl(0, 0%, 7%);
+  color: hsl(221, 14%, 9%);
 }
 .datetimepicker-dummy.is-black-ter:before, .datetimepicker-dummy.is-black-ter::before {
-  background-color: hsl(0, 0%, 14%);
+  background-color: hsl(221, 14%, 14%);
 }
 .datetimepicker-dummy.is-black-ter .datetimepicker-clear-button {
-  color: hsl(0, 0%, 14%);
+  color: hsl(221, 14%, 14%);
 }
 .datetimepicker-dummy.is-grey-darker:before, .datetimepicker-dummy.is-grey-darker::before {
-  background-color: hsl(0, 0%, 21%);
+  background-color: hsl(221, 14%, 21%);
 }
 .datetimepicker-dummy.is-grey-darker .datetimepicker-clear-button {
-  color: hsl(0, 0%, 21%);
+  color: hsl(221, 14%, 21%);
 }
 .datetimepicker-dummy.is-grey-dark:before, .datetimepicker-dummy.is-grey-dark::before {
-  background-color: hsl(0, 0%, 29%);
+  background-color: hsl(221, 14%, 29%);
 }
 .datetimepicker-dummy.is-grey-dark .datetimepicker-clear-button {
-  color: hsl(0, 0%, 29%);
+  color: hsl(221, 14%, 29%);
 }
 .datetimepicker-dummy.is-grey:before, .datetimepicker-dummy.is-grey::before {
-  background-color: hsl(0, 0%, 48%);
+  background-color: hsl(221, 14%, 48%);
 }
 .datetimepicker-dummy.is-grey .datetimepicker-clear-button {
-  color: hsl(0, 0%, 48%);
+  color: hsl(221, 14%, 48%);
 }
 .datetimepicker-dummy.is-grey-light:before, .datetimepicker-dummy.is-grey-light::before {
-  background-color: hsl(0, 0%, 71%);
+  background-color: hsl(221, 14%, 71%);
 }
 .datetimepicker-dummy.is-grey-light .datetimepicker-clear-button {
-  color: hsl(0, 0%, 71%);
+  color: hsl(221, 14%, 71%);
 }
 .datetimepicker-dummy.is-grey-lighter:before, .datetimepicker-dummy.is-grey-lighter::before {
-  background-color: hsl(0, 0%, 86%);
+  background-color: hsl(221, 14%, 86%);
 }
 .datetimepicker-dummy.is-grey-lighter .datetimepicker-clear-button {
-  color: hsl(0, 0%, 86%);
+  color: hsl(221, 14%, 86%);
 }
 .datetimepicker-dummy.is-white-ter:before, .datetimepicker-dummy.is-white-ter::before {
-  background-color: hsl(0, 0%, 96%);
+  background-color: hsl(221, 14%, 96%);
 }
 .datetimepicker-dummy.is-white-ter .datetimepicker-clear-button {
-  color: hsl(0, 0%, 96%);
+  color: hsl(221, 14%, 96%);
 }
 .datetimepicker-dummy.is-white-bis:before, .datetimepicker-dummy.is-white-bis::before {
-  background-color: hsl(0, 0%, 98%);
+  background-color: hsl(221, 14%, 98%);
 }
 .datetimepicker-dummy.is-white-bis .datetimepicker-clear-button {
-  color: hsl(0, 0%, 98%);
+  color: hsl(221, 14%, 98%);
 }
 
 .datetimepicker-wrapper.modal .datetimepicker {

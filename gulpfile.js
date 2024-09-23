@@ -124,11 +124,9 @@ gulp.task('clean:styles', function () {
 
 gulp.task('copy:styles', function () {
     return gulp
-        .src(config.sass.destination + config.sass.output.filename + '.css')
-        .pipe(minifycss())
-        .pipe(concat(config.sass.output.filename + '.min.css'))
-        .pipe(gulp.dest(config.sass.destination))
-        .on('end', () => console.log('Minified CSS file generated'));
+        .src(config.sass.destination + config.sass.output.filename + '.min.css')
+        .pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'css'))
+        .pipe(gulp.dest(paths.demo + paths.assets + 'css'));
 });
 
 /**
@@ -159,7 +157,7 @@ gulp.task('build:scripts', function () {
                                 exclude: /(node_modules)/,
                                 loader: 'babel-loader',
                                 options: {
-                                    babelrc: './babelrc',
+                                    babelrc: true,
                                 },
                             },
                         ],
@@ -259,7 +257,6 @@ gulp.task('build:demo', function () {
 gulp.task('clean:demo', function (callback) {
     browserSync.notify('Cleaning Demo');
     return del(paths.demo);
-    // callback();
 });
 
 gulp.task('demo:dependencies', gulp.series('build:demo', function () {
