@@ -29,40 +29,40 @@ const sass = gulpSass(dartSass);
  * ----------------------------------------
  */
 const paths = {
-  src: 'src/',
-  dist: 'dist/',
-  demo: 'demo/',
-  assets: 'assets/',
-  bulma: 'node_modules/bulma/sass/utilities/',
-  pattern: {
-    sass: '**/*.sass',
-    js: '**/*.js',
-    image: '**/*.+(jpg|JPG|jpeg|JPEG|png|PNG|svg|SVG|gif|GIF|webp|WEBP|tif|TIF)',
-    html: '**/*.html',
-    xml: '**/*.xml'
-  }
+    src: 'src/',
+    dist: 'dist/',
+    demo: 'demo/',
+    assets: 'assets/',
+    bulma: 'node_modules/bulma/sass/utilities/',
+    pattern: {
+        sass: '**/*.scss',
+        js: '**/*.js',
+        image: '**/*.+(jpg|JPG|jpeg|JPEG|png|PNG|svg|SVG|gif|GIF|webp|WEBP|tif|TIF)',
+        html: '**/*.html',
+        xml: '**/*.xml',
+    },
 };
 const config = {
-  sass: {
-    input: 'index.sass',
-    dependencies: [paths.bulma + '_all.sass'],
-    output: {
-      filename: pkg.name,
-      format: 'expanded'
+    sass: {
+        input: 'index.scss',
+        dependencies: [paths.bulma + '_index.scss'],
+        output: {
+            filename: pkg.name,
+            format: 'expanded',
+        },
+        source: paths.src + 'scss/',
+        destination: paths.dist + 'css/',
     },
-    source: paths.src + 'sass/',
-    destination: paths.dist + 'css/'
-  },
-  javascript: {
-    input: 'index.js',
-    output: {
-      name: camelCase(pkg.name),
-      filename: pkg.name,
-      format: 'umd'
+    javascript: {
+        input: 'index.js',
+        output: {
+            name: camelCase(pkg.name),
+            filename: pkg.name,
+            format: 'umd',
+        },
+        source: paths.src + 'js/',
+        destination: paths.dist + 'js/',
     },
-    source: paths.src + 'js/',
-    destination: paths.dist + 'js/'
-  }
 };
 
 /**
@@ -72,45 +72,63 @@ const config = {
  */
 // Uses Sass compiler to process styles, adds vendor prefixes, minifies, then
 // outputs file to the appropriate location.
+
 gulp.task('build:styles', function () {
-  if (fs.existsSync(config.sass.source + config.sass.input)) {
-    return gulp
-      .src(config.sass.dependencies.concat([config.sass.source + config.sass.input]))
-      .pipe(concat(config.sass.output.filename + '.sass'))
-      .pipe(sass({
-        style: config.sass.output.format,
-        trace: true,
-        loadPath: [config.sass.source],
-        includePaths: ['node_modules', paths.bulma]
-      }))
-      .pipe(postcss([autoprefixer({
-        browsers: pkg.browsers
-      })]))
+    if (fs.existsSync(config.sass.source + config.sass.input)) {
+        return gulp
+            .src(
+                config.sass.dependencies.concat([
+                    config.sass.source + config.sass.input,
+                ])
+            )
+            .pipe(concat(config.sass.output.filename + '.scss'))
+            .pipe(
+                sass({
+                    style: config.sass.output.format,
+                    trace: true,
+                    loadPath: [config.sass.source],
+                    includePaths: ['node_modules', paths.bulma],
+                    indentedSyntax: false,
+                })
+            )
+            .on('error', function (error) {
+                console.error(error);
+                this.emit('end'); // Prevent gulp from crashing on Sass error
+            })
+            .pipe(
+                postcss([
+                    autoprefixer({
+                        browsers: pkg.browsers,
+                    }),
+                ])
+            )
 
-      .pipe(concat(config.sass.output.filename + '.css'))
-      .pipe(gulp.dest(config.sass.destination))
+            .pipe(concat(config.sass.output.filename + '.css'))
+            .pipe(gulp.dest(config.sass.destination))
 
-      .pipe(minifycss())
-      .pipe(concat(config.sass.output.filename + '.min.css'))
-      .pipe(gulp.dest(config.sass.destination))
-
-  } else {
-    return gulp.src('.').pipe(nop());
-  }
+            .pipe(minifycss())
+            .pipe(concat(config.sass.output.filename + '.min.css'))
+            .pipe(gulp.dest(config.sass.destination))
+            .on('end', () => console.log('Minified CSS file generated'));
+    } else {
+        return gulp.src('.').pipe(nop());
+    }
 });
 
 gulp.task('clean:styles', function () {
-  return del([
-    config.sass.destination + config.sass.output.filename + '.css',
-    config.sass.destination + config.sass.output.filename + '.min.css'
-  ]);
+    return del([
+        config.sass.destination + config.sass.output.filename + '.css',
+        config.sass.destination + config.sass.output.filename + '.min.css',
+    ]);
 });
 
 gulp.task('copy:styles', function () {
     return gulp
-        .src(config.sass.destination + config.sass.output.filename + '.min.css')
-        .pipe(gulp.dest(paths.src + paths.demo + paths.assets + 'css'))
-        .pipe(gulp.dest(paths.demo + paths.assets + 'css'));
+        .src(config.sass.destination + config.sass.output.filename + '.css')
+        .pipe(minifycss())
+        .pipe(concat(config.sass.output.filename + '.min.css'))
+        .pipe(gulp.dest(config.sass.destination))
+        .on('end', () => console.log('Minified CSS file generated'));
 });
 
 /**
@@ -122,57 +140,64 @@ gulp.task('copy:styles', function () {
 // Concatenates and uglifies global JS files and outputs result to the
 // appropriate location.
 gulp.task('build:scripts', function () {
-  if (fs.existsSync(config.javascript.source + config.javascript.input)) {
-    return gulp
-      .src(config.javascript.source + config.javascript.input)
-      .pipe(webpackStream({
-        output: {
-          filename: config.javascript.output.filename + '.js',
-          library: config.javascript.output.name,
-          libraryTarget: config.javascript.output.format,
-          libraryExport: 'default'
-        },
-        mode: 'production',
-        module: {
-          rules: [{
-            test: /\.(js|jsx)$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader',
-            options: {
-              babelrc: './babelrc'
-            }
-          }, ],
-        },
-        performance: {
-          hints: false,
-        },
-      }), webpack)
+    if (fs.existsSync(config.javascript.source + config.javascript.input)) {
+        return gulp
+            .src(config.javascript.source + config.javascript.input)
+            .pipe(
+                webpackStream({
+                    output: {
+                        filename: config.javascript.output.filename + '.js',
+                        library: config.javascript.output.name,
+                        libraryTarget: config.javascript.output.format,
+                        libraryExport: 'default',
+                    },
+                    mode: 'production',
+                    module: {
+                        rules: [
+                            {
+                                test: /\.(js|jsx)$/,
+                                exclude: /(node_modules)/,
+                                loader: 'babel-loader',
+                                options: {
+                                    babelrc: './babelrc',
+                                },
+                            },
+                        ],
+                    },
+                    performance: {
+                        hints: false,
+                    },
+                }),
+                webpack
+            )
 
-      .pipe(concat(config.javascript.output.filename + '.js'))
-      .pipe(gulp.dest(config.javascript.destination))
+            .pipe(concat(config.javascript.output.filename + '.js'))
+            .pipe(gulp.dest(config.javascript.destination))
 
-      .pipe(concat(config.javascript.output.filename + '.min.js'))
-      .pipe(uglify({
-            keep_fnames: true,
-            ie8: false,
-          }).on('error', function (err) {
-        log(colors.red('[Error]'), err.toString());
-      }))
-      .pipe(gulp.dest(config.javascript.destination)
-        .on('error', function (err) {
-          log(colors.red('[Error]'), err.toString());
-        })
-      )
-  } else {
-    return gulp.src('.').pipe(nop());
-  }
+            .pipe(concat(config.javascript.output.filename + '.min.js'))
+            .pipe(
+                uglify({
+                    keep_fnames: true,
+                    ie8: false,
+                }).on('error', function (err) {
+                    log(colors.red('[Error]'), err.toString());
+                })
+            )
+            .pipe(
+                gulp.dest(config.javascript.destination).on('error', function (err) {
+                    log(colors.red('[Error]'), err.toString());
+                })
+            );
+    } else {
+        return gulp.src('.').pipe(nop());
+    }
 });
 
 gulp.task('clean:scripts', function () {
-  return del([
-    config.javascript.destination + config.javascript.output.filename + '.js',
-    config.javascript.destination + config.javascript.output.filename + '.min.js'
-  ]);
+    return del([
+        config.javascript.destination + config.javascript.output.filename + '.js',
+        config.javascript.destination + config.javascript.output.filename + '.min.js'
+    ]);
 });
 
 gulp.task('copy:scripts', function () {
@@ -194,10 +219,10 @@ gulp.task('clean', function () {
 
 gulp.task('build', gulp.series('clean', 'build:styles', 'build:scripts', 'copy:styles', 'copy:scripts'));
 
-gulp.task('sync', function(callback) {
+gulp.task('sync', function (callback) {
     browserSync.reload();
     callback();
-})
+});
 
 gulp.task('watch', gulp.series('build', function() {
 
@@ -232,9 +257,9 @@ gulp.task('build:demo', function () {
 });
 
 gulp.task('clean:demo', function (callback) {
-  browserSync.notify('Cleaning Demo');
-  return del(paths.demo);
-  // callback();
+    browserSync.notify('Cleaning Demo');
+    return del(paths.demo);
+    // callback();
 });
 
 gulp.task('demo:dependencies', gulp.series('build:demo', function () {
